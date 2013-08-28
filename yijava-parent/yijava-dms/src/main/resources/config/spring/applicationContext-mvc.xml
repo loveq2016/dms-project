@@ -11,32 +11,28 @@
 		http://www.springframework.org/schema/aop/spring-aop.xsd 
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context.xsd">
-
 	<description>Spring MVC 3配置 </description>
-
 	<aop:aspectj-autoproxy proxy-target-class="true" />
-
 	<!-- 自动扫描且只扫描@Controller -->
 	<context:component-scan base-package="dms.yijava"
 		use-default-filters="false">
 		<context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
-
 	<mvc:view-controller path="/" view-name="redirect:/index" />
-
-	
 	<!-- 使用默认的servlet handler -->
 	<mvc:default-servlet-handler />
-
-
 	<bean id="mappingJacksonHttpMessageConverter"
 		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 		<property name="objectMapper" ref="jacksonObjectMapper"></property>
+		<!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/html;charset=UTF-8</value>
+			</list>
+		</property>
 	</bean>
-
-
-
+	
 	<bean
 		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver"
 		p:defaultContentType="text/html" p:order="2" p:ignoreAcceptHeader="true">
@@ -67,8 +63,6 @@
 			</props>
 		</property>
 	</bean>
-
-	
 
 	<!-- If no extension matched, use JSP view -->
 	<bean
