@@ -387,7 +387,7 @@
 			</plugin>
 
 		</plugins>
-		<finalName>stage</finalName>
+		
 	</build>
 
 
