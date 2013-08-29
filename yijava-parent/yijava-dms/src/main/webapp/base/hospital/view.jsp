@@ -49,7 +49,7 @@
 
 
 				<table id="dg" title="查询结果" style="height: 350px"
-					data-options="rownumbers:true,singleSelect:true,pagination:true,url:'/yijava-dms/api/hospital/view',method:'get'">
+					data-options="rownumbers:true,singleSelect:true,pagination:true,url:'/yijava-dms/api/hospital/paging',method:'get'">
 					<thead>
 						<tr>
 							<th data-options="field:'id',width:200">id</th>

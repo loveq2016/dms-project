@@ -57,7 +57,7 @@ public interface BaseDAO<T> {
 	 * @param entityClass
 	 * @param id
 	 */
-	@SuppressWarnings("hiding")
+	
 	public int removeById(Serializable id);
 
 	/**
@@ -74,48 +74,7 @@ public interface BaseDAO<T> {
 	 */
 	JsonPage<T> getScrollData(Map parameters, int offset, int pagesize);
 
-	/**
-	 * 分页查询
-	 * 
-	 * @param statementName
-	 * @param parameters
-	 * @return
-	 */
-	public JsonPage<T> getScrollData(Map parameters);
-
-	/**
-	 * 分页查询
-	 * 
-	 * @param statementName
-	 * @param name
-	 *            属性名
-	 * @param value
-	 *            属性值
-	 * @return
-	 */
-	public JsonPage<T> getScrollData(String name, Object value);
-
-	/**
-	 * 分页查询
-	 * 
-	 * @param o
-	 *            实体对象
-	 * @param offset
-	 *            开始索引
-	 * @param pagesize
-	 *            每页显示多少条记录
-	 * @return
-	 */
-	public JsonPage<T> getScrollData(Object o, int offset, int pagesize);
-
-	/**
-	 * 分页查询
-	 * 
-	 * @param o
-	 *            实体对象
-	 * @return
-	 */
-	public JsonPage<T> getScrollData(Object o);
+	
 
 	/**
 	 * sql 查询.
