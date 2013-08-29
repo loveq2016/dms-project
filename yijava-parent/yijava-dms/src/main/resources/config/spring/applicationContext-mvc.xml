@@ -25,7 +25,6 @@
 	<bean id="mappingJacksonHttpMessageConverter"
 		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 		<property name="objectMapper" ref="jacksonObjectMapper"></property>
-		<!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
 		<property name="supportedMediaTypes">
 			<list>
 				<value>text/html;charset=UTF-8</value>
