@@ -59,9 +59,7 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 	@Override
 	public <T> T get(Serializable id) {
 		@SuppressWarnings("unchecked")
-		T o = (T) this.getSqlSession().selectOne(entityClass.getSimpleName() + POSTFIX_SELECT, id);
-		// TODO Auto-generated method stub
-		//T o = (T) getSqlSession().queryForObject(entityClass.getSimpleName() + POSTFIX_SELECT, id);
+		T o = (T) this.getSqlSession().selectOne(entityClass.getSimpleName() + POSTFIX_SELECT, id);		
 		if (o == null) {
 			throw new ObjectRetrievalFailureException(entityClass, id);
 		}
@@ -69,47 +67,37 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 	}
 
 	@Override
-	public <T> List<T> getAll() {
-		// TODO Auto-generated method stub
-		return getSqlSession().selectList(entityClass.getSimpleName() + POSTFIX_SELECTALL);
-		
-		
+	public <T> List<T> getAll() {		
+		return getSqlSession().selectList(entityClass.getSimpleName() + POSTFIX_SELECTALL);		
 	}
 
 	@Override
-	public void insert(Object o) {
-		// TODO Auto-generated method stub
+	public void insert(Object o) {		
 		getSqlSession().insert(entityClass.getSimpleName() + POSTFIX_INSERT, o);  
 	}
 
 	
 
 	@Override
-	public int remove(Object o) {
-		// TODO Auto-generated method stub
+	public int remove(Object o) {		
 		 return getSqlSession().delete(entityClass.getSimpleName() + POSTFIX_DELETE, o);  
 	}
 
 	@Override
-	public  int removeById(Serializable id) {
-		// TODO Auto-generated method stub
+	public  int removeById(Serializable id) {		
 		return getSqlSession().delete(entityClass.getName() + POSTFIX_DELETE_PRIAMARYKEY, id);  
 	}
 
 	@Override
-	public int update(Object o) {
-		// TODO Auto-generated method stub
+	public int update(Object o) {		
 		 return getSqlSession().update(entityClass.getSimpleName() + POSTFIX_UPDATE, o);  
 	}
 	@Override
-	public JsonPage<T> getScrollData(Map parameters, int offset, int pagesize) {
-		// TODO Auto-generated method stub
-		
-		Long total = (Long) getSqlSession().selectOne(
-			    entityClass.getSimpleName() + POSTFIX_SELECTMAP_COUNT,
-			    parameters);
-		
-		  List<T> datas = getSqlSession().selectList(entityClass.getSimpleName() + POSTFIX_SELECTMAP, parameters);
+	public JsonPage<T> getScrollData(Map parameters, int offset, int pagesize) {		
+		Long total = (Long) getSqlSession().selectOne(entityClass.getSimpleName() + POSTFIX_SELECTOBJECT_COUNT);		
+		parameters.put("offset", offset);
+		parameters.put("pagesize", pagesize);
+		 List<T> datas = getSqlSession().selectList(entityClass.getSimpleName() + POSTFIX_SELECTOBJECT, parameters);
 		  
 		  
 		  
@@ -117,29 +105,7 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 		//return null;
 	}
 
-	@Override
-	public JsonPage<T> getScrollData(Map parameters) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public JsonPage<T> getScrollData(String name, Object value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public JsonPage<T> getScrollData(Object o, int offset, int pagesize) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public JsonPage<T> getScrollData(Object o) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public <T> List<T> find(String sql) {

@@ -62,6 +62,13 @@ public class HospitalController {
 		hospitalService.updateEntity(entity);
 		return new Result<String>("1", 1);
 	}
+	
+	@ResponseBody
+	@RequestMapping("update")
+	public JsonPage<Hospital> paging() {
+		return hospitalService.paging();
+		
+	}
 /*
 	@ResponseBody
 	@RequestMapping("view")

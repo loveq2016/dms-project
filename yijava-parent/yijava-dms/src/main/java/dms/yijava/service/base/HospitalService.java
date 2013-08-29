@@ -1,10 +1,13 @@
 package dms.yijava.service.base;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.yijava.orm.core.JsonPage;
 
 import dms.yijava.dao.HospitalDao;
 import dms.yijava.entity.Hospital;
@@ -37,6 +40,11 @@ public class HospitalService {
 	public void updateEntity(Hospital entity) {
 		hospitalDao.update( entity);
 	}
+	
+	public JsonPage<Hospital> paging() {
+		return hospitalDao.getScrollData(new HashMap(), 0, 10);
+	}
+	
 	/*s
 	public JsonPage<Hospital> searchHospitalPage(PageRequest request,
 			List<PropertyFilter> filters) {

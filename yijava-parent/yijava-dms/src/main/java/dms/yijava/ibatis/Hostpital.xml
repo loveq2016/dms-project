@@ -20,7 +20,16 @@
    		 delete from tb_hospital where id= #{id} 
     </delete>
     
-    <update id="update" parameterType="dms.yijava.entity.Hospital">
-    	update tb_hospital set name=#{name} where id=#{id}
-    </update>
+    <!-- pageing -->
+    <select id="selectByObject.coun" resultType="long">
+		select count(*) from tb_hospital		
+	</select>
+
+ 	<select id="selectByObject" resultType="long">
+		select * from tb_hospital limit #{offset},#{pagesize}  
+	</select>
+
+
+    
+    
 </mapper>
