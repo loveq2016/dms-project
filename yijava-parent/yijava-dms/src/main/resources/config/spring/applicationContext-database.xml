@@ -15,8 +15,6 @@
 	http://www.springframework.org/schema/aop/spring-aop.xsd 
 	http://www.springframework.org/schema/cache 
 	http://www.springframework.org/schema/cache/spring-cache.xsd">
-
-	
 	<!-- 数据源配置,使用应用内的DBCP数据库连接池 -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<!-- 链接信息 -->
@@ -24,7 +22,6 @@
 		<property name="url" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
-
 		<!-- 连接池信息 -->
         <property name="initialSize" value="${dbcp.initialSize}" />
         <property name="maxActive" value="${dbcp.maxActive}" />
@@ -34,25 +31,18 @@
 		<property name="timeBetweenEvictionRunsMillis" value="3600000" />
 		<property name="minEvictableIdleTimeMillis" value="3600000" />
 	</bean>
-	
 	<bean id="transactionManager"
         class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
     </bean>
-
 	<tx:annotation-driven transaction-manager="transactionManager" />
-	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="configLocation" value="classpath:/config/conf/mybatis-conf.xml" />
+        <!-- 自动扫描config目录，省略xml里手工配置 -->
+		<property name="mapperLocations" value="classpath:/config/mybatis/*.xml" />
     </bean>
-    
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="dms.yijava.dao;dms.yijava.dao.base;" />
     </bean>
-
     <context:component-scan base-package="dms.yijava.service" />
-	
-	
-	
 </beans>
