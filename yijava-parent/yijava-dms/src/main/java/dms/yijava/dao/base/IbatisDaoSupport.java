@@ -27,7 +27,7 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 	public static final String POSTFIX_SELECTMAP = ".selectByMap";
 	public static final String POSTFIX_SELECTMAP_COUNT = ".selectByMap.count";
 	public static final String POSTFIX_SELECTOBJECT = ".selectByObject";
-	public static final String POSTFIX_SELECTOBJECT_COUNT = ".selectByObject.count";
+	public static final String POSTFIX_SELECTOBJECT_COUNT = ".selectByObjectcount";
 	public static final String POSTFIX_SELECTSQL = ".selectBySql";
 	public static final String POSTFIX_COUNT = ".count";
 

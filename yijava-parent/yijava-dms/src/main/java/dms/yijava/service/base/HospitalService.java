@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yijava.orm.core.JsonPage;
+import com.yijava.orm.core.PageRequest;
 
 import dms.yijava.dao.HospitalDao;
 import dms.yijava.entity.Hospital;
@@ -41,8 +42,8 @@ public class HospitalService {
 		hospitalDao.update( entity);
 	}
 	
-	public JsonPage<Hospital> paging() {
-		return hospitalDao.getScrollData(new HashMap(), 0, 10);
+	public JsonPage<Hospital> paging(PageRequest pageRequest) {
+		return hospitalDao.getScrollData(new HashMap(), pageRequest.getOffset(), pageRequest.getPageSize());
 	}
 	
 	/*s
