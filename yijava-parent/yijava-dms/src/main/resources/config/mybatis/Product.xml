@@ -6,19 +6,21 @@
 
 <sql id="adsWhere">
 <trim prefix="WHERE" prefixOverrides="AND|OR">
-	<if test="item_number!=null and item_number!=''">
-		  and item_number=#{item_number}
-	</if>
-	<if test="item_number!=null and item_number!=''">
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(item_number)">
 		  and item_number=#{item_number}
 	</if>
 </trim>
 </sql>
 
 <sql id="adsOrder">
-	<if test="OrderBy!=null and OrderBy!='' and OrderDir!=null and OrderDir!='' ">
-		order by #{OrderBy} #{OrderDir}
-	</if>
+	<choose>  
+            <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+                ORDER BY ${orderSql}
+            </when>
+            <otherwise> 
+            </otherwise>  
+        </choose>
+        
 </sql>
 
     
@@ -29,8 +31,7 @@
 
  	<select id="selectByObject" resultType="dms.yijava.entity.Product">
 		select * from tb_product 
-		<include refid="adsWhere"/>
-		<include refid="adsOrder"/>
+		<include refid="adsWhere"/><include refid="adsOrder"/>
 	    limit #{offset},#{pagesize}  
 	</select>
 	

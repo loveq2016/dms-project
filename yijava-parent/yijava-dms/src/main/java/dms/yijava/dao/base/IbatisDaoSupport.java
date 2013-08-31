@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,8 +110,7 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 		Long total = (Long) getSqlSession().selectOne(entityClass.getSimpleName() + POSTFIX_SELECTOBJECT_COUNT);		
 		parameters.put("offset", offset);
 		parameters.put("pagesize", pagesize);
-		parameters.put("OrderBy", OrderBy);
-		parameters.put("OrderDir", OrderDir);
+		parameters.put("orderSql", OrderBy + " " + OrderDir);
 		List<T> datas = getSqlSession().selectList(entityClass.getSimpleName() + POSTFIX_SELECTOBJECT, parameters);
 		return new JsonPage<T>(datas,total);
 		//return null;
