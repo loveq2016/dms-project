@@ -4,7 +4,7 @@ public class SysUserRole {
 
 	public String id;
 	public String fk_user_id;
-	public String 	fk_role_id;
+	public String fk_role_id;
 	public String last_time;
 	
 	
