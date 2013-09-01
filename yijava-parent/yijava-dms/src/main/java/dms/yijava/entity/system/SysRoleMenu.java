@@ -2,7 +2,7 @@ package dms.yijava.entity.system;
 
 public class SysRoleMenu {
 	public String id;
-	public String fk_system_id;
+	public String fk_menu_id;
 	public String fk_role_id;
 	public String httplink;
 	public String last_time;
@@ -13,11 +13,11 @@ public class SysRoleMenu {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getFk_system_id() {
-		return fk_system_id;
+	public String getFk_menu_id() {
+		return fk_menu_id;
 	}
-	public void setFk_system_id(String fk_system_id) {
-		this.fk_system_id = fk_system_id;
+	public void setFk_menu_id(String fk_menu_id) {
+		this.fk_menu_id = fk_menu_id;
 	}
 	public String getFk_role_id() {
 		return fk_role_id;

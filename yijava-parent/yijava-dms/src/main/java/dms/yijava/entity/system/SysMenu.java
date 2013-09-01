@@ -2,34 +2,33 @@ package dms.yijava.entity.system;
 
 public class SysMenu {
 	public String id;
-	public String systemname;
-	public String url;
+	public String menu_name;
+	public String menu_url;
 	public String isdeleted;
 	public String fk_parent;
-	public String httplink;	
 	public String remark;
 	public String last_time;
 	public String ext1;
 	public String ext2;
 	public String ext3;
 	
+	public String getMenu_name() {
+		return menu_name;
+	}
+	public void setMenu_name(String menu_name) {
+		this.menu_name = menu_name;
+	}
+	public String getMenu_url() {
+		return menu_url;
+	}
+	public void setMenu_url(String menu_url) {
+		this.menu_url = menu_url;
+	}
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
-	}
-	public String getSystemname() {
-		return systemname;
-	}
-	public void setSystemname(String systemname) {
-		this.systemname = systemname;
-	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
 	}
 	public String getIsdeleted() {
 		return isdeleted;
@@ -42,12 +41,6 @@ public class SysMenu {
 	}
 	public void setFk_parent(String fk_parent) {
 		this.fk_parent = fk_parent;
-	}
-	public String getHttplink() {
-		return httplink;
-	}
-	public void setHttplink(String httplink) {
-		this.httplink = httplink;
 	}
 	public String getRemark() {
 		return remark;
