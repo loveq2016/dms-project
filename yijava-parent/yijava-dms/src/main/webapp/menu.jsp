@@ -22,6 +22,14 @@
 
 </div>
 <div id="mm2" style="width: 100px;">
+	
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="产品信息维护" url="product/view.jsp">产品信息维护</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="产品分类维护" url="productCategory/view.jsp">产品分类维护</a>
+	</div>
+	
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="医院信息维护"
 			url="base/hospital/view.jsp">医院信息维护</a>

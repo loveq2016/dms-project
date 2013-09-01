@@ -1,9 +1,11 @@
 package dms.yijava.dao.base;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,18 +94,29 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 	public int update(Object o) {		
 		 return getSqlSession().update(entityClass.getSimpleName() + POSTFIX_UPDATE, o);  
 	}
+	
+	@Override
+	public JsonPage<T> getScrollData(int offset, int pagesize) {		
+		return this.getScrollData(new HashMap(), offset, pagesize, null,null);
+		//return null;
+	}
 	@Override
 	public JsonPage<T> getScrollData(Map parameters, int offset, int pagesize) {		
+		return this.getScrollData(parameters, offset, pagesize, null,null);
+		//return null;
+	}
+	@Override
+	public JsonPage<T> getScrollData(Map parameters, int offset, int pagesize,String OrderBy,String OrderDir) {		
 		Long total = (Long) getSqlSession().selectOne(entityClass.getSimpleName() + POSTFIX_SELECTOBJECT_COUNT);		
 		parameters.put("offset", offset);
 		parameters.put("pagesize", pagesize);
-		 List<T> datas = getSqlSession().selectList(entityClass.getSimpleName() + POSTFIX_SELECTOBJECT, parameters);
-		  
-		  
-		  
+		parameters.put("orderSql", OrderBy + " " + OrderDir);
+		List<T> datas = getSqlSession().selectList(entityClass.getSimpleName() + POSTFIX_SELECTOBJECT, parameters);
 		return new JsonPage<T>(datas,total);
 		//return null;
 	}
+	
+	
 
 
 
@@ -117,7 +130,7 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 	@Override
 	public <T> List<T> find(Map parameters) {
 		// TODO Auto-generated method stub
-		return getSqlSession().selectList(entityClass.getSimpleName() + POSTFIX_SELECT);
+		return getSqlSession().selectList(entityClass.getSimpleName() + POSTFIX_SELECTMAP,parameters);
 		
 	}
 

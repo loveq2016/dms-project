@@ -59,6 +59,20 @@ public interface BaseDAO<T> {
 	 */
 	
 	public int removeById(Serializable id);
+	
+	/**
+	 * 分页查询
+	 * 
+	 * @param statementId
+	 * @param parameters
+	 *            参数
+	 * @param offset
+	 *            开始索引
+	 * @param pagesize
+	 *            每页显示多少条记录
+	 * @return
+	 */
+	JsonPage<T> getScrollData(int offset, int pagesize);
 
 	/**
 	 * 分页查询
@@ -73,6 +87,20 @@ public interface BaseDAO<T> {
 	 * @return
 	 */
 	JsonPage<T> getScrollData(Map parameters, int offset, int pagesize);
+	
+	/**
+	 * 分页查询
+	 * 
+	 * @param statementId
+	 * @param parameters
+	 *            参数
+	 * @param offset
+	 *            开始索引
+	 * @param pagesize
+	 *            每页显示多少条记录
+	 * @return
+	 */
+	JsonPage<T> getScrollData(Map parameters, int offset, int pagesize,String OrderBy,String OrderDir);
 
 	
 
