@@ -1,11 +1,11 @@
 package dms.yijava.entity.system;
 
-public class SysMenuPrivs {
+public class SysMenuFunction {
 	public String id;
-	public String privs_name;
-	public String privs_id;
-	public String privs_desc;
-	public String privs_url;
+	public String fun_name;
+	public String fun_desc;
+	public String classname;
+	public String method;
 	public String fk_menu_id;
 	public String last_time;
 	public String ext1;
@@ -18,29 +18,29 @@ public class SysMenuPrivs {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getPrivs_name() {
-		return privs_name;
+	public String getFun_name() {
+		return fun_name;
 	}
-	public void setPrivs_name(String privs_name) {
-		this.privs_name = privs_name;
+	public void setFun_name(String fun_name) {
+		this.fun_name = fun_name;
 	}
-	public String getPrivs_id() {
-		return privs_id;
+	public String getFun_desc() {
+		return fun_desc;
 	}
-	public void setPrivs_id(String privs_id) {
-		this.privs_id = privs_id;
+	public void setFun_desc(String fun_desc) {
+		this.fun_desc = fun_desc;
 	}
-	public String getPrivs_desc() {
-		return privs_desc;
+	public String getClassname() {
+		return classname;
 	}
-	public void setPrivs_desc(String privs_desc) {
-		this.privs_desc = privs_desc;
+	public void setClassname(String classname) {
+		this.classname = classname;
 	}
-	public String getPrivs_url() {
-		return privs_url;
+	public String getMethod() {
+		return method;
 	}
-	public void setPrivs_url(String privs_url) {
-		this.privs_url = privs_url;
+	public void setMethod(String method) {
+		this.method = method;
 	}
 	public String getFk_menu_id() {
 		return fk_menu_id;
@@ -72,4 +72,5 @@ public class SysMenuPrivs {
 	public void setExt3(String ext3) {
 		this.ext3 = ext3;
 	}
+	
 }

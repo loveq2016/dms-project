@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import dms.yijava.dao.base.IbatisDaoSupport;
 
 @Repository
-public class SysPrivilegeDao extends IbatisDaoSupport<Map>{
+public class SysFunctionDao extends IbatisDaoSupport<Map>{
 
 }

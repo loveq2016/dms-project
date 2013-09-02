@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import dms.yijava.dao.system.SysPrivilegeDao;
+import dms.yijava.dao.system.SysFunctionDao;
 @Service
 @Transactional
-public class SysPrivilegeService {
+public class SysFunctionService {
 	@Autowired
-	public SysPrivilegeDao sysPrivilegeDao;
+	public SysFunctionDao sysFunctionDao;
 }

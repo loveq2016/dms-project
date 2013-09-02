@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import dms.yijava.service.system.SysPrivilegeService;
+import dms.yijava.service.system.SysFunctionService;
 @Controller
 @RequestMapping("/sys/privilege")
-public class SysPrivilegeController {
+public class SysFunctionController {
 	@Autowired
-	public SysPrivilegeService sysPrivilegeService;
+	public SysFunctionService sysFunctionService;
 }
