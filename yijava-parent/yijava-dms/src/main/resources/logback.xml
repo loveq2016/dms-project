@@ -23,8 +23,10 @@
 		<appender-ref ref="rollingFile" />
 	</root>
 	
-	<logger name="org.springframework" level="DEBUG"/>
+	<logger name="org.springframework" level="ERROR"/>
 	<logger name="org.hibernate" level="DEBUG"/>
+	<logger name="org.mybatis" level="ERROR"/>
+	
 	<logger name="org.apache" level="ERROR"/>	
 	<logger name="com.yijava" level="DEBUG"/>
 </configuration>
