@@ -1,11 +1,9 @@
 package dms.yijava.entity.system;
 
-public class SysMenu {
+public class SysRole {
 	public String id;
-	public String menu_name;
-	public String url;
+	public String role_name;
 	public String isdeleted;
-	public String fk_parent_id;
 	public String remark;
 	public String last_time;
 	public String ext1;
@@ -18,29 +16,17 @@ public class SysMenu {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getMenu_name() {
-		return menu_name;
+	public String getRole_name() {
+		return role_name;
 	}
-	public void setMenu_name(String menu_name) {
-		this.menu_name = menu_name;
-	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
+	public void setRole_name(String role_name) {
+		this.role_name = role_name;
 	}
 	public String getIsdeleted() {
 		return isdeleted;
 	}
 	public void setIsdeleted(String isdeleted) {
 		this.isdeleted = isdeleted;
-	}
-	public String getFk_parent_id() {
-		return fk_parent_id;
-	}
-	public void setFk_parent_id(String fk_parent_id) {
-		this.fk_parent_id = fk_parent_id;
 	}
 	public String getRemark() {
 		return remark;
@@ -72,4 +58,5 @@ public class SysMenu {
 	public void setExt3(String ext3) {
 		this.ext3 = ext3;
 	}
+
 }

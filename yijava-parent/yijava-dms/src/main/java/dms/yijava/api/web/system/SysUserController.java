@@ -11,4 +11,6 @@ import dms.yijava.service.system.SysUserService;
 public class SysUserController {
 	@Autowired
 	public SysUserService sysUserService;
+	
+	
 }
