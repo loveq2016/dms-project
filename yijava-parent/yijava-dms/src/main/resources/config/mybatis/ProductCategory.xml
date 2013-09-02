@@ -4,21 +4,21 @@
 
 <mapper namespace="ProductCategory">
 
-	<select id="selectByMap" resultType="dms.yijava.entity.ProductCategory">
+	<select id="selectByMap" resultType="dms.yijava.entity.product.ProductCategory">
 		select id,parent_id,category_name as text,
 		case when (select count(1) from tb_product_category b where a.id = b.parent_id)>0 then 'closed' else 'open' end as state
 		from tb_product_category a where parent_id = #{parent_id}
 	</select>
 	
-	<insert id="insert" parameterType="dms.yijava.entity.ProductCategory">     
+	<insert id="insert" parameterType="dms.yijava.entity.product.ProductCategory">     
     	  insert into tb_product_category (parent_id,category_name,last_date) values(#{parent_id},#{text},now())
     </insert>
     
-    <update id="update" parameterType="dms.yijava.entity.ProductCategory">
+    <update id="update" parameterType="dms.yijava.entity.product.ProductCategory">
     	update tb_product_category set category_name=#{text} where id=#{id}
     </update>
 	
-	<delete id="delete" parameterType="dms.yijava.entity.ProductCategory">
+	<delete id="delete" parameterType="dms.yijava.entity.product.ProductCategory">
 		delete from tb_product_category where id = #{id}
 	</delete>
     

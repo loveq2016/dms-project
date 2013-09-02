@@ -20,7 +20,6 @@
             <otherwise> 
             </otherwise>  
         </choose>
-        
 </sql>
 
     
@@ -29,21 +28,22 @@
 		<include refid="adsWhere"/>
 	</select>
 
- 	<select id="selectByObject" resultType="dms.yijava.entity.Product">
+ 	<select id="selectByObject" resultType="dms.yijava.entity.product.Product">
 		select * from tb_product 
-		<include refid="adsWhere"/><include refid="adsOrder"/>
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
 	    limit #{offset},#{pagesize}  
 	</select>
 	
-	<select id="select"  parameterType="int" resultType="dms.yijava.entity.Product">
+	<select id="select"  parameterType="int" resultType="dms.yijava.entity.product.Product">
         select * from tb_product where item_number = #{item_number}
     </select>
 	
-	<insert id="insert" parameterType="dms.yijava.entity.Product">     
+	<insert id="insert" parameterType="dms.yijava.entity.product.Product">     
     	  insert into tb_product (cname) values(#{cname})
     </insert>
     
-    <update id="update" parameterType="dms.yijava.entity.Product">
+    <update id="update" parameterType="dms.yijava.entity.product.Product">
     	update tb_product_category set cname=#{cname} where item_number = #{item_number}
     </update>
     

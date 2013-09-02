@@ -1,12 +1,10 @@
 package dms.yijava.entity.system;
 
-public class SysUserRole {
-
+public class SysRoleFunction {
 	public String id;
-	public String fk_user_id;
+	public String fk_fun_id;
 	public String fk_role_id;
 	public String last_time;
-	
 	
 	public String getId() {
 		return id;
@@ -14,11 +12,11 @@ public class SysUserRole {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getFk_user_id() {
-		return fk_user_id;
+	public String getFk_fun_id() {
+		return fk_fun_id;
 	}
-	public void setFk_user_id(String fk_user_id) {
-		this.fk_user_id = fk_user_id;
+	public void setFk_fun_id(String fk_fun_id) {
+		this.fk_fun_id = fk_fun_id;
 	}
 	public String getFk_role_id() {
 		return fk_role_id;
@@ -32,5 +30,4 @@ public class SysUserRole {
 	public void setLast_time(String last_time) {
 		this.last_time = last_time;
 	}
-
 }

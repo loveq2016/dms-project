@@ -1,9 +1,6 @@
 package dms.yijava.api.web;
 
 import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yijava.orm.core.JsonPage;
-import com.yijava.orm.core.PageRequest;
-import com.yijava.orm.core.PropertyFilter;
-import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
-import dms.yijava.entity.Hospital;
-import dms.yijava.entity.ProductCategory;
-import dms.yijava.service.base.HospitalService;
+import dms.yijava.entity.product.ProductCategory;
 import dms.yijava.service.productCategory.ProductCategoryService;
 
 @Controller

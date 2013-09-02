@@ -3,32 +3,32 @@ package dms.yijava.entity.system;
 public class SysMenu {
 	public String id;
 	public String menu_name;
-	public String menu_url;
+	public String url;
 	public String isdeleted;
-	public String fk_parent;
+	public String fk_parent_id;
 	public String remark;
 	public String last_time;
 	public String ext1;
 	public String ext2;
 	public String ext3;
 	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getMenu_name() {
 		return menu_name;
 	}
 	public void setMenu_name(String menu_name) {
 		this.menu_name = menu_name;
 	}
-	public String getMenu_url() {
-		return menu_url;
+	public String getUrl() {
+		return url;
 	}
-	public void setMenu_url(String menu_url) {
-		this.menu_url = menu_url;
-	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	public String getIsdeleted() {
 		return isdeleted;
@@ -36,11 +36,11 @@ public class SysMenu {
 	public void setIsdeleted(String isdeleted) {
 		this.isdeleted = isdeleted;
 	}
-	public String getFk_parent() {
-		return fk_parent;
+	public String getFk_parent_id() {
+		return fk_parent_id;
 	}
-	public void setFk_parent(String fk_parent) {
-		this.fk_parent = fk_parent;
+	public void setFk_parent_id(String fk_parent_id) {
+		this.fk_parent_id = fk_parent_id;
 	}
 	public String getRemark() {
 		return remark;
@@ -72,5 +72,4 @@ public class SysMenu {
 	public void setExt3(String ext3) {
 		this.ext3 = ext3;
 	}
-	
 }

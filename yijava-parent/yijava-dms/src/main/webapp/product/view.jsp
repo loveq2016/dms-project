@@ -58,7 +58,7 @@
 						<tr>
 							<th field="item_number" width="100" sortable="true">Item Number</th>
 							<th data-options="field:'name',width:100">Minor</th>
-							<th data-options="field:'cname',width:100">中文名称</th>
+							<th data-options="field:'cname',width:100" sortable="true">中文名称</th>
 							<th data-options="field:'ename',width:100">英文说明</th>
 							<th data-options="field:'remark',width:100">描述</th>
 							<th data-options="field:'name',width:100">订购单位</th>

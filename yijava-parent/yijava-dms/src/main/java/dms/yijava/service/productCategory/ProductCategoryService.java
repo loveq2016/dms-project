@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import dms.yijava.dao.productCategory.ProductCategoryDao;
-import dms.yijava.entity.ProductCategory;
+import dms.yijava.dao.product.ProductCategoryDao;
+import dms.yijava.entity.product.ProductCategory;
 
 @Service
 @Transactional

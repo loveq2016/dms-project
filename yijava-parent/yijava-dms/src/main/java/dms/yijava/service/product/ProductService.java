@@ -12,8 +12,8 @@ import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 
-import dms.yijava.dao.ProductDao;
-import dms.yijava.entity.Product;
+import dms.yijava.dao.product.ProductDao;
+import dms.yijava.entity.product.Product;
 
 @Service
 @Transactional

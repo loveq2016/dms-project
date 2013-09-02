@@ -3,9 +3,9 @@ package dms.yijava.dao.system;
 import org.springframework.stereotype.Repository;
 
 import dms.yijava.dao.base.IbatisDaoSupport;
-import dms.yijava.entity.system.SysLog;
+import dms.yijava.entity.system.SysUserRole;
 
 @Repository
-public class SysLogDao extends IbatisDaoSupport<SysLog>{
-	
+public class SysUserRoleDao extends IbatisDaoSupport<SysUserRole>{
+
 }
