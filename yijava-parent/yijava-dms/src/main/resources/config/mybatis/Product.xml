@@ -15,7 +15,7 @@
 <sql id="adsOrder">
 	<choose>  
             <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
-                ORDER BY ${orderSql}
+                order by ${orderSql}
             </when>
             <otherwise> 
             </otherwise>  

@@ -23,25 +23,16 @@
 						<form id="ffquery" method="post">
 							<table>
 								<tr>
-									<td>Item Number:</td>
+									<td>产品编号:</td>
 									<td>
 										<input class="easyui-validatebox" type="text" name="item_number" id="item_number" data-options="required:false"></input>
 									</td>
-								</tr>
-								<tr>
-									<td>分类信息:</td>
-									<td>
-										<input class="easyui-validatebox" type="text" name="type" id="type" data-options="required:false"></input>
-									</td>								
 								</tr>
 							</table>
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="newEntity();">新建</a>						
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="updateEntity()">修改</a>
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove'" onclick="deleteEntity()">删除</a>					   
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>			   
 					</div>
 				</div>
 				
@@ -56,21 +47,13 @@
 					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="asc">
 					<thead>
 						<tr>
-							<th field="item_number" width="100" sortable="true">Item Number</th>
-							<th data-options="field:'name',width:100">Minor</th>
+							<th field="item_number" width="100" sortable="true">产品编号</th>
 							<th data-options="field:'cname',width:100" sortable="true">中文名称</th>
-							<th data-options="field:'ename',width:100">英文说明</th>
+							<th data-options="field:'ename',width:100" sortable="true">英文说明</th>
 							<th data-options="field:'remark',width:100">描述</th>
-							<th data-options="field:'name',width:100">订购单位</th>
-							<th data-options="field:'price',width:100">不含税标准价格</th>
-							<th data-options="field:'name',width:100">是否可订货</th>
-							<th data-options="field:'item_type',width:100">Item Type</th>
-							<th data-options="field:'unit',width:100">单位转换因子</th>
-							<th data-options="field:'division',width:100">Division</th>
-							<th data-options="field:'name',width:100">是否报台</th>
-							<th data-options="field:'name',width:100">明细</th>
-							
-							
+							<th data-options="field:'order_company',width:100">订购单位</th>
+							<th data-options="field:'is_order',width:100">是否可订货</th>
+							<th field="info" width="100" align="center" formatter="formatterInfo">明细</th>
 						</tr>
 					</thead>
 				</table>
@@ -79,6 +62,7 @@
 			<div style="margin: 10px 0;"></div>
 		</div>
 		
+
 		
 	<div id="w" class="easyui-window" title="医院详细信息" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
 	style="width:650px;height:400px;padding:10px;">
@@ -95,12 +79,45 @@
 		</form>
 		
 		<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveEntity()">确定</a>
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="clearForm()">取消</a>					   
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveEntity()">确定</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="clearForm()">取消</a>					   
 		</div>
 	</div>
+	
+	
 
 	<script type="text/javascript">
+	
+		$('#dg').datagrid({
+		    toolbar : [{
+		        text:'添加',
+		        iconCls:'icon-add',
+		        handler:function(){alert('add')}
+		    },{
+		        text:'编辑',
+		        iconCls:'icon-edit',
+		        handler:function(){alert('cut')}
+		    },'-',{
+		        text:'删除',
+		        iconCls:'icon-remove',
+		        handler:function(){alert('save')}
+		    }]
+		});
+		
+
+		
+		 function formatterInfo (value, row, index) { 
+			 return '<span style="color:red" onclick="aa(' + row.item_number + ');">编辑 </span>'; 
+		} 
+
+		
+	    function aa(t){
+	    	alert(t)
+	    }
+	
+
+
+    
 		$(function() {
 			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
 			pager.pagination(); 
@@ -144,6 +161,10 @@
 		}		
 		function updateEntity()
 		{
+			
+
+			
+			
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
 			    //alert('id:'+row.id+"\nPrice:"+row.name);
