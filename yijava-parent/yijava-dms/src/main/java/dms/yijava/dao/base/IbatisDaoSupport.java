@@ -86,7 +86,7 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 	}
 
 	@Override
-	public  int removeById(Serializable id) {		
+	public int removeById(Serializable id) {		
 		return getSqlSession().delete(entityClass.getName() + POSTFIX_DELETE_PRIAMARYKEY, id);  
 	}
 

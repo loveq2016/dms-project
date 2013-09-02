@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import dms.yijava.service.system.SysRoleService;
 @Controller
-@RequestMapping("/sys/role")
+@RequestMapping("/api/sysrole")
 public class SysRoleController {
 	@Autowired
 	public SysRoleService sysRoleService;

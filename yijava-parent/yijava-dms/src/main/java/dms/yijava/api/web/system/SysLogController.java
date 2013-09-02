@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import dms.yijava.service.system.SysLogService;
 
 @Controller
-@RequestMapping("/sys/log")
+@RequestMapping("/api/syslog")
 public class SysLogController {
 	@Autowired
 	public SysLogService sysLogService;

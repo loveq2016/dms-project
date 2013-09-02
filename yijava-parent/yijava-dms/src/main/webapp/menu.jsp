@@ -9,7 +9,7 @@
 </div>
 <div id="mm1" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="订单管理" url="user/view.jsp">用户管理</a>
+		<a href="javascript:void(0)" title="用户管理" url="system/user/view.jsp">用户管理</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="订单管理"

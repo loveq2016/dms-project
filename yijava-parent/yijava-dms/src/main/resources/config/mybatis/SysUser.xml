@@ -5,11 +5,18 @@
 <!-- 用户管理 start -->
 	<sql id="adsWhere">
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			and isdeleted=0
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(account)">
 				  and account=#{account}
 			</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(realname)">
 				  and realname=#{realname}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_department_id)">
+				  and fk_department_id=#{fk_department_id}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_dealer_id)">
+				  and fk_dealer_id=#{fk_dealer_id}
 			</if>
 		</trim>
 	</sql>
@@ -18,8 +25,8 @@
 		    <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
 		         ORDER BY ${orderSql}
 		    </when>
-		    <otherwise>
-		    </otherwise>
+		    <otherwise> 
+            </otherwise>
 	    </choose>
 	</sql>
     <select id="selectByObjectcount" resultType="long">
@@ -47,5 +54,8 @@
 		province=#{province},address=#{address},postcode=#{postcode},fk_department_id=#{fk_department_id},fk_dealer_id=#{fk_dealer_id},isdeleted=#{isdeleted},last_time=NOW(),remark=#{remark},
 		customfield1=#{customfield1},customfield2=#{customfield2},customfield3=#{customfield3},ext1=#{ext1},ext2=#{ext2},ext3=#{ext3} where id=#{id}
     </update>
+    <update id="deleteByPrimaryKey" parameterType="int">
+		update dms.tb_manager_user set isdeleted=1 where id = #{id}
+	</update>
 <!-- 用户管理  end -->
 </mapper>

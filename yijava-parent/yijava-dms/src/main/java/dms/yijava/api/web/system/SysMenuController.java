@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import dms.yijava.service.system.SysMenuService;
 
 @Controller
-@RequestMapping("/sys/sysmenu")
+@RequestMapping("/api/sysmenu")
 public class SysMenuController {
 	@Autowired
 	public SysMenuService sysMenuService;
