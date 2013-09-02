@@ -1,4 +1,4 @@
-package dms.yijava.api.web;
+package dms.yijava.api.web.product;
 
 import java.util.List;
 
