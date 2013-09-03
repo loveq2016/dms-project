@@ -12,6 +12,9 @@
 		<a href="javascript:void(0)" title="用户管理" url="system/user/view.jsp">用户管理</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="角色管理" url="system/role/view.jsp">角色管理</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="订单管理"
 			url="foundation/data-dictionary/view.jsp">数据字典管理</a>
 	</div>
