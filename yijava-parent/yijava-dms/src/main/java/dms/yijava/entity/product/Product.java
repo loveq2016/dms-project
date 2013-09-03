@@ -16,6 +16,8 @@ public class Product {
 
 	private String is_order;
 
+	private String category_id;
+
 	private String column1;
 
 	private String column2;
@@ -100,6 +102,14 @@ public class Product {
 
 	public void setColumn3(String column3) {
 		this.column3 = column3;
+	}
+
+	public String getCategory_id() {
+		return category_id;
+	}
+
+	public void setCategory_id(String category_id) {
+		this.category_id = category_id;
 	}
 
 }

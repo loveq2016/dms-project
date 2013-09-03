@@ -43,7 +43,14 @@ public class ProductService {
 	}
 	
 	public void updateEntity(Product entity) {
-		productDao.update( entity);
+			productDao.update( entity);
 	}
+	
+	public void deleteEntity(String id) {
+			productDao.remove(id);
+	}
+		
+
+	
 	
 }

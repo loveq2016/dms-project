@@ -89,6 +89,7 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 	public int removeById(Serializable id) {		
 		return getSqlSession().delete(entityClass.getName() + POSTFIX_DELETE_PRIAMARYKEY, id);  
 	}
+	
 
 	@Override
 	public int update(Object o) {		
@@ -107,7 +108,7 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 	}
 	@Override
 	public JsonPage<T> getScrollData(Map parameters, int offset, int pagesize,String OrderBy,String OrderDir) {		
-		Long total = (Long) getSqlSession().selectOne(entityClass.getSimpleName() + POSTFIX_SELECTOBJECT_COUNT);		
+		Long total = (Long) getSqlSession().selectOne(entityClass.getSimpleName() + POSTFIX_SELECTOBJECT_COUNT,parameters);		
 		parameters.put("offset", offset);
 		parameters.put("pagesize", pagesize);
 		parameters.put("orderSql", OrderBy + " " + OrderDir);
