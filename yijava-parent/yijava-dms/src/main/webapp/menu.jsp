@@ -6,6 +6,9 @@
 		data-options="menu:'#mm1',iconCls:'icon-filep'">系统管理</a> <a
 		href="javascript:void(0)" id="mb2" class="easyui-menubutton"
 		data-options="menu:'#mm2',iconCls:'icon-filep'">基础信息维护</a>
+	
+	<a href="javascript:void(0)" id="mb1" class="easyui-menubutton"
+		data-options="menu:'#mm3',iconCls:'icon-filep'">流程管理</a> 
 </div>
 <div id="mm1" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
@@ -45,4 +48,19 @@
 		<a href="javascript:void(0)" title="经销商基础信息维护"
 			url="foundation/dictionary-category/view.jsp">经销商授权信息维护</a>
 	</div>
+</div>
+
+<div id="mm3" style="width: 150px;">
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="用户管理" url="flow/view.jsp">流程管理</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="订单管理"
+			url="foundation/data-dictionary/view.jsp">数据字典管理</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="订单管理"
+			url="foundation/dictionary-category/view.jsp">字典类别管理</a>
+	</div>
+
 </div>

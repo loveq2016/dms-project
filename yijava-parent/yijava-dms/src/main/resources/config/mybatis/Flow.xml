@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Flow">
+
+<sql id="adsWhere">
+<trim prefix="WHERE" prefixOverrides="AND|OR">
+	
+	<if test="flow_name != null and flow_name != '' "> 		   
+		   flow_name like CONCAT('%','${flow_name}','%' ) 
+	</if>  
+</trim>
+</sql>
+
+<sql id="adsOrder">
+		 order by order_no desc
+</sql>
+
+    
+    <select id="selectByObjectcount" resultType="long">
+		select count(*) from tb_flow_info 
+		<include refid="adsWhere"/>
+	</select>
+
+ 	<select id="selectByObject" resultType="dms.yijava.entity.flow.Flow">
+		select * from tb_flow_info 
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}  
+	</select>
+	
+	<select id="select"  parameterType="int" resultType="dms.yijava.entity.flow.Flow">
+        select * from tb_flow_info where flow_id = #{flow_id}
+    </select>
+	
+	<insert id="insert" parameterType="dms.yijava.entity.flow.Flow">     
+    	  insert into tb_flow_info (flow_name,flow_desc,is_system,del_sign,add_emp_id,add_date,order_no)
+    	  values(#{flow_name},#{flow_desc},#{is_system},#{del_sign},#{add_emp_id},#{add_date},#{order_no})
+    </insert>
+    
+    <update id="update" parameterType="dms.yijava.entity.flow.Flow">
+    	update tb_flow_info set 
+    	flow_name=#{flow_name},
+    	flow_desc=#{flow_desc},
+    	is_system=#{is_system},
+    	del_sign=#{del_sign},
+    	mody_emp_id=#{mody_emp_id},
+    	mody_date=#{mody_date},
+    	order_no=#{order_no}
+    	 where flow_id = #{flow_id}    	
+    </update>
+    
+    <delete id="delete" parameterType="dms.yijava.entity.flow.Flow">
+   	 update tb_flow_info set    	
+    	del_sign=#{del_sign},    	
+    	del_emp_id=#{del_emp_id},
+    	del_date=#{del_date}
+    	 where flow_id = #{flow_id}  		
+	</delete>
+</mapper>
