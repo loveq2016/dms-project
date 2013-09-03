@@ -31,6 +31,7 @@ public class ProductCategoryController {
 	}
 	
 	
+	
 	@ResponseBody
 	@RequestMapping("save")
 	public Result<String> save(@ModelAttribute("entity") ProductCategory entity) {

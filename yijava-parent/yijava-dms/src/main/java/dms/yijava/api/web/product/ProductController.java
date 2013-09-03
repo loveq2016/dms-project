@@ -20,6 +20,7 @@ import dms.yijava.service.product.ProductService;
 @Controller
 @RequestMapping("/api/product")
 public class ProductController {
+	
 
 	@Autowired
 	private ProductService productService;
