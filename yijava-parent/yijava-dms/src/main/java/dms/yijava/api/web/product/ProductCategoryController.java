@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.product.ProductCategory;
-import dms.yijava.service.productCategory.ProductCategoryService;
+import dms.yijava.service.product.ProductCategoryService;
 
 @Controller
 @RequestMapping("/api/productCategory")
