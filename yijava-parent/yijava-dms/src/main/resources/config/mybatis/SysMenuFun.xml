@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SysMenuFunction">	
+	<select id="selectByMap" resultType="dms.yijava.entity.system.SysMenuFunction">
+		select id,fun_name,fun_desc,classname,method,fk_menu_id,last_time,ext1,ext2,ext3 
+		from tb_manager_menu_fun where fk_menu_id = #{fk_menu_id}
+	</select>
+</mapper>

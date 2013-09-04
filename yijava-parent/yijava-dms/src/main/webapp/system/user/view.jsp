@@ -18,22 +18,24 @@
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
 				<div class="easyui-panel" title="查询条件">
-					<div style="padding: 10px 0 10px 60px">
+					<div style="padding: 10px 0 0 60px">
 						<form id="ffquery" method="post">
 							<table>
 								<tr>
-									<td>账户:</td>
-									<td><input class="easyui-validatebox" type="text" name="account" id="account"></input>
+									<td width="50">账户:</td>
+										<td width="270"><input class="easyui-validatebox" type="text" name="account" id="account"></input>
 									</td>
-									<td>姓名:</td>
-									<td><input class="easyui-validatebox" type="text" name="realname" id="realname"></input>
+									<td width="100">姓名:</td>
+										<td width="270"><input class="easyui-validatebox" type="text" name="realname" id="realname"></input>
 									</td>
-									<td>部门:</td>
-									<td><select name="fk_department_id">
+								</tr>
+								<tr>
+									<td width="50">部门:</td>
+									<td width="270"><select name="fk_department_id">
 										  <option value ="1001">销售部</option>
 										</select>
 									</td>
-									<td>经销商:</td>
+									<td width="100">经销商:</td>
 									<td>
 										<select name="fk_dealer_id">
 										  <option value ="2033">北京杜蕾斯医疗器械有限公司</option>

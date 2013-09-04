@@ -18,7 +18,7 @@
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
 				<div class="easyui-panel" title="查询条件">
-					<div style="padding: 10px 0 10px 60px">
+					<div style="padding: 10px 0 0 60px">
 						<form id="ffquery" method="post">
 							<table>
 								<tr>
@@ -54,18 +54,18 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
-		<div id="w" class="easyui-window" title="角色详细信息" data-options="modal:true,closed:true,iconCls:'icon-manage'" style="width:550px;height:380px;padding:10px;">
+		<div id="w" class="easyui-window" title="角色详细信息" data-options="modal:true,closed:true,iconCls:'icon-manage'" style="width:298px;height:230px;padding:10px;">
 			<form id="ffadd" action="" method="post" enctype="multipart/form-data">
 				<table>
 					<tr>
-						<td>角色状态:</td>
+						<td>角色名称:</td>
                     	<td>
                     		<input class="easyui-validatebox" type="text" name="role_name"></input>
                     		<input class="easyui-validatebox" type="text" hidden="true" name="id"></input>
                     	</td>
 					</tr>
 					<tr>
-						<td>角色状态:</td>
+						<td>状态:</td>
 						<td>
 							<select name="isdeleted" class="easyui-validatebox" >
 								<option value ="0">正常</option>
