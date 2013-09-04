@@ -9,6 +9,9 @@
 	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(item_number)">
 		  and item_number=#{item_number}
 	</if>
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(category_id)">
+		  and category_id=#{category_id}
+	</if>
 </trim>
 </sql>
 
@@ -23,13 +26,13 @@
 </sql>
 
     
-    <select id="selectByObjectcount" resultType="long">
-		select count(*) from tb_product 
+    <select id="selectByObjectcount" resultType="long"> 
+		select count(1) from (select t1.*,t2.category_name from tb_product t1 left join tb_product_category t2 on t1.category_id = t2.id) t 
 		<include refid="adsWhere"/>
 	</select>
 
  	<select id="selectByObject" resultType="dms.yijava.entity.product.Product">
-		select * from tb_product 
+		select * from (select t1.*,t2.category_name from tb_product t1 left join tb_product_category t2 on t1.category_id = t2.id) t 
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
 	    limit #{offset},#{pagesize}  

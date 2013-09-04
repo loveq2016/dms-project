@@ -43,7 +43,7 @@
 
 			<div style="padding-left: 10px; padding-right: 10px">
 
-				<table id="dg" title="查询结果" style="height: 330px" url="/yijava-dms/api/product/paging" method="get"
+				<table id="dg" title="查询结果" style="height: 430px" url="/yijava-dms/api/product/paging" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="desc">
 					<thead>
 						<tr>
@@ -64,60 +64,66 @@
 		
 
 
-   <div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
-            closed="true" buttons="#dlg-buttons">
+   <div id="dlg" class="easyui-dialog" style="width:500px;height:380px;padding:10px 20px"
+            modal="true" closed="true" buttons="#dlg-buttons">
         <form id="fm" method="post" novalidate>
         	<input type="hidden" name="item_number">
-            <div class="fitem">
-                <label>中文名称:</label>
-                <input name="cname" class="easyui-validatebox" required="true">
-            </div>
-            <div class="fitem">
-                <label>英文说明:</label>
-                <input name="ename" class="easyui-validatebox" required="true">
-            </div>
-            <div class="fitem">
-                <label>描述:</label>
-                <input name="remark">
-            </div>
-            <div class="fitem">
-                <label>价格:</label>
-                <input name="price" class="easyui-numberbox" min="0" max="99999999" precision="2" required="true">
-            </div>
-            <div class="fitem">
-                <label>订购单位:</label>
-                <input name="order_company" class="easyui-validatebox">
-            </div>
-            <div class="fitem">
-                <label>是否可订货:</label>
-                	<input type="radio" name="is_order" class="easyui-validatebox" value="1"> 是
-                	<input type="radio" name="is_order" class="easyui-validatebox" value="0"> 否
-            </div>
-            <div class="fitem">
-                <label>产品分类:</label>
-                <input id="cc" name="category_id" class="easyui-combotree"  value=""  url="/yijava-dms/api/productCategory/list"  required="true" editable="false" style="width:200px;"
-                	data-options="
-                			url: '/yijava-dms/api/productCategory/list',
-							method: 'get',
-							lines: true,
-							onClick : function(node){
-							    var tree = $(this).tree;  
-								isLeaf = tree('isLeaf', node.target);
-								if(!isLeaf){
-									$('#cc').combotree('clear');
-								}else{
-									$('#cc').combotree('setValue', node.id);  
-								}	
-	            			}" >  
-            </div>
-            							
-            
+             <table>
+             	<tr>
+             		<td>中文名称:</td>
+             		<td><input name="cname" class="easyui-validatebox" required="true"></td>
+             	</tr>
+              	<tr>
+             		<td>英文说明:</td>
+             		<td><input name="ename" class="easyui-validatebox" required="true"></td>
+             	</tr>            	
+             	<tr>
+             		<td>描述:</td>
+             		<td><input name="remark"></td>
+             	</tr>             	
+              	<tr>
+             		<td>价格:</td>
+             		<td><input name="price" class="easyui-numberbox" min="0" max="99999999" precision="2" required="true"></td>
+             	</tr>
+             	<tr>
+             		<td>订购单位:</td>
+             		<td><input name="order_company" class="easyui-validatebox"></td>
+             	</tr>             	
+              	<tr>
+             		<td>是否可订货:</td>
+             		<td>
+             			<input type="radio" name="is_order"  value="1"> 是
+                		<input type="radio" name="is_order"  value="0"> 否
+                	</td>
+             	</tr>                	
+              	<tr>
+             		<td>产品分类:</td>
+             		<td>
+	                <input id="cc" name="category_id" class="easyui-combotree"  value=""  url="/yijava-dms/api/productCategory/list"  required="true" editable="false" style="width:200px;"
+	                	data-options="
+	                			url: '/yijava-dms/api/productCategory/list',
+								method: 'get',
+								lines: true,
+								onClick : function(node){
+								    var tree = $(this).tree;  
+									isLeaf = tree('isLeaf', node.target);
+									if(!isLeaf){
+										$('#cc').combotree('clear');
+									}else{
+										$('#cc').combotree('setValue', node.id);  
+									}	
+		            			}" >  
+                	</td>
+             	</tr>  
+            </table>
         </form>
     </div>
     <div id="dlg-buttons">
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveEntity();">保存</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
     </div>
+    
+    
 	
 	
 
@@ -153,81 +159,41 @@
 		 function newEntity(){
 	        $('#dlg').dialog('open').dialog('setTitle','产品基础信息添加');
 	        $('#fm').form('clear');
-	        
-	        
-		     $('#cc').combotree('setValue',"11");
-	         $('#cc').combotree('setText',"sss");
-	        
-	        //$('#cc').combotree('reload');
-	        
-// 	        $('#cc').combotree({
-//                 onLoadSuccess: function (node, data) {
-//                 	 for(var i=0;i<data.length;i++){  
-//                 		 if(data[i].id == 18){
-//                 			 $('#cc').combotree('setValue',data[i].id);
-//                 			 break;
-//                 		 }else{
-//                 			 $('#cc').combotree({url : "/yijava-dms/api/productCategory/list?id="+data[i].id});
-//                 		 }
-//                 	 }
-//                 }
-//         	});
-	        
-	        
-	        
-//             var node = $('#cc').combotree('tree').tree("find",1);
-//             if (node){  
-//                 var children = $('#cc').combotree('tree').tree('getChildren', node.target);  
-//                 var s = '';  
-//                 for(var i=0; i<children.length; i++){  
-//                     s += children[i].text + ',';  
-//                 }  
-//                 alert(s);  
-//             }  
-            
-            
-            
-           // alert(node)
-            
-            
+	        $("input[name='is_order']:eq(0)").attr("checked", "checked"); 
 	        url = '/yijava-dms/api/product/save';
-	     }
-		   
+		  } 
 
 	     function updateEntity(){
 	          var row = $('#dg').datagrid('getSelected');
 	          if (row){
 	            $('#dlg').dialog('open').dialog('setTitle','产品基础信息更新');
 	            $('#fm').form('load',row);
-	            
-
-	            
-		       // $('#cc').combotree('setValue',"11");
-		        //$('#cc').combotree('setText',"sss");
-		        
-		        
+			    $('#cc').combotree('setValue',row.category_id);
+		        $('#cc').combotree('setText',row.category_name);
 	            url = '/yijava-dms/api/product/update';
-	          }
+	          }else{
+					$.messager.alert('提示','请选中数据!','warning');				
+			 }	
 	     }
 	     
 			
 		
 		function saveEntity() {
-			$.ajax({
-				type : "POST",
-				url : url,
-				data : $('#fm').serialize(),
-				error : function(request) {
-					alert("Error");
-				},
-				success : function(data) {
-					var jsonobj = $.parseJSON(data);
-					if (jsonobj.state == 1) {
+			$('#fm').form('submit', {
+			    url:url,
+			    method:"post",
+			    onSubmit: function(){
+			        return $(this).form('validate');;
+			    },
+			    success:function(msg){
+			    	var jsonobj = $.parseJSON(msg);
+			    	if(jsonobj.state==1)
+			    		{
 						 $('#dlg').dialog('close');     
 	                     $('#dg').datagrid('reload');
-					}
-				}
-			});
+			    		}
+			    }		
+			});	
 		}
 		  
 		  
@@ -252,7 +218,9 @@
 	            			});                    	
 	                    }
 	                });
-	            }
+	            }else{
+					$.messager.alert('提示','请选中数据!','warning');				
+				 }	
 	        }
 	
 

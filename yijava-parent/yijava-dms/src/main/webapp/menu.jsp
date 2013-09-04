@@ -28,13 +28,13 @@
 		<a href="javascript:void(0)" title="产品分类维护" url="productCategory/view.jsp">产品分类维护</a>
 	</div>
 	
-	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="医院信息维护"
-			url="base/hospital/view.jsp">医院信息维护</a>
-	</div>
+<!-- 	<div data-options="iconCls:'icon-file'"> -->
+<!-- 		<a href="javascript:void(0)" title="医院信息维护" -->
+<!-- 			url="base/hospital/view.jsp">医院信息维护</a> -->
+<!-- 	</div> -->
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="经销商基础信息维护"
-			url="foundation/dictionary-category/view.jsp">经销商基础信息维护</a>
+			url="dealer/view.jsp">经销商基础信息维护</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="经销商基础信息维护"

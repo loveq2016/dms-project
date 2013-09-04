@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Dealer {
 	
-	private String id;
-	private String dealercode;
-	private String cname;
+	private String dealer_id;
+	private String dealer_code;
+	private String dealer_name;
 	private String business_contacts;
 	private String business_phone;
 	private String financial_contacts;
@@ -27,13 +27,18 @@ public class Dealer {
 	private String register_fund;
 	private String operated_scope;
 	private String addess;
-	private String GM_name;
-	private String GM_phone;
-	private String BM_name;
-	private String BM_phone;
-	private String BM_telephone;
-	private String BM_fax;
+	private String gm_name;
+	private String gm_phone;
+	private String bm_name;
+	private String bm_phone;
+	private String bm_telephone;
+	private String bm_fax;
 	private String email;
+	private String column1;
+	private String column2;
+	private String column3;
+	
+	
 	private String category_id;//经销商分类
 	
 	

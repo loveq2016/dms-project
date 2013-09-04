@@ -1,13 +1,16 @@
 package dms.yijava.service.dealer;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yijava.common.utils.DateUtils;
 import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
@@ -35,15 +38,44 @@ public class DealerService {
 	}
 
 	public Dealer getEntity(String id) {
-		return dealerDao.get(id);
+			return dealerDao.get(id);
 	}
 	
+	
+	public Dealer checkEntity(String id) {
+		try{
+			return dealerDao.getObject(".checkdealer_code", id);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	
 	public void saveEntity(Dealer entity) {
+		if (StringUtils.isBlank(entity.getSettlement_time())) {
+			entity.setSettlement_time(DateUtils.format(new Date(),"yyyy-MM-dd"));
+		}
+		if (StringUtils.isBlank(entity.getFound_time())) {
+			entity.setFound_time(DateUtils.format(new Date(),"yyyy-MM-dd"));
+		}
 		dealerDao.insert(entity);
 	}
 	
 	public void updateEntity(Dealer entity) {
-		dealerDao.update( entity);
+		if (StringUtils.isBlank(entity.getSettlement_time())) {
+			entity.setSettlement_time(DateUtils.format(new Date(),"yyyy-MM-dd"));
+		}
+		if (StringUtils.isBlank(entity.getFound_time())) {
+			entity.setFound_time(DateUtils.format(new Date(),"yyyy-MM-dd"));
+		}
+		try{
+			dealerDao.update( entity);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void deleteEntity(String id) {

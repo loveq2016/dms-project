@@ -14,9 +14,12 @@ public class Product {
 	private String price;
 	private String order_company;
 	private String is_order;
-	private String category_id;
 	private String column1;
 	private String column2;
 	private String column3;
+	
+	private String category_id;
+	private String category_name;
+	
 
 }

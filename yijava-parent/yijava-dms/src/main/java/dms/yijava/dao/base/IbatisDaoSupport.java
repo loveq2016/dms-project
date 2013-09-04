@@ -135,5 +135,13 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 		return getSqlSession().selectList(entityClass.getSimpleName() + POSTFIX_SELECTMAP,parameters);
 		
 	}
+	
+	
+
+	public <T> T getObject(String postfix_selectmap ,Object o) {
+		@SuppressWarnings("unchecked")
+		T obj = (T) this.getSqlSession().selectOne(entityClass.getSimpleName() + postfix_selectmap,o);		
+		return obj;
+	}
 
 }

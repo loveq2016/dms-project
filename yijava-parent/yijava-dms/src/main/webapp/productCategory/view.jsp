@@ -17,14 +17,6 @@
 <div style="margin: 10px 0;"></div>
 <div style="padding-left: 10px; padding-right: 10px">
 
-<!-- <div class="easyui-panel" title=" " style="width:1050px;height:350px;padding:1px;" -->
-<!-- 		data-options=" -->
-<!-- 			        	tools:[{  -->
-<!-- 				        	iconCls:'icon-reload',  -->
-<!--  				        	handler:function(){  -->
-<!--  				            	$('#tree').tree('reload');  -->
-<!--  				        	}  -->
-<!--  				        }] "> -->
 	<div class="easyui-layout" style="width:1050px;height:450px;" data-options="fit:true">
         <div  title="产品分类" style="width:300px;" data-options="region:'west',split:true">
   	        	 <ul id="tree" class="easyui-tree" 
@@ -49,8 +41,21 @@
 	    		</ul>  
         </div>
         <div title="包含产品" data-options="region:'center'">
-        
-        	
+
+		  <table id="dg" class="easyui-datagrid" title="查询结果" style="height:450px" url="/yijava-dms/api/product/paging"
+		           rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="desc">
+		        <thead>
+		            <tr>
+							<th field="item_number" width="150" align="center">产品编号</th>
+							<th field="cname" width="200" align="center">中文名称</th>
+							<th field="ename" width="200" align="center">英文说明</th>
+							<th field="remark" width="400" align="center">描述</th>
+							<th field="price" width="150" align="center">价格</th>
+							<th field="order_company" width="150" align="center">订购单位</th>
+		               		<th field="is_order" width="100" align="center" formatter="formatterIs_order">是否可订货</th>
+		            </tr>
+		        </thead>
+		    </table>
         </div>
    </div>    
 
@@ -88,6 +93,8 @@
 		
 
 	<script type="text/javascript">
+	
+
 
 		var p_target = null;
 		function append() {
@@ -163,9 +170,14 @@
 		}
 		
 		function loadProduct(category_id){
-			alert(category_id)
+		    $('#dg').datagrid('load',{
+		    	filter_ANDS_category_id: category_id
+		    });
 		}
 		
+		function formatterIs_order (value, row, index) { 
+			return value==1?"<span style='color:green'>是</span>":"<span style='color:red'>否</span>";
+		} 
 		
 		
 	</script>
