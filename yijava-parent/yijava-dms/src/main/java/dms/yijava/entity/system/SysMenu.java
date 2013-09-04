@@ -7,11 +7,18 @@ public class SysMenu {
 	public String isdeleted;
 	public String fk_parent_id;
 	public String remark;
+	private String state;
 	public String last_time;
 	public String ext1;
 	public String ext2;
 	public String ext3;
 	
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
 	public String getId() {
 		return id;
 	}
