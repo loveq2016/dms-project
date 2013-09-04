@@ -1,5 +1,7 @@
 package dms.yijava.entity.system;
 
+import java.util.List;
+
 public class SysMenu {
 	public String id;
 	public String menu_name;
@@ -12,7 +14,14 @@ public class SysMenu {
 	public String ext1;
 	public String ext2;
 	public String ext3;
+	public List<SysMenuFunction> list;
 	
+	public List<SysMenuFunction> getList() {
+		return list;
+	}
+	public void setList(List<SysMenuFunction> list) {
+		this.list = list;
+	}
 	public String getState() {
 		return state;
 	}

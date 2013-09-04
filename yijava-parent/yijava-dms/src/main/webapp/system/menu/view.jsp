@@ -28,9 +28,9 @@
 	<script type="text/javascript">
 		$(function() {
 			$('#treegrid').treegrid({
-                title:'菜单名称',  
+                title:'菜单信息',  
                 iconCls:'icon-save', 
-                height:350,  
+                height:500,  
                 nowrap: false,  
                 rownumbers: true,  
                 animate:true,  
@@ -39,27 +39,44 @@
                 idField:'id',
                 treeField:'menu_name',	
                 frozenColumns:[[
-                    {title:'菜单名称',field:'menu_name',width:200} 
+                    {title:'名称',field:'menu_name',width:200} 
                 ]],  
                 columns:[[
                     {field:'url',title:'链接',width:150},  
-                    {field:'isdeleted',title:'状态',width:220,rowspan:2,
+                    {field:'list',title:'功能',width:250,rowspan:2,
                     	formatter:function(value){
-                			return value==1?"<span style='color:green'>正常</span>":"<span style='color:red'>移除</span>";
+                    		var str="";
+                    		if (typeof(value) != "undefined")
+		                    for(var i=0;i<value.length;i++){
+		                    	str+=value[i].fun_name+" ";
+		                    }
+                			return str;
+                        }
+                    },
+                    {field:'isdeleted',title:'状态',width:50,rowspan:2,
+                    	formatter:function(value){
+                			return value==1?"<span style='color:green'>移除</span>":"<span style='color:red'>正常</span>";
                         }
                     },  
-                    {field:'remark',title:'备注',width:150,rowspan:2}  
-                ]],
-                onContextMenu: function(e,row){
-                    e.preventDefault();  
-                    $(this).treegrid('unselectAll');  
-                    $(this).treegrid('select', row.code);  
-                    $('#mm').menu('show', {
-                        left: e.pageX,  
-                        top: e.pageY  
-                    });  
-                }  
+                    {field:'remark',title:'备注',width:270,rowspan:2}
+                ]]
             });
+			function collapseAll(){  
+	            var node = $('#treegrid').treegrid('getSelected');  
+	            if (node){  
+	                $('#treegrid').treegrid('collapseAll', node.code);  
+	            } else {  
+	                $('#treegrid').treegrid('collapseAll');  
+	            }  
+	        }  
+	        function expandAll(){  
+	            var node = $('#test').treegrid('getSelected');  
+	            if (node){  
+	                $('#treegrid').treegrid('expandAll', node.code);  
+	            } else {  
+	                $('#treegrid').treegrid('expandAll');  
+	            }  
+	        }  
 		});
 	</script>
 </body>

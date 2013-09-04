@@ -18,7 +18,7 @@
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
 				<div class="easyui-panel" title="查询条件">
-					<div style="padding: 10px 0 10px 60px">
+					<div style="padding: 10px 0 0 60px">
 						<form id="ffquery" method="post">
 							<table>
 								<tr>
