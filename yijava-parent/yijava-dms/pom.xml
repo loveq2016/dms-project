@@ -22,6 +22,13 @@
 			<version>1.0.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>0.12.0</version>
+		</dependency>
+            
+
 		<!-- spring strat -->
 		<dependency>
 			<groupId>org.springframework</groupId>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Dealer">
+
+<sql id="adsWhere">
+	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(item_number)">
+			and item_number=#{item_number}
+		</if>
+	</trim>
+</sql>
+
+<sql id="adsOrder">
+	<choose>
+		<when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">
+			order by ${orderSql}
+		</when>
+		<otherwise>
+		</otherwise>
+	</choose>
+</sql>
+
+    
+<select id="selectByObjectcount" resultType="long">
+	select count(1) from tb_dealer
+	<include refid="adsWhere" />
+</select>
+
+<select id="selectByObject" resultType="dms.yijava.entity.dealer.Dealer">
+	select * from tb_dealer
+	<include refid="adsWhere" />
+	<include refid="adsOrder" />
+	limit #{offset},#{pagesize}
+</select>
+	
+<select id="select"  parameterType="int" resultType="dms.yijava.entity.dealer.Dealer">
+    select * from tb_dealer where id = #{id}
+</select>
+	
+<insert id="insert" parameterType="dms.yijava.entity.dealer.Dealer" useGeneratedKeys="true" keyProperty="id">
+	insert into tb_product
+	 (dealercode,cname,business_contacts,business_phone,financial_contacts,financial_phone,invoice_address,invoicea_postcode,settlement_time,attribute,status,
+	 register_address,company_type,found_time,corporate,corporate_phone,register_fund,operated_scope,addess,GM_name,GM_phone,BM_name,BM_phone,BM_telephone,BM_fax,email)
+	values(#{cname},#{ename},#{remark},#{price},#{order_company},#{is_order},#{category_id},#{column1},#{column2},#{column3})
+</insert>
+    
+<update id="update" parameterType="dms.yijava.entity.dealer.Dealer">
+	update tb_product set
+	cname=#{cname},ename=#{ename},remark=#{remark},price=#{price},order_company=#{order_company},is_order=#{is_order},category_id=#{category_id},
+	column1=#{column1},column2=#{column2},column3=#{column3}
+	where item_number = #{item_number}
+</update>
+
+<delete id="delete" parameterType="int">
+	delete from tb_dealer where id = #{id}
+</delete>
+    
+    
+    
+    
+</mapper>

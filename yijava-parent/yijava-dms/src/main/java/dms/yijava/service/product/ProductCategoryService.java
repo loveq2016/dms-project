@@ -1,4 +1,4 @@
-package dms.yijava.service.productCategory;
+package dms.yijava.service.product;
 
 import java.util.HashMap;
 import java.util.List;
