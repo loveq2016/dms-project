@@ -107,6 +107,7 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 		//return null;
 	}
 	@Override
+	
 	public JsonPage<T> getScrollData(Map parameters, int offset, int pagesize,String OrderBy,String OrderDir) {		
 		Long total = (Long) getSqlSession().selectOne(entityClass.getSimpleName() + POSTFIX_SELECTOBJECT_COUNT,parameters);		
 		parameters.put("offset", offset);
