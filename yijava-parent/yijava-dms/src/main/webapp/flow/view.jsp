@@ -1,17 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@include file="/common/base.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" type="text/css"	href="../resource/themes/gray/easyui.css">
-<link rel="stylesheet" type="text/css"	href="../resource/themes/icon.css">
-<link rel="stylesheet" type="text/css" href="../resource/css/main.css">
-<script type="text/javascript" src="../resource/js/jquery-1.7.2.js"></script>
-<script type="text/javascript" src="../resource/js/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="../resource/js/common.js"></script>
-<script type="text/javascript" src="../resource/locale/easyui-lang-zh_CN.js"></script>
+<%@include file="/common/head.jsp"%>
 </head>
 <body LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0>
 		<div id="p" class="easyui-panel" title="">
@@ -43,7 +36,7 @@
 
 			<div style="padding-left: 10px; padding-right: 10px">
 
-				<table id="dg" title="查询结果" style="height: 330px" url="/yijava-dms/api/flow/paging" method="get"
+				<table id="dg" title="查询结果" style="height: 330px" url="${basePath}api/flow/paging" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="asc">
 					<thead>
 						<tr>
@@ -94,8 +87,10 @@
 		</div>
 	</div>
 	
-	<div id="test" title="ddd" style="top:10px;padding:1px;width:780px;height:590px;display:none;" title="Modal Window">
+	<div id="test" title="ddd" style="top:10px;padding:1px;width:780px;height:590px;" title="Modal Window">
+	<!-- <div id="test" class="easyui-window" data-options="closed:true,modal:true,title:'Test Window'" style="width:300px;height:100px;"> -->
     </div>
+
 
 	<script type="text/javascript">
 	
@@ -105,6 +100,7 @@
 		        text:'添加',
 		        iconCls:'icon-add',
 		        handler:function(){
+		        	
 		        	$('#w').window('open');
 				}
 		    },{
@@ -136,20 +132,18 @@
 			
 		}
 		
-	    function openview(t){
-	    	
+	    function openview(t){	    	
 	    	  $("#test").window({
 	               width: 780,
 	               modal: true,
 	               height: 590,
-	               collapsed:false,
-	               closable:false,
+	               closable:true,
 	               minimizable:false,
 	               maximizable:false,
 	               zIndex:9999,
 	               collapsible:false
 	              });
-	    	 $('#test').load('/yijava-dms/flow/viewdetail.jsp'); 
+	    	 $('#test').load(basePath+'web/flow/view?fow_id='+t); 
 	    	 //href: '/yijava-dms/flow/viewdetail.jsp'
 	    }
 	
@@ -171,7 +165,7 @@
 		function newEntity()
 		{
 			 $('#ffadd').form('clear');
-	         url = '/yijava-dms/api/flow/save';
+	         url = basePath+'api/flow/save';
 			$('#w').window('open');
 		}
 		
@@ -204,7 +198,7 @@
 			var row = $('#dg').datagrid('getSelected');			
 			if (row){			   
 			    $('#ffadd').form('load', row);
-			    url = '/yijava-dms/api/flow/update?flow_id='+row.flow_id;
+			    url = basePath+'api/flow/update?flow_id='+row.flow_id;
 			    $('#w').window('open');
 			}else
 			{
@@ -218,7 +212,7 @@
 			if (row){
 				 $.messager.confirm('确定','确定要删除吗 ?',function(r){
 					 if (r){
-	                        $.post('/yijava-dms/api/flow/remove',{flow_id:row.flow_id},function(result){
+	                        $.post(basePath+'api/flow/remove',{flow_id:row.flow_id},function(result){
 	                        	var jsonobj= eval('('+msg+')');  
 	        			    	if(jsonobj.state==1){
 	                                $('#dg').datagrid('reload');    // reload the user data
