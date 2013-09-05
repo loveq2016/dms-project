@@ -81,7 +81,7 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
-		<div id="w" class="easyui-window" title="用户详细信息" data-options="modal:true,closed:true,iconCls:'icon-manage'" style="width:550px;height:380px;padding:10px;">
+		<div id="w" class="easyui-window" title="用户详细信息" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:550px;height:380px;padding:10px;">
 			<form id="ffadd" action="" method="post" enctype="multipart/form-data">
 				<table>
 					<tr>

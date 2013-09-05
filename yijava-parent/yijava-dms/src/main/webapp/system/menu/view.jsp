@@ -13,7 +13,6 @@
 <script type="text/javascript" src="../../resource/js/common.js"></script>
 <script type="text/javascript" src="../../resource/locale/easyui-lang-zh_CN.js"></script>
 </head>
-<body LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0>
 		<div id="p" class="easyui-panel" title="">
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
@@ -79,5 +78,4 @@
 	        }  
 		});
 	</script>
-</body>
 </html>
