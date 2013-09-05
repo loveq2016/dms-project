@@ -18,9 +18,4 @@ public class SysFunctionController {
 	@Autowired
 	public SysMenuFunctionService sysMenuFunctionService;
 	
-	@RequestMapping(value = "/index")
-	public String index(HttpServletRequest request,HttpServletResponse response,ModelMap map) {
-		map.put("roleid", request.getParameter("roleid"));
-		return "forward:/system/role/viewdauthorize.jsp";
-	}	
 }

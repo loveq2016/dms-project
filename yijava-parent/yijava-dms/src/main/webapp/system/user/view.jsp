@@ -68,8 +68,7 @@
 							<th data-options="field:'postcode',width:55,align:'center'">邮编</th>
 							<th data-options="field:'fk_department_id',width:60,align:'center'">部门</th>
 							<th data-options="field:'fk_dealer_id',width:100,align:'center'">经销商</th>
-							<th data-options="field:'create_time',width:60,align:'center'">创建时间</th>
-							<th data-options="field:'last_time',width:60,align:'center'">更新时间</th>
+							<th data-options="field:'last_time',width:120,align:'center'">更新时间</th>
 						</tr>
 					</thead>
 				</table>

@@ -84,13 +84,13 @@
 				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="clearForm()">清空</a>					   
 			</div>
 		</div>
-		<div id="authoriz" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:800px;height:500px;padding:5px;"></div>  
+		<div id="authoriz" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:705px;height:500px;padding:5px;"></div>  
 		<script type="text/javascript">
  		var url;
 		$(function() {
 			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
 			pager.pagination();
-		});
+		})
 		function doSearch(){
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_role_name: $('#role_name').val(),
@@ -165,7 +165,10 @@
 			return '<span style="color:red;cursor:pointer;background:#FFF" onclick="authoriz(' + row.id + ');">授权</span>'; 
 		}
 		function authoriz(id){
-	    	$('#authoriz').load('/yijava-dms/api/fun/index?roleid='+id); 
+			 $("#authoriz").window({
+				 	
+	          });
+	    	$('#authoriz').load('/yijava-dms/api/sysmenu/goauthorze?roleid='+id); 
 	    	$('#authoriz').window('open');
 		}
 		function clearForm(){
