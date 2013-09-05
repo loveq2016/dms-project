@@ -12,43 +12,42 @@ import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 
-import dms.yijava.dao.dealer.DealerReceiverDao;
-import dms.yijava.entity.dealer.Dealer;
-import dms.yijava.entity.dealer.DealerReceiver;
+import dms.yijava.dao.dealer.DealerAddressDao;
+import dms.yijava.entity.dealer.DealerAddress;
 
 @Service
 @Transactional
-public class DealerReceiverService {
+public class DealerAddressService {
 
 	@Autowired
-	private DealerReceiverDao  dealerReceiverDao ;
+	private DealerAddressDao  dealerAddressDao ;
 	
 	
-	public JsonPage<DealerReceiver> paging(PageRequest pageRequest,List<PropertyFilter> filters) {
+	public JsonPage<DealerAddress> paging(PageRequest pageRequest,List<PropertyFilter> filters) {
 		Map<String,String> parameters = new HashMap<String,String>();
 		for (PropertyFilter propertyFilter : filters) {
 			String propertyKey = propertyFilter.getPropertyNames()[0];
 			parameters.put(propertyKey, propertyFilter.getMatchValue());
 		}
-		return dealerReceiverDao.getScrollData(parameters, pageRequest.getOffset(),
+		return dealerAddressDao.getScrollData(parameters, pageRequest.getOffset(),
 				pageRequest.getPageSize(), pageRequest.getOrderBy(),
 				pageRequest.getOrderDir());
 	}
 
-	public DealerReceiver getEntity(String id) {
-		return dealerReceiverDao.get(id);
+	public DealerAddress getEntity(String id) {
+		return dealerAddressDao.get(id);
 	}
 	
-	public void saveEntity(DealerReceiver entity) {
-		dealerReceiverDao.insert(entity);
+	public void saveEntity(DealerAddress entity) {
+		dealerAddressDao.insert(entity);
 	}
 	
-	public void updateEntity(DealerReceiver entity) {
-		dealerReceiverDao.update( entity);
+	public void updateEntity(DealerAddress entity) {
+		dealerAddressDao.update( entity);
 	}
 	
 	public void deleteEntity(String id) {
-		dealerReceiverDao.remove(id);
+		dealerAddressDao.remove(id);
 	}
 		
 
