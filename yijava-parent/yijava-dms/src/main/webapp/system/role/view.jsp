@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -43,6 +42,7 @@
 							<th data-options="field:'role_name',width:100,align:'center'" sortable="true">角色名称</th>
 							<th data-options="field:'remark',width:160,align:'center'" sortable="true">备注</th>
 							<th data-options="field:'last_time',width:180,align:'center'" sortable="true">更新时间</th>
+							<th data-options="field:'id',width:80,align:'center'" formatter="formatterAuthoriz">授权</th>
 						</tr>
 					</thead>
 				</table>
@@ -54,7 +54,7 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
-		<div id="w" class="easyui-window" title="角色详细信息" data-options="modal:true,closed:true,iconCls:'icon-manage'" style="width:298px;height:230px;padding:10px;">
+		<div id="w" class="easyui-window" title="角色详细信息" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:298px;height:230px;padding:10px;">
 			<form id="ffadd" action="" method="post" enctype="multipart/form-data">
 				<table>
 					<tr>
@@ -84,7 +84,8 @@
 				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="clearForm()">清空</a>					   
 			</div>
 		</div>
-	<script type="text/javascript">
+		<div id="authoriz" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:800px;height:500px;padding:5px;"></div>  
+		<script type="text/javascript">
  		var url;
 		$(function() {
 			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
@@ -100,7 +101,7 @@
 			$('#dlg').dialog('open').dialog('setTitle','角色信息添加');
 			url = '/yijava-dms/api/sysrole/save';
 			$('#w').window('open');
-		}		
+		}
 		function saveEntity() {
 			$.ajax({
 				type : "POST",
@@ -153,12 +154,19 @@
 					    	var pager = $('#dg').datagrid().datagrid('getPager');
 					    	pager.pagination('select');	
 					    }
-					}	
+					}
 				});
 			}else
 			{
 				alert("请选中数据 ");	
 			}			
+		}
+		function formatterAuthoriz(value, row, index){
+			return '<span style="color:red;cursor:pointer;background:#FFF" onclick="authoriz(' + row.id + ');">授权</span>'; 
+		}
+		function authoriz(id){
+	    	$('#authoriz').load('/yijava-dms/api/fun/index?roleid='+id); 
+	    	$('#authoriz').window('open');
 		}
 		function clearForm(){
 			$('#ffadd').form('clear');

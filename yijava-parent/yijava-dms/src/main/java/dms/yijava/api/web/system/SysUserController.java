@@ -4,7 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,14 +19,13 @@ import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
-import dms.yijava.entity.Hospital;
-import dms.yijava.entity.product.ProductCategory;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.service.system.SysUserService;
 
 @Controller
 @RequestMapping("/api/sysuser")
 public class SysUserController {
+
 	@Autowired
 	public SysUserService sysUserService;
 	

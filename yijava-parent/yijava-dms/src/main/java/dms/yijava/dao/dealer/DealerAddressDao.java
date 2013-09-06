@@ -3,9 +3,9 @@ package dms.yijava.dao.dealer;
 import org.springframework.stereotype.Repository;
 
 import dms.yijava.dao.base.IbatisDaoSupport;
-import dms.yijava.entity.dealer.DealerReceiver;
+import dms.yijava.entity.dealer.DealerAddress;
 
 @Repository
-public class DealerReceiverDao extends IbatisDaoSupport<DealerReceiver> {
+public class DealerAddressDao extends IbatisDaoSupport<DealerAddress> {
 
 }

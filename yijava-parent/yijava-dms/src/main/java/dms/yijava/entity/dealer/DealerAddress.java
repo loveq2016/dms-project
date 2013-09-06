@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class DealerReceiver {
+public class DealerAddress {
 
 	private String id;
 	private String dealer_id;
@@ -13,5 +13,8 @@ public class DealerReceiver {
 	private String postcode;
 	private String linkman;
 	private String linkphone;
+	private String column1;
+	private String column2;
+	private String column3;
 
 }
