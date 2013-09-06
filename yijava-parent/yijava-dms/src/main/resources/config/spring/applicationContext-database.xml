@@ -39,7 +39,7 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <!-- 自动扫描config目录，省略xml里手工配置 -->
-		<property name="mapperLocations" value="classpath:/config/mybatis/*.xml" />
+		<property name="mapperLocations" value="classpath:/config/mybatis/*/*.xml" />
     </bean>
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="dms.yijava.dao;dms.yijava.dao.base;" />

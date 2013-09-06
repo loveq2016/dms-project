@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DealerCategoryFun">
+
+
+    
+<update id="update" parameterType="dms.yijava.entity.dealer.DealerCategoryFun">
+	 update tb_dealer set  category_id=#{category_id} where dealer_id = #{dealer_id}
+</update>
+
+</mapper>
