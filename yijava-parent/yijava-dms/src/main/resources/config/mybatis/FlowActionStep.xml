@@ -4,5 +4,15 @@
 
 <mapper namespace="FlowActionStep">
 
+<insert id="insert" parameterType="dms.yijava.entity.flow.FlowActionStep">     
+    	  insert into tb_step_info (flow_id,action_id,step_repeat_no,step_order_no,step_type,is_multi)
+    	  values(#{flow_id},#{action_id},#{step_repeat_no},#{step_order_no},#{step_type},#{is_multi}
+</insert>
+
+
+<insert id="insert" parameterType="dms.yijava.entity.flow.FlowActionStep">     
+    	  insert into tb_step_info (flow_id,action_id,step_repeat_no,step_order_no,step_type,is_multi)
+    	  values(#{flow_id},#{action_id},#{step_repeat_no},#{step_order_no},#{step_type},#{is_multi}
+</insert>
 
 </mapper>

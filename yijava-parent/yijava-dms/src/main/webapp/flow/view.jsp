@@ -56,7 +56,7 @@
 		
 
 		
-	<div id="w" class="easyui-window" title="流程详细信息" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
+	<div id="w" class="easyui-window" title="流程步骤详细信息" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
 	style="width:650px;height:400px;padding:10px;">
 		<form id="ffadd" action="" method="post" enctype="multipart/form-data">
 							<table>
@@ -87,7 +87,7 @@
 		</div>
 	</div>
 	
-	<div id="test" title="ddd" style="top:10px;padding:1px;width:780px;height:590px;" title="Modal Window">
+	<div id="test" title="流程设计" style="top:10px;padding:1px;width:780px;height:590px;" title="Modal Window">
 	<!-- <div id="test" class="easyui-window" data-options="closed:true,modal:true,title:'Test Window'" style="width:300px;height:100px;"> -->
     </div>
 

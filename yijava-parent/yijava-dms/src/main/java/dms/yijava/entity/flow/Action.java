@@ -15,6 +15,8 @@ public class Action {
 	private Integer del_emp_id;
 	private String del_date;	
 	private Integer order_no;
+	
+	
 	public Action() {
 		super();
 	}

@@ -39,6 +39,13 @@
 	    limit #{offset},#{pagesize}  
 	</select>
 	
+	<select id="selectByFlow" resultType="dms.yijava.entity.flow.Action">
+		select * from tb_action_info 
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}  
+	</select>
+	
 	<select id="select"  parameterType="int" resultType="dms.yijava.entity.flow.Action">
         select * from tb_action_info where action_id = #{action_id}
     </select>
