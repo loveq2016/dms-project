@@ -39,7 +39,7 @@ public class Dealer {
 	private String column3;
 	
 	
-	private String category_id;//经销商分类
+
 	
 	
 }

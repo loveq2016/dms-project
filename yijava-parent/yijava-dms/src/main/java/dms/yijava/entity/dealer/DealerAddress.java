@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 public class DealerAddress {
 
 	private String id;
-	private String dealer_id;
 	private String address;
 	private String postcode;
 	private String linkman;
@@ -16,5 +15,7 @@ public class DealerAddress {
 	private String column1;
 	private String column2;
 	private String column3;
+	
+	private String dealer_id;
 
 }
