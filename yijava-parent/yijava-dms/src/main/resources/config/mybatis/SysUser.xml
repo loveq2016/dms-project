@@ -44,14 +44,14 @@
     </select>
 	<insert id="insert" parameterType="dms.yijava.entity.system.SysUser">     
 		insert into dms.tb_manager_user (account,realname,password,email,type,birthday,sex,phone,
-		province,address,postcode,fk_role_id,fk_department_id,fk_dealer_id,isdeleted,create_time,last_time,remark,
+		province,address,postcode,fk_department_id,fk_dealer_id,isdeleted,create_time,last_time,remark,
 		customfield1,customfield2,customfield3,ext1,ext2,ext3)values(#{account},#{realname},#{password},#{email},#{type},#{birthday},#{sex},#{phone},
-		#{province},#{address},#{postcode},#{fk_role_id},#{fk_department_id},#{fk_dealer_id},#{isdeleted},NOW(),NOW(),#{remark},
+		#{province},#{address},#{postcode},#{fk_department_id},#{fk_dealer_id},#{isdeleted},NOW(),NOW(),#{remark},
 		#{customfield1},#{customfield2},#{customfield3},#{ext1},#{ext2},#{ext3});
 	</insert>
     <update id="update" parameterType="dms.yijava.entity.system.SysUser">
     	update dms.tb_manager_user set realname=#{realname},password=#{password},email=#{email},type=#{type},birthday=#{birthday},sex=#{sex},phone=#{phone},
-		province=#{province},address=#{address},postcode=#{postcode},fk_role_id=#{fk_role_id},fk_department_id=#{fk_department_id},fk_dealer_id=#{fk_dealer_id},isdeleted=#{isdeleted},last_time=NOW(),remark=#{remark},
+		province=#{province},address=#{address},postcode=#{postcode},fk_department_id=#{fk_department_id},fk_dealer_id=#{fk_dealer_id},isdeleted=#{isdeleted},last_time=NOW(),remark=#{remark},
 		customfield1=#{customfield1},customfield2=#{customfield2},customfield3=#{customfield3},ext1=#{ext1},ext2=#{ext2},ext3=#{ext3} where id=#{id}
     </update>
     <update id="deleteByPrimaryKey" parameterType="int">

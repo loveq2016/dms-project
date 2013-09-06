@@ -13,7 +13,6 @@ public class SysUser {
 	public String province;
 	public String address;
 	public String postcode;
-	public String fk_role_id;
 	public String fk_department_id;
 	public String fk_dealer_id;
 	public String isdeleted;
@@ -47,12 +46,6 @@ public class SysUser {
 	}
 	public String getPassword() {
 		return password;
-	}
-	public String getFk_role_id() {
-		return fk_role_id;
-	}
-	public void setFk_role_id(String fk_role_id) {
-		this.fk_role_id = fk_role_id;
 	}
 	public void setPassword(String password) {
 		this.password = password;

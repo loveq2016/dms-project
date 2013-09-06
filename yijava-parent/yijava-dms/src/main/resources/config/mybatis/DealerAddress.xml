@@ -40,24 +40,19 @@
 </select>
 
 
-<insert id="insert" parameterType="dms.yijava.entity.dealer.DealerAddress" useGeneratedKeys="true" keyProperty="dealer_id">
-	insert into tb_dealer_address
-	 (dealer_id,address,postcode,linkman,linkphone,column1,column2,column3)
-	values (#{dealer_id},#{address},#{postcode},#{linkman},#{linkphone}, #{column1},#{column2},#{column3})
+<insert id="insert" parameterType="dms.yijava.entity.dealer.DealerAddress" useGeneratedKeys="true" keyProperty="id">
+	insert into tb_dealer_address (dealer_id,address,postcode,linkman,linkphone,column1,column2,column3)
+	values (#{dealer_id},#{address},#{postcode},#{linkman},#{linkphone},#{column1},#{column2},#{column3})
 </insert>
     
 <update id="update" parameterType="dms.yijava.entity.dealer.DealerAddress">
-	 update tb_dealer set
-	 dealer_code=#{dealer_code},dealer_name=#{dealer_name},business_contacts=#{business_contacts},business_phone=#{business_phone},financial_contacts=#{financial_contacts},
-	 financial_phone=#{financial_phone},invoice_address=#{invoice_address},invoicea_postcode=#{invoicea_postcode},settlement_time=#{settlement_time},attribute=#{attribute},status=#{attribute},
-	 register_address=#{register_address},company_type=#{company_type},found_time=#{found_time},corporate=#{corporate},corporate_phone=#{corporate_phone},register_fund=#{register_fund},
-	 operated_scope=#{operated_scope},addess=#{addess},gm_name=#{gm_name},gm_phone=#{gm_phone},bm_name=#{bm_name},bm_phone=#{bm_phone},bm_telephone=#{bm_telephone},
-	 bm_fax=#{bm_fax},email=#{email},column1=#{column1},column2=#{column2},column3=#{column3}
-	 where dealer_id = #{dealer_id}
+	 update tb_dealer_address set
+	 address=#{address},postcode=#{postcode},linkman=#{linkman},linkphone=#{linkphone},column1=#{column1},column2=#{column2},column3=#{column3}
+	 where id = #{id}
 </update>
 
 <delete id="delete">
-	delete from tb_dealer where dealer_id = #{id}
+	delete from tb_dealer_address where id = #{id}
 </delete>
     
     

@@ -1,3 +1,5 @@
+var basePath = "/yijava-dms/";
+var resPath = "/yijava-dms/";
 $(function(){
 	InitLeftMenu();
 	//tabClose();

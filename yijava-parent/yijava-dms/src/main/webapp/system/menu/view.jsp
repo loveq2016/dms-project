@@ -13,16 +13,11 @@
 <script type="text/javascript" src="../../resource/js/common.js"></script>
 <script type="text/javascript" src="../../resource/locale/easyui-lang-zh_CN.js"></script>
 </head>
-<body LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0>
 		<div id="p" class="easyui-panel" title="">
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
 			    <table id="treegrid"></table>
 			</div>
-			<div id="mm" class="easyui-menu" style="width:120px;">  
-		        <div onclick="append()">Append</div>  
-		        <div onclick="remove()">Remove</div>  
-		    </div>  
 			<div style="margin: 10px 0;"></div>
 		</div>
 	<script type="text/javascript">
@@ -53,11 +48,6 @@
                 			return str;
                         }
                     },
-                    {field:'isdeleted',title:'状态',width:50,rowspan:2,
-                    	formatter:function(value){
-                			return value==1?"<span style='color:green'>移除</span>":"<span style='color:red'>正常</span>";
-                        }
-                    },  
                     {field:'remark',title:'备注',width:270,rowspan:2}
                 ]]
             });
@@ -79,5 +69,4 @@
 	        }  
 		});
 	</script>
-</body>
 </html>

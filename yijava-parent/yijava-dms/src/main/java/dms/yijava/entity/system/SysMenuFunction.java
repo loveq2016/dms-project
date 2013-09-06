@@ -7,11 +7,17 @@ public class SysMenuFunction {
 	public String classname;
 	public String method;
 	public String fk_menu_id;
+	public Boolean checkbox;
 	public String last_time;
 	public String ext1;
 	public String ext2;
 	public String ext3;
-	
+	public Boolean getCheckbox() {
+		return checkbox;
+	}
+	public void setCheckbox(Boolean checkbox) {
+		this.checkbox = checkbox;
+	}
 	public String getId() {
 		return id;
 	}
