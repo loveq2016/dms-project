@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import dms.yijava.dao.system.SysRoleFunctionDao;
-import dms.yijava.entity.system.SysMenu;
 import dms.yijava.entity.system.SysRoleFunction;
 @Service
 @Transactional
@@ -20,5 +19,13 @@ public class SysRoleFunctionService {
 		HashMap<String,String> parameters = new HashMap<String,String>();
 		parameters.put("fk_role_id", role_id);
 		return sysRoleFunctionDao.find(parameters);
+	}
+	
+	public void deleteFunByRoleid(String role_id){
+			sysRoleFunctionDao.removeById(role_id);
+	}
+	
+	public void insert(List<SysRoleFunction> list){
+		sysRoleFunctionDao.insert(list);
 	}
 }

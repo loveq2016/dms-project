@@ -13,6 +13,8 @@
 <script type="text/javascript" src="../../resource/js/common.js"></script>
 <script type="text/javascript" src="../../resource/locale/easyui-lang-zh_CN.js"></script>
 </head>
+		<a href="#" onclick="collapseAll()">收起</a>  
+        <a href="#" onclick="expandAll()">展开</a>
 		<div id="p" class="easyui-panel" title="">
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
@@ -51,22 +53,22 @@
                     {field:'remark',title:'备注',width:270,rowspan:2}
                 ]]
             });
-			function collapseAll(){  
-	            var node = $('#treegrid').treegrid('getSelected');  
-	            if (node){  
-	                $('#treegrid').treegrid('collapseAll', node.code);  
-	            } else {  
-	                $('#treegrid').treegrid('collapseAll');  
-	            }  
-	        }  
-	        function expandAll(){  
-	            var node = $('#test').treegrid('getSelected');  
-	            if (node){  
-	                $('#treegrid').treegrid('expandAll', node.code);  
-	            } else {  
-	                $('#treegrid').treegrid('expandAll');  
-	            }  
-	        }  
 		});
+		function collapseAll(){  
+           var node = $('#treegrid').treegrid('getSelected');  
+           if (node){  
+               $('#treegrid').treegrid('collapseAll', node.code);  
+           } else {  
+               $('#treegrid').treegrid('collapseAll');  
+           }  
+       }  
+       function expandAll(){
+           var node = $('#treegrid').treegrid('getSelected');  
+           if (node){  
+               $('#treegrid').treegrid('expandAll', node.code);  
+           } else {
+               $('#treegrid').treegrid('expandAll');  
+           }  
+       }  
 	</script>
 </html>
