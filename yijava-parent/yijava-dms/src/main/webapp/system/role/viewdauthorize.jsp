@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
         <a href="#" onclick="collapseAll()">CollapseAll</a>  
         <a href="#" class="easyui-linkbutton" onclick="saveAuthorze()" data-options="plain:true,iconCls:'icon-cancel'">ok</a> 
@@ -23,7 +22,7 @@
             rownumbers: true,  
             animate:true,  
             collapsible:true,  
-            url:'/yijava-dms/api/sysmenu/authorzelist?roleid='+roleid,  
+            url:basePath+'api/sysmenu/authorzelist?roleid='+roleid,  
             idField:'id',
             treeField:'menu_name',	
             frozenColumns:[[
@@ -61,10 +60,9 @@
         }  
     }  
     function saveAuthorze() {
-    	alert(1);
 		$.ajax({
 			type : "POST",
-			url : '/yijava-dms/api/sysmenu/saveauthorze',
+			url : basePath+'api/sysmenu/saveauthorze',
 			data : $('#ffauthorze').serialize(),
 			error : function(request) {
 				alert("更新失败，请稍后再试！");

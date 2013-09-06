@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SysRole">
+<!-- 用户管理 start -->
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			and isdeleted=0
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(role_name)">
+				and role_name like CONCAT('%','${role_name}','%' ) 
+			</if>
+		</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>
+		    <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+		         ORDER BY ${orderSql}
+		    </when>
+	    </choose>
+	</sql>
+    <select id="selectByObjectcount" resultType="long">
+		select count(*) from dms.tb_manager_role 
+		<include refid="adsWhere"/>
+	</select>
+ 	<select id="selectByObject" resultType="dms.yijava.entity.system.SysRole">
+		select * from dms.tb_manager_role 
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}
+	</select>
+	<select id="select"  parameterType="int" resultType="dms.yijava.entity.system.SysRole">
+        select * from dms.tb_manager_role where id = #{id}
+    </select>
+	<insert id="insert" parameterType="dms.yijava.entity.system.SysRole">     
+		insert into dms.tb_manager_role(role_name,isdeleted,remark,last_time,ext1,ext2,ext3) values(#{role_name},#{isdeleted},#{remark},NOW(),#{ext1},#{ext2},#{ext3});
+	</insert>
+    <update id="update" parameterType="dms.yijava.entity.system.SysRole">
+    	update dms.tb_manager_role set role_name=#{role_name},isdeleted=#{isdeleted},remark=#{remark},last_time=NOW(),ext1=#{ext1},ext2=#{ext2},ext3=#{ext3} where id=#{id}
+    </update>
+    <update id="deleteByPrimaryKey" parameterType="int">
+		update dms.tb_manager_role set isdeleted=1 where id = #{id}
+	</update>
+<!-- 用户管理  end -->
+</mapper>
