@@ -1,15 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-        <a href="#" onclick="collapseAll()">CollapseAll</a>  
-        <a href="#" class="easyui-linkbutton" onclick="saveAuthorze()" data-options="plain:true,iconCls:'icon-cancel'">ok</a> 
-        <a href="#" onclick="expandAll()">ExpandAll</a>
+        <a href="#" onclick="collapseAll()">收起</a>  
+        <a href="#" onclick="expandAll()">展开</a>
 		<div id="p" class="easyui-panel">
 			<form id="ffauthorze" action="" method="post" enctype="multipart/form-data">
 				<input type="hidden" value="${roleid}" id="roleid" name="roleid"/>
 				<table id="treegrid"></table>
 				 <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0;">  
-	                <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="resize()">Ok</a>  
-	                <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="resize()">Cancel</a>  
+	                <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="saveAuthorze()">Ok</a>  
+	                <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="clearForm()">Cancel</a>  
 	            </div>  
 			</form>
 		</div>
@@ -17,7 +16,7 @@
 	$(function() {
 		var roleid=$("#roleid").val();
 		$('#treegrid').treegrid({
-            height:452,  
+            height:410,  
             nowrap: false,  
             rownumbers: true,  
             animate:true,  
@@ -34,7 +33,7 @@
                 		var str="";
                 		if (typeof(value) != "undefined")
 	                    for(var i=0;i<value.length;i++){
-	                    	str+='<span style="cursor:pointer;"><input type="checkbox" '+(value[i].checkbox==true?'checked':'')+' name="function" value ="'+value[i].id+'|'+value[i].fk_menu_id+'"/>'+value[i].fun_name+'</span>';
+	                    	str+='<span style="cursor:pointer;"><input type="checkbox" '+(value[i].checkbox==true?'checked':'')+' name="function" value ="'+value[i].id+'"/>'+value[i].fun_name+'</span>';
 	                    }
             			return str;
                     }
@@ -68,7 +67,6 @@
 				alert("更新失败，请稍后再试！");
 			},
 			success:function(msg){
-				alert(msg);
 			    var jsonobj= eval('('+msg+')');  
 			    if(jsonobj.state==1)
 			    {
@@ -79,6 +77,6 @@
 		});
 	}
     function clearForm(){
-		$('#ffauthorze').form('clear');
+        $('#authorizW').window('close');  
 	}
 	</script>

@@ -17,22 +17,29 @@
 							<table>
 								<tr>
 									<td width="50">账户:</td>
-										<td width="270"><input class="easyui-validatebox" type="text" name="account" id="account"></input>
+									<td width="270"><input class="easyui-validatebox" type="text" name="account" id="account"></input>
 									</td>
 									<td width="100">姓名:</td>
-										<td width="270"><input class="easyui-validatebox" type="text" name="realname" id="realname"></input>
+									<td width="270"><input class="easyui-validatebox" type="text" name="realname" id="realname"></input>
+									</td>
+									<td width="100">角色:</td>
+									<td width="270">
+										<select id="fk_role_id" name="fk_role_id" style="width:200px;" data-options="required:true">
+											<option value="">请选择</option>
+										</select>
 									</td>
 								</tr>
 								<tr>
 									<td width="50">部门:</td>
-									<td width="270"><select name="fk_department_id">
-										  <option value ="1001">销售部</option>
+									<td width="270">
+										<select name="fk_department_id" id="fk_department_id">
+											<option value ="1">技术部</option>
 										</select>
 									</td>
 									<td width="100">经销商:</td>
 									<td>
-										<select name="fk_dealer_id">
-										  <option value ="2033">北京杜蕾斯医疗器械有限公司</option>
+										<select name="fk_dealer_id" id="fk_dealer_id">
+											<option value ="3">经销商2</option>
 										</select>								
 									</td>
 								</tr>
@@ -53,15 +60,18 @@
 							<th data-options="field:'account',width:55,align:'center'" sortable="true">账户</th>
 							<th data-options="field:'realname',width:60,align:'center'" sortable="true">姓名</th>
 							<th data-options="field:'email',width:80">邮箱</th>
-							<th data-options="field:'type',width:80,align:'center'" sortable="true">用户类型</th>
+							<th data-options="field:'fk_role_id',width:80,align:'center'" >ss</th>
+							<th data-options="field:'role_name',width:80,align:'center'" sortable="true">角色</th>
 							<th data-options="field:'birthday',width:70,align:'center'" sortable="true">生日</th>
 							<th data-options="field:'sex',width:55,align:'center'" sortable="true">性别</th>
 							<th data-options="field:'phone',width:60,align:'center'">手机号</th>
 							<th data-options="field:'province',width:55,align:'center'">省份</th>
 							<th data-options="field:'address',width:80">地址</th>
 							<th data-options="field:'postcode',width:55,align:'center'">邮编</th>
-							<th data-options="field:'fk_department_id',width:60,align:'center'">部门</th>
-							<th data-options="field:'fk_dealer_id',width:100,align:'center'">经销商</th>
+							<th data-options="field:'department_name',width:60,align:'center'">部门</th>
+							<th data-options="field:'fk_department_id',width:60,align:'center'" hidden="true"></th>
+							<th data-options="field:'dealer_name',width:100,align:'center'">经销商</th>
+							<th data-options="field:'fk_dealer_id',width:60,align:'center'" hidden="true"></th>
 							<th data-options="field:'last_time',width:120,align:'center'">更新时间</th>
 						</tr>
 					</thead>
@@ -80,18 +90,14 @@
 					<tr>
 						<td>角色:</td>
 						<td>
-							<select name="fk_role_id"  data-options="required:true">
-								<option value ="" selected="selected">请选择</option>
-								<option value ="1001">销售角色</option>
-								<option value ="1002">经理角色</option>
+							<select id="fk_role_id2" name="fk_role_id" style="width:200px;" data-options="required:true">
+								<option value="">请选择</option>
 							</select>
 						</td>
 						<td>部门:</td>
 						<td>
 							<select name="fk_department_id" data-options="required:true">
-								<option value ="" selected="selected">请选择</option>
-								<option value ="1001">市场部</option>
-								<option value ="1003">综合部</option>
+								<option value ="1">技术部</option>
 							</select>
 						</td>
 					</tr>
@@ -151,8 +157,7 @@
 						<td>经销商:</td>
 						<td>
 							<select name="fk_dealer_id"  data-options="required:true">
-								<option value ="">请选择</option>
-								<option value ="2033">北京算算医疗器械有限公司</option>
+								<option value ="3">经销商2</option>
 							</select>	
 						</td>
 						<td>用户状态:</td>
@@ -181,15 +186,32 @@
 		$(function() {
 			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
 			pager.pagination();
+			$.ajax({
+				type : "POST",
+				url :basePath+'api/sysrole/list',
+				success:function(msg){
+				    var jsonobj= eval('('+msg+')'); 
+				    var options;  
+					for (var i = 0; i < jsonobj.length; i++) {  
+						options += "<option value='" + jsonobj[i].id + "'>" + jsonobj[i].role_name + "</option>";  
+					}  
+					$("#fk_role_id").append(options);
+					$("#fk_role_id2").append(options);
+				}
+			});
 		});
 		function doSearch(){
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_account: $('#account').val(),
-		    	filter_ANDS_realname: $('#realname').val()
+		    	filter_ANDS_realname: $('#realname').val(),
+		    	filter_ANDS_fk_role_id: $("#fk_role_id").val(),
+		    	filter_ANDS_fk_department_id: $('#fk_department_id').val(),
+		    	filter_ANDS_fk_dealer_id: $('#fk_dealer_id').val()
 		    });
 		}
 		function newEntity()
 		{
+			clearForm();
 			$('#dlg').dialog('open').dialog('setTitle','用户信息添加');
 			url =basePath+'api/sysuser/save';
 			$('#w').window('open');

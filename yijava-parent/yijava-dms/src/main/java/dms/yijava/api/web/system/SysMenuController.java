@@ -1,5 +1,6 @@
 package dms.yijava.api.web.system;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.system.SysMenu;
+import dms.yijava.entity.system.SysRoleFunction;
 import dms.yijava.service.system.SysMenuService;
 import dms.yijava.service.system.SysRoleFunctionService;
 
@@ -50,8 +52,8 @@ public class SysMenuController {
 	@RequestMapping("/saveauthorze")
 	public Result<String> saveauthorze(HttpServletRequest request,HttpServletResponse response,ModelMap map) {
 		String checkBox[] = request.getParameterValues("function");
-		sysRoleFunctionService.deleteFunByRoleid(request.getParameter("roleid"));
-		//sysRoleFunctionService.insert(list);
+		String roleid=request.getParameter("roleid");
+		sysRoleFunctionService.insert(roleid,checkBox);
 		return new Result<String>("1", 1);
 	}
 }

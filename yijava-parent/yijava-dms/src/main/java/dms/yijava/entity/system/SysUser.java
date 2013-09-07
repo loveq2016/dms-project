@@ -14,7 +14,11 @@ public class SysUser {
 	public String address;
 	public String postcode;
 	public String fk_department_id;
+	public String department_name;
 	public String fk_dealer_id;
+	public String dealer_name;
+	public String fk_role_id;
+	public String role_name;
 	public String isdeleted;
 	public String create_time;
 	public String last_time;
@@ -26,6 +30,30 @@ public class SysUser {
 	public String ext2;
 	public String ext3;
 	
+	public String getDepartment_name() {
+		return department_name;
+	}
+	public void setDepartment_name(String department_name) {
+		this.department_name = department_name;
+	}
+	public String getDealer_name() {
+		return dealer_name;
+	}
+	public void setDealer_name(String dealer_name) {
+		this.dealer_name = dealer_name;
+	}
+	public String getRole_name() {
+		return role_name;
+	}
+	public void setRole_name(String role_name) {
+		this.role_name = role_name;
+	}
+	public String getFk_role_id() {
+		return fk_role_id;
+	}
+	public void setFk_role_id(String fk_role_id) {
+		this.fk_role_id = fk_role_id;
+	}
 	public String getId() {
 		return id;
 	}

@@ -9,6 +9,9 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(role_name)">
 				and role_name like CONCAT('%','${role_name}','%' ) 
 			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(id)">
+				and id like CONCAT('%','${id}','%' ) 
+			</if>
 		</trim>
 	</sql>
 	<sql id="adsOrder">
@@ -28,8 +31,11 @@
 		<include refid="adsOrder"/>
 	    limit #{offset},#{pagesize}
 	</select>
-	<select id="select"  parameterType="int" resultType="dms.yijava.entity.system.SysRole">
+	<select id="select" parameterType="int" resultType="dms.yijava.entity.system.SysRole">
         select * from dms.tb_manager_role where id = #{id}
+    </select>
+    <select id="selectAll" resultType="dms.yijava.entity.system.SysRole">
+        select * from dms.tb_manager_role
     </select>
 	<insert id="insert" parameterType="dms.yijava.entity.system.SysRole">     
 		insert into dms.tb_manager_role(role_name,isdeleted,remark,last_time,ext1,ext2,ext3) values(#{role_name},#{isdeleted},#{remark},NOW(),#{ext1},#{ext2},#{ext3});

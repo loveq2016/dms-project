@@ -79,7 +79,7 @@
 				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="clearForm()">清空</a>					   
 			</div>
 		</div>
-		<div id="authorizW" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:705px;height:500px;padding:5px;"></div>  
+		<div id="authorizW" class="easyui-window" data-options="title:'授权列表',minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:705px;height:500px;padding:5px;"></div>  
 		<script type="text/javascript">
  		var url;
 		$(function() {

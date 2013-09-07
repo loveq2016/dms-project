@@ -10,11 +10,11 @@
 	<delete id="deleteByPrimaryKey" parameterType="int">
    		 delete from dms.tb_manager_role_fun where fk_role_id=#{id}
     </delete>
-    <insert id="insert" parameterType="dms.yijava.entity.system.SysRoleFunction"> 
+    <insert id="insert" parameterType="java.util.List">
 	    insert into dms.tb_manager_role_fun 
 	    (fk_fun_id,fk_role_id,last_time)values 
 	    <foreach collection="list" item="item" index="index" separator=",">   
-	        (#{fk_fun_id},#{fk_role_id},NOW()) 
+	        (#{item.fk_fun_id},#{item.fk_role_id},NOW()) 
 	    </foreach> 
 	</insert> 
 

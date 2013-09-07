@@ -74,8 +74,8 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 	}
 
 	@Override
-	public void insert(Object o) {		
-		getSqlSession().insert(entityClass.getSimpleName() + POSTFIX_INSERT, o);  
+	public int insert(Object o) {		
+		return getSqlSession().insert(entityClass.getSimpleName() + POSTFIX_INSERT, o);  
 	}
 
 	

@@ -33,8 +33,9 @@ public interface BaseDAO<T> {
 	 * 新增对象
 	 * 
 	 * @param o
+	 * @return 
 	 */
-	public void insert(Object o);
+	public int insert(Object o);
 
 	/**
 	 * 修改对象

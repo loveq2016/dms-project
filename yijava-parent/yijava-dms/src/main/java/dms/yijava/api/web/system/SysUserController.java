@@ -33,7 +33,6 @@ public class SysUserController {
 	@RequestMapping("paging")
 	public JsonPage<SysUser> paging(PageRequest pageRequest,HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
-		logger.info("SSSS");
 		return sysUserService.paging(pageRequest,filters);
 	}
 	

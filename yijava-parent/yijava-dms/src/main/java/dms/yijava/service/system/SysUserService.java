@@ -13,16 +13,23 @@ import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.system.SysUserDao;
-import dms.yijava.entity.product.Product;
-import dms.yijava.entity.product.ProductCategory;
+import dms.yijava.dao.system.SysUserRoleDao;
 import dms.yijava.entity.system.SysUser;
+import dms.yijava.entity.system.SysUserRole;
 
 @Service
 @Transactional
 public class SysUserService {
 	@Autowired
 	public SysUserDao sysUserDao;
-	
+	@Autowired
+	public SysUserRoleService SysUserRoleService;
+	/**
+	 * 查询用户分页
+	 * @param pageRequest
+	 * @param filters
+	 * @return
+	 */
 	public JsonPage<SysUser> paging(PageRequest pageRequest,List<PropertyFilter> filters) {
 		Map<String,String> parameters = new HashMap<String,String>();
 		for (PropertyFilter propertyFilter : filters) {
@@ -33,17 +40,41 @@ public class SysUserService {
 				pageRequest.getPageSize(), pageRequest.getOrderBy(),
 				pageRequest.getOrderDir());
 	}
+	/**
+	 * 查询用户
+	 * @param id
+	 * @return
+	 */
 	public SysUser getEntity(String id) {
 		return sysUserDao.get(id);
 	}
-	
+	/**
+	 * 保存用户
+	 * @param entity
+	 */
 	public void saveEntity(SysUser entity) {
 		sysUserDao.insert(entity);
+		SysUserRole sysUserRole=new SysUserRole();
+		sysUserRole.setFk_role_id(entity.getFk_role_id());
+		sysUserRole.setFk_user_id(entity.getId());
+		SysUserRoleService.saveEntity(sysUserRole);
 	}
-	
+	/**
+	 * 修改用户
+	 * @param entity
+	 */
 	public void updateEntity(SysUser entity) {
 		sysUserDao.update(entity);
+		SysUserRole sysUserRole=new SysUserRole();
+		sysUserRole.setFk_role_id(entity.getFk_role_id());
+		sysUserRole.setFk_user_id(entity.getId());
+		SysUserRoleService.delEntity(entity.getId());
+		SysUserRoleService.saveEntity(sysUserRole);
 	}
+	/**
+	 * 删除用户
+	 * @param id
+	 */
 	public void deleteEntity(String id) {
 		sysUserDao.removeById(id);
 	}
