@@ -24,7 +24,7 @@
 									</td>
 									<td width="100">角色:</td>
 									<td width="270">
-										<select id="fk_role_id" name="fk_role_id" style="width:200px;" data-options="required:true">
+										<select name="fk_role_id" id="fk_role_id" style="width:200px;" data-options="required:true">
 											<option value="">请选择</option>
 										</select>
 									</td>
@@ -40,7 +40,7 @@
 									<td>
 										<select name="fk_dealer_id" id="fk_dealer_id">
 											<option value ="3">经销商2</option>
-										</select>								
+										</select>							
 									</td>
 								</tr>
 							</table>
@@ -57,22 +57,22 @@
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" pagination="true" iconCls="icon-search" sortOrder="asc" toolbar="#tb">
 					<thead>
 						<tr>
-							<th data-options="field:'account',width:55,align:'center'" sortable="true">账户</th>
-							<th data-options="field:'realname',width:60,align:'center'" sortable="true">姓名</th>
-							<th data-options="field:'email',width:80">邮箱</th>
-							<th data-options="field:'fk_role_id',width:80,align:'center'" >ss</th>
+							<th data-options="field:'account',width:100,align:'center'" sortable="true">账户</th>
+							<th data-options="field:'realname',width:100,align:'center'" sortable="true">姓名</th>
+							<th data-options="field:'email',width:150">邮箱</th>
+							<th data-options="field:'birthday',width:70,align:'center'" hidden="true">生日</th>
+							<th data-options="field:'sex',width:55,align:'center'" formatter="formatter" sortable="true">性别</th>
+							<th data-options="field:'phone',width:100,align:'center'">手机号</th>
+							<th data-options="field:'province',width:55,align:'center'" hidden="true">省份</th>
+							<th data-options="field:'address',width:80" hidden="true">地址</th>
+							<th data-options="field:'postcode',width:55,align:'center'" hidden="true">邮编</th>
+							<th data-options="field:'fk_role_id',width:80,align:'center'" hidden="true"></th>
 							<th data-options="field:'role_name',width:80,align:'center'" sortable="true">角色</th>
-							<th data-options="field:'birthday',width:70,align:'center'" sortable="true">生日</th>
-							<th data-options="field:'sex',width:55,align:'center'" sortable="true">性别</th>
-							<th data-options="field:'phone',width:60,align:'center'">手机号</th>
-							<th data-options="field:'province',width:55,align:'center'">省份</th>
-							<th data-options="field:'address',width:80">地址</th>
-							<th data-options="field:'postcode',width:55,align:'center'">邮编</th>
-							<th data-options="field:'department_name',width:60,align:'center'">部门</th>
+							<th data-options="field:'department_name',width:100,align:'center'">部门</th>
 							<th data-options="field:'fk_department_id',width:60,align:'center'" hidden="true"></th>
 							<th data-options="field:'dealer_name',width:100,align:'center'">经销商</th>
 							<th data-options="field:'fk_dealer_id',width:60,align:'center'" hidden="true"></th>
-							<th data-options="field:'last_time',width:120,align:'center'">更新时间</th>
+							<th data-options="field:'last_time',width:150,align:'center'">更新时间</th>
 						</tr>
 					</thead>
 				</table>
@@ -89,14 +89,16 @@
 				<table>
 					<tr>
 						<td>角色:</td>
-						<td>
-							<select id="fk_role_id2" name="fk_role_id" style="width:200px;" data-options="required:true">
-								<option value="">请选择</option>
-							</select>
+						<td>         
+			                <input class="easyui-combobox" name="fk_role_id" data-options="
+								url:'${basePath}api/sysrole/list',
+								valueField:'id',
+								textField:'role_name',
+								required:true">
 						</td>
 						<td>部门:</td>
 						<td>
-							<select name="fk_department_id" data-options="required:true">
+							<select name="fk_department_id" class="easyui-combotree" data-options="required:true">
 								<option value ="1">技术部</option>
 							</select>
 						</td>
@@ -120,6 +122,21 @@
 						<td>邮箱:</td>
 						<td>
 							<input class="easyui-validatebox" type="text" name="email" data-options="required:true,validType:'email'" invalidMessage="请填写正确的邮件格式"></input>
+						</td>
+					</tr>
+					<tr>
+						<td>经销商:</td>
+						<td>
+							<select name="fk_dealer_id" class="easyui-combotree" data-options="required:true">
+								<option value ="3">经销商2</option>
+							</select>	
+						</td>
+						<td>用户状态:</td>
+						<td>
+							<select name="isdeleted" class="easyui-combotree" data-options="required:true">
+								<option value ="0">正常</option>
+								<option value ="1">移除</option>
+							</select>
 						</td>
 					</tr>
 					<tr>
@@ -153,21 +170,7 @@
 							<input class="easyui-numberbox" type="text" name="postcode"></input>
 						</td>
 					</tr>
-					<tr>
-						<td>经销商:</td>
-						<td>
-							<select name="fk_dealer_id"  data-options="required:true">
-								<option value ="3">经销商2</option>
-							</select>	
-						</td>
-						<td>用户状态:</td>
-						<td>
-							<select name="isdeleted" class="easyui-validatebox" >
-								<option value ="0">正常</option>
-								<option value ="1">移除</option>
-							</select>
-						</td>
-					</tr>
+					
 					<tr>
 						<td>Customfield1:</td>
                     	<td><input class="easyui-numberbox" type="text" name="customfield1"></input></td>
@@ -178,7 +181,7 @@
 			</form>
 			<div style="text-align: right; padding: 5px">
 				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveEntity()">确定</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="clearForm()">清空</a>					   
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="$('#w').window('close')">取消</a>					   
 			</div>
 		</div>
 	<script type="text/javascript">
@@ -196,10 +199,15 @@
 						options += "<option value='" + jsonobj[i].id + "'>" + jsonobj[i].role_name + "</option>";  
 					}  
 					$("#fk_role_id").append(options);
-					$("#fk_role_id2").append(options);
 				}
 			});
 		});
+		function formatter(value, row, index){
+			if(value=='male')
+				return '<span>男</span>'; 
+			else
+				return '<span>女</span>'; 
+		}
 		function doSearch(){
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_account: $('#account').val(),

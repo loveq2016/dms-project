@@ -13,7 +13,6 @@ import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.system.SysUserDao;
-import dms.yijava.dao.system.SysUserRoleDao;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.system.SysUserRole;
 
@@ -48,6 +47,11 @@ public class SysUserService {
 	public SysUser getEntity(String id) {
 		return sysUserDao.get(id);
 	}
+	
+	public SysUser getEntityByAccount(SysUser entity) {
+		return sysUserDao.getObject(".selectByAccount",entity);
+	}
+	
 	/**
 	 * 保存用户
 	 * @param entity
