@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Hospital">
+
+<sql id="adsWhere">
+<trim prefix="WHERE" prefixOverrides="AND|OR">
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(hospital_name)">
+		  and hospital_name=#{hospital_name}
+	</if>
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(level_id)">
+		  and level_id=#{level_id}
+	</if>
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(provinces)">
+		  and provinces=#{provinces}
+	</if>
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(area)">
+		  and area=#{area}
+	</if>
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(city)">
+		  and city=#{city}
+	</if>	
+</trim>
+</sql>
+
+<sql id="adsOrder">
+	<choose>  
+            <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+                order by ${orderSql}
+            </when>
+            <otherwise> 
+            </otherwise>  
+        </choose>
+</sql>
+
+    <select id="selectByObjectcount" resultType="long"> 
+		select count(1) from (select t1.*,t2.level_name from  tb_hospital t1 left join tb_hospital_level t2 on t1.level_id = t2.id) t 
+		<include refid="adsWhere"/>
+	</select>
+
+ 	<select id="selectByObject" resultType="dms.yijava.entity.hospital.Hospital">
+		select * from (select t1.*,t2.level_name from  tb_hospital t1 left join tb_hospital_level t2 on t1.level_id = t2.id) t 
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}  
+	</select>
+	
+	<select id="select"  parameterType="int" resultType="dms.yijava.entity.hospital.Hospital">
+        select * from tb_hospital where id = #{id}
+    </select>
+	
+	<insert id="insert" parameterType="dms.yijava.entity.hospital.Hospital" useGeneratedKeys="true" keyProperty="item_number">     
+    	  insert into tb_hospital (hospital_name,hostpital_category,level_id,provinces,area,city,address,postcode,phone,beds) 
+    	  values(#{hospital_name},#{hostpital_category},#{level_id},#{provinces},#{area},#{city},#{address},#{postcode},#{phone},#{beds})
+    </insert>
+    
+    <update id="update" parameterType="dms.yijava.entity.hospital.Hospital">
+    	update tb_hospital set hospital_name=#{hospital_name},hostpital_category=#{hostpital_category},level_id=#{level_id},provinces=#{provinces},
+    	area=#{area},city=#{city},address=#{address},postcode=#{postcode},phone=#{phone},beds=#{beds} 
+    	where id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="int">
+    	delete from tb_hospital where id = #{id}
+    </delete>
+
+	<select id="selectByMap" resultType="dms.yijava.entity.hospital.Hospital">
+		select *  from  tb_hospital
+	</select>
+
+
+
+</mapper>

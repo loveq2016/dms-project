@@ -13,6 +13,7 @@ import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.dealer.DealerPlanDao;
+import dms.yijava.entity.dealer.Dealer;
 import dms.yijava.entity.dealer.DealerAddress;
 import dms.yijava.entity.dealer.DealerPlan;
 
@@ -34,8 +35,18 @@ public class DealerPlanService {
 				pageRequest.getPageSize(), pageRequest.getOrderBy(),
 				pageRequest.getOrderDir());
 	}
+	
+	
+	public DealerPlan checkEntity(DealerPlan entity) {
+		try {
+			return dealerPlanDaoDao.getObject(".check_year", entity);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-	public DealerAddress getEntity(String id) {
+	public DealerPlan getEntity(String id) {
 		return dealerPlanDaoDao.get(id);
 	}
 	

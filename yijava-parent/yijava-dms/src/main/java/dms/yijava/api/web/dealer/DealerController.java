@@ -37,7 +37,11 @@ public class DealerController {
 	}
 	
 	
-
+	@ResponseBody
+	@RequestMapping("list")
+	public List<Dealer> list() {
+		return dealerService.getList();
+	}
 	
 	
 	

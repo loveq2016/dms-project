@@ -65,6 +65,18 @@
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/dealerAddress/view.jsp">经销商地址信息维护</a>
 	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/plan/view.jsp">经销商指标信息维护</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/storage/view.jsp">经销商仓库信息维护</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/auth/view.jsp">经销商授权信息维护</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="经销商地址信息维护" url="hospital/view.jsp">医院信息维护</a>
+	</div>
 </div>
 <div id="mm3" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">

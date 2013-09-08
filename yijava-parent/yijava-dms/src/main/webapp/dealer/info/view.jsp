@@ -1,17 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@include file="/common/base.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" type="text/css"	href="../resource/themes/gray/easyui.css">
-<link rel="stylesheet" type="text/css"	href="../resource/themes/icon.css">
-<link rel="stylesheet" type="text/css" href="../resource/css/main.css">
-<script type="text/javascript" src="../resource/js/jquery-1.7.2.js"></script>
-<script type="text/javascript" src="../resource/js/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="../resource/js/common.js"></script>
-<script type="text/javascript" src="../resource/locale/easyui-lang-zh_CN.js"></script>
+<%@include file="/common/head.jsp"%>
 </head>
 <body LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0>
 		<div id="p" class="easyui-panel" title="">
@@ -48,8 +40,8 @@
 
 			<div style="padding-left: 10px; padding-right: 10px">
 
-				<table id="dg" title="查询结果" style="height: 430px" url="/yijava-dms/api/dealer/paging" method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="dealer_id" sortOrder="desc">
+				<table id="dg" title="查询结果" style="height: 430px"  method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="dealer_id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
 							<th field="dealer_name" width="150" align="center" sortable="true">中文名称</th>
@@ -63,7 +55,11 @@
 						</tr>
 					</thead>
 				</table>
-
+				<div id="tb">    
+				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity();">添加</a>    
+				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save"  plain="true" onclick="updateEntity();">编辑</a>     
+				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity();">删除</a>    
+				</div> 
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
@@ -198,19 +194,7 @@
 	
 	 	var url;
 		$('#dg').datagrid({
-		    toolbar : [{
-		        text:'添加',
-		        iconCls:'icon-add',
-		        handler:function(){newEntity();}
-		    },{
-		        text:'编辑',
-		        iconCls:'icon-edit',
-		        handler:function(){updateEntity();}
-		    },'-',{
-		        text:'删除',
-		        iconCls:'icon-remove',
-		        handler:function(){deleteEntity();}
-		    }]
+			url : basePath + "api/dealer/paging"
 		});
 
 
@@ -219,8 +203,8 @@
 		} 
 		
 		$(function() {
-			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
-			pager.pagination(); 
+			//var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
+			//pager.pagination(); 
 		});
 		
 		 
@@ -228,7 +212,7 @@
 	        $('#dlg').dialog('open').dialog('setTitle','经销商基础信息添加');
 	        $('#fm').form('clear');
 	        $("input[name='status']:eq(0)").attr("checked", "checked"); 
-	        url = '/yijava-dms/api/dealer/save';
+	        url = basePath +  'api/dealer/save';
 		  } 
 
 	     function updateEntity(){
@@ -243,7 +227,7 @@
 	            	$("input[name='status']:eq(1)").attr("checked", "checked"); 
 	            }
 	            
-	            url = '/yijava-dms/api/dealer/update';
+	            url = basePath + 'api/dealer/update';
 	          }else{
 					$.messager.alert('提示','请选中数据!','warning');				
 			 }	
@@ -280,10 +264,10 @@
 	                    if (r){
 	            			$.ajax({
 	            				type : "POST",
-	            				url : '/yijava-dms/api/dealer/delete',
+	            				url : basePath + 'api/dealer/delete',
 	            				data : {id:row.dealer_id},
 	            				error : function(request) {
-	            					alert("Error");
+	            					$.messager.alert('提示','Error!','error');	
 	            				},
 	            				success : function(data) {
 	            					var jsonobj = $.parseJSON(data);

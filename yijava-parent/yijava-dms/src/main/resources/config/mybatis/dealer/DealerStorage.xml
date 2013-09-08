@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DealerStorage">
+
+<sql id="adsWhere">
+	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">
+			and dealer_name=#{dealer_name}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_code)">
+			and dealer_code=#{dealer_code}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(storage_name)">
+			and storage_name=#{storage_name}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(address)">
+			and address=#{address}
+		</if>
+	</trim>
+</sql>
+
+<sql id="adsOrder">
+	<choose>
+		<when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">
+			order by ${orderSql}
+		</when>
+		<otherwise>
+		</otherwise>
+	</choose>
+</sql>
+
+    
+<select id="selectByObjectcount" resultType="long">
+	select count(1) from (
+		select t2.id,t1.dealer_id,dealer_name,t3.id AS storage_id,t3.storage_name,t3.category_id,t4.category_name,t3.province,t3.city,t3.area,t3.address,t3.postcode,t3.phone,t3.tex 
+		from tb_dealer t1 inner join tb_dealer_storage t2 on t1.dealer_id = t2.dealer_id inner join tb_storage t3 on t2.storage_id = t3.id 
+		inner join tb_storage_category t4 on t3.category_id = t4.id
+	) t
+	<include refid="adsWhere" />
+</select>
+
+<select id="selectByObject" resultType="dms.yijava.entity.dealer.DealerStorage">
+	select * from (
+		select t2.id,t1.dealer_id,dealer_name,t3.id AS storage_id,t3.storage_name,t3.category_id,t4.category_name,t3.province,t3.city,t3.area,t3.address,t3.postcode,t3.phone,t3.tex 
+		from tb_dealer t1 inner join tb_dealer_storage t2 on t1.dealer_id = t2.dealer_id inner join tb_storage t3 on t2.storage_id = t3.id 
+		inner join tb_storage_category t4 on t3.category_id = t4.id
+	) t
+	<include refid="adsWhere" />
+	<include refid="adsOrder" />
+	limit #{offset},#{pagesize}
+</select>
+	
+
+	
+<insert id="insert" parameterType="dms.yijava.entity.dealer.DealerStorage">
+	insert into tb_dealer_storage (dealer_id,storage_id) values (#{dealer_id},#{storage_id})
+</insert>
+    
+<update id="update" parameterType="dms.yijava.entity.dealer.DealerStorage">
+	 update tb_dealer_storage set  storage_id=#{storage_id}  where id = #{id}
+</update>
+
+<delete id="delete">
+	delete from tb_dealer_storage where id = #{id}
+</delete>
+    
+    
+    
+    
+</mapper>

@@ -18,17 +18,10 @@ public class DealerCategoryController {
 	@Autowired
 	private DealerCategoryService dealerCategoryService;
 	
-
 	@ResponseBody
 	@RequestMapping("list")
 	public List<DealerCategory> list() {
 		return dealerCategoryService.getList();
 	}
-	
-	
-
-	
-	
-	
 	
 }
