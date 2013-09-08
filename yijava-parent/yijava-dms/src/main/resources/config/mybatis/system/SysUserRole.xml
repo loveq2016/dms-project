@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SysUserRole">
+	<insert id="insert" parameterType="dms.yijava.entity.system.SysUserRole">     
+		insert into dms.tb_manager_user_role(fk_user_id,fk_role_id,last_time) values(#{fk_user_id},#{fk_role_id},NOW());
+	</insert>
+	<delete id="deleteByPrimaryKey" parameterType="int">
+   		 delete from dms.tb_manager_user_role where fk_user_id=#{fk_user_id}
+    </delete>
+</mapper>

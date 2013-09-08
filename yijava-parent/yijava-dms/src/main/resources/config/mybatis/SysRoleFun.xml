@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>  
-    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="SysRoleFunction">
-	<select id="selectByMap" resultType="dms.yijava.entity.system.SysRoleFunction">
-		select id,fk_fun_id,fk_role_id,last_time from tb_manager_role_fun where fk_role_id = #{fk_role_id}
-	</select>
-</mapper>

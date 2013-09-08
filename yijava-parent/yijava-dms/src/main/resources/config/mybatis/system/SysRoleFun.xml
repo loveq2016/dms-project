@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SysRoleFunction">
+	<select id="selectByMap" resultType="dms.yijava.entity.system.SysRoleFunction">
+		select
+		id,fk_fun_id,fk_role_id,last_time from dms.tb_manager_role_fun where
+		fk_role_id = #{fk_role_id}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="int">
+   		 delete from dms.tb_manager_role_fun where fk_role_id=#{id}
+    </delete>
+    <insert id="insert" parameterType="java.util.List">
+	    insert into dms.tb_manager_role_fun 
+	    (fk_fun_id,fk_role_id,last_time)values 
+	    <foreach collection="list" item="item" index="index" separator=",">   
+	        (#{item.fk_fun_id},#{item.fk_role_id},NOW()) 
+	    </foreach> 
+	</insert> 
+
+</mapper>

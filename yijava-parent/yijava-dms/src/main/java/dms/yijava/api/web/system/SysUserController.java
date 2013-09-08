@@ -25,7 +25,7 @@ import dms.yijava.service.system.SysUserService;
 @Controller
 @RequestMapping("/api/sysuser")
 public class SysUserController {
-
+	private static final Logger logger = LoggerFactory.getLogger(SysUserController.class);
 	@Autowired
 	public SysUserService sysUserService;
 	

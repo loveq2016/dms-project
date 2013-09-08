@@ -18,6 +18,9 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_dealer_id)">
 				  and fk_dealer_id=#{fk_dealer_id}
 			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_role_id)">
+				  and fk_role_id=#{fk_role_id}
+			</if>
 		</trim>
 	</sql>
 	<sql id="adsOrder">
@@ -30,19 +33,37 @@
 	    </choose>
 	</sql>
     <select id="selectByObjectcount" resultType="long">
-		select count(*) from dms.tb_manager_user 
+		SELECT count(*) FROM(
+		SELECT tt.*,tmr.role_name ,td.dealer_name ,tb.department_name FROM (
+		select tmu.*,tmur.fk_role_id from dms.tb_manager_user tmu left join dms.tb_manager_user_role tmur ON tmu.id=tmur.fk_user_id 
+		) tt LEFT join dms.tb_manager_role tmr ON (tt.fk_role_id=tmr.id)
+				LEFT join dms.tb_dealer td ON (tt.fk_dealer_id=td.dealer_id)
+				LEFT join dms.tb_department tb ON(tb.id=tt.fk_department_id)) t 
 		<include refid="adsWhere"/>
 	</select>
  	<select id="selectByObject" resultType="dms.yijava.entity.system.SysUser">
-		select * from dms.tb_manager_user 
+		SELECT * FROM(
+		SELECT tt.*,tmr.role_name ,td.dealer_name,tb.department_name FROM (
+		select tmu.*,tmur.fk_role_id from dms.tb_manager_user tmu left join dms.tb_manager_user_role tmur ON tmu.id=tmur.fk_user_id 
+		) tt LEFT join dms.tb_manager_role tmr ON (tt.fk_role_id=tmr.id)
+				LEFT join dms.tb_dealer td ON (tt.fk_dealer_id=td.dealer_id)
+				LEFT join dms.tb_department tb ON(tb.id=tt.fk_department_id)) t
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
 	    limit #{offset},#{pagesize}
 	</select>
 	<select id="select"  parameterType="int" resultType="dms.yijava.entity.system.SysUser">
-        select * from dms.tb_manager_user where id = #{id}
+        SELECT * FROM(
+		SELECT tt.*,tmr.role_name ,td.dealer_name,tb.department_name FROM (
+		select tmu.*,tmur.fk_role_id from dms.tb_manager_user tmu left join dms.tb_manager_user_role tmur ON tmu.id=tmur.fk_user_id 
+		) tt LEFT join dms.tb_manager_role tmr ON (tt.fk_role_id=tmr.id)
+				LEFT join dms.tb_dealer td ON (tt.fk_dealer_id=td.dealer_id)
+				LEFT join dms.tb_department tb ON(tb.id=tt.fk_department_id)) t where isdeleted=0 and id = #{id}
     </select>
-	<insert id="insert" parameterType="dms.yijava.entity.system.SysUser">     
+    <select id="selectByAccount"  parameterType="String" resultType="dms.yijava.entity.system.SysUser">
+		select tmu.*,tmur.fk_role_id from dms.tb_manager_user tmu left join dms.tb_manager_user_role tmur ON tmu.id=tmur.fk_user_id where account=#{account}
+    </select>
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="dms.yijava.entity.system.SysUser">     
 		insert into dms.tb_manager_user (account,realname,password,email,type,birthday,sex,phone,
 		province,address,postcode,fk_department_id,fk_dealer_id,isdeleted,create_time,last_time,remark,
 		customfield1,customfield2,customfield3,ext1,ext2,ext3)values(#{account},#{realname},#{password},#{email},#{type},#{birthday},#{sex},#{phone},
