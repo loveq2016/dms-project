@@ -50,7 +50,7 @@
 		});
 		function collapseAll(){  
            var node = $('#treegrid').treegrid('getSelected');  
-           if (node){  
+           if (node){
                $('#treegrid').treegrid('collapseAll', node.code);  
            } else {  
                $('#treegrid').treegrid('collapseAll');  

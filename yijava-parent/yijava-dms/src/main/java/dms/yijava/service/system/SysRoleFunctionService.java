@@ -40,12 +40,14 @@ public class SysRoleFunctionService {
 	public void insert(String roleid, String[] checkBox) {
 		deleteFunByRoleid(roleid); //删除角色对应权限
 		List<SysRoleFunction> list=new ArrayList<SysRoleFunction>();
-		for(int i=0;i<checkBox.length;i++){
-			SysRoleFunction sysRF=new SysRoleFunction();
-			sysRF.setFk_fun_id(checkBox[i]);
-			sysRF.setFk_role_id(roleid);
-			list.add(sysRF);
+		if(null!=checkBox){
+			for(int i=0;i<checkBox.length;i++){
+				SysRoleFunction sysRF=new SysRoleFunction();
+				sysRF.setFk_fun_id(checkBox[i]);
+				sysRF.setFk_role_id(roleid);
+				list.add(sysRF);
+			}
+			sysRoleFunctionDao.insert(list); //添加角色权限
 		}
-		sysRoleFunctionDao.insert(list); //添加角色权限
 	}
 }

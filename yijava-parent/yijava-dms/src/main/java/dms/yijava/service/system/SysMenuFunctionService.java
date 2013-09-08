@@ -25,4 +25,8 @@ public class SysMenuFunctionService {
 		parameters.put("fk_menu_id", menu_id);
 		return sysMenuFunctionDao.find(parameters);
 	}
+	public List<SysMenuFunction> getAllList(){
+		HashMap<String,String> parameters = new HashMap<String,String>();
+		return sysMenuFunctionDao.find(parameters);
+	}
 }

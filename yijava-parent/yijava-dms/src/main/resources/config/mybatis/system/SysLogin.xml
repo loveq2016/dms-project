@@ -3,10 +3,10 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="SysLogin">
 	<select id="selectByMap" resultType="dms.yijava.entity.system.SysLogin">
-		SELECT tmrf.fk_role_id as role_id,tmmf.id as fun_id,tmmf.fun_name,tmmf.fk_menu_id as menu_id,tmm.menu_name,tmm.fk_parent_id as menu_parent_id,tmms.menu_name as menu_parent_name FROM dms.tb_manager_role_fun tmrf 
+		SELECT tmrf.fk_role_id as role_id,tmmf.id as fun_id,tmmf.fun_name,tmmf.method as fun_method,tmmf.url as fun_url,tmmf.fk_menu_id as menu_id,tmm.menu_name,tmm.url as menu_url,tmm.fk_parent_id as menu_parent_id,tmms.menu_name as menu_parent_name FROM dms.tb_manager_role_fun tmrf 
 		LEFT JOIN dms.tb_manager_menu_fun tmmf ON tmrf.fk_fun_id=tmmf.id  
 		LEFT JOIN dms.tb_manager_menu tmm ON tmmf.fk_menu_id=tmm.id
 		LEFT JOIN dms.tb_manager_menu tmms ON tmms.id=tmm.fk_parent_id
-		WHERE fk_role_id =#{fk_role_id} ORDER BY tmm.fk_parent_id ASC
+		WHERE fk_role_id =#{fk_role_id}
 	</select>
 </mapper>

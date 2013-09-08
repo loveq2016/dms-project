@@ -6,12 +6,20 @@ public class SysMenuFunction {
 	public String fun_desc;
 	public String classname;
 	public String method;
+	public String url;
 	public String fk_menu_id;
 	public Boolean checkbox;
 	public String last_time;
 	public String ext1;
 	public String ext2;
 	public String ext3;
+	
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	public Boolean getCheckbox() {
 		return checkbox;
 	}

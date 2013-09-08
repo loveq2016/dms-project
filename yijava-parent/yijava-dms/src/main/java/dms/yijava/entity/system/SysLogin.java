@@ -1,16 +1,40 @@
 package dms.yijava.entity.system;
 
-public class SysLogin {
+import java.io.Serializable;
+
+public class SysLogin implements Serializable{
+	private static final long serialVersionUID = -3790776302766012681L;
 	public String user_id;
 	public String user_name;
 	public String role_id;
 	public String fun_id;
 	public String fun_name;
+	public String fun_url;
+	public String fun_method;
 	public String menu_id;
 	public String menu_name;
+	public String menu_url;
 	public String menu_parent_id;
 	public String menu_parent_name;
 	
+	public String getFun_url() {
+		return fun_url;
+	}
+	public void setFun_url(String fun_url) {
+		this.fun_url = fun_url;
+	}
+	public String getFun_method() {
+		return fun_method;
+	}
+	public void setFun_method(String fun_method) {
+		this.fun_method = fun_method;
+	}
+	public String getMenu_url() {
+		return menu_url;
+	}
+	public void setMenu_url(String menu_url) {
+		this.menu_url = menu_url;
+	}
 	public String getUser_id() {
 		return user_id;
 	}

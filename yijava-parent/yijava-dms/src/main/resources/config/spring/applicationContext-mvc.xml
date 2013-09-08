@@ -12,6 +12,14 @@
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context.xsd">
 	<description>Spring MVC 3配置 </description>
+	<!-- 权限拦截器 -->
+	<!-- <mvc:interceptors>
+		用户中心
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="dms.yijava.api.web.interseptor.Interseptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors> -->
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 	<!-- 自动扫描且只扫描@Controller -->
 	<context:component-scan base-package="dms.yijava"
@@ -31,7 +39,6 @@
 			</list>
 		</property>
 	</bean>
-	
 	<bean
 		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver"
 		p:defaultContentType="text/html" p:order="2" p:ignoreAcceptHeader="true">

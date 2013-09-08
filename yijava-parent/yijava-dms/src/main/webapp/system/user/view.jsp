@@ -77,14 +77,20 @@
 					</thead>
 				</table>
 				<div id="tb">
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
-        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntity()">编辑</a>
-        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
+					<restrict:function funId="6">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
+					</restrict:function>
+					<restrict:function funId="8">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntity()">编辑</a>
+					</restrict:function>
+					<restrict:function funId="7">
+        				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
+        			</restrict:function>
 				</div>
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
-		<div id="w" class="easyui-window" title="用户详细信息" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:550px;height:380px;padding:10px;">
+		<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:550px;height:380px;padding:10px;">
 			<form id="ffadd" action="" method="post" enctype="multipart/form-data">
 				<table>
 					<tr>
@@ -197,7 +203,7 @@
 				    var options;  
 					for (var i = 0; i < jsonobj.length; i++) {  
 						options += "<option value='" + jsonobj[i].id + "'>" + jsonobj[i].role_name + "</option>";  
-					}  
+					}
 					$("#fk_role_id").append(options);
 				}
 			});
@@ -220,7 +226,7 @@
 		function newEntity()
 		{
 			clearForm();
-			$('#dlg').dialog('open').dialog('setTitle','用户信息添加');
+			$('#w').dialog('open').dialog('setTitle','添加用户信息');
 			url =basePath+'api/sysuser/save';
 			$('#w').window('open');
 		}		
@@ -241,14 +247,14 @@
 				    	var pager = $('#dg').datagrid().datagrid('getPager');
 				    	pager.pagination('select');	
 				    }
-				}	
+				}
 			});
-		}		
+		}
 		function editEntity()
 		{
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
-				 $('#dlg').dialog('open').dialog('setTitle','用户信息更新');
+				 $('#w').dialog('open').dialog('setTitle','更新用户信息');
 			    $('#ffadd').form('load', row);
 				url = basePath+'api/sysuser/update';
 				$('#w').window('open');
