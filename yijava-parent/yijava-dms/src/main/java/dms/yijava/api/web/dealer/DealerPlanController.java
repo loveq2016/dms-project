@@ -17,7 +17,6 @@ import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
-import dms.yijava.entity.dealer.Dealer;
 import dms.yijava.entity.dealer.DealerPlan;
 import dms.yijava.service.dealer.DealerPlanService;
 
