@@ -34,7 +34,7 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" class="easyui-datagrid" title="查询结果" style="height: 430px" url="${basePath}api/dealer/paging" method="get"
+				<table id="dg" class="easyui-datagrid" title="查询结果" style="height: 430px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="dealer_id" sortOrder="desc">
 					<thead>
 						<tr>
@@ -142,6 +142,7 @@
 		
 		
 		$('#dg').datagrid({
+			 url : basePath + "api/dealer/paging", 
 			  onLoadSuccess:function(data){ 
 				  $(".addressEditBtn").linkbutton({ plain:true, iconCls:'icon-edit' });
 			  }
@@ -150,19 +151,13 @@
 		$('#dgAddress').datagrid({
 			  onLoadSuccess:function(data){ 
 				  $(".addressDelBtn").linkbutton({ plain:true, iconCls:'icon-no' });
-			  }
+			  },onClickRow: function(rowIndex, row){
+					$('#fm').form('clear');
+					$('#fm').form('load',row);
+				}
 		});
- 
-		$('#dgAddress').datagrid({
-			onClickRow: function(rowIndex, row){
-				$('#fm').form('clear');
-				$('#fm').form('load',row);
-			}
-		});
-		
-		
 
-		 
+	
 		 
 		 function newEntity(){
 			 url = basePath + 'api/dealerAddress/save';
@@ -172,7 +167,6 @@
 	     function updateEntity(){
 	          var row = $('#dgAddress').datagrid('getSelected');
 	          if (row){
-	        	  alert(11)
 	            url = basePath + 'api/dealerAddress/update';
 	            saveEntity();
 	          }else{

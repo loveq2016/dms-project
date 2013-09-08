@@ -31,7 +31,6 @@ function createFrame(url)
 
 function InitLeftMenu()
 {
-	
 	$('.menu-text a').click(function(){
 		
 		var tabTitle = $(this).text();

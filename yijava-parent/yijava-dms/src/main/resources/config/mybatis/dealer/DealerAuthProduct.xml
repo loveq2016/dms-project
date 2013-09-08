@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DealerAuthProduct">
+
+<sql id="adsWhere">
+	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
+			and dealer_id=#{dealer_id}
+		</if>
+	</trim>
+</sql>
+
+<sql id="adsOrder">
+	<choose>
+		<when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">
+			order by ${orderSql}
+		</when>
+		<otherwise>
+		</otherwise>
+	</choose>
+</sql>
+
+    
+<select id="selectByObjectcount" resultType="long">
+	select count(1) from (
+		select t2.category_name,t1.* from tb_dealer_auth_product t1 inner join tb_product_category t2 on t1.product_category_id = t2.id
+	) t
+	<include refid="adsWhere" />
+</select>
+
+<select id="selectByObject" resultType="dms.yijava.entity.dealer.DealerAuthProduct">
+	select * from (
+		select t2.category_name,t1.* from tb_dealer_auth_product t1 inner join tb_product_category t2 on t1.product_category_id = t2.id
+	) t
+	<include refid="adsWhere" />
+	<include refid="adsOrder" />
+	limit #{offset},#{pagesize}
+</select>
+	
+
+	
+<insert id="insert" parameterType="dms.yijava.entity.dealer.DealerAuthProduct">
+	insert into tb_dealer_auth_product (dealer_id,product_category_id,product_remark,area_remark,status) 
+	values (#{dealer_id},#{product_category_id},#{product_remark},#{area_remark},#{status})
+</insert>
+    
+<update id="update" parameterType="dms.yijava.entity.dealer.DealerAuthProduct">
+	 update tb_dealer_auth_product set  product_category_id=#{product_category_id},product_remark=#{product_remark},area_remark=#{area_remark},status=#{status} 
+	 where id = #{id}
+</update>
+
+<delete id="delete">
+	delete from tb_dealer_auth_product where id = #{id}
+</delete>
+    
+    
+    
+    
+</mapper>

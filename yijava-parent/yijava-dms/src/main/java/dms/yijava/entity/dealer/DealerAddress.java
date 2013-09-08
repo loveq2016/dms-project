@@ -15,7 +15,6 @@ public class DealerAddress {
 	private String column1;
 	private String column2;
 	private String column3;
-	
 	private String dealer_id;
 
 }

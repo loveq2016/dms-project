@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DealerAuthHospital">
+
+<sql id="adsWhere">
+	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
+			and dealer_id=#{dealer_id}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(category_id)">
+			and category_id=#{category_id}
+		</if>
+	</trim>
+</sql>
+
+<sql id="adsOrder">
+	<choose>
+		<when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">
+			order by ${orderSql}
+		</when>
+		<otherwise>
+		</otherwise>
+	</choose>
+</sql>
+
+    
+<select id="selectByObjectcount" resultType="long">
+	select count(1) from (
+		select t1.id,t1.dealer_id,t1.category_id,t1.hospital_id,t2.hospital_name,t2.hostpital_category,t2.level_id,t3.level_name,t2.provinces,t2.area,t2.city 
+		from tb_dealer_auth_hospital t1 inner join tb_hospital t2 on t1.hospital_id = t2.id left join tb_hospital_level t3 on t2.level_id = t3.id
+	) t
+	<include refid="adsWhere" />
+</select>
+
+<select id="selectByObject" resultType="dms.yijava.entity.dealer.DealerAuthHospital">
+	select * from (
+		select t1.id,t1.dealer_id,t1.category_id,t1.hospital_id,t2.hospital_name,t2.hostpital_category,t2.level_id,t3.level_name,t2.provinces,t2.area,t2.city 
+		from tb_dealer_auth_hospital t1 inner join tb_hospital t2 on t1.hospital_id = t2.id left join tb_hospital_level t3 on t2.level_id = t3.id
+	) t
+	<include refid="adsWhere" />
+	<include refid="adsOrder" />
+	limit #{offset},#{pagesize}
+</select>
+	
+
+	
+<insert id="insert" parameterType="dms.yijava.entity.dealer.DealerAuthHospital">
+	insert into tb_dealer_auth_hospital (dealer_id,hospital_id,category_id) 
+	values (#{dealer_id},#{hospital_id},#{category_id})
+</insert>
+    
+<update id="update" parameterType="dms.yijava.entity.dealer.DealerAuthHospital">
+	 update tb_dealer_auth_hospital set  hospital_id=#{hospital_id}
+	 where id = #{id}
+</update>
+
+<delete id="delete">
+	delete from tb_dealer_auth_hospital where id = #{id}
+</delete>
+
+<delete id="deleteAll" parameterType="dms.yijava.entity.dealer.DealerAuthHospital">
+	delete from tb_dealer_auth_hospital where dealer_id = #{dealer_id} and category_id=#{category_id}
+</delete>
+
+    
+    
+    
+    
+</mapper>

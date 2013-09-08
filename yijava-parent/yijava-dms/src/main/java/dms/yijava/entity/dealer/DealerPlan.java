@@ -23,5 +23,6 @@ public class DealerPlan {
 	private String december;
 	
 	private String dealer_id;//经销商id
+	private String dealer_name;
 
 }

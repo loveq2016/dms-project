@@ -143,5 +143,13 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 		T obj = (T) this.getSqlSession().selectOne(entityClass.getSimpleName() + postfix_selectmap,o);		
 		return obj;
 	}
+	
+	
+
+	public int removeObject(String postfix_selectmap ,Object o) {		
+		 return getSqlSession().delete(entityClass.getSimpleName() + postfix_selectmap, o);  
+	}
+	
+	
 
 }

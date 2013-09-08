@@ -38,6 +38,12 @@
 	limit #{offset},#{pagesize}
 </select>
 	
+<select id="selectByMap" resultType="dms.yijava.entity.dealer.Dealer">
+	select dealer_id,dealer_name,dealer_code  from  tb_dealer
+</select>	
+	
+	
+	
 <select id="select"  resultType="dms.yijava.entity.dealer.Dealer">
     select * from tb_dealer where dealer_id=#{dealer_id}
 </select>
@@ -48,9 +54,9 @@
 
 <insert id="insert" parameterType="dms.yijava.entity.dealer.Dealer" useGeneratedKeys="true" keyProperty="dealer_id">
 	insert into tb_dealer
-	 (dealer_code,dealer_name,business_contacts,business_phone,financial_contacts,financial_phone,invoice_address,invoicea_postcode,settlement_time,attribute,status,
+	 (dealer_code,dealer_name,create_date,business_contacts,business_phone,financial_contacts,financial_phone,invoice_address,invoicea_postcode,settlement_time,attribute,status,
 	 register_address,company_type,found_time,corporate,corporate_phone,register_fund,operated_scope,addess,gm_name,gm_phone,bm_name,bm_phone,bm_telephone,bm_fax,email,column1,column2,column3)
-	values (#{dealer_code},#{dealer_name},#{business_contacts},#{business_phone},#{financial_contacts},#{financial_phone},#{invoice_address},#{invoicea_postcode},#{settlement_time},#{attribute},#{status},
+	values (#{dealer_code},#{dealer_name},now(),#{business_contacts},#{business_phone},#{financial_contacts},#{financial_phone},#{invoice_address},#{invoicea_postcode},#{settlement_time},#{attribute},#{status},
 	 #{register_address},#{company_type},#{found_time},#{corporate},#{corporate_phone},#{register_fund},#{operated_scope},#{addess},#{gm_name},#{gm_phone},#{bm_name},#{bm_phone},#{bm_telephone},#{bm_fax},#{email},
 	 #{column1},#{column2},#{column3})
 </insert>

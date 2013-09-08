@@ -17,6 +17,7 @@ public class DealerCategoryService {
 	@Autowired
 	private DealerCategoryDao  dealerCategoryDao ;
 	
+	
 	public List<DealerCategory> getList(){
 		HashMap<String,String> parameters = new HashMap<String,String>();
 		return dealerCategoryDao.find(parameters);

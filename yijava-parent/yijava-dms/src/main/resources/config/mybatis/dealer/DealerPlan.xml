@@ -6,8 +6,14 @@
 
 <sql id="adsWhere">
 	<trim prefix="WHERE" prefixOverrides="AND|OR">
-		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
-			and dealer_id=#{dealer_id}
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">
+			and dealer_name=#{dealer_name}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_code)">
+			and dealer_code=#{dealer_code}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(year)">
+			and year=#{year}
 		</if>
 	</trim>
 </sql>
@@ -24,12 +30,12 @@
 
     
 <select id="selectByObjectcount" resultType="long">
-	select count(1) from tb_dealer_plan
+	select count(1) from (select dealer_name,t2.* from tb_dealer t1 inner join tb_dealer_plan t2 on t1.dealer_id = t2.dealer_id) t
 	<include refid="adsWhere" />
 </select>
 
 <select id="selectByObject" resultType="dms.yijava.entity.dealer.DealerPlan">
-	select * from tb_dealer_plan
+	select * from (select dealer_name,t2.* from tb_dealer t1 inner join tb_dealer_plan t2 on t1.dealer_id = t2.dealer_id) t
 	<include refid="adsWhere" />
 	<include refid="adsOrder" />
 	limit #{offset},#{pagesize}
@@ -40,6 +46,9 @@
 </select>
 
 
+<select id="check_year" resultType="dms.yijava.entity.dealer.DealerPlan">
+    select * from tb_dealer_plan where dealer_id=#{dealer_id} and year=#{year}
+</select>
 	
 	
 	
