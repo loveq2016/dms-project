@@ -53,7 +53,7 @@
                 onContextMenu: function(e,row){  
                     e.preventDefault();  
                     $(this).treegrid('unselectAll');  
-                    $(this).treegrid('select', row.code);  
+                    $(this).treegrid('select', row.id);  
                     $('#mm').menu('show', {
                         left: e.pageX,  
                         top: e.pageY  
@@ -64,7 +64,7 @@
 		function collapseAll(){  
            var node = $('#treegrid').treegrid('getSelected');  
            if (node){
-               $('#treegrid').treegrid('collapseAll', node.code);  
+               $('#treegrid').treegrid('collapseAll', node.id);  
            } else {
                $('#treegrid').treegrid('collapseAll');  
            }  
@@ -72,7 +72,7 @@
        function expandAll(){
            var node = $('#treegrid').treegrid('getSelected');  
            if (node){  
-               $('#treegrid').treegrid('expandAll', node.code);  
+               $('#treegrid').treegrid('expandAll', node.id);  
            } else {
                $('#treegrid').treegrid('expandAll');  
            }  

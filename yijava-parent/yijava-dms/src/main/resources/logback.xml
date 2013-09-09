@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 	<jmxConfigurator />
-
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<pattern>%d [%t] %-5p [%c:%L] - %m%n</pattern>
@@ -17,8 +16,26 @@
 			<pattern>%d [%t] %-5p [%c:%L] - %m%n</pattern>
 		</encoder>
 	</appender>
-
+	<appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
+		<filter class="dms.yijava.api.web.filter.LogFilter"/>
+	    <connectionSource class="ch.qos.logback.core.db.DataSourceConnectionSource">
+	      <dataSource class="com.mchange.v2.c3p0.ComboPooledDataSource">
+	        <driverClass>com.mysql.jdbc.Driver</driverClass>
+	        <jdbcUrl>jdbc:mysql://42.96.189.55:3306/dms?autoReconnect=true</jdbcUrl>
+	        <user>root</user>
+	        <password>8490d5357b</password>
+	      </dataSource>
+	       <!--  <dataSource class="com.mchange.v2.c3p0.ComboPooledDataSource">
+	        <driverClass>${jdbc.driver}</driverClass>
+	        <jdbcUrl>${jdbc.url}</jdbcUrl>
+	        <user>${jdbc.username}</user>
+	        <password>${jdbc.password}</password>
+	      </dataSource> -->
+	    </connectionSource>
+	 </appender>
+	 
 	<root level="DEBUG">
+		<appender-ref ref="DB" />
 		<appender-ref ref="console" />
 		<appender-ref ref="rollingFile" />
 	</root>

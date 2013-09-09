@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -32,6 +33,9 @@ public class SysUserController {
 	@ResponseBody
 	@RequestMapping("paging")
 	public JsonPage<SysUser> paging(PageRequest pageRequest,HttpServletRequest request) {
+	
+		logger.info("查询用户信息", new String[]{"自定1","自定义2","自定义3"});
+		
 		List<PropertyFilter> filters = PropertyFilters.build(request);
 		return sysUserService.paging(pageRequest,filters);
 	}
