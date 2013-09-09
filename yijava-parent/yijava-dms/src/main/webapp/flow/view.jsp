@@ -40,12 +40,12 @@
 					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="asc">
 					<thead>
 						<tr>
-							<th field="flow_id" width="150" sortable="true" hidden="true">id</th>
-							<th field="flow_name" width="150" sortable="true">流程名称</th>
+							<th data-options="field:'flow_id',width:300"  sortable="true" hidden="true">id</th>
+							<th data-options="field:'flow_name',width:300"  sortable="true">流程名称</th>
 							<th data-options="field:'flow_desc',width:300" sortable="true">流程描述</th>
 							<th data-options="field:'is_system',width:100" sortable="true" formatter="formatterSystem">是否系统流程</th>
 							<th data-options="field:'add_date',width:200">创建日期</th>							
-							<th field="info" width="100" align="center" formatter="formatterInfo">查看详细流程</th>
+							<th data-options="field:'dd',width:100" align="center" formatter="formatterInfo">查看详细流程</th>
 						</tr>
 					</thead>
 				</table>

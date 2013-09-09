@@ -4,53 +4,59 @@
 
 <mapper namespace="Flow">
 
-<resultMap type="Flow" id="FlowMap">
-	<id property="flow_id" column="flow_id" />
-	<id property="flow_name" column="flow_name" />
-	<id property="flow_desc" column="flow_desc" />
-	<id property="is_system" column="is_system" />
-	<id property="del_sign" column="del_sign" />
-	<id property="add_emp_id" column="add_emp_id" />
-	<id property="add_date" column="add_date" />
-	<id property="mody_emp_id" column="mody_emp_id" />
-	<id property="mody_date" column="mody_date" />
-	<id property="del_emp_id" column="del_emp_id" />
-	<id property="del_date" column="del_date" />
-	<id property="order_no" column="order_no" />
-	<collection property="actions" column="step_id" ofType="Action" 
-	javaType="ArrayList" resultMap="ActionMap"></collection>
-</resultMap>
+<sql id="adsWhere">
+<trim prefix="WHERE" prefixOverrides="AND|OR">
+	
+	<if test="flow_name != null and flow_name != '' "> 		   
+		   flow_name like CONCAT('%','${flow_name}','%' ) 
+	</if>  
+</trim>
+</sql>
 
-<resultMap type="Action" id="ActionMap">
-	<id property="action_id" column="action_id" />
-	<id property="action_name" column="action_name" />
-	<id property="action_desc" column="action_desc" />
-	<id property="del_sign" column="del_sign" />
-	<id property="add_emp_id" column="add_emp_id" />
-	<id property="add_date" column="add_date" />
-	<id property="mody_emp_id" column="mody_emp_id" />
-	<id property="mody_date" column="mody_date" />
-	<id property="del_emp_id" column="del_emp_id" />
-	<id property="del_date" column="del_date" />
-	<id property="order_no" column="order_no" />
-</resultMap>
+<sql id="adsOrder">
+		 order by order_no desc
+</sql>
 
-  <select id="getRoles" resultMap="RoleMap" >
+    
+    <select id="selectByObjectcount" resultType="long">
+		select count(*) from tb_flow_info 
+		<include refid="adsWhere"/>
+	</select>
 
-        select
-
-            r.id as r_id , r.rolename, r.roledescription,
-
-            m.id as m_id, modulename, moduledescription,
-
-            rm.id as rm_id, rm.roleid, rm.moduleid
-
-        from roles r
-
-            left outer join role_module rm on r.id=rm.roleid
-
-            left outer join modules m on m.id= rm.moduleid
-
-     </select>
-
+ 	<select id="selectByObject" resultType="dms.yijava.entity.flow.Flow">
+		select * from tb_flow_info 
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}  
+	</select>
+	
+	<select id="select"  parameterType="int" resultType="dms.yijava.entity.flow.Flow">
+        select * from tb_flow_info where flow_id = #{flow_id}
+    </select>
+	
+	<insert id="insert" parameterType="dms.yijava.entity.flow.Flow">     
+    	  insert into tb_flow_info (flow_name,flow_desc,is_system,del_sign,add_emp_id,add_date,order_no)
+    	  values(#{flow_name},#{flow_desc},#{is_system},#{del_sign},#{add_emp_id},#{add_date},#{order_no})
+    </insert>
+    
+    <update id="update" parameterType="dms.yijava.entity.flow.Flow">
+    	update tb_flow_info set 
+    	flow_name=#{flow_name},
+    	flow_desc=#{flow_desc},
+    	is_system=#{is_system},
+    	del_sign=#{del_sign},
+    	mody_emp_id=#{mody_emp_id},
+    	mody_date=#{mody_date},
+    	order_no=#{order_no}
+    	 where flow_id = #{flow_id}    	
+    </update>
+    
+    <delete id="delete" parameterType="dms.yijava.entity.flow.Flow">
+   	 update tb_flow_info set    	
+    	del_sign=#{del_sign},    	
+    	del_emp_id=#{del_emp_id},
+    	del_date=#{del_date}
+    	 where flow_id = #{flow_id}  		
+	</delete>
 </mapper>
+

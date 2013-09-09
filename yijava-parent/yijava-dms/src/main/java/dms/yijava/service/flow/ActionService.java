@@ -38,8 +38,8 @@ public class ActionService {
 		return actionDao.get(id);
 	}
 
-	public void saveEntity(Action entity) {
-		actionDao.insert(entity);
+	public int saveEntity(Action entity) {
+		return actionDao.insert(entity);
 	}
 
 	public void updateEntity(Action entity) {

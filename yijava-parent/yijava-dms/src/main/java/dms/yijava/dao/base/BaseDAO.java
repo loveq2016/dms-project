@@ -34,7 +34,7 @@ public interface BaseDAO<T> {
 	 * 
 	 * @param o
 	 */
-	public void insert(Object o);
+	public int insert(Object o);
 
 	/**
 	 * 修改对象

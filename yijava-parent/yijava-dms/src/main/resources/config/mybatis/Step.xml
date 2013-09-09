@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Step">
+
+<insert id="insert" parameterType="dms.yijava.entity.flow.Step">     
+    	  insert into tb_step_info (flow_id,action_id,step_repeat_no,step_order_no,step_type,is_multi)
+    	  values(#{flow_id},#{action_id},#{step_repeat_no},#{step_order_no},#{step_type},#{is_multi})
+</insert>
+
+
+<select id="selectByMap"  parameterType="int" resultType="dms.yijava.entity.flow.Step">
+        select step_id,step_repeat_no,step_order_no,step_type,is_multi,action.action_name,action.action_desc,action.action_id as action_id
+         from tb_step_info step left join tb_action_info action on step.action_id= action.action_id where step.flow_id = #{flow_id}
+</select>
+
+
+    <delete id="delete" parameterType="int">
+   	 delete from tb_step_info where step_id = #{step_id}		
+	</delete>
+	
+</mapper>

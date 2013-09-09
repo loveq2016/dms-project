@@ -50,28 +50,21 @@
         select * from tb_action_info where action_id = #{action_id}
     </select>
 	
-	<insert id="insert" parameterType="dms.yijava.entity.flow.Action">     
-    	  insert into tb_action_info (action_name,action_desc,del_sign,add_emp_id,add_date,order_no)
-    	  values(#{action_name},#{action_desc},#{del_sign},#{add_emp_id},#{add_date},#{order_no}
+	<insert id="insert" parameterType="dms.yijava.entity.flow.Action" useGeneratedKeys="true" keyProperty="action_id">     
+    	  insert into tb_action_info (action_name,action_desc,add_date)
+    	  values(#{action_name},#{action_desc},#{add_date})
     </insert>
     
     <update id="update" parameterType="dms.yijava.entity.flow.Action">
     	update tb_action_info set 
     	action_name=#{action_name},
-    	action_desc=#{action_desc},
-    	del_sign=#{del_sign},
-    	mody_emp_id=#{mody_emp_id},
+    	action_desc=#{action_desc},    	
     	mody_date=#{mody_date},
     	order_no=#{order_no}
     	 where action_id = #{action_id}    	
     </update>
     
-    <delete id="delete" parameterType="dms.yijava.entity.flow.Action">
-   	 update tb_flow_info set    	
-    	del_sign=#{del_sign},
-    	del_tmp_id=#{mody_emp_id},
-    	mody_date=#{mody_date},
-    	del_date=#{order_no}
-    	 where flow_id = #{flow_id}  		
+    <delete id="delete" parameterType="int">
+   	 delete from tb_action_info where action_id = #{action_id}		
 	</delete>
 </mapper>

@@ -1,6 +1,6 @@
 package dms.yijava.entity.flow;
 
-public class FlowActionStep {
+public class Step {
 
 	
 	private Integer step_id;
@@ -13,9 +13,13 @@ public class FlowActionStep {
 	
 	private Integer is_multi;
 
+	private String action_name;
+	private String action_desc;
+	
+	//private Action action;
 	
 	
-	public FlowActionStep() {
+	public Step() {
 		super();
 	}
 
@@ -74,6 +78,30 @@ public class FlowActionStep {
 	public void setIs_multi(Integer is_multi) {
 		this.is_multi = is_multi;
 	}
+
+	public String getAction_name() {
+		return action_name;
+	}
+
+	public void setAction_name(String action_name) {
+		this.action_name = action_name;
+	}
+
+	public String getAction_desc() {
+		return action_desc;
+	}
+
+	public void setAction_desc(String action_desc) {
+		this.action_desc = action_desc;
+	}
+
+	/*public Action getAction() {
+		return action;
+	}
+
+	public void setAction(Action action) {
+		this.action = action;
+	}*/
 	
 	
 	

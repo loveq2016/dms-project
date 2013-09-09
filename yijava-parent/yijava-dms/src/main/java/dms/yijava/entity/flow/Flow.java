@@ -20,7 +20,7 @@ public class Flow {
 
 	private List<Action> actions = new ArrayList<Action>();
 
-	
+	private  List<Step> steps = new ArrayList<Step>();
 	
 	public List<Action> getActions() {
 		return actions;
@@ -128,6 +128,14 @@ public class Flow {
 
 	public void setOrder_no(Integer order_no) {
 		this.order_no = order_no;
+	}
+
+	public List<Step> getSteps() {
+		return steps;
+	}
+
+	public void setSteps(List<Step> steps) {
+		this.steps = steps;
 	}
 
 }
