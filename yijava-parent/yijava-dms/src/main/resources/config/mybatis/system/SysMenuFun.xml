@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SysMenuFunction">	
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_menu_id)">
+				  and fk_menu_id=#{fk_menu_id}
+			</if>
+		</trim>
+	</sql>
+	<select id="selectByMap" resultType="dms.yijava.entity.system.SysMenuFunction">
+		select id,fun_name,fun_desc,classname,method,url,fk_menu_id,last_time,ext1,ext2,ext3 
+		from dms.tb_manager_menu_fun
+		<include refid="adsWhere"/>
+	</select>
+	
+</mapper>

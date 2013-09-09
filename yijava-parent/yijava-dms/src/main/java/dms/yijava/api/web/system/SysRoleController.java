@@ -31,6 +31,12 @@ public class SysRoleController {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
 		return sysRoleService.paging(pageRequest,filters);
 	}
+	@ResponseBody
+	@RequestMapping("list")
+	public List<SysRole> getList(){
+		List list=sysRoleService.getList();
+		return sysRoleService.getList();
+	}
 	
 	@ResponseBody
 	@RequestMapping("read")

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DealerPlan">
+
+<sql id="adsWhere">
+	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">
+			and dealer_name=#{dealer_name}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_code)">
+			and dealer_code=#{dealer_code}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(year)">
+			and year=#{year}
+		</if>
+	</trim>
+</sql>
+
+<sql id="adsOrder">
+	<choose>
+		<when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">
+			order by ${orderSql}
+		</when>
+		<otherwise>
+		</otherwise>
+	</choose>
+</sql>
+
+    
+<select id="selectByObjectcount" resultType="long">
+	select count(1) from (select dealer_name,t2.* from tb_dealer t1 inner join tb_dealer_plan t2 on t1.dealer_id = t2.dealer_id) t
+	<include refid="adsWhere" />
+</select>
+
+<select id="selectByObject" resultType="dms.yijava.entity.dealer.DealerPlan">
+	select * from (select dealer_name,t2.* from tb_dealer t1 inner join tb_dealer_plan t2 on t1.dealer_id = t2.dealer_id) t
+	<include refid="adsWhere" />
+	<include refid="adsOrder" />
+	limit #{offset},#{pagesize}
+</select>
+	
+<select id="select"  resultType="dms.yijava.entity.dealer.DealerPlan">
+    select * from tb_dealer_plan where id=#{id}
+</select>
+
+
+<select id="check_year" resultType="dms.yijava.entity.dealer.DealerPlan">
+    select * from tb_dealer_plan where dealer_id=#{dealer_id} and year=#{year}
+</select>
+	
+	
+	
+<insert id="insert" parameterType="dms.yijava.entity.dealer.DealerPlan" useGeneratedKeys="true" keyProperty="id">
+	insert into tb_dealer_plan (dealer_id,year,january,february,march,april,	may,june,july,august,september,october,november,december)
+	values (#{dealer_id},#{year},#{january},#{february},#{march},#{april},#{may},#{june},#{july},#{august},#{september},#{october},#{november},#{december})
+</insert>
+    
+<update id="update" parameterType="dms.yijava.entity.dealer.DealerPlan">
+	 update tb_dealer_plan set
+	 january=#{january},february=#{february},march=#{march},april=#{april},may=#{may},june=#{june},july=#{july}
+	 ,august=#{august},september=#{september},october=#{october},november=#{november},december=#{december}
+	 where id = #{id}
+</update>
+
+<delete id="delete">
+	delete from tb_dealer_plan where id = #{id}
+</delete>
+    
+    
+    
+    
+</mapper>

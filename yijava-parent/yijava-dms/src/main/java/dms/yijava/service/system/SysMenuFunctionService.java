@@ -15,10 +15,18 @@ import dms.yijava.entity.system.SysMenuFunction;
 public class SysMenuFunctionService {
 	@Autowired
 	public SysMenuFunctionDao sysMenuFunctionDao;
-	
+	/**
+	 * 查询菜单对应功能
+	 * @param menu_id
+	 * @return
+	 */
 	public List<SysMenuFunction> getList(String menu_id){
 		HashMap<String,String> parameters = new HashMap<String,String>();
 		parameters.put("fk_menu_id", menu_id);
+		return sysMenuFunctionDao.find(parameters);
+	}
+	public List<SysMenuFunction> getAllList(){
+		HashMap<String,String> parameters = new HashMap<String,String>();
 		return sysMenuFunctionDao.find(parameters);
 	}
 }

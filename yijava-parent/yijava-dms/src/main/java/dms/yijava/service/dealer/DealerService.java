@@ -17,6 +17,7 @@ import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.dealer.DealerDao;
 import dms.yijava.entity.dealer.Dealer;
+import dms.yijava.entity.dealer.DealerCategory;
 
 @Service
 @Transactional
@@ -37,18 +38,20 @@ public class DealerService {
 				pageRequest.getOrderDir());
 	}
 
+	
+	public List<Dealer> getList(){
+		HashMap<String,String> parameters = new HashMap<String,String>();
+		return dealerDao.find(parameters);
+	}
+	
+	
 	public Dealer getEntity(String id) {
 			return dealerDao.get(id);
 	}
 	
 	
 	public Dealer checkEntity(String id) {
-		try{
-			return dealerDao.getObject(".checkdealer_code", id);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return null;
+		return dealerDao.getObject(".checkdealer_code", id);
 	}
 	
 	

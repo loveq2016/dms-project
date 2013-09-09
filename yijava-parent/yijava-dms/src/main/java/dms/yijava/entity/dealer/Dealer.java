@@ -10,6 +10,7 @@ public class Dealer {
 	private String dealer_id;
 	private String dealer_code;
 	private String dealer_name;
+	private String create_date;
 	private String business_contacts;
 	private String business_phone;
 	private String financial_contacts;
@@ -39,7 +40,7 @@ public class Dealer {
 	private String column3;
 	
 	
-	private String category_id;//经销商分类
+
 	
 	
 }

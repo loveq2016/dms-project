@@ -1,16 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@include file="/common/base.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" type="text/css"	href="../resource/themes/gray/easyui.css">
-<link rel="stylesheet" type="text/css"	href="../resource/themes/icon.css">
-<link rel="stylesheet" type="text/css" href="../resource/css/main.css">
-<script type="text/javascript" src="../resource/js/jquery-1.7.2.js"></script>
-<script type="text/javascript" src="../resource/js/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="../resource/js/common.js"></script>
-<script type="text/javascript" src="../resource/locale/easyui-lang-zh_CN.js"></script>
+<%@include file="/common/head.jsp"%>
 </head>
 <body LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0>
 <div id="p" class="easyui-panel" title="">
@@ -21,7 +14,7 @@
         <div  title="产品分类" style="width:300px;" data-options="region:'west',split:true">
   	        	 <ul id="tree" class="easyui-tree" 
 	        	 		data-options="
-							url: '/yijava-dms/api/productCategory/list',
+							url: '${basePath}api/productCategory/list',
 							method: 'get',
 							lines: true,
 							onContextMenu: function(e,node){
@@ -33,16 +26,21 @@
 				                });
 	            			},
 	            			onClick: function(node){
-	            				if(typeof(node.state) == 'undefined'){
-	            					loadProduct(node.id)
-	            				}
+								var tree = $(this).tree;  
+								isLeaf = tree('isLeaf', node.target);
+								if(!isLeaf){
+									//$('#cc').combotree('clear');
+								}else{
+									loadProduct(node.id)
+									//$('#cc').combotree('setValue', node.id);  
+								}	
 	            			}
 			  			">
 	    		</ul>  
         </div>
         <div title="包含产品" data-options="region:'center'">
 
-		  <table id="dg" class="easyui-datagrid" title="查询结果" style="height:450px" url="/yijava-dms/api/product/paging"
+		  <table id="dg" class="easyui-datagrid" title="查询结果" style="height:420px"
 		           rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="desc">
 		        <thead>
 		            <tr>
@@ -63,9 +61,6 @@
 </div>
 <div style="margin: 10px 0;"></div>
 </div> 
-		<div id="tt">
-	        <a href="javascript:void(0)" class="icon-add" onclick="javascript:alert('add')"></a>
-    	</div>
 		<%-- 右键菜单--%>
 		 <div id="treeRightMenu" class="easyui-menu" style="width:120px;">
 			<div onclick="append()"   data-options="iconCls:'icon-add'">添加</div>
@@ -124,10 +119,10 @@
 		function saveEntity() {
 			$.ajax({
 				type : "POST",
-				url : '/yijava-dms/api/productCategory/save',
+				url : basePath + 'api/productCategory/save',
 				data : $('#productCagegoryFrom').serialize(),
 				error : function(request) {
-					alert("Connection error");
+					$.messager.alert('提示','Error!','error');	
 				},
 				success : function(data) {
 					var jsonobj = $.parseJSON(data);
@@ -147,10 +142,10 @@
 				p_target = $('#tree').tree('getParent',node.target).target;
 				$.ajax({
 					type : "POST",
-					url : '/yijava-dms/api/productCategory/remove',
+					url : basePath + 'api/productCategory/remove',
 					data :  {id:node.id},
 					error : function(request) {
-						alert("Connection error");
+						$.messager.alert('提示','Error!','error');	
 					},
 					success : function(data) {
 						var jsonobj = $.parseJSON(data);
@@ -170,9 +165,12 @@
 		}
 		
 		function loadProduct(category_id){
-		    $('#dg').datagrid('load',{
-		    	filter_ANDS_category_id: category_id
-		    });
+			$('#dg').datagrid({
+				  url : basePath +"api/product/paging" ,
+				  queryParams: {
+					  filter_ANDS_category_id : category_id
+				 }
+			});
 		}
 		
 		function formatterIs_order (value, row, index) { 

@@ -9,5 +9,5 @@ public class DealerCategory {
 
 	private String id;
 	private String category_name;
-
+	
 }
