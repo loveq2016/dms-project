@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -28,6 +30,7 @@ import dms.yijava.service.system.SysUserService;
 @Controller
 @RequestMapping("/api/sys")
 public class SysLoginController {
+	private static final Logger logger = LoggerFactory.getLogger(SysLoginController.class);
 	@Autowired
 	public SysUserService sysUserService;
 	@Autowired
@@ -60,7 +63,8 @@ public class SysLoginController {
 				return new Result<String>("succeess", 1);
 			}
 		}
-			return new Result<String>("failed", 1);
+		logger.info("登录用户");
+		return new Result<String>("failed", 1);
 	}
 	
 	private boolean isExsitUser(SysUser user,String password) {

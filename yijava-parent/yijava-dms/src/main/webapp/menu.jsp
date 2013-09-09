@@ -46,6 +46,9 @@
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="菜单管理" url="system/menu/view.jsp">菜单管理</a>
 	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="菜单管理" url="system/log/view.jsp">日志管理</a>
+	</div>
 </div>
 <div id="mm2" style="width: 100px;">
 	<div data-options="iconCls:'icon-file'">

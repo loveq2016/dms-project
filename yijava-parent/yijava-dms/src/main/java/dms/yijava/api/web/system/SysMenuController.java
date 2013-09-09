@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,6 +26,7 @@ import dms.yijava.service.system.SysRoleFunctionService;
 @Controller
 @RequestMapping("/api/sysmenu")
 public class SysMenuController {
+	private static final Logger logger = LoggerFactory.getLogger(SysMenuController.class);
 	@Autowired
 	public SysMenuService sysMenuService;
 	@Autowired
@@ -32,6 +35,7 @@ public class SysMenuController {
 	@RequestMapping("list")
 	public List<SysMenu> list(@RequestParam(value = "id", required = false) String id) {
 		id = StringUtils.isBlank(id) == true ? "-1" : id;
+		logger.info("查询菜单信息");
 		return sysMenuService.getList(id);
 	}
 	
@@ -46,6 +50,7 @@ public class SysMenuController {
 	@RequestMapping(value = "/goauthorze")
 	public String index(HttpServletRequest request,HttpServletResponse response,ModelMap map) {
 		map.put("roleid", request.getParameter("roleid"));
+		logger.info("查询角色授权信息");
 		return "forward:/system/role/viewdauthorize.jsp";
 	}
 	@ResponseBody
@@ -53,6 +58,7 @@ public class SysMenuController {
 	public Result<String> saveauthorze(HttpServletRequest request,HttpServletResponse response,ModelMap map) {
 		String checkBox[] = request.getParameterValues("function");
 		String roleid=request.getParameter("roleid");
+		logger.info("添加角色授权信息");
 		sysRoleFunctionService.insert(roleid,checkBox);
 		return new Result<String>("1", 1);
 	}
