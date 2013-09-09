@@ -13,6 +13,10 @@
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
 			    <table id="treegrid"></table>
+			    <div id="mm" class="easyui-menu" style="width:120px;">  
+			        <div onclick="append()">添加</div>  
+			        <div onclick="remove()">修改</div>  
+			    </div> 
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
@@ -25,7 +29,7 @@
                 nowrap: false,  
                 rownumbers: true,  
                 animate:true,  
-                collapsible:true,  
+                collapsible:true,
                 url:basePath+'api/sysmenu/list',  
                 idField:'id',
                 treeField:'menu_name',	
@@ -45,14 +49,23 @@
                         }
                     },
                     {field:'remark',title:'备注',width:270,rowspan:2}
-                ]]
+                ]],
+                onContextMenu: function(e,row){  
+                    e.preventDefault();  
+                    $(this).treegrid('unselectAll');  
+                    $(this).treegrid('select', row.code);  
+                    $('#mm').menu('show', {
+                        left: e.pageX,  
+                        top: e.pageY  
+                    });
+                } 
             });
 		});
 		function collapseAll(){  
            var node = $('#treegrid').treegrid('getSelected');  
            if (node){
                $('#treegrid').treegrid('collapseAll', node.code);  
-           } else {  
+           } else {
                $('#treegrid').treegrid('collapseAll');  
            }  
        }  
