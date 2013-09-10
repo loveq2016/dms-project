@@ -3,9 +3,49 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Storage">
-
 	<select id="selectByMap" resultType="dms.yijava.entity.storage.Storage">
-		select *  from  tb_storage
+		select * from tb_storage
 	</select>
-
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(storage_name)">
+				and storage_name like CONCAT('%','${storage_name}','%' ) 
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(address)">
+				and address like CONCAT('%','${address}','%' ) 
+			</if>
+		</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>
+		    <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+		         ORDER BY ${orderSql}
+		    </when>
+	    </choose>
+	</sql>
+    <select id="selectByObjectcount" resultType="long">
+		select count(*) from dms.tb_storage 
+		<include refid="adsWhere"/>
+	</select>
+ 	<select id="selectByObject" resultType="dms.yijava.entity.storage.Storage">
+		select ts.*,tsc.category_name from dms.tb_storage ts LEFT JOIN dms.tb_storage_category tsc ON ts.category_id=tsc.id	
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}
+	</select>
+	<select id="select" parameterType="int" resultType="dms.yijava.entity.storage.Storage">
+        select ts.*,tsc.category_name from dms.tb_storage ts LEFT JOIN dms.tb_storage_category tsc ON ts.category_id=tsc.id where id = #{id}
+    </select>
+    <select id="selectAll" resultType="dms.yijava.entity.storage.Storage">
+        select ts.*,tsc.category_name from dms.tb_storage ts LEFT JOIN dms.tb_storage_category tsc ON ts.category_id=tsc.id
+    </select>
+	<insert id="insert" parameterType="dms.yijava.entity.storage.Storage">     
+		insert into dms.tb_storage(storage_name,category_id,province,city,area,address,postcode,phone,tex,last_date,column1,column2,column3) values(#{storage_name},#{category_id},#{province},#{city},#{area},#{address},#{postcode},#{phone},#{tex},#{last_date},#{column1},#{column2},#{column3});
+	</insert>
+    <update id="update" parameterType="dms.yijava.entity.storage.Storage">
+    	update dms.tb_storage set storage_name=#{storage_name},category_id=#{category_id},province=#{province},city=#{city},area=#{area},address=#{address},postcode=#{postcode},phone=#{phone},tex=#{tex},last_date=#{last_date},column1=#{column1},column2=#{column2},column3=#{column3} where id=#{id}
+    </update>
+	<delete id="deleteByPrimaryKey">
+		delete from dms.tb_storage where id = #{id}
+	</delete>
 </mapper>

@@ -21,11 +21,11 @@ public class Interseptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
-       
+
 		MDC.put("ACCOUNT", "gaoyong");
 		MDC.put("OPERATORIP", getIpAddr(request));
 		return true;
-		
+//		
 		
 //		String url =  request.getRequestURI().toString();
 //        if(url.indexOf("/api/sys/login")>-1 || url.indexOf("/api/sys/logout")>-1)

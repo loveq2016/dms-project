@@ -45,6 +45,10 @@ public class HospitalService {
 		return hospitalDao.get(id);
 	}
 	
+	public Hospital getEntityByName(String name) {
+		return hospitalDao.getObject(".selectByName", name);
+	}
+	
 	public void saveEntity(Hospital entity) {
 		try {
 			hospitalDao.insert(entity);

@@ -136,9 +136,14 @@
 					<tr>
 						<td>经销商:</td>
 						<td>
-							<select name="fk_dealer_id" class="easyui-combotree" data-options="required:true">
-								<option value ="3">经销商2</option>
-							</select>	
+							<input class="easyui-combobox" name="fk_dealer_id"  style="width:150px" maxLength="100" class="easyui-validatebox" required="true"
+						             			data-options="
+							             			url:'${basePath}/api/dealer/list',
+								                    method:'get',
+								                    valueField:'dealer_id',
+								                    textField:'dealer_name',
+								                    panelHeight:'auto'
+						            			">
 						</td>
 						<td>用户状态:</td>
 						<td>

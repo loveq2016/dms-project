@@ -37,6 +37,8 @@
 		data-options="menu:'#mm2',iconCls:'icon-filep'">基础信息维护</a>
 	<a href="javascript:void(0)" id="mb1" class="easyui-menubutton"
 		data-options="menu:'#mm3',iconCls:'icon-filep'">流程管理</a> 
+	<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
+		data-options="menu:'#mm4',iconCls:'icon-filep'">库存管理</a>
 </div>
 <div id="mm1" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
@@ -94,5 +96,10 @@
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="订单管理"
 			url="foundation/dictionary-category/view.jsp">字典类别管理</a>
+	</div>
+</div>
+<div id="mm4" style="width: 150px;">
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="用户管理" url="storage/view.jsp">仓库维护</a>
 	</div>
 </div>

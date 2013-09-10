@@ -65,6 +65,11 @@ public class HospitalController {
 		hospitalService.deleteEntity(id);
 		return new Result<String>(id, 1);
 	}
-	
+
+	@ResponseBody
+	@RequestMapping("readByName")
+	public Hospital readByName(@RequestParam(value = "name", required = true) String name) {
+		return hospitalService.getEntityByName(name);
+	}
 	
 }
