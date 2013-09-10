@@ -60,15 +60,6 @@
                     	</td>
 					</tr>
 					<tr>
-						<td>状态:</td>
-						<td>
-							<select name="isdeleted" class="easyui-validatebox" >
-								<option value ="0">正常</option>
-								<option value ="1">移除</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
 						<td>备注:</td>
                     	<td><textarea name="remark" style="height:60px;"></textarea></td>
 					</tr>

@@ -11,6 +11,8 @@ import dms.yijava.dao.system.SysMenuDao;
 import dms.yijava.entity.system.SysMenu;
 import dms.yijava.entity.system.SysMenuFunction;
 import dms.yijava.entity.system.SysRoleFunction;
+import dms.yijava.entity.system.SysUser;
+import dms.yijava.entity.system.SysUserRole;
 @Service
 @Transactional
 public class SysMenuService {
@@ -66,5 +68,13 @@ public class SysMenuService {
 			}
 		}
 		return sysMenuList;
+	}
+	
+	public void saveEntity(SysMenu entity) {
+		sysMenuDao.insert(entity);
+	}
+	
+	public void updateEntity(SysMenu entity) {
+		sysMenuDao.update(entity);
 	}
 }

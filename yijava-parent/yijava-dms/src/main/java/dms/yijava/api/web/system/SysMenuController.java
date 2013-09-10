@@ -7,9 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.system.SysMenu;
+import dms.yijava.entity.system.SysRole;
 import dms.yijava.entity.system.SysRoleFunction;
 import dms.yijava.service.system.SysMenuService;
 import dms.yijava.service.system.SysRoleFunctionService;
@@ -24,6 +28,7 @@ import dms.yijava.service.system.SysRoleFunctionService;
 @Controller
 @RequestMapping("/api/sysmenu")
 public class SysMenuController {
+	private static final Logger logger = LoggerFactory.getLogger(SysMenuController.class);
 	@Autowired
 	public SysMenuService sysMenuService;
 	@Autowired
@@ -32,7 +37,24 @@ public class SysMenuController {
 	@RequestMapping("list")
 	public List<SysMenu> list(@RequestParam(value = "id", required = false) String id) {
 		id = StringUtils.isBlank(id) == true ? "-1" : id;
+		logger.info("查询菜单信息");
 		return sysMenuService.getList(id);
+	}
+	
+	@ResponseBody
+	@RequestMapping("save")
+	public Result<String> save(@ModelAttribute("entity") SysMenu entity) {
+		sysMenuService.saveEntity(entity);
+		logger.info("添加菜单信息");
+		return new Result<String>(entity.getId(), 1);
+	}
+	
+	@ResponseBody
+	@RequestMapping("update")
+	public Result<String> update(@ModelAttribute("entity") SysMenu entity) {
+		sysMenuService.updateEntity(entity);
+		logger.info("修改菜单信息");
+		return new Result<String>(entity.getId(), 1);
 	}
 	
 	@ResponseBody
@@ -46,6 +68,7 @@ public class SysMenuController {
 	@RequestMapping(value = "/goauthorze")
 	public String index(HttpServletRequest request,HttpServletResponse response,ModelMap map) {
 		map.put("roleid", request.getParameter("roleid"));
+		logger.info("查询角色授权信息");
 		return "forward:/system/role/viewdauthorize.jsp";
 	}
 	@ResponseBody
@@ -53,6 +76,7 @@ public class SysMenuController {
 	public Result<String> saveauthorze(HttpServletRequest request,HttpServletResponse response,ModelMap map) {
 		String checkBox[] = request.getParameterValues("function");
 		String roleid=request.getParameter("roleid");
+		logger.info("添加角色授权信息");
 		sysRoleFunctionService.insert(roleid,checkBox);
 		return new Result<String>("1", 1);
 	}

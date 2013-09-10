@@ -1,89 +1,131 @@
 package dms.yijava.entity.system;
 
 public class SysLog {
-	public String id;
-	public String operator_user_id;
-	public String operator_module;
-	public String operator_action;
-	public String operator_type;
-	public String operator_ip;
-	public String operator_desc;
-	public String operator_time;
-	public String remark;
-	public String ext1;
-	public String ext2;
-	public String ext3;
+	public String event_id;
+	public String timestmp;
+	public String formatted_message;
+	public String logger_name;
+	public String level_string;
+	public String thread_name;
+	public String reference_flag;
+	public String arg0;
+	public String arg1;
+	public String arg2;
+	public String arg3;
+	public String caller_filename;
+	public String caller_class;
+	public String caller_method;
+	public String caller_line;
+	public String hostname;
+	public String operatorip;
+	public String account;
 	
-	public String getId() {
-		return id;
+	public String getHostname() {
+		return hostname;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setHostname(String hostname) {
+		this.hostname = hostname;
 	}
-	public String getOperator_user_id() {
-		return operator_user_id;
+	public String getOperatorip() {
+		return operatorip;
 	}
-	public void setOperator_user_id(String operator_user_id) {
-		this.operator_user_id = operator_user_id;
+	public void setOperatorip(String operatorip) {
+		this.operatorip = operatorip;
 	}
-	public String getOperator_module() {
-		return operator_module;
+	public String getAccount() {
+		return account;
 	}
-	public void setOperator_module(String operator_module) {
-		this.operator_module = operator_module;
+	public void setAccount(String account) {
+		this.account = account;
 	}
-	public String getOperator_action() {
-		return operator_action;
+	public String getEvent_id() {
+		return event_id;
 	}
-	public void setOperator_action(String operator_action) {
-		this.operator_action = operator_action;
+	public void setEvent_id(String event_id) {
+		this.event_id = event_id;
 	}
-	public String getOperator_type() {
-		return operator_type;
+	public String getTimestmp() {
+		return timestmp;
 	}
-	public void setOperator_type(String operator_type) {
-		this.operator_type = operator_type;
+	public void setTimestmp(String timestmp) {
+		this.timestmp = timestmp;
 	}
-	public String getOperator_ip() {
-		return operator_ip;
+	public String getFormatted_message() {
+		return formatted_message;
 	}
-	public void setOperator_ip(String operator_ip) {
-		this.operator_ip = operator_ip;
+	public void setFormatted_message(String formatted_message) {
+		this.formatted_message = formatted_message;
 	}
-	public String getOperator_desc() {
-		return operator_desc;
+	public String getLogger_name() {
+		return logger_name;
 	}
-	public void setOperator_desc(String operator_desc) {
-		this.operator_desc = operator_desc;
+	public void setLogger_name(String logger_name) {
+		this.logger_name = logger_name;
 	}
-	public String getOperator_time() {
-		return operator_time;
+	public String getLevel_string() {
+		return level_string;
 	}
-	public void setOperator_time(String operator_time) {
-		this.operator_time = operator_time;
+	public void setLevel_string(String level_string) {
+		this.level_string = level_string;
 	}
-	public String getRemark() {
-		return remark;
+	public String getThread_name() {
+		return thread_name;
 	}
-	public void setRemark(String remark) {
-		this.remark = remark;
+	public void setThread_name(String thread_name) {
+		this.thread_name = thread_name;
 	}
-	public String getExt1() {
-		return ext1;
+	public String getReference_flag() {
+		return reference_flag;
 	}
-	public void setExt1(String ext1) {
-		this.ext1 = ext1;
+	public void setReference_flag(String reference_flag) {
+		this.reference_flag = reference_flag;
 	}
-	public String getExt2() {
-		return ext2;
+	public String getArg0() {
+		return arg0;
 	}
-	public void setExt2(String ext2) {
-		this.ext2 = ext2;
+	public void setArg0(String arg0) {
+		this.arg0 = arg0;
 	}
-	public String getExt3() {
-		return ext3;
+	public String getArg1() {
+		return arg1;
 	}
-	public void setExt3(String ext3) {
-		this.ext3 = ext3;
+	public void setArg1(String arg1) {
+		this.arg1 = arg1;
+	}
+	public String getArg2() {
+		return arg2;
+	}
+	public void setArg2(String arg2) {
+		this.arg2 = arg2;
+	}
+	public String getArg3() {
+		return arg3;
+	}
+	public void setArg3(String arg3) {
+		this.arg3 = arg3;
+	}
+	public String getCaller_filename() {
+		return caller_filename;
+	}
+	public void setCaller_filename(String caller_filename) {
+		this.caller_filename = caller_filename;
+	}
+	public String getCaller_class() {
+		return caller_class;
+	}
+	public void setCaller_class(String caller_class) {
+		this.caller_class = caller_class;
+	}
+	public String getCaller_method() {
+		return caller_method;
+	}
+	public void setCaller_method(String caller_method) {
+		this.caller_method = caller_method;
+	}
+	public String getCaller_line() {
+		return caller_line;
+	}
+	public void setCaller_line(String caller_line) {
+		this.caller_line = caller_line;
 	}
 }

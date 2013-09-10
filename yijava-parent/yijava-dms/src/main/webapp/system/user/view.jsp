@@ -30,6 +30,14 @@
 									</td>
 								</tr>
 								<tr>
+									<td width="50">状态:</td>
+									<td width="270">
+										<select name="isdeleted" id="isdeleted">
+											<option value ="0">启用</option>
+											<option value ="1">禁用</option>
+											<option value ="2">离职</option>
+										</select>
+									</td>
 									<td width="50">部门:</td>
 									<td width="270">
 										<select name="fk_department_id" id="fk_department_id">
@@ -67,6 +75,7 @@
 							<th data-options="field:'address',width:80" hidden="true">地址</th>
 							<th data-options="field:'postcode',width:55,align:'center'" hidden="true">邮编</th>
 							<th data-options="field:'fk_role_id',width:80,align:'center'" hidden="true"></th>
+							<th data-options="field:'isdeleted',width:55,align:'center'" formatter="formatterStatus" sortable="true">状态</th>
 							<th data-options="field:'role_name',width:80,align:'center'" sortable="true">角色</th>
 							<th data-options="field:'department_name',width:100,align:'center'">部门</th>
 							<th data-options="field:'fk_department_id',width:60,align:'center'" hidden="true"></th>
@@ -77,15 +86,9 @@
 					</thead>
 				</table>
 				<div id="tb">
-					<restrict:function funId="6">
 						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
-					</restrict:function>
-					<restrict:function funId="8">
 						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntity()">编辑</a>
-					</restrict:function>
-					<restrict:function funId="7">
         				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
-        			</restrict:function>
 				</div>
 			</div>
 			<div style="margin: 10px 0;"></div>
@@ -139,10 +142,20 @@
 						</td>
 						<td>用户状态:</td>
 						<td>
-							<select name="isdeleted" class="easyui-combotree" data-options="required:true">
-								<option value ="0">正常</option>
-								<option value ="1">移除</option>
-							</select>
+							<input name="isdeleted" class="easyui-combobox" data-options="
+									required:true,
+									valueField: 'id',
+									textField: 'value',
+									data: [{
+										id: '0',
+										value: '启用'
+									},{
+										id: '1',
+										value: '禁用'
+									},{
+										id: '2',
+										value: '离职'
+									}]" />
 						</td>
 					</tr>
 					<tr>
@@ -176,7 +189,6 @@
 							<input class="easyui-numberbox" type="text" name="postcode"></input>
 						</td>
 					</tr>
-					
 					<tr>
 						<td>Customfield1:</td>
                     	<td><input class="easyui-numberbox" type="text" name="customfield1"></input></td>
@@ -208,6 +220,16 @@
 				}
 			});
 		});
+		
+		function formatterStatus(value, row, index){
+			if(value=='0')
+				return '<span>启用</span>'; 
+			else if(value=='1')
+				return '<span>禁用</span>'; 
+			else
+				return '<span>离职</span>'; 
+		}
+		
 		function formatter(value, row, index){
 			if(value=='male')
 				return '<span>男</span>'; 

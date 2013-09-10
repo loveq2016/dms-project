@@ -7,4 +7,10 @@
 		case when (select count(1) from tb_manager_menu b where a.id = b.fk_parent_id)>0 then 'closed' else 'open' end as state
 		from tb_manager_menu a where fk_parent_id = #{fk_parent_id}
 	</select>
+	<insert id="insert" parameterType="dms.yijava.entity.system.SysMenu">
+		insert into dms.tb_manager_menu(menu_name,url,isdeleted,fk_parent_id,remark,last_time,ext1,ext2,ext3) values(#{menu_name},#{url},#{isdeleted},#{fk_parent_id},#{remark},NOW(),#{ext1},#{ext2},#{ext3});
+	</insert>
+    <update id="update" parameterType="dms.yijava.entity.system.SysMenu">
+    	update dms.tb_manager_menu set menu_name=#{menu_name},url=#{url},isdeleted=#{isdeleted},fk_parent_id=#{fk_parent_id},remark=#{remark},last_time=NOW(),ext1=#{ext1},ext2=#{ext2},ext3=#{ext3} where id=#{id}
+    </update>
 </mapper>

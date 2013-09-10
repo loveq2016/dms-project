@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@include file="/common/base.jsp"%>
-<%-- <div style="padding: 5px;">
+<!-- <div style="padding: 5px;">
 	<c:forEach items="${roleFunctionList}" var="fun">
 		<c:if test="${fun.menu_parent_id != parent_id}">
 			<a href="javascript:void(0)" id="mb1" class="easyui-menubutton" 
@@ -27,7 +27,9 @@
 	<c:if test="${roleFunctionList[status.index+1].menu_parent_id!=fun.menu_parent_id}">
 		</div>
 	</c:if>
-</c:forEach> --%>
+</c:forEach>
+<a href="${basePath}api/sys/logout">退出</a>
+-->
 <div style="padding: 5px; width: 600px;">
 	<a href="javascript:void(0)" id="mb1" class="easyui-menubutton"
 		data-options="menu:'#mm1',iconCls:'icon-filep'">系统管理</a>
@@ -45,6 +47,9 @@
 	</div>
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="菜单管理" url="system/menu/view.jsp">菜单管理</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="菜单管理" url="system/log/view.jsp">日志管理</a>
 	</div>
 </div>
 <div id="mm2" style="width: 100px;">
