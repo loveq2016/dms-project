@@ -60,10 +60,10 @@
 			url="base/hospital/view.jsp">医院信息维护</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="经销商基础信息维护" url="dealer/view.jsp">经销商基础信息维护</a>
+		<a href="javascript:void(0)" title="经销商基础信息维护" url="dealer/info/view.jsp">经销商基础信息维护</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/dealerAddress/view.jsp">经销商地址信息维护</a>
+		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/address/view.jsp ">经销商地址信息维护</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/plan/view.jsp">经销商指标信息维护</a>
