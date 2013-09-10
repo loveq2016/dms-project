@@ -142,11 +142,20 @@
 						</td>
 						<td>用户状态:</td>
 						<td>
-							<select name="isdeleted" data-options="required:true">
-								<option value ="0">启用</option>
-								<option value ="1">禁用</option>
-								<option value ="2">离职</option>
-							</select>
+							<input name="isdeleted" class="easyui-combobox" data-options="
+									required:true,
+									valueField: 'id',
+									textField: 'value',
+									data: [{
+										id: '0',
+										value: '启用'
+									},{
+										id: '1',
+										value: '禁用'
+									},{
+										id: '2',
+										value: '离职'
+									}]" />
 						</td>
 					</tr>
 					<tr>
