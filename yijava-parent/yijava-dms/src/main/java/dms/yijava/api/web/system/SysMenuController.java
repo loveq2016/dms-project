@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.system.SysMenu;
+import dms.yijava.entity.system.SysRole;
 import dms.yijava.entity.system.SysRoleFunction;
 import dms.yijava.service.system.SysMenuService;
 import dms.yijava.service.system.SysRoleFunctionService;
@@ -37,6 +39,22 @@ public class SysMenuController {
 		id = StringUtils.isBlank(id) == true ? "-1" : id;
 		logger.info("查询菜单信息");
 		return sysMenuService.getList(id);
+	}
+	
+	@ResponseBody
+	@RequestMapping("save")
+	public Result<String> save(@ModelAttribute("entity") SysMenu entity) {
+		sysMenuService.saveEntity(entity);
+		logger.info("添加菜单信息");
+		return new Result<String>(entity.getId(), 1);
+	}
+	
+	@ResponseBody
+	@RequestMapping("update")
+	public Result<String> update(@ModelAttribute("entity") SysMenu entity) {
+		sysMenuService.updateEntity(entity);
+		logger.info("修改菜单信息");
+		return new Result<String>(entity.getId(), 1);
 	}
 	
 	@ResponseBody

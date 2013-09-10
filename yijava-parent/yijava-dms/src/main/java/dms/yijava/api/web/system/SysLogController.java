@@ -22,13 +22,14 @@ import dms.yijava.service.system.SysLogService;
 @Controller
 @RequestMapping("/api/syslog")
 public class SysLogController {
-	private static final Logger logger = LoggerFactory.getLogger(SysLoginController.class);
+	private static final Logger logger = LoggerFactory.getLogger(SysLogController.class);
 	@Autowired
 	public SysLogService sysLogService;
 	
 	@ResponseBody
 	@RequestMapping("paging")
 	public JsonPage<SysLog> paging(PageRequest pageRequest,HttpServletRequest request) {
+		String dsss=request.getParameter("start_date");
 		List<PropertyFilter> filters = PropertyFilters.build(request);
 		return sysLogService.paging(pageRequest,filters);
 	}

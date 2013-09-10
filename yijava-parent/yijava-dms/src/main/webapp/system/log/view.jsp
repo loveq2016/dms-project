@@ -18,11 +18,11 @@
 								<tr>
 									<td width="100">开始时间:</td>
 									<td width="270">
-										<input id="start_date" class="easyui-datebox" required></input>
+										<input name="start_date" id="start_date" class="easyui-datebox"></input>
 									</td>
 									<td width="100">结束时间:</td>
 									<td width="270">
-										 <input id="end_date" class="easyui-datebox" required></input>
+										 <input name="end_date" id="end_date" class="easyui-datebox"></input>
 									</td>
 								</tr>
 							</table>
@@ -44,7 +44,7 @@
 							<th data-options="field:'level_string',width:100,align:'center'" sortable="true">日志级别</th>
 							<th data-options="field:'hostname',width:150,align:'center'" sortable="true">主机名</th>
 							<th data-options="field:'operatorip',width:150,align:'center'" sortable="true">操作IP</th>
-							<th data-options="field:'timestmp',width:180,align:'center'" sortable="true">时间</th>
+							<th data-options="field:'timestmp',width:180,align:'center'" formatter="formatterDate" sortable="true">时间</th>
 						</tr>
 					</thead>
 				</table>
@@ -58,9 +58,14 @@
 		});
 		function doSearch(){
 		    $('#dg').datagrid('load',{
-		    	filter_ANDS_start_date: $('#start_date').val(),
-		    	filter_ANDS_end_date: $('#end_date').val()
+		    	filter_ANDS_start_date: $('input[name=start_date]').val(),
+		    	filter_ANDS_end_date: $('input[name=end_date]').val()
 		    });
+		}
+		function formatterDate(value){
+			var date=new Date();
+			date.setTime(value);
+			return '<span style="cursor:pointer;">'+date.format('yyyy-MM-dd HH:mm:ss')+'</span>'; 
 		}
 	</script>
 </body>
