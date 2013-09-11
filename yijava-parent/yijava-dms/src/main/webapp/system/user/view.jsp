@@ -133,7 +133,7 @@
 						</td>
 						<td>部门:</td>
 						<td>
-							<input class="easyui-combotree" name="fk_department_id" id="fk_department_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+							<input class="easyui-combotree" name="fk_department_id" id="fk_department_id" style="width:150px" maxLength="100" class="easyui-validatebox" required="true"
 						             			data-options="
 							             			url:'${basePath}api/department/listByParentId',
 								                    method:'get',

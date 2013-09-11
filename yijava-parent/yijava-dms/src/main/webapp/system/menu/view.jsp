@@ -128,7 +128,7 @@
 			var t = $('#treegrid');
 			var node = t.treegrid('getSelected');
 			if (node) {
-				p_target = node.id;
+				p_target = node.fk_parent_id;
 				$('#ffadd').form('load', {
 					fk_parent_id : '' + node.id + ''
 				});

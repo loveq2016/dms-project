@@ -60,7 +60,6 @@
                     {title:'部门名称',field:'department_name',width:200} 
                 ]],
                 columns:[[
-                    {field:'fk_parent_name',title:'父类',width:150}, 
                     {field:'remark',title:'备注',width:270,rowspan:2}
                 ]],
                 onContextMenu: function(e,row){  
@@ -88,7 +87,7 @@
                $('#treegrid').treegrid('expandAll', node.id);  
            } else {
                $('#treegrid').treegrid('expandAll');  
-           }  
+           }
        }
        var p_target=null;
 		function append() {
@@ -96,7 +95,7 @@
 			var t = $('#treegrid');
 			var node = t.treegrid('getSelected');
 			if (node) {
-				p_target = node.id;
+				p_target = node.fk_parent_id;
 				$('#ffadd').form('load', {
 					fk_parent_id : '' + node.id + ''
 				});
@@ -137,21 +136,21 @@
 			});
 		}
 		function deleteEntity(){
-	           var row = $('#dg').datagrid('getSelected');
-	            if (row){
+	           var node = $('#treegrid').treegrid('getSelected');
+	            if (node){
 	                $.messager.confirm('Confirm','是否确定删除?',function(r){
 	                    if (r){
 	            			$.ajax({
 	            				type : "POST",
 	            				url : basePath + 'api/department/delete',
-	            				data : {id:row.id},
+	            				data : {id:node.id},
 	            				error : function(request) {
 	            					$.messager.alert('提示','Error!','error');	
 	            				},
 	            				success : function(data) {
 	            					var jsonobj = $.parseJSON(data);
 	            					if (jsonobj.state == 1) {
-	            	                     $('#dg').datagrid('reload');
+	            						$('#treegrid').treegrid('reload',node.fk_parent_id);
 	            					}
 	            				}
 	            			});                    	
