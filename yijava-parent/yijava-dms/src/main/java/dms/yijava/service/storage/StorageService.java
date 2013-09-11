@@ -60,6 +60,6 @@ public class StorageService {
 	}
 	
 	public void deleteEntity(String id) {
-		storageDao.remove(id);
+		storageDao.removeById(id);
 	}
 }

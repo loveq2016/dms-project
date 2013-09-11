@@ -38,20 +38,22 @@
 
 			<div style="padding-left: 10px; padding-right: 10px">
 				<table id="dg" class="easyui-datagrid" title="查询结果" style="height: 430px"  method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="dealer_id" sortOrder="desc" toolbar="#tb">
+					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
+							<th field="id" width="200" align="center" hidden="true"></th>
 							<th field="storage_name" width="200" align="center" sortable="true">仓库名称</th>
 							<th field="province" width="100" align="center" sortable="true">省份</th>
 							<th field="city" width="100" align="center" sortable="true">城市</th>
 							<th field="category_id" width="100" align="center" hidden="true"></th>
 							<th field="category_name" width="100" align="center" sortable="true">仓库类型</th>
+							<th field="hospital_name" width="100" align="center" hidden="true">医院名称</th>
 							<th field="status" width="100" align="center"  formatter="formatterStatus" sortable="true">状态</th>
 							<th field="postcode" width="100" align="center" sortable="true">邮编</th>
 							<th field="address" width="200" align="center" sortable="true">地址</th>
 							<th field="area" width="200" align="center" sortable="true">区或乡</th>
 							<th field="phone" width="100" align="center" sortable="true">电话</th>
-							<th field="tex" width="100" align="center" sortable="true">邮编</th>
+							<th field="tex" width="100" align="center" sortable="true">传真</th>
 						</tr>
 					</thead>
 				</table>
@@ -66,7 +68,7 @@
    <div id="dlg" class="easyui-dialog" style="width:360px;height:480px;padding:5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlg-buttons">
 		<form id="ffadd" action="" method="post" enctype="multipart/form-data">
-	        	<input type="hidden" name="id">
+	        				  <input type="hidden" name="id">
 				         	  <table>
 				             	<tr>
 				             		<td>仓库名称:</td>
@@ -77,23 +79,14 @@
 				             	<tr>
 				             		<td>仓库类型:</td>
 				             		<td>
-						            	<input name="category_id" class="easyui-combobox" data-options="
-											required:true,
-											valueField: 'id',
-											textField: 'value',
-											data: [{
-												id: '1',
-												value: '默认仓库'
-											},{
-												id: '2',
-												value: '医院仓库'
-											},{
-												id: '3',
-												value: '其他仓库'
-											},{
-												id: '4',
-												value: '子经销商仓库'
-											}]" />	             		
+						            	<input name="category_id" class="easyui-combobox" 
+							            	data-options="
+					             			url:'${basePath}/api/storageCategory/list',
+						                    method:'get',
+						                    valueField:'id',
+						                    textField:'category_name',
+						                    panelHeight:'auto'
+				            			" />	             		
 				             		</td>
 				             	</tr>
 				             	<tr>
@@ -105,14 +98,14 @@
 				             	<tr>
 				             		<td>复制医院信息:</td>
 				             		<td>
-				             		    <input type="checkbox" id="copy_hospital" onclick="copyhospital()" value="0" checked="true"/> 
+				             		    <input type="checkbox" id="copy_hospital" onclick="copyhospital()" value="0"/> 
 				             		</td>
 				             	</tr>
 				             	<tr>
 				             		<td>仓库所在医院名称:</td>
 				             		<td>
 				             		    <input class="easyui-validatebox" disabled="disabled" type="text" name="hospital_name" id="hospital_name" data-options="required:false"></input>
-				             		    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="disabled:true,iconCls:'icon-reload'" onclick="searchHospital()" id="searchHospital">查询</a>
+				             		    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="linkbutton:{disabled:true},iconCls:'icon-reload'" onclick="searchHospital()" id="searchHospital">查询</a>
 				             		</td>
 				             	</tr>
 				             	<tr>
@@ -167,13 +160,15 @@
 
 	<script type="text/javascript">
 	 	var url;
-		
 		function newEntity(){
 		    $('#dlg').dialog('open').dialog('setTitle','仓库添加');
 		    $('#ffadd').form('clear');
+		    initCheckBox();
 		    url = basePath +  'api/storage/save';
 		}
 	    function updateEntity(){
+		    $('#ffadd').form('clear');
+		    initCheckBox();
 	         var row = $('#dg').datagrid('getSelected');
 	         if (row){
 	            $('#dlg').dialog('open').dialog('setTitle','仓库更新');
@@ -250,7 +245,7 @@
 			}
 		}
 		function searchHospital() {
-			var hospitalname= ${'#hospital_name'}.val();
+			var hospitalname= $('#hospital_name').val();
 			$.ajax({
 				type : "POST",
 				url : basePath + 'api/hospital/readByName',
@@ -260,11 +255,22 @@
 				},
 				success : function(data) {
 					var jsonobj = $.parseJSON(data);
-					if (jsonobj.state == 1) {
-						$('#ffadd').form('load', data);
-					}
+					if(null!=jsonobj)
+					$('#ffadd').form('load', {
+						address:jsonobj.address,
+						province:jsonobj.provinces,
+						city:jsonobj.city,
+						area:jsonobj.area,
+						postcode:jsonobj.postcode,
+						phone:jsonobj.phone
+					});
 				}
 			});
+		}
+		function initCheckBox(){
+			    $('#searchHospital').linkbutton({disabled:true});
+				$('#hospital_name').attr("disabled","disabled");
+				$('copy_hospital').attr("checked",false);
 		}
 		$(function() {
 			$('#dg').datagrid({

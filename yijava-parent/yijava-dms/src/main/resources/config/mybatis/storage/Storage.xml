@@ -40,10 +40,10 @@
         select ts.*,tsc.category_name from dms.tb_storage ts LEFT JOIN dms.tb_storage_category tsc ON ts.category_id=tsc.id
     </select>
 	<insert id="insert" parameterType="dms.yijava.entity.storage.Storage">     
-		insert into dms.tb_storage(storage_name,category_id,province,city,area,address,postcode,phone,tex,last_date,column1,column2,column3) values(#{storage_name},#{category_id},#{province},#{city},#{area},#{address},#{postcode},#{phone},#{tex},#{last_date},#{column1},#{column2},#{column3});
+		insert into dms.tb_storage(storage_name,hospital_name,category_id,status,province,city,area,address,postcode,phone,tex,last_date,column1,column2,column3) values(#{storage_name},#{hospital_name},#{category_id},#{status},#{province},#{city},#{area},#{address},#{postcode},#{phone},#{tex},NOW(),#{column1},#{column2},#{column3});
 	</insert>
     <update id="update" parameterType="dms.yijava.entity.storage.Storage">
-    	update dms.tb_storage set storage_name=#{storage_name},category_id=#{category_id},province=#{province},city=#{city},area=#{area},address=#{address},postcode=#{postcode},phone=#{phone},tex=#{tex},last_date=#{last_date},column1=#{column1},column2=#{column2},column3=#{column3} where id=#{id}
+    	update dms.tb_storage set storage_name=#{storage_name},hospital_name=#{hospital_name},category_id=#{category_id},status=#{status},province=#{province},city=#{city},area=#{area},address=#{address},postcode=#{postcode},phone=#{phone},tex=#{tex},last_date=NOW(),column1=#{column1},column2=#{column2},column3=#{column3} where id=#{id}
     </update>
 	<delete id="deleteByPrimaryKey">
 		delete from dms.tb_storage where id = #{id}

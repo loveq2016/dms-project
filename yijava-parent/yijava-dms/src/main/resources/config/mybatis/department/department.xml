@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Department">
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_parent_id)">
+				  and fk_parent_id = #{fk_parent_id}
+			</if>
+		</trim>
+	</sql>
+	<select id="selectByMap" resultType="dms.yijava.entity.department.Department">
+		SELECT id,department_name as text,department_name,chkerid,fk_parent_id,isdelete,remark,ext1,ext2,ext3,
+		case when (select count(1) from tb_department b where a.id = b.fk_parent_id)>0 then 'closed' else 'open' end as state
+		from tb_department a 
+		<include refid="adsWhere"/>
+	</select>
+	<insert id="insert" parameterType="dms.yijava.entity.department.Department">
+		insert into dms.tb_department(department_name,chkerid,fk_parent_id,remark,ext1,ext2,ext3) values(#{department_name},#{chkerid},#{fk_parent_id},#{remark},#{ext1},#{ext2},#{ext3});
+	</insert>
+    <update id="update" parameterType="dms.yijava.entity.department.Department">
+    	update dms.tb_department set department_name=#{department_name},chkerid=#{chkerid},fk_parent_id=#{fk_parent_id},remark=#{remark},ext1=#{ext1},ext2=#{ext2},ext3=#{ext3} where id=#{id}
+    </update>
+	<delete id="deleteByPrimaryKey" parameterType="int">
+   		 delete from dms.tb_department where id = #{id}
+    </delete>
+</mapper>
