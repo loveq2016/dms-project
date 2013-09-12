@@ -38,10 +38,10 @@
         select * from dms.tb_manager_role
     </select>
 	<insert id="insert" parameterType="dms.yijava.entity.system.SysRole">     
-		insert into dms.tb_manager_role(role_name,isdeleted,remark,last_time,ext1,ext2,ext3) values(#{role_name},#{isdeleted},#{remark},NOW(),#{ext1},#{ext2},#{ext3});
+		insert into dms.tb_manager_role(role_name,remark,last_time,ext1,ext2,ext3) values(#{role_name},#{remark},NOW(),#{ext1},#{ext2},#{ext3});
 	</insert>
     <update id="update" parameterType="dms.yijava.entity.system.SysRole">
-    	update dms.tb_manager_role set role_name=#{role_name},isdeleted=#{isdeleted},remark=#{remark},last_time=NOW(),ext1=#{ext1},ext2=#{ext2},ext3=#{ext3} where id=#{id}
+    	update dms.tb_manager_role set role_name=#{role_name},remark=#{remark},last_time=NOW(),ext1=#{ext1},ext2=#{ext2},ext3=#{ext3} where id=#{id}
     </update>
     <update id="deleteByPrimaryKey" parameterType="int">
 		update dms.tb_manager_role set isdeleted=1 where id = #{id}

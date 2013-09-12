@@ -16,35 +16,21 @@
 			    <div id="mm" class="easyui-menu" style="width:120px;">  
 			        <div onclick="append()">添加</div>  
 			        <div onclick="updateEntity()">修改</div>  
+			        <div onclick="deleteEntity()">删除</div>  
 			    </div>
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
-		<div id="w" class="easyui-window" title="角色详细信息" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:300px;height:250px;padding:10px;">
+		<div id="w" class="easyui-window" title="部门信息" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:300px;height:250px;padding:10px;">
 			<form id="ffadd" action="" method="post" enctype="multipart/form-data">
 				<table>
 					<input type="hidden" name="id"></input>
                     <input type="hidden" name="fk_parent_id"></input>
 					<tr>
-						<td>菜单名:</td>
+						<td>部门名:</td>
                     	<td>
-                    		<input class="easyui-validatebox" type="text" name="menu_name" data-options="required:true"></input>
+                    		<input class="easyui-validatebox" type="text" name="department_name" data-options="required:true"></input>
                     	</td>
-					</tr>
-					<tr>
-						<td>链接:</td>
-                    	<td>
-                    		<input class="easyui-validatebox" type="text" name="url" data-options="required:true"></input>
-                    	</td>
-					</tr>
-					<tr>
-						<td>状态:</td>
-						<td>
-							<select name="isdeleted" class="easyui-validatebox" >
-								<option value ="0" selected="selected">启动</option>
-								<option value ="1">禁用</option>
-							</select>
-						</td>
 					</tr>
 					<tr>
 						<td>备注:</td>
@@ -60,39 +46,20 @@
 	<script type="text/javascript">
 		$(function() {
 			$('#treegrid').treegrid({
-                title:'菜单信息',  
+                title:'部门信息',  
                 iconCls:'icon-save',
                 height:500,  
                 nowrap: false,  
                 rownumbers: true,  
                 animate:true,  
                 collapsible:true,
-                url:basePath+'api/sysmenu/list',  
+                url:basePath+'api/department/listByParentId',  
                 idField:'id',
-                treeField:'menu_name',	
+                treeField:'department_name',	
                 frozenColumns:[[
-                    {title:'名称',field:'menu_name',width:200} 
+                    {title:'部门名称',field:'department_name',width:200} 
                 ]],
                 columns:[[
-                    {field:'url',title:'链接',width:150},  
-                    {field:'list',title:'功能',width:250,rowspan:2,
-                    	formatter:function(value){
-                    		var str="";
-                    		if (typeof(value) != "undefined")
-		                    for(var i=0;i<value.length;i++){
-		                    	str+=value[i].fun_name+" ";
-		                    }
-                			return str;
-                        }
-                    },
-                    {field:'isdeleted',title:'状态',width:100,rowspan:2,
-                    	formatter:function(value, row, index){
-	            			if(value=='0')
-	            				return '<span>启用</span>'; 
-	            			else
-	            				return '<span>禁用</span>'; 
-            			}
-                    },
                     {field:'remark',title:'备注',width:270,rowspan:2}
                 ]],
                 onContextMenu: function(e,row){  
@@ -120,7 +87,7 @@
                $('#treegrid').treegrid('expandAll', node.id);  
            } else {
                $('#treegrid').treegrid('expandAll');  
-           }  
+           }
        }
        var p_target=null;
 		function append() {
@@ -132,7 +99,7 @@
 				$('#ffadd').form('load', {
 					fk_parent_id : '' + node.id + ''
 				});
-				url = basePath+'api/sysmenu/save';
+				url = basePath+'api/department/save';
 				$('#w').window('open');
 			}
 		}
@@ -144,7 +111,7 @@
 			if (node) {
 				p_target = node.fk_parent_id;
 				$('#ffadd').form('load', node);
-				url = basePath+'api/sysmenu/update';
+				url = basePath+'api/department/update';
 				$('#w').window('open');
 			}
 		}
@@ -168,6 +135,31 @@
 			    }
 			});
 		}
+		function deleteEntity(){
+	           var node = $('#treegrid').treegrid('getSelected');
+	            if (node){
+	                $.messager.confirm('Confirm','是否确定删除?',function(r){
+	                    if (r){
+	            			$.ajax({
+	            				type : "POST",
+	            				url : basePath + 'api/department/delete',
+	            				data : {id:node.id},
+	            				error : function(request) {
+	            					$.messager.alert('提示','Error!','error');	
+	            				},
+	            				success : function(data) {
+	            					var jsonobj = $.parseJSON(data);
+	            					if (jsonobj.state == 1) {
+	            						$('#treegrid').treegrid('reload',node.fk_parent_id);
+	            					}
+	            				}
+	            			});                    	
+	                    }
+	                });
+	            }else{
+					$.messager.alert('提示','请选中数据!','warning');				
+				 }	
+	        }
 		function clearForm() {
 			$('#ffadd').form('clear');
 		}

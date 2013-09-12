@@ -37,6 +37,8 @@
 		data-options="menu:'#mm2',iconCls:'icon-filep'">基础信息维护</a>
 	<a href="javascript:void(0)" id="mb1" class="easyui-menubutton"
 		data-options="menu:'#mm3',iconCls:'icon-filep'">流程管理</a> 
+	<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
+		data-options="menu:'#mm4',iconCls:'icon-filep'">库存管理</a>
 </div>
 <div id="mm1" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
@@ -50,6 +52,9 @@
 	</div>
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="菜单管理" url="system/log/view.jsp">日志管理</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="部门管理" url="department/view.jsp">部门管理</a>
 	</div>
 </div>
 <div id="mm2" style="width: 100px;">
@@ -65,10 +70,10 @@
 			url="base/hospital/view.jsp">医院信息维护</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="经销商基础信息维护" url="dealer/info/view.jsp">经销商基础信息维护</a>
+		<a href="javascript:void(0)" title="经销商基础信息维护" url="dealer/view.jsp">经销商基础信息维护</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/address/view.jsp ">经销商地址信息维护</a>
+		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/dealerAddress/view.jsp">经销商地址信息维护</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/plan/view.jsp">经销商指标信息维护</a>
@@ -94,5 +99,10 @@
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="订单管理"
 			url="foundation/dictionary-category/view.jsp">字典类别管理</a>
+	</div>
+</div>
+<div id="mm4" style="width: 150px;">
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="用户管理" url="storage/view.jsp">仓库维护</a>
 	</div>
 </div>

@@ -49,7 +49,9 @@
 	<select id="select"  parameterType="int" resultType="dms.yijava.entity.hospital.Hospital">
         select * from tb_hospital where id = #{id}
     </select>
-	
+    <select id="selectByName" parameterType="String" resultType="dms.yijava.entity.hospital.Hospital">
+        select * from tb_hospital where hospital_name = #{hospital_name}
+    </select>
 	<insert id="insert" parameterType="dms.yijava.entity.hospital.Hospital" useGeneratedKeys="true" keyProperty="item_number">     
     	  insert into tb_hospital (hospital_name,hostpital_category,level_id,provinces,area,city,address,postcode,phone,beds) 
     	  values(#{hospital_name},#{hostpital_category},#{level_id},#{provinces},#{area},#{city},#{address},#{postcode},#{phone},#{beds})
