@@ -13,13 +13,6 @@
 		http://www.springframework.org/schema/context/spring-context.xsd">
 	<description>Spring MVC 3配置 </description>
 	<!-- 权限拦截器 -->
-	<!-- <mvc:interceptors>
-		用户中心
-		<mvc:interceptor>
-			<mvc:mapping path="/**" />
-			<bean class="dms.yijava.api.web.interseptor.Interseptor"></bean>
-		</mvc:interceptor>
-	</mvc:interceptors> -->
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 	<!-- 自动扫描且只扫描@Controller -->
 	<context:component-scan base-package="dms.yijava"
@@ -30,6 +23,12 @@
 	<mvc:view-controller path="/" view-name="redirect:/index" />
 	<!-- 使用默认的servlet handler -->
 	<mvc:default-servlet-handler />
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="dms.yijava.api.web.interseptor.Interseptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
 	<bean id="mappingJacksonHttpMessageConverter"
 		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 		<property name="objectMapper" ref="jacksonObjectMapper"></property>

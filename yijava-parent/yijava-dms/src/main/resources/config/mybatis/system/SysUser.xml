@@ -5,12 +5,11 @@
 <!-- 用户管理 start -->
 	<sql id="adsWhere">
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			and isdeleted=0
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(account)">
 				  and account like CONCAT('%','${account}','%' ) 
 			</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(realname)">
-				and realname like CONCAT('%','${realname}','%' ) 
+				 and realname like CONCAT('%','${realname}','%' ) 
 			</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_department_id)">
 				  and fk_department_id=#{fk_department_id}
@@ -61,7 +60,7 @@
 				LEFT join dms.tb_department tb ON(tb.id=tt.fk_department_id)) t where isdeleted=0 and id = #{id}
     </select>
     <select id="selectByAccount"  parameterType="String" resultType="dms.yijava.entity.system.SysUser">
-		select tmu.*,tmur.fk_role_id from dms.tb_manager_user tmu left join dms.tb_manager_user_role tmur ON tmu.id=tmur.fk_user_id where account=#{account}
+		select tmu.*,tmur.fk_role_id from dms.tb_manager_user tmu left join dms.tb_manager_user_role tmur ON tmu.id=tmur.fk_user_id where account=#{account} and isdeleted=0
     </select>
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="dms.yijava.entity.system.SysUser">     
 		insert into dms.tb_manager_user (account,realname,password,email,type,birthday,sex,phone,
@@ -76,7 +75,7 @@
 		customfield1=#{customfield1},customfield2=#{customfield2},customfield3=#{customfield3},ext1=#{ext1},ext2=#{ext2},ext3=#{ext3} where id=#{id}
     </update>
     <update id="deleteByPrimaryKey" parameterType="int">
-		update dms.tb_manager_user set isdeleted=1 where id = #{id}
+		update dms.tb_manager_user set isdeleted=2 where id = #{id}
 	</update>
 <!-- 用户管理  end -->
 </mapper>

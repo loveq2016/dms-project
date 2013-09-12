@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SysLog">
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(start_date)">
+				 <![CDATA[ and timestmp > #{start_date} ]]>
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(end_date)">
+				  <![CDATA[ and timestmp < #{end_date} ]]>
+			</if>
+		</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>
+		    <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+		         ORDER BY ${orderSql}
+		    </when>
+		    <otherwise> 
+            </otherwise>
+	    </choose>
+	</sql>	
+	
+	<select id="selectByObjectcount" resultType="long">
+		SELECT COUNT(*) FROM (SELECT timestmp,formatted_message,logger_name,level_string,thread_name,reference_flag,arg0,arg1,arg2,arg3,caller_filename,caller_class,caller_method,caller_line,event_id,
+		max(case mapped_key when 'HOSTNAME' then mapped_value else 0 end) as 'hostname',
+		max(case mapped_key when 'OPERATORIP' then mapped_value else 0 end) as 'operatorip',
+		max(case mapped_key when 'ACCOUNT' then mapped_value else 0 end) as 'account'
+		 FROM (
+			SELECT le.*,lep.mapped_key,lep.mapped_value FROM dms.logging_event le LEFT JOIN dms.logging_event_property lep ON le.event_id=lep.event_id  
+		) tt  GROUP BY timestmp,formatted_message,logger_name,level_string,thread_name,reference_flag,arg0,arg1,arg2,arg3,caller_filename,caller_class,caller_method,caller_line,event_id
+		) t
+		<include refid="adsWhere"/>
+	</select>
+	
+	<select id="selectByObject" resultType="dms.yijava.entity.system.SysLog">
+		<![CDATA[
+			SELECT * FROM (SELECT timestmp,formatted_message,logger_name,level_string,thread_name,reference_flag,arg0,arg1,arg2,arg3,caller_filename,caller_class,caller_method,caller_line,event_id,
+			max(case mapped_key when 'HOSTNAME' then mapped_value else 0 end) as 'hostname',
+			max(case mapped_key when 'OPERATORIP' then mapped_value else 0 end) as 'operatorip',
+			max(case mapped_key when 'ACCOUNT' then mapped_value else 0 end) as 'account'
+			 FROM (
+				SELECT le.*,lep.mapped_key,lep.mapped_value FROM dms.logging_event le LEFT JOIN dms.logging_event_property lep ON le.event_id=lep.event_id  
+			) tt  GROUP BY timestmp,formatted_message,logger_name,level_string,thread_name,reference_flag,arg0,arg1,arg2,arg3,caller_filename,caller_class,caller_method,caller_line,event_id
+			) t
+		]]>
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}
+	</select>
+</mapper>
