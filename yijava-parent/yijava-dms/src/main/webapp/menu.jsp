@@ -80,8 +80,13 @@
 		<a href="javascript:void(0)" title="产品分类维护" url="productCategory/view.jsp">产品分类维护</a>
 	</div>
 	
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="销售人员与经销商关系维护" url="userSales/user/view.jsp">销售人员与经销商关系维护</a>
+	</div>
 
-
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="销售人员与医院关系维护" url="userSales/hospital/view.jsp">销售人员与医院关系维护</a>
+	</div>
 
 
 
