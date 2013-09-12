@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="UserHospital">
+
+<sql id="adsWhere">
+	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(user_id)">
+			and user_id = #{user_id}
+		</if>
+	</trim>
+</sql>
+
+<sql id="adsOrder">
+	<choose>
+		<when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">
+			order by ${orderSql}
+		</when>
+		<otherwise>
+		</otherwise>
+	</choose>
+</sql>
+
+    
+<select id="selectByObjectcount" resultType="long">
+	select count(1) from (
+		select t1.*,t3.level_name,t4.category_name,t5.dealer_name,t5.dealer_id from tb_hospital t1 
+		inner join tb_dealer_auth_hospital t2 on t1.id = t2.hospital_id
+		left join tb_hospital_level t3 on t1.level_id = t3.id
+		left join tb_product_category t4 on t2.category_id = t4.id
+		inner join tb_dealer t5 on t2.dealer_id = t5.dealer_id and t5.dealer_id in (select dealer_id from tb_user_dealer where user_id in (${user_ids}))
+	) t 
+</select>
+
+<select id="selectByObject" resultType="dms.yijava.entity.user.UserHospital">
+	select * from (
+		select t1.*,t3.level_name,t4.category_name,t5.dealer_name,t5.dealer_id from tb_hospital t1 
+		inner join tb_dealer_auth_hospital t2 on t1.id = t2.hospital_id
+		left join tb_hospital_level t3 on t1.level_id = t3.id
+		left join tb_product_category t4 on t2.category_id = t4.id
+		inner join tb_dealer t5 on t2.dealer_id = t5.dealer_id and t5.dealer_id in (select dealer_id from tb_user_dealer where user_id in (${user_ids}))
+	) t 
+	<include refid="adsOrder" />
+	limit #{offset},#{pagesize}
+</select>
+	
+
+	<select id="selectByMap" resultType="dms.yijava.entity.user.UserHospital">
+			select id as user_id,fk_department_id as department_id 
+			from tb_manager_user where fk_department_id in (select id from tb_department where fk_parent_id = #{parent_id} )
+	</select>
+
+
+
+
+
+
+	
+
+    
+    
+    
+    
+</mapper>

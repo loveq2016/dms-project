@@ -58,6 +58,31 @@
 	</div>
 </div>
 <div id="mm2" style="width: 100px;">
+
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="医院信息维护" url="hospital/view.jsp">医院信息维护</a>
+	</div>
+	
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="经销商基础信息维护" url="dealer/info/view.jsp">经销商基础信息维护</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="经销商授权维护" url="dealer/auth/view.jsp">经销商授权维护</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="经销商类型维护" url="dealer/category/view.jsp">经销商类型维护</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="经销商指标维护" url="dealer/plan/view.jsp">经销商指标维护</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/address/view.jsp">经销商地址信息维护</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="经销商仓库信息维护" url="dealer/storage/view.jsp">经销商仓库信息维护</a>
+	</div>
+	
+	
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="产品信息维护" url="product/view.jsp">产品信息维护</a>
 	</div>
@@ -66,27 +91,17 @@
 	</div>
 	
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="医院信息维护"
-			url="base/hospital/view.jsp">医院信息维护</a>
+		<a href="javascript:void(0)" title="销售人员与经销商关系维护" url="userSales/user/view.jsp">销售人员与经销商关系维护</a>
 	</div>
+
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="经销商基础信息维护" url="dealer/view.jsp">经销商基础信息维护</a>
+		<a href="javascript:void(0)" title="销售人员与医院关系维护" url="userSales/hospital/view.jsp">销售人员与医院关系维护</a>
 	</div>
-	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/dealerAddress/view.jsp">经销商地址信息维护</a>
-	</div>
-	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/plan/view.jsp">经销商指标信息维护</a>
-	</div>
-	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/storage/view.jsp">经销商仓库信息维护</a>
-	</div>
-	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/auth/view.jsp">经销商授权信息维护</a>
-	</div>
-	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="经销商地址信息维护" url="hospital/view.jsp">医院信息维护</a>
-	</div>
+
+
+
+
+
 </div>
 <div id="mm3" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
