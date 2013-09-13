@@ -1,4 +1,4 @@
-package dms.yijava.api.web.product;
+package dms.yijava.api.web.dealer;
 
 import java.util.List;
 
@@ -17,55 +17,53 @@ import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
-import dms.yijava.entity.product.Product;
-import dms.yijava.service.product.ProductService;
+import dms.yijava.entity.dealer.DealerAuthDiscount;
+import dms.yijava.service.dealer.DealerAuthDiscountService;
 
 @Controller
-@RequestMapping("/api/product")
-public class ProductController {
+@RequestMapping("/api/dealerAuthDiscount")
+public class DealerAuthDiscountController {
 	
 
 	@Autowired
-	private ProductService productService;
+	private DealerAuthDiscountService dealerAuthDiscountService;
 	
 
 	@ResponseBody
 	@RequestMapping("paging")
-	public JsonPage<Product> paging(PageRequest pageRequest,HttpServletRequest request) {
+	public JsonPage<DealerAuthDiscount> paging(PageRequest pageRequest,HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
-		return productService.paging(pageRequest,filters);
-	}
-
-	
-	@ResponseBody
-	@RequestMapping("list")
-	public List<Product> list(@RequestParam(value = "category_id", required = false) String id) {
-		return productService.getList(id);
+		return dealerAuthDiscountService.paging(pageRequest,filters);
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping("save")
-	public Result<String> save(@ModelAttribute("entity") Product entity) {
-		productService.saveEntity(entity);
-		return new Result<String>(entity.getItem_number(), 1);
+	public Result<String> save(@ModelAttribute("entity") DealerAuthDiscount entity) {
+		dealerAuthDiscountService.saveEntity(entity);
+		return new Result<String>(entity.getDealer_id(), 1);
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping("update")
-	public Result<String> update(@ModelAttribute("entity") Product entity) {
-		productService.updateEntity(entity);
-		return new Result<String>(entity.getItem_number(), 1);
+	public Result<String> update(@ModelAttribute("entity") DealerAuthDiscount entity) {
+		dealerAuthDiscountService.updateEntity(entity);
+		return new Result<String>(entity.getDealer_id(), 1);
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping("delete")
 	public Result<String> delete(@RequestParam(value = "id", required = true) String id) {
-		productService.deleteEntity(id);
+		dealerAuthDiscountService.deleteEntity(id);
 		return new Result<String>(id, 1);
 	}
+	
+
+	
+	
+	
 	
 	
 	

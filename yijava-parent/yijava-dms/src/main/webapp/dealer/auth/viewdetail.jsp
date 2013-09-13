@@ -27,6 +27,7 @@
 									formatter: function(value,row,index){
 										return value==1? '<span style=\'color:green\'>有效</span>':'<span style=\'color:red\'>无效</span>';
 									}">是否有效</th>
+							<th field="discountList" width="200" align="center" sortable="true" formatter="formatterDiscount">产品价格折扣授权列表</th>
 						</tr>
 					</thead>
 				</table>
@@ -136,6 +137,46 @@
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgHospital').dialog('close')">取消</a>
     </div>
     
+    
+    
+     <div id="dlgDiscount" class="easyui-dialog" style="width:460px;height:460px;padding:5px 5px 5px 5px;"
+            modal="true" closed="true">
+				<table id="dgDiscount" class="easyui-datagrid" title="" style="height: 400px" method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbDiscount">
+					<thead>
+						<tr>
+							<th field="cname" width="250" align="center" sortable="true">产品名称</th>
+							<th field="discount" width="100" align="center" sortable="true">折扣</th>
+						</tr>
+					</thead>
+				</table>
+				<div id="tbDiscount">    
+				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newDiscountEntity();">新增产品</a>      
+				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeDiscountEntity();">删除</a>    
+				</div> 
+    </div>
+     <div id="dlgDiscountForm" class="easyui-dialog" style="width:360px;height:260px;padding:5px 5px 5px 5px;"
+            modal="true" closed="true" buttons="#dlgDiscount-buttons">
+	        <form id="fm3" method="post" novalidate>
+	        	<input type="hidden" name="id">
+	        	<input type="hidden" name="dealer_id" id="discount_dealer_id">
+				       <table>
+				              	<tr>
+				             		<td>产品:</td>
+				             		<td><input class="easyui-combobox" id="ccd" name="item_number"  style="width:150px" maxLength="100" required="true"></td>
+				             	</tr>  
+					             <tr>
+				             		<td>折扣:</td>
+				             		<td><input name="discount" class="easyui-numberbox" style="width:150px" min="1" max="10" precision="1" required="true"></td>
+				             	</tr>  			             					             	
+				        </table>        	
+	        </form>
+    </div>
+    <div id="dlgDiscount-buttons">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveDiscountEntity();">保存</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgHospital').dialog('close')">取消</a>
+    </div>
+    
 
     
     
@@ -149,9 +190,98 @@
 			  url : basePath +"api/dealerAuthProduct/paging" ,
 			  queryParams: {
 					filter_ANDS_dealer_id : dealer_id
-			 }
+			 },
+			  onLoadSuccess:function(data){ 
+				  $(".discountListBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
+			  }
 		});
 		
+		
+		function formatterDiscount (value, row, index) { 
+			 	v = "'"+row.product_category_id +"','" + row.category_name +"'";
+			 	//return '<a class="authListBtn" href="javascript:void(0)"  onclick="openDialog(' + v + ');" ></a>';
+			 	return '<a class="discountListBtn" href="javascript:void(0)"  onclick="showDiscount('+v+')" ></a>';
+			 	
+		} 
+		
+		function showDiscount(category_id,category_name){
+			 $('#dlgDiscount').dialog('open').dialog('setTitle',"["+category_name+']授权产品折扣');
+			 $('#dgDiscount').datagrid({
+				    url : basePath + "api/dealerAuthDiscount/paging",
+					queryParams: {
+						filter_ANDS_dealer_id : dealer_id,
+						filter_ANDS_category_id : category_id
+					}
+			});		
+		}
+		
+		
+		function newDiscountEntity(){
+	        $('#dlgDiscountForm').dialog('open').dialog('setTitle','授权产品折扣添加');
+	        $('#fm3').form('clear');
+	        $("#discount_dealer_id").val(dealer_id);
+	        $('#ccd').combobox({
+	            url:basePath + '/api/product/list?category_id='+category_id,
+	            valueField:'item_number',
+	            textField:'cname',
+	            panelHeight:'auto'
+	        });
+	        
+	        url = basePath +  'api/dealerAuthDiscount/save';      			
+		}
+		
+		
+		function saveDiscountEntity(){
+			$('#fm3').form('submit', {
+			    url:url,
+			    method:"post",
+			    onSubmit: function(){
+			        return $(this).form('validate');;
+			    },
+			    success:function(msg){
+			    	var jsonobj = $.parseJSON(msg);
+			    	if(jsonobj.state==1){
+						$('#dlgDiscountForm').dialog('close');     
+	                    $('#dgDiscount').datagrid('reload');
+			    	}else{
+			    		$.messager.alert('提示','Error!','error');	
+			    	}
+			    }		
+			});				
+		}
+		
+		
+		function removeDiscountEntity(){
+	           var row = $('#dgDiscount').datagrid('getSelected');
+	            if (row){
+	                $.messager.confirm('Confirm','是否确定删除?',function(r){
+	                    if (r){
+	            			$.ajax({
+	            				type : "POST",
+	            				url : basePath + 'api/dealerAuthDiscount/delete',
+	            				data : {id:row.id},
+	            				error : function(request) {
+	            					$.messager.alert('提示','Error!','error');	
+	            				},
+	            				success : function(data) {
+	            					var jsonobj = $.parseJSON(data);
+	            					if (jsonobj.state == 1) {  
+	            	                     $('#dgDiscount').datagrid('reload');
+	            					}else{
+	            						$.messager.alert('提示','Error!','error');	
+	            					}
+	            				}
+	            			});                    	
+	                    }
+	                });
+	            }else{
+					$.messager.alert('提示','请选中数据!','warning');				
+				 }			
+			
+		}
+		
+		
+		 
 
 	    function onClickProductRow(rowIndex, rowData){
 	    	category_id = rowData.product_category_id;

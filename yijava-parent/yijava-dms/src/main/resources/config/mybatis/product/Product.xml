@@ -38,6 +38,11 @@
 	    limit #{offset},#{pagesize}  
 	</select>
 	
+	
+	<select id="selectByMap" resultType="dms.yijava.entity.product.Product">
+		select item_number,cname,ename from tb_product where category_id = #{category_id}
+	</select>
+	
 	<select id="select"  parameterType="int" resultType="dms.yijava.entity.product.Product">
         select * from tb_product where item_number = #{item_number}
     </select>

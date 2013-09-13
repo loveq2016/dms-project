@@ -1,4 +1,4 @@
-package dms.yijava.service.product;
+package dms.yijava.service.dealer;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,51 +12,53 @@ import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 
-import dms.yijava.dao.product.ProductDao;
-import dms.yijava.entity.product.Product;
+import dms.yijava.dao.dealer.DealerAuthDiscountDao;
+import dms.yijava.entity.dealer.DealerAuthDiscount;
 
 @Service
 @Transactional
-public class ProductService {
+public class DealerAuthDiscountService {
 
 	@Autowired
-	private ProductDao productDao;
+	private DealerAuthDiscountDao  dealerAuthDiscountDao ;
 	
 	
-	public JsonPage<Product> paging(PageRequest pageRequest,List<PropertyFilter> filters) {
+	public JsonPage<DealerAuthDiscount> paging(PageRequest pageRequest,List<PropertyFilter> filters) {
 		Map<String,String> parameters = new HashMap<String,String>();
 		for (PropertyFilter propertyFilter : filters) {
 			String propertyKey = propertyFilter.getPropertyNames()[0];
 			parameters.put(propertyKey, propertyFilter.getMatchValue());
 		}
-		return productDao.getScrollData(parameters, pageRequest.getOffset(),
+		return dealerAuthDiscountDao.getScrollData(parameters, pageRequest.getOffset(),
 				pageRequest.getPageSize(), pageRequest.getOrderBy(),
 				pageRequest.getOrderDir());
 	}
-
 	
-	public List<Product> getList(String category_id){
-		HashMap<String,String> parameters = new HashMap<String,String>();
-		parameters.put("category_id", category_id);
-		return productDao.find(parameters);
+	
+	public DealerAuthDiscount getEntity(String id) {
+		return dealerAuthDiscountDao.get(id);
 	}
 	
-	
-	public Product getEntity(String id) {
-		return productDao.get(id);
+	public void saveEntity(DealerAuthDiscount entity) {
+		dealerAuthDiscountDao.insert(entity);
 	}
 	
-	public void saveEntity(Product entity) {
-		productDao.insert(entity);
-	}
-	
-	public void updateEntity(Product entity) {
-			productDao.update( entity);
+	public void updateEntity(DealerAuthDiscount entity) {
+		dealerAuthDiscountDao.update( entity);
 	}
 	
 	public void deleteEntity(String id) {
-			productDao.remove(id);
+		dealerAuthDiscountDao.remove(id);
 	}
+	
+	
+
+	
+	
+	
+	
+	
+	
 		
 
 	
