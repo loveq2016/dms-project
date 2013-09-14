@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.orm.ObjectRetrievalFailureException;
 
 import com.yijava.common.utils.ReflectionUtils;
 import com.yijava.orm.core.JsonPage;
-import com.yijava.orm.core.Page;
 
 public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 		BaseDAO<T> {

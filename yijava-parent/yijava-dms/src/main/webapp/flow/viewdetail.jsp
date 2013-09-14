@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>	
-	<link rel="stylesheet" type="text/css"	href="${resPath}resource/themes/gray/easyui.css">
-<link rel="stylesheet" type="text/css"	href="${resPath}resource/themes/icon.css">
-<link rel="stylesheet" type="text/css" href="${resPath}resource/css/main.css">
+s
 <%@include file="/common/base.jsp"%>
 		<div id="p" class="easyui-panel" title="">
 			<div style="margin: 10px 0;"></div>
@@ -43,7 +41,7 @@
 							<tr>
 								<th data-options="field:'step_id',width:300"  sortable="true" hidden="true">step_id</th>
 								<th data-options="field:'action_id',width:300"  sortable="true" hidden="true">action_id</th>
-								<th data-options="field:'step_order_no',width:80,editor:'numberbox'">步骤序号</th>
+								
 								<th data-options="field:'step_order_no',width:80,editor:'numberbox'">步骤序号</th>
 								<th data-options="field:'action_name',width:200,editor:'text'"  >步骤名称</th>
 								<th data-options="field:'action_desc',width:200,editor:'text'">步骤描述</th>	

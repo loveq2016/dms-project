@@ -35,6 +35,13 @@ public class ProductController {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
 		return productService.paging(pageRequest,filters);
 	}
+
+	
+	@ResponseBody
+	@RequestMapping("list")
+	public List<Product> list(@RequestParam(value = "category_id", required = false) String id) {
+		return productService.getList(id);
+	}
 	
 	
 	@ResponseBody

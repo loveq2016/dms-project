@@ -56,7 +56,7 @@
 		
 
 		
-	<div id="w" class="easyui-window" title="流程步骤详细信息" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
+	<div id="w" class="easyui-window" title="增加流程" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
 	style="width:650px;height:400px;padding:10px;">
 		<form id="ffadd" action="" method="post" enctype="multipart/form-data">
 							<table>
@@ -100,8 +100,8 @@
 		        text:'添加',
 		        iconCls:'icon-add',
 		        handler:function(){
-		        	
-		        	$('#w').window('open');
+		        	newEntity();
+		        	//$('#w').window('open');
 				}
 		    },{
 		        text:'编辑',

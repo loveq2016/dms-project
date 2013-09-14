@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@include file="/common/base.jsp"%>
-<%-- <div style="padding: 5px;">
+<!-- <div style="padding: 5px;">
 	<c:forEach items="${roleFunctionList}" var="fun">
 		<c:if test="${fun.menu_parent_id != parent_id}">
 			<a href="javascript:void(0)" id="mb1" class="easyui-menubutton" 
@@ -27,7 +27,9 @@
 	<c:if test="${roleFunctionList[status.index+1].menu_parent_id!=fun.menu_parent_id}">
 		</div>
 	</c:if>
-</c:forEach> --%>
+</c:forEach>
+<a href="${basePath}api/sys/logout">退出</a>
+-->
 <div style="padding: 5px; width: 600px;">
 	<a href="javascript:void(0)" id="mb1" class="easyui-menubutton"
 		data-options="menu:'#mm1',iconCls:'icon-filep'">系统管理</a>
@@ -35,6 +37,8 @@
 		data-options="menu:'#mm2',iconCls:'icon-filep'">基础信息维护</a>
 	<a href="javascript:void(0)" id="mb1" class="easyui-menubutton"
 		data-options="menu:'#mm3',iconCls:'icon-filep'">流程管理</a> 
+	<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
+		data-options="menu:'#mm4',iconCls:'icon-filep'">库存管理</a>
 </div>
 <div id="mm1" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
@@ -46,18 +50,30 @@
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="菜单管理" url="system/menu/view.jsp">菜单管理</a>
 	</div>
-</div>
-<div id="mm2" style="width: 100px;">
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="产品信息维护" url="product/view.jsp">产品信息维护</a>
+		<a href="javascript:void(0)" title="菜单管理" url="system/log/view.jsp">日志管理</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="产品分类维护" url="productCategory/view.jsp">产品分类维护</a>
+		<a href="javascript:void(0)" title="部门管理" url="department/view.jsp">部门管理</a>
+	</div>
+</div>
+<div id="mm2" style="width: 100px;">
+
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="医院信息维护" url="hospital/view.jsp">医院信息维护</a>
 	</div>
 	
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="医院信息维护"
-			url="base/hospital/view.jsp">医院信息维护</a>
+		<a href="javascript:void(0)" title="经销商基础信息维护" url="dealer/info/view.jsp">经销商基础信息维护</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="经销商授权维护" url="dealer/auth/view.jsp">经销商授权维护</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="经销商类型维护" url="dealer/category/view.jsp">经销商类型维护</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="经销商指标维护" url="dealer/plan/view.jsp">经销商指标维护</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="经销商基础信息维护" url="dealer/info/view.jsp">经销商基础信息维护</a>
@@ -66,17 +82,29 @@
 		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/address/view.jsp">经销商地址信息维护</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/plan/view.jsp">经销商指标信息维护</a>
+		<a href="javascript:void(0)" title="经销商仓库信息维护" url="dealer/storage/view.jsp">经销商仓库信息维护</a>
+	</div>
+	
+	
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="产品信息维护" url="product/view.jsp">产品信息维护</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/storage/view.jsp">经销商仓库信息维护</a>
+		<a href="javascript:void(0)" title="产品分类维护" url="productCategory/view.jsp">产品分类维护</a>
 	</div>
+	
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="经销商地址信息维护" url="dealer/auth/view.jsp">经销商授权信息维护</a>
+		<a href="javascript:void(0)" title="销售人员与经销商关系维护" url="userSales/user/view.jsp">销售人员与经销商关系维护</a>
 	</div>
+
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="经销商地址信息维护" url="hospital/view.jsp">医院信息维护</a>
+		<a href="javascript:void(0)" title="销售人员与医院关系维护" url="userSales/hospital/view.jsp">销售人员与医院关系维护</a>
 	</div>
+
+
+
+
+
 </div>
 <div id="mm3" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
@@ -89,5 +117,10 @@
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="订单管理"
 			url="foundation/dictionary-category/view.jsp">字典类别管理</a>
+	</div>
+</div>
+<div id="mm4" style="width: 150px;">
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="用户管理" url="storage/view.jsp">仓库维护</a>
 	</div>
 </div>

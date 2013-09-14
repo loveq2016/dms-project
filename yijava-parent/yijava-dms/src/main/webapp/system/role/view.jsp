@@ -55,18 +55,9 @@
 					<tr>
 						<td>角色名称:</td>
                     	<td>
-                    		<input class="easyui-validatebox" type="text" name="role_name"></input>
+                    		<input class="easyui-validatebox" type="text" name="role_name" data-options="required:true"></input>
                     		<input class="easyui-validatebox" type="text" hidden="true" name="id"></input>
                     	</td>
-					</tr>
-					<tr>
-						<td>状态:</td>
-						<td>
-							<select name="isdeleted" class="easyui-validatebox" >
-								<option value ="0">正常</option>
-								<option value ="1">移除</option>
-							</select>
-						</td>
 					</tr>
 					<tr>
 						<td>备注:</td>
@@ -98,25 +89,25 @@
 			$('#w').window('open');
 		}
 		function saveEntity() {
-			$.ajax({
-				type : "POST",
-				url : url,
-				data : $('#ffadd').serialize(),
-				error : function(request) {
-					alert("更新失败，请稍后再试！");
-				},
-				success:function(msg){
-				    var jsonobj= eval('('+msg+')');  
-				    if(jsonobj.state==1)
-				    {
-				    	clearForm();
+			$('#ffadd').form('submit', {
+			    url:url,
+			    method:"post",
+			    onSubmit: function(){
+			        return $(this).form('validate');
+			    },
+			    success:function(msg){
+			    	var jsonobj = $.parseJSON(msg);
+			    	if(jsonobj.state==1){
+			    		clearForm();
 				    	$('#w').window('close');
 				    	var pager = $('#dg').datagrid().datagrid('getPager');
-				    	pager.pagination('select');	
-				    }
-				}	
+				    	pager.pagination('select');
+			    	}else{
+			    		$.messager.alert('提示','Error!','error');	
+			    	}
+			    }		
 			});
-		}		
+		}
 		function editEntity()
 		{
 			var row = $('#dg').datagrid('getSelected');

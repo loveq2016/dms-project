@@ -34,6 +34,14 @@ public class ProductService {
 				pageRequest.getOrderDir());
 	}
 
+	
+	public List<Product> getList(String category_id){
+		HashMap<String,String> parameters = new HashMap<String,String>();
+		parameters.put("category_id", category_id);
+		return productDao.find(parameters);
+	}
+	
+	
 	public Product getEntity(String id) {
 		return productDao.get(id);
 	}
