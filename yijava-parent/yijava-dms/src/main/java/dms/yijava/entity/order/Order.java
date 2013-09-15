@@ -18,4 +18,12 @@ public class Order {
 	public String last_time;
 	public String start_date;
 	public String end_date;
+	
+	public String business_contacts;
+	public String business_phone;
+	public String addess;
+	public String linkman;
+	public String linkphone;
+	public String receive_postcode;
+	public String receive_addess;
 }
