@@ -33,7 +33,8 @@ public class OrderController {
 	@RequestMapping("paging")
 	public JsonPage<Order> paging(PageRequest pageRequest,HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
-		return orderService.paging(pageRequest,filters);
+		JsonPage<Order> dsss=orderService.paging(pageRequest,filters);
+		return dsss;
 	}
 	
 	@ResponseBody
@@ -50,9 +51,15 @@ public class OrderController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("update")
-	public Result<Integer> update(@ModelAttribute("entity") Order entity) {
-		orderService.updateEntity(entity);
+	@RequestMapping("updateAddress")
+	public Result<Integer> updateAddress(@ModelAttribute("entity") Order entity) {
+		orderService.updateAddress(entity);
+		return new Result<Integer>(1, 1);
+	}
+	@ResponseBody
+	@RequestMapping("updateStatus")
+	public Result<Integer> updateStatus(@ModelAttribute("entity") Order entity) {
+		orderService.updateStatus(entity);
 		return new Result<Integer>(1, 1);
 	}
 	

@@ -32,17 +32,17 @@
 	    </choose>
 	</sql>
     <select id="selectByObjectcount" resultType="long">
-		select t.*,d.dealer_name,d.business_contacts,d.business_phone,d.addess,
-		da.linkman,da.linkphone,da.postcode as  receive_postcode,da.address as receive_addess from tb_order t 
+		SELECT COUNT(*) FROM(select t.*,d.dealer_name,d.business_contacts,d.business_phone,d.addess,
+		da.linkman as receive_linkman,da.linkphone as receive_linkphone,da.postcode as receive_postcode,da.address as receive_addess from tb_order t 
 		LEFT JOIN tb_dealer d ON t.dealer_id=d.dealer_id 
-		LEFT JOIN tb_dealer_address da ON t.dealer_address_id=da.id 
+		LEFT JOIN tb_dealer_address da ON t.dealer_address_id=da.id) t 
 		<include refid="adsWhere"/>
 	</select>
  	<select id="selectByObject" resultType="dms.yijava.entity.order.Order">
-		select t.*,d.dealer_name,d.business_contacts,d.business_phone,d.addess,
-		da.linkman,da.linkphone,da.postcode as  receive_postcode,da.address as receive_addess from tb_order t 
+		SELECT * FROM(select t.*,d.dealer_name,d.business_contacts,d.business_phone,d.addess,
+		da.linkman as receive_linkman,da.linkphone as receive_linkphone,da.postcode as receive_postcode,da.address as receive_addess from tb_order t 
 		LEFT JOIN tb_dealer d ON t.dealer_id=d.dealer_id 
-		LEFT JOIN tb_dealer_address da ON t.dealer_address_id=da.id
+		LEFT JOIN tb_dealer_address da ON t.dealer_address_id=da.id) t 
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
 	    limit #{offset},#{pagesize}

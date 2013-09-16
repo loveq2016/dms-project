@@ -54,7 +54,6 @@ public class OrderService {
 	public void updateStatus(Order entity) {
 		orderDao.updateObject(".updateStatus",entity);
 	}
-	
 	public void updateMoneyNum(Order entity) {
 		orderDao.updateObject(".updateMoneyNum",entity);
 	}
