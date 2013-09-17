@@ -14,6 +14,7 @@ import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.dealer.DealerAddressDao;
 import dms.yijava.entity.dealer.DealerAddress;
+import dms.yijava.entity.order.Order;
 
 @Service
 @Transactional
@@ -34,6 +35,12 @@ public class DealerAddressService {
 				pageRequest.getOrderDir());
 	}
 
+	public List<DealerAddress> getList(String dealer_id){
+		HashMap<String,String> parameters = new HashMap<String,String>();
+		parameters.put("dealer_id", dealer_id);
+		return dealerAddressDao.find(parameters);
+	}
+	
 	public DealerAddress getEntity(String id) {
 		return dealerAddressDao.get(id);
 	}

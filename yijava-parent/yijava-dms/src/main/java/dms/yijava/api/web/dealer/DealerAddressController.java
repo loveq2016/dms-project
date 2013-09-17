@@ -19,6 +19,7 @@ import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.dealer.Dealer;
 import dms.yijava.entity.dealer.DealerAddress;
+import dms.yijava.entity.system.SysRole;
 import dms.yijava.service.dealer.DealerAddressService;
 
 @Controller
@@ -38,8 +39,11 @@ public class DealerAddressController {
 	}
 	
 	
-
-	
+	@ResponseBody
+	@RequestMapping("list")
+	public List<DealerAddress> getList(@RequestParam(value = "id", required = true) String id){
+		return dealerAddressService.getList(id);
+	}
 	
 	
 	@ResponseBody
