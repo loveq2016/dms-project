@@ -12,7 +12,6 @@
 		<div id="p" class="easyui-panel" title="">
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-
 				<div class="easyui-panel" title="查询条件">
 					<div style="padding: 10px 0 10px 60px">
 						<form id="ff" method="post">
@@ -94,6 +93,8 @@
 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterProduct">产品</th>
 							<th data-options="field:'order_date',width:150,align:'center'" sortable="true">下单时间</th>
 							<th data-options="field:'dealer_address_id',width:60" hidden="true"></th>
+							<th data-options="field:'receive_linkman',width:60" hidden="true"></th>
+							<th data-options="field:'receive_linkphone',width:60" hidden="true"></th>
 						</tr>
 					</thead>
 				</table>
@@ -105,7 +106,7 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
-		<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:500px;height:336px;padding:10px;">
+		<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:300px;height:200px;padding:10px;">
 			<form id="ffadd" action="" method="post" enctype="multipart/form-data">
 				<table>
 					<tr>
@@ -113,12 +114,28 @@
 						<td>
 							<input class="easyui-combobox" name="dealer_address_id" style="width:150px" maxLength="100" class="easyui-validatebox" required="true"
 						             			data-options="
-							             			url:'${basePath}api/dealerAddress/list',
+							             			url:'${basePath}api/dealerAddress/list?id=${user.fk_dealer_id}',
 								                    method:'get',
 								                    valueField:'id',
 								                    textField:'address',
-								                    panelHeight:'auto'
+								                    panelHeight:'auto',
+								                    onSelect:function functionS(s){
+														$('#receive_linkman').val(s.linkman);
+														$('#receive_linkphone').val(s.linkphone);
+													}
 						            			">
+						</td>
+					</tr>
+					<tr>
+						<td>收货人:</td>
+						<td>
+							<input class="easyui-validatebox" name="receive_linkman" id="receive_linkman" value="aa" style="width:150px" maxLength="100">
+						</td>
+					</tr>
+					<tr>
+						<td>收货电话:</td>
+						<td>
+							<input class="easyui-validatebox" name="receive_linkphone" id="receive_linkphone" style="width:150px" maxLength="100">
 						</td>
 					</tr>
 				</table>
@@ -189,7 +206,7 @@
 			    	}else{
 			    		$.messager.alert('提示','Error!','error');	
 			    	}
-			    }		
+			    }
 			});
 		}
 		function editEntity()
@@ -234,6 +251,7 @@
 		function clearForm(){
 			$('#ffadd').form('clear');
 		}
+		
 	</script>
 </body>
 </html>

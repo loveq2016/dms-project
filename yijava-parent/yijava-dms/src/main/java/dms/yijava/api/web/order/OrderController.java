@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -33,8 +34,7 @@ public class OrderController {
 	@RequestMapping("paging")
 	public JsonPage<Order> paging(PageRequest pageRequest,HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
-		JsonPage<Order> dsss=orderService.paging(pageRequest,filters);
-		return dsss;
+		return orderService.paging(pageRequest,filters);
 	}
 	
 	@ResponseBody
@@ -45,9 +45,16 @@ public class OrderController {
 	
 	@ResponseBody
 	@RequestMapping("save")
-	public Result<Integer> save(@ModelAttribute("entity") Order entity) {
-		orderService.saveEntity(entity);
-		return new Result<Integer>(1, 1);
+	public Result<Integer> save(@ModelAttribute("entity") Order entity,HttpServletRequest request) {
+		SysUser sysUser=(SysUser)request.getSession().getAttribute("user"); 
+		sysUser.setFk_dealer_id("1");//测试
+		//必须是经销商才可以添加订单
+		if(StringUtils.isNotEmpty(sysUser.getFk_dealer_id())){
+			orderService.saveEntity(entity);
+			return new Result<Integer>(1, 1);
+		}else{
+			return new Result<Integer>(1, 0);
+		}
 	}
 	
 	@ResponseBody
