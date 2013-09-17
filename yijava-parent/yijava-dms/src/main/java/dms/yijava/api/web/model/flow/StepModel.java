@@ -9,7 +9,8 @@ public class StepModel {
 	private String action_name;
 	private String action_desc;	
 	private String step_type;
-	
+	private String department_name;
+	private String ext_logic;
 	
 	
 	public String getAction_id() {
@@ -53,6 +54,18 @@ public class StepModel {
 	}
 	public void setFlow_id(String flow_id) {
 		this.flow_id = flow_id;
+	}
+	public String getDepartment_name() {
+		return department_name;
+	}
+	public void setDepartment_name(String department_name) {
+		this.department_name = department_name;
+	}
+	public String getExt_logic() {
+		return ext_logic;
+	}
+	public void setExt_logic(String ext_logic) {
+		this.ext_logic = ext_logic;
 	}
 	
 
