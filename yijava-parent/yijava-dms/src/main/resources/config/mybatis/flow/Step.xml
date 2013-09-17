@@ -15,6 +15,16 @@
          from tb_step_info step left join tb_action_info action on step.action_id= action.action_id where step.flow_id = #{flow_id}
 </select>
 
+<select id="select"  parameterType="int" resultType="dms.yijava.entity.flow.Step">
+select step.step_id,step.flow_id,step.action_id,action.action_name,action.action_desc
+ from tb_step_info step LEFT JOIN tb_action_info action on step.action_id=action.action_id where  step_id=#{step_id}
+</select>
+<!-- 根据流程及步骤序号获取流程 -->
+<select id="selectStepByFlowAndOrder"  parameterType="dms.yijava.entity.flow.Step" resultType="dms.yijava.entity.flow.Step">
+select step.step_id,step.flow_id,step.action_id,step.step_order_no,action.action_name,action.action_desc
+ from tb_step_info step LEFT JOIN tb_action_info action on step.action_id=action.action_id 
+ where  flow_id=#{flow_id} and step_order_no=#{step_order_no}
+</select>
 
     <delete id="delete" parameterType="int">
    	 delete from tb_step_info where step_id = #{step_id}		

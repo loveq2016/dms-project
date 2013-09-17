@@ -1,5 +1,7 @@
 package dms.yijava.entity.flow;
 
+import java.util.List;
+
 public class Step {
 
 	
@@ -15,6 +17,8 @@ public class Step {
 
 	private String action_name;
 	private String action_desc;
+	
+	private List<StepDepartment> stepDepartments;
 	
 	//private Action action;
 	
@@ -93,6 +97,14 @@ public class Step {
 
 	public void setAction_desc(String action_desc) {
 		this.action_desc = action_desc;
+	}
+
+	public List<StepDepartment> getStepDepartments() {
+		return stepDepartments;
+	}
+
+	public void setStepDepartments(List<StepDepartment> stepDepartments) {
+		this.stepDepartments = stepDepartments;
 	}
 
 	/*public Action getAction() {

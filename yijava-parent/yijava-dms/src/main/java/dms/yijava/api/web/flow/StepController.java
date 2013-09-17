@@ -20,7 +20,9 @@ import com.yijava.web.vo.Result;
 import dms.yijava.api.web.model.flow.StepModel;
 import dms.yijava.entity.flow.Action;
 import dms.yijava.entity.flow.Step;
+import dms.yijava.entity.flow.StepDepartment;
 import dms.yijava.service.flow.ActionService;
+import dms.yijava.service.flow.StepDepartmentService;
 import dms.yijava.service.flow.StepService;
 
 @Controller
@@ -34,12 +36,22 @@ public class StepController {
 	@Autowired
 	private ActionService actionService;
 	
+	@Autowired
+	private StepDepartmentService stepDepartmentService;
 	
 	@ResponseBody
 	@RequestMapping("view")
 	public List<Step> view(String flow_id,HttpServletRequest request) {
-		
-		return stepService.getStepByFlow(flow_id);
+		//找到流程的所有步骤
+		List<Step> steps=stepService.getStepByFlow(flow_id);
+		//找到步骤的执行部门
+		List<StepDepartment> stepDepartment;
+		for(Step step:steps)
+		{
+			stepDepartment=stepDepartmentService.getStepDepartmentByStep(step.getStep_id().toString());
+			step.setStepDepartments(stepDepartment);
+		}
+		return steps;
 	} 
 	
 	@ResponseBody
@@ -128,5 +140,29 @@ public class StepController {
 		}
 		
 		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping("getFirstStep")
+	public Step getFirstStep(String flow_id,HttpServletRequest request) {
+		//找到流程的第一步
+		Step step=stepService.getFirstSetp(new Integer(flow_id));
+		//找这一步的负责部门
+	    List<StepDepartment> stepDepartment=stepDepartmentService.getStepDepartmentByStep(step.getStep_id().toString());
+	    step.setStepDepartments(stepDepartment);
+	    
+		return step;		
+	}
+	
+	@ResponseBody
+	@RequestMapping("getNextStep")
+	public Step getNextStep(String flow_id,String step_order_no,HttpServletRequest request) {
+		//找到流程的第一步
+		Step step=stepService.getNextSetp(new Integer(flow_id),new Integer(step_order_no));
+		//找这一步的负责部门
+	    List<StepDepartment> stepDepartment=stepDepartmentService.getStepDepartmentByStep(step.getStep_id().toString());
+	    step.setStepDepartments(stepDepartment);
+	    
+		return step;		
 	}
 }
