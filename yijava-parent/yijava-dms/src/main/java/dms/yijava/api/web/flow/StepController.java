@@ -21,9 +21,11 @@ import dms.yijava.api.web.model.flow.StepModel;
 import dms.yijava.entity.flow.Action;
 import dms.yijava.entity.flow.Step;
 import dms.yijava.entity.flow.StepDepartment;
+import dms.yijava.entity.system.SysUser;
 import dms.yijava.service.flow.ActionService;
 import dms.yijava.service.flow.StepDepartmentService;
 import dms.yijava.service.flow.StepService;
+import dms.yijava.service.system.SysUserService;
 
 @Controller
 @RequestMapping("/api/step")
@@ -38,6 +40,8 @@ public class StepController {
 	
 	@Autowired
 	private StepDepartmentService stepDepartmentService;
+	@Autowired
+	private SysUserService sysUserService;
 	
 	@ResponseBody
 	@RequestMapping("view")
@@ -148,9 +152,19 @@ public class StepController {
 		//找到流程的第一步
 		Step step=stepService.getFirstSetp(new Integer(flow_id));
 		//找这一步的负责部门
-	    List<StepDepartment> stepDepartment=stepDepartmentService.getStepDepartmentByStep(step.getStep_id().toString());
-	    step.setStepDepartments(stepDepartment);
-	    
+	    List<StepDepartment> stepDepartments=stepDepartmentService.getStepDepartmentByStep(step.getStep_id().toString());
+	    step.setStepDepartments(stepDepartments);
+	    for(StepDepartment dep :stepDepartments)
+	    {
+	    	if (null!=dep.getDepartment_id())
+	    	{
+	    		List<SysUser> users=sysUserService.getListByDepartmentId(dep.getDepartment_id());
+	    		if(users!=null)
+	    		{
+	    			dep.setUsers(users);
+	    		}
+	    	}
+	    }
 		return step;		
 	}
 	
@@ -160,9 +174,19 @@ public class StepController {
 		//找到流程的第一步
 		Step step=stepService.getNextSetp(new Integer(flow_id),new Integer(step_order_no));
 		//找这一步的负责部门
-	    List<StepDepartment> stepDepartment=stepDepartmentService.getStepDepartmentByStep(step.getStep_id().toString());
-	    step.setStepDepartments(stepDepartment);
-	    
+	    List<StepDepartment> stepDepartments=stepDepartmentService.getStepDepartmentByStep(step.getStep_id().toString());
+	    step.setStepDepartments(stepDepartments);
+	    for(StepDepartment dep :stepDepartments)
+	    {
+	    	if (null!=dep.getDepartment_id())
+	    	{
+	    		List<SysUser> users=sysUserService.getListByDepartmentId(dep.getDepartment_id());
+	    		if(users!=null)
+	    		{
+	    			dep.setUsers(users);
+	    		}
+	    	}
+	    }
 		return step;		
 	}
 }

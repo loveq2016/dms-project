@@ -11,7 +11,8 @@
 
 
 <select id="selectByMap"  parameterType="int" resultType="dms.yijava.entity.flow.StepDepartment">
-       select a.entity_id,a.ext_logic,a.flow_id,a.step_id,a.action_id,b.id,b.department_name from tb_step_deparment a LEFT JOIN tb_department b ON a.department_id=b.id
+       select a.entity_id,a.ext_logic,a.department_id,a.flow_id,a.step_id,a.action_id,b.id,b.department_name from tb_step_deparment 
+       a LEFT JOIN tb_department b ON a.department_id=b.id
         where a.step_id = #{step_id}
 </select>
 
