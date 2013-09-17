@@ -91,14 +91,44 @@
 							<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">总数量</th>
 							<th data-options="field:'order_money_sum',width:80,align:'center'" sortable="true">总金额</th>
 							<th data-options="field:'order_status',width:80,align:'center'" formatter="formatterStatus" sortable="true">状态</th>
-							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterProduct">操作</th>
+							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterProduct">产品</th>
 							<th data-options="field:'order_date',width:150,align:'center'" sortable="true">下单时间</th>
 							<th data-options="field:'dealer_address_id',width:60" hidden="true"></th>
 						</tr>
 					</thead>
 				</table>
 			</div>
+			<div id="tb">
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntity()">编辑</a>
+        		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
+			</div>
 			<div style="margin: 10px 0;"></div>
+		</div>
+		<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:500px;height:336px;padding:10px;">
+			<form id="ffadd" action="" method="post" enctype="multipart/form-data">
+				<table>
+					<tr>
+						<td>收货地址:</td>
+						<td>
+							<input class="easyui-combobox" name="dealer_address_id" style="width:150px" maxLength="100" class="easyui-validatebox" required="true"
+						             			data-options="
+							             			url:'${basePath}api/dealerAddress/list',
+								                    method:'get',
+								                    valueField:'id',
+								                    textField:'address',
+								                    panelHeight:'auto'
+						            			">
+						</td>
+					</tr>
+				</table>
+			</form>
+			<div style="margin: 10px 0;"></div>
+			<div style="margin: 10px 0;"></div>
+			<div style="text-align: right; padding: 5px">
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveEntity()">确定</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="$('#w').window('close')">取消</a>					   
+			</div>
 		</div>
 	<script type="text/javascript">
 		$(function() {
@@ -133,6 +163,76 @@
 				return '<span>部分发货</span>'; 
 			else if(value=='6')
 				return '<span>已完成</span>'; 
+		}
+		
+		function newEntity()
+		{
+			clearForm();
+			$('#w').dialog('open').dialog('setTitle','添加订单信息');
+			url =basePath+'api/sysuser/save';
+			$('#w').window('open');
+		}		
+		function saveEntity() {
+			$('#ffadd').form('submit', {
+			    url:url,
+			    method:"post",
+			    onSubmit: function(){
+			        return $(this).form('validate');
+			    },
+			    success:function(msg){
+			    	var jsonobj = $.parseJSON(msg);
+			    	if(jsonobj.state==1){
+			    		clearForm();
+				    	$('#w').window('close');
+				    	var pager = $('#dg').datagrid().datagrid('getPager');
+				    	pager.pagination('select');	
+			    	}else{
+			    		$.messager.alert('提示','Error!','error');	
+			    	}
+			    }		
+			});
+		}
+		function editEntity()
+		{
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+				$('#w').dialog('open').dialog('setTitle','更新订单信息');
+			    $('#ffadd').form('load', row);
+				url = basePath+'api/sysuser/update';
+				$('#w').window('open');
+			}else
+			{
+				alert("请选中数据 ");	
+			}
+		}
+		function destroyEntity()
+		{
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+			    $.ajax({
+					type : "POST",
+					url :basePath+'api/sysuser/remove?id='+row.id,
+					error : function(request) {
+						alert("Connection error");
+					},
+					success:function(msg){
+					    var jsonobj= eval('('+msg+')');  
+					    if(jsonobj.state==1)
+					    {
+					    	clearForm();
+					    	$('#w').window('close');
+					    	var pager = $('#dg').datagrid().datagrid('getPager');
+					    	pager.pagination('select');	
+					    }
+					}	
+				});
+			}else
+			{
+				alert("请选中数据 ");	
+			}			
+		}
+		function clearForm(){
+			$('#ffadd').form('clear');
 		}
 	</script>
 </body>
