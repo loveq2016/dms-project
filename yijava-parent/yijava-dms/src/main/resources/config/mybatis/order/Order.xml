@@ -50,6 +50,9 @@
     <select id="selectByMap" resultType="dms.yijava.entity.order.Order">
 		select * from dms.tb_order where order_code = #{order_code}
 	</select>
+	<select id="selectOrderNum" resultType="dms.yijava.entity.order.Order">
+		select max(order_no) as order_no from dms.tb_order WHERE last_time between CURDATE() AND CONCAT(CURDATE(),' 23:59:59')
+	</select>
 	<insert id="insert" parameterType="dms.yijava.entity.order.Order">     
     	  insert into dms.tb_order(dealer_id,order_code,order_date,dealer_address_id,last_time)
     	  values(#{dealer_id},#{order_code},NOW(),#{dealer_address_id},NOW())

@@ -57,8 +57,10 @@ public class OrderService {
 	public void updateMoneyNum(Order entity) {
 		orderDao.updateObject(".updateMoneyNum",entity);
 	}
-	
 	public void removeEntity(Order entity) {
 		orderDao.remove( entity);
+	}
+	public Order getOrderNum() {
+		return orderDao.getObject(".selectOrderNum",null);
 	}
 }

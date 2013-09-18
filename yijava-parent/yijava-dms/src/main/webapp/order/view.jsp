@@ -17,7 +17,7 @@
 						<form id="ff" method="post">
 							<table>
 								<tr>
-									<td>订单号:</td>
+									<td>订单号:</td>	
 									<td><input class="easyui-validatebox" type="text" name="order_code"></input></td>
 									<td width="100">经销商:</td>
 									<td>
@@ -186,7 +186,7 @@
 		{
 			clearForm();
 			$('#w').dialog('open').dialog('setTitle','添加订单信息');
-			url =basePath+'api/sysuser/save';
+			url =basePath+'api/order/save';
 			$('#w').window('open');
 		}		
 		function saveEntity() {
@@ -215,38 +215,42 @@
 			if (row){
 				$('#w').dialog('open').dialog('setTitle','更新订单信息');
 			    $('#ffadd').form('load', row);
-				url = basePath+'api/sysuser/update';
+				url = basePath+'api/order/update';
 				$('#w').window('open');
 			}else
 			{
-				alert("请选中数据 ");	
+				$.messager.alert('提示','请选中数据!','warning');
 			}
 		}
 		function destroyEntity()
 		{
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
-			    $.ajax({
-					type : "POST",
-					url :basePath+'api/sysuser/remove?id='+row.id,
-					error : function(request) {
-						alert("Connection error");
-					},
-					success:function(msg){
-					    var jsonobj= eval('('+msg+')');  
-					    if(jsonobj.state==1)
-					    {
-					    	clearForm();
-					    	$('#w').window('close');
-					    	var pager = $('#dg').datagrid().datagrid('getPager');
-					    	pager.pagination('select');	
-					    }
-					}	
-				});
+				if(row.order_status=='0'){
+				    $.ajax({
+						type : "POST",
+						url :basePath+'api/order/remove?id='+row.id,
+						error : function(request) {
+							$.messager.alert('提示','抱歉,删除错误!','error');	
+						},
+						success:function(msg){
+						    var jsonobj= eval('('+msg+')');  
+						    if(jsonobj.state==1)
+						    {
+						    	clearForm();
+						    	$('#w').window('close');
+						    	var pager = $('#dg').datagrid().datagrid('getPager');
+						    	pager.pagination('select');	
+						    }
+						}	
+					});
+				}else{
+					$.messager.alert('提示','无法删除已提交的订单!','error');
+				}
 			}else
 			{
-				alert("请选中数据 ");	
-			}			
+				$.messager.alert('提示','请选中数据!','warning');
+			}
 		}
 		function clearForm(){
 			$('#ffadd').form('clear');
