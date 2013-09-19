@@ -1,5 +1,7 @@
 package dms.yijava.api.web.order;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +20,6 @@ import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
-import dms.yijava.entity.flow.FlowRecord;
 import dms.yijava.entity.order.Order;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.service.order.OrderService;
@@ -47,10 +48,17 @@ public class OrderController {
 	@RequestMapping("save")
 	public Result<Integer> save(@ModelAttribute("entity") Order entity,HttpServletRequest request) {
 		//SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		SysUser sysUser=new SysUser();
 		sysUser.setFk_dealer_id("1");//测试
+		sysUser.setDealer_name("经销商1");//测试
 		//必须是经销商才可以添加订单
 		if(StringUtils.isNotEmpty(sysUser.getFk_dealer_id())){
+			Order order=orderService.getOrderNum();
+			entity.setOrder_code("JRKL-"+formatter.format(new Date())+"-"+order.getOrder_no());
+			entity.setOrder_no(String.valueOf((Integer.parseInt(order.getOrder_no()))));
+			entity.setDealer_name(sysUser.getDealer_name());
+			entity.setDealer_id(sysUser.getFk_dealer_id());
 			orderService.saveEntity(entity);
 			return new Result<Integer>(1, 1);
 		}else{
@@ -73,8 +81,8 @@ public class OrderController {
 	
 	@ResponseBody
 	@RequestMapping("remove")
-	public Result<Integer> remove(@ModelAttribute("entity") Order entity) {
-		orderService.removeEntity(entity);
+	public Result<Integer> remove(@RequestParam(value = "id", required = false) String id) {
+		orderService.removeEntity(id);
 		return new Result<Integer>(1, 1);
 	}
 }

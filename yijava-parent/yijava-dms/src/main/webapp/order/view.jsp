@@ -112,6 +112,7 @@
 					<tr>
 						<td>收货地址:</td>
 						<td>
+							<input hidden="true" name="order_code"></input>
 							<input class="easyui-combobox" name="dealer_address_id" style="width:150px" maxLength="100" class="easyui-validatebox" required="true"
 						             			data-options="
 							             			url:'${basePath}api/dealerAddress/list?id=${user.fk_dealer_id}',
@@ -129,13 +130,13 @@
 					<tr>
 						<td>收货人:</td>
 						<td>
-							<input class="easyui-validatebox" name="receive_linkman" id="receive_linkman" value="aa" style="width:150px" maxLength="100">
+							<input class="easyui-validatebox" disabled="disabled" name="receive_linkman" id="receive_linkman" value="aa" style="width:150px" maxLength="100">
 						</td>
 					</tr>
 					<tr>
 						<td>收货电话:</td>
 						<td>
-							<input class="easyui-validatebox" name="receive_linkphone" id="receive_linkphone" style="width:150px" maxLength="100">
+							<input class="easyui-validatebox" disabled="disabled" name="receive_linkphone" id="receive_linkphone" style="width:150px" maxLength="100">
 						</td>
 					</tr>
 				</table>
@@ -215,7 +216,7 @@
 			if (row){
 				$('#w').dialog('open').dialog('setTitle','更新订单信息');
 			    $('#ffadd').form('load', row);
-				url = basePath+'api/order/update';
+				url = basePath+'api/order/updateAddress';
 				$('#w').window('open');
 			}else
 			{
@@ -229,19 +230,17 @@
 				if(row.order_status=='0'){
 				    $.ajax({
 						type : "POST",
-						url :basePath+'api/order/remove?id='+row.id,
+						url :basePath+'api/order/remove?id='+row.order_code,
 						error : function(request) {
 							$.messager.alert('提示','抱歉,删除错误!','error');	
 						},
 						success:function(msg){
-						    var jsonobj= eval('('+msg+')');  
-						    if(jsonobj.state==1)
-						    {
-						    	clearForm();
-						    	$('#w').window('close');
-						    	var pager = $('#dg').datagrid().datagrid('getPager');
-						    	pager.pagination('select');	
-						    }
+						    var jsonobj = $.parseJSON(msg);
+        					if (jsonobj.state == 1) {
+        	                     $('#dg').datagrid('reload');
+        					}else{
+        						$.messager.alert('提示','抱歉,删除错误!','error');	
+        					}
 						}	
 					});
 				}else{

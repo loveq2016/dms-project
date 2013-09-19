@@ -57,10 +57,15 @@ public class OrderService {
 	public void updateMoneyNum(Order entity) {
 		orderDao.updateObject(".updateMoneyNum",entity);
 	}
-	public void removeEntity(Order entity) {
-		orderDao.remove( entity);
+	public void removeEntity(String id) {
+		orderDao.removeById(id);
 	}
 	public Order getOrderNum() {
-		return orderDao.getObject(".selectOrderNum",null);
+		Order order=orderDao.getObject(".selectOrderNum",null);
+		if(null==order || null==order.getOrder_no() || order.getOrder_no().equals("")){
+			order=new Order();
+			order.setOrder_no("001");
+		}
+		return order;
 	}
 }
