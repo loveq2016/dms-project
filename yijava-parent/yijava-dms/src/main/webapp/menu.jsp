@@ -39,6 +39,8 @@
 		data-options="menu:'#mm3',iconCls:'icon-filep'">流程管理</a> 
 	<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
 		data-options="menu:'#mm4',iconCls:'icon-filep'">库存管理</a>
+		<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
+		data-options="menu:'#mm5',iconCls:'icon-filep'">订单管理</a>
 </div>
 <div id="mm1" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
@@ -126,7 +128,9 @@
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="管理员公告维护管理" url="notice/view.jsp">管理员公告维护管理</a>
 	</div>
+</div>
+<div id="mm5" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="经销商公告维护管理" url="notice/view.jsp">经销商公告维护管理</a>
+		<a href="javascript:void(0)" title="用户管理" url="order/view.jsp">订单管理</a>
 	</div>
 </div>

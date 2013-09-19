@@ -39,7 +39,11 @@
     select * from tb_dealer_address where id=#{id}
 </select>
 
-
+<select id="selectByMap" resultType="dms.yijava.entity.dealer.DealerAddress">
+	select * from tb_dealer_address 
+	<include refid="adsWhere" />
+</select>
+	
 <insert id="insert" parameterType="dms.yijava.entity.dealer.DealerAddress" useGeneratedKeys="true" keyProperty="id">
 	insert into tb_dealer_address (dealer_id,address,postcode,linkman,linkphone,column1,column2,column3)
 	values (#{dealer_id},#{address},#{postcode},#{linkman},#{linkphone},#{column1},#{column2},#{column3})

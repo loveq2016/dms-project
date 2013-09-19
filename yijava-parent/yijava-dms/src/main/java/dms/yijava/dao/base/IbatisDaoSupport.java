@@ -151,4 +151,5 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 		 return getSqlSession().insert(entityClass.getSimpleName() + postfix_selectmap, o);  
 	}
 
+
 }

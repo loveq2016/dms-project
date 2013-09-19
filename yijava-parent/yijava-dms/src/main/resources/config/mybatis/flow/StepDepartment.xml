@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="StepDepartment">
+
+<insert id="insert" parameterType="dms.yijava.entity.flow.StepDepartment">     
+    	  insert into tb_step_deparment (flow_id,step_id,action_id,department_id,ext_logic)
+    	  values(#{flow_id},#{step_id},#{action_id},#{department_id},#{ext_logic})
+</insert>
+
+
+<select id="selectByMap"  parameterType="int" resultType="dms.yijava.entity.flow.StepDepartment">
+       select a.entity_id,a.ext_logic,a.department_id,a.flow_id,a.step_id,a.action_id,b.id,b.department_name from tb_step_deparment 
+       a LEFT JOIN tb_department b ON a.department_id=b.id
+        where a.step_id = #{step_id}
+</select>
+
+
+    <delete id="delete" parameterType="int">
+   	 delete from tb_step_deparment where entity_id = #{entity_id}		
+	</delete>
+	
+</mapper>
