@@ -123,4 +123,10 @@
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="用户管理" url="storage/view.jsp">仓库维护</a>
 	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="管理员公告维护管理" url="notice/view.jsp">管理员公告维护管理</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="经销商公告维护管理" url="notice/view.jsp">经销商公告维护管理</a>
+	</div>
 </div>

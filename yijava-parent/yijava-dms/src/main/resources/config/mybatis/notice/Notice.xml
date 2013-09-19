@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Notice">
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(title)">and title like CONCAT('%','${title}','%' ) </if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(realname)">and realname like CONCAT('%','${realname}','%' ) </if>		
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(level_id)">and level_id = #{level_id}</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status_id)">and status_id = #{status_id}</if>		
+		</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>
+		    <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+		         ORDER BY ${orderSql}
+		    </when>
+	    </choose>
+	</sql>
+    <select id="selectByObjectcount" resultType="long">
+		select count(*) from (
+			select t1.*,t2.realname,t3.level_name,t4.status_name  from dms.tb_notice t1 
+			left join dms.tb_notice_level t3 on t1.level_id = t3.id
+			left join dms.tb_notice_status t4 on t1.status_id = t4.id
+			left join dms.tb_manager_user t2 on t1.user_id = t2.id 
+		) t
+		<include refid="adsWhere"/>
+	</select>
+ 	<select id="selectByObject" resultType="dms.yijava.entity.notice.Notice">
+ 		select * from (
+			select t1.*,t2.realname,t3.level_name,t4.status_name
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">,t5.dealer_id</if>
+			 from dms.tb_notice t1 
+			left join dms.tb_notice_level t3 on t1.level_id = t3.id
+			left join dms.tb_notice_status t4 on t1.status_id = t4.id
+			left join dms.tb_manager_user t2 on t1.user_id = t2.id 
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
+				left join dms.tb_dealer_notice t5 on t5.notice_id = t1.notice_id where t5.dealer_id = #{dealer_id}
+			</if>	
+		)t	
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}
+	</select>
+	
+	
+	
+	<select id="selectByMap" resultType="dms.yijava.entity.notice.Notice">
+			select dealer_category_id from dms.tb_notice_receive where notice_id = #{notice_id}
+	</select>
+	
+	
+	
+	<insert id="insert" parameterType="dms.yijava.entity.notice.Notice" useGeneratedKeys="true" keyProperty="notice_id">     
+		insert into dms.tb_notice(title,content,level_id,status_id,validity_date,publish_date,user_id) 
+		values(#{title},#{content},#{level_id},#{status_id},#{validity_date},NOW(),#{user_id});
+	</insert>
+	<insert id="insertReceive" parameterType="dms.yijava.entity.notice.Notice">     
+		insert into dms.tb_notice_receive(notice_id,dealer_category_id) 
+		values(#{notice_id},#{dealer_category_id});
+	</insert>
+	<insert id="insertDealer" parameterType="dms.yijava.entity.notice.Notice">     
+		insert into dms.tb_dealer_notice(dealer_id,notice_id) 
+		values(#{dealer_id},#{notice_id});
+	</insert>
+    <update id="update" parameterType="dms.yijava.entity.notice.Notice">
+    	update dms.tb_notice set title=#{title},content=#{content},level_id=#{level_id},status_id=#{status_id},
+    	validity_date=#{validity_date},publish_date=NOW()
+		where notice_id=#{notice_id}
+    </update>
+    
+    
+    <delete id="deleteReceive" parameterType="dms.yijava.entity.notice.Notice">
+    	delete from dms.tb_notice_receive where notice_id=#{notice_id}
+    </delete>
+    
+    
+</mapper>

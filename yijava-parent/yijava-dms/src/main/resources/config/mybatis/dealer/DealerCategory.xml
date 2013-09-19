@@ -8,4 +8,14 @@
 		select *  from  tb_dealer_category
 	</select>
 
+
+	<select id="selectByObjectcount" resultType="long">
+		select count(1) from tb_dealer_category
+	</select>
+	
+	<select id="selectByObject" resultType="dms.yijava.entity.dealer.DealerCategory">
+		select * from tb_dealer_category
+	</select>
+
+
 </mapper>
