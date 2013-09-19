@@ -147,6 +147,9 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 	public int updateObject(String postfix_selectmap ,Object o) {		
 		 return getSqlSession().update(entityClass.getSimpleName() + postfix_selectmap, o);  
 	}
-	
+	public int insertObject(String postfix_selectmap ,Object o) {		
+		 return getSqlSession().insert(entityClass.getSimpleName() + postfix_selectmap, o);  
+	}
+
 
 }

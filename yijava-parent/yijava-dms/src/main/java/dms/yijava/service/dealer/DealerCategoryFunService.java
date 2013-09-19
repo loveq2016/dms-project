@@ -13,7 +13,6 @@ import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.dealer.DealerCategoryFunDao;
-import dms.yijava.entity.dealer.DealerCategory;
 import dms.yijava.entity.dealer.DealerCategoryFun;
 
 @Service
@@ -46,6 +45,13 @@ public class DealerCategoryFunService {
 	
 	public void updateEntity(DealerCategoryFun entity) {
 		dealerCategoryFunDao.update( entity);
+	}
+	
+	
+	public List<DealerCategoryFun> getList(String category_id){
+		Map<String,String> parameters = new HashMap<String,String>();
+		parameters.put("category_id", category_id);
+		return dealerCategoryFunDao.find(parameters);
 	}
 	
 

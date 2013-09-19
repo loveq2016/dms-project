@@ -39,8 +39,10 @@
 		data-options="menu:'#mm3',iconCls:'icon-filep'">流程管理</a> 
 	<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
 		data-options="menu:'#mm4',iconCls:'icon-filep'">库存管理</a>
+	<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
+		data-options="menu:'#mm5',iconCls:'icon-filep'">信息查询</a>	
 		<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
-		data-options="menu:'#mm5',iconCls:'icon-filep'">订单管理</a>
+		data-options="menu:'#mm6',iconCls:'icon-filep'">订单管理</a>
 </div>
 <div id="mm1" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
@@ -60,11 +62,9 @@
 	</div>
 </div>
 <div id="mm2" style="width: 100px;">
-
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="医院信息维护" url="hospital/view.jsp">医院信息维护</a>
 	</div>
-	
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="经销商基础信息维护" url="dealer/info/view.jsp">经销商基础信息维护</a>
 	</div>
@@ -86,27 +86,18 @@
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="经销商仓库信息维护" url="dealer/storage/view.jsp">经销商仓库信息维护</a>
 	</div>
-	
-	
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="产品信息维护" url="product/view.jsp">产品信息维护</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="产品分类维护" url="productCategory/view.jsp">产品分类维护</a>
 	</div>
-	
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="销售人员与经销商关系维护" url="userSales/user/view.jsp">销售人员与经销商关系维护</a>
 	</div>
-
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="销售人员与医院关系维护" url="userSales/hospital/view.jsp">销售人员与医院关系维护</a>
 	</div>
-
-
-
-
-
 </div>
 <div id="mm3" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
@@ -123,11 +114,19 @@
 </div>
 <div id="mm4" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="用户管理" url="storage/view.jsp">仓库维护</a>
+		<a href="javascript:void(0)" title="仓库维护" url="storage/view.jsp">仓库维护</a>
 	</div>
 </div>
 <div id="mm5" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="用户管理" url="order/view.jsp">订单管理</a>
+		<a href="javascript:void(0)" title="问题列表" url="question/view.jsp">问题列表</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="公告维护" url="notice/view.jsp">公告维护</a>
+	</div>
+</div>
+<div id="mm6" style="width: 150px;">
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="订单管理" url="order/view.jsp">订单管理</a>
 	</div>
 </div>

@@ -44,4 +44,9 @@
 	 update tb_dealer set  category_id=#{category_id} where dealer_id = #{dealer_id}
 </update>
 
+
+	<select id="selectByMap" resultType="dms.yijava.entity.dealer.DealerCategoryFun">
+		select dealer_id  from  tb_dealer where category_id=#{category_id}
+	</select>
+
 </mapper>
