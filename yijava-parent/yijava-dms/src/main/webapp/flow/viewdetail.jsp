@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>	
-s
+
 <%@include file="/common/base.jsp"%>
 		<div id="p" class="easyui-panel" title="">
 			<div style="margin: 10px 0;"></div>
@@ -53,7 +53,9 @@ s
 		                                textField:'name',  
 		                                data:step_type,  
 		                               required:true  
-		                            } }">处理类型</th>					
+		                            } }">处理类型</th>	
+		                        
+		                         <th data-options="field:'dd',width:100,formatter:formatterUserInfo">查看处理部门</th>				
 							</tr>
 						</thead>
 					</table>
@@ -64,7 +66,9 @@ s
 
 
 			<div style="margin: 10px 0;"></div>
-
+			<div id="step_dep" title="流程设计-节点处理人" style="top:10px;padding:1px;width:780px;height:590px;" title="Modal Window">
+				<!-- <div id="test" class="easyui-window" data-options="closed:true,modal:true,title:'Test Window'" style="width:300px;height:100px;"> -->
+			    </div>
 			<script language="javascript">
 			var step_type = [  
 	           {typeid:'1',name:'顺序处理'},  
@@ -205,4 +209,24 @@ s
 					}
 					
 				}
+			 
+			 
+			 function formatterUserInfo (value, row, index) { 
+				 return '<span style="color:red" onclick="viewcheckdep(' + row.step_id + ');">查看处理部门 </span>'; 
+			} 
+			 
+			 function viewcheckdep(t)
+			 {
+				 $("#step_dep").window({
+		               width: 480,
+		               modal: true,
+		               height: 490,
+		               closable:true,
+		               minimizable:false,
+		               maximizable:false,
+		               zIndex:9999,
+		               collapsible:false
+		              });
+		    	 $('#step_dep').load(basePath+'/web/flow/step_dep/view?step_id='+t); 
+			 }
 			</script>

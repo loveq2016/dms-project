@@ -38,7 +38,6 @@ public class SysRoleController {
 	@ResponseBody
 	@RequestMapping("list")
 	public List<SysRole> getList(){
-		List list=sysRoleService.getList();
 		return sysRoleService.getList();
 	}
 	

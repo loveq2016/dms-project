@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FlowRecord">
+
+    <select id="selectByMap" resultType="dms.yijava.entity.flow.FlowRecord">
+		select * from dms.tb_flow_record where bussiness_id = #{bussiness_id}
+	</select>
+	<insert id="insert" parameterType="dms.yijava.entity.flow.FlowRecord">     
+    	  insert into dms.tb_flow_record(flow_id,bussiness_id,title,send_id,send_time,check_id,
+    	  check_time,check_department_id,status,check_reason,is_delete,create_time,remark,ext1,ext2,ext3)
+    	  values(#{flow_id},#{bussiness_id},#{title},#{send_id},#{send_time},#{check_id},#{check_time},#{check_department_id},
+    	  ,#{status},#{check_reason},#{is_delete},#{create_time},#{remark},#{ext1},#{ext2},#{ext3})
+    </insert>
+    <update id="update" parameterType="dms.yijava.entity.flow.FlowRecord">
+    	update dms.tb_flow_record set send_id=#{send_id},send_time=#{send_time},check_id=#{check_id},
+    	check_time=#{check_time},check_department_id=#{check_department_id},status=#{status},check_reason=#{check_reason},create_time=#{create_time},
+    	ext1=#{ext1},ext2=#{ext2},ext3=#{ext3} where flow_id=#{flow_id},bussiness_id=#{bussiness_id}
+    </update>
+    <update id="delete" parameterType="dms.yijava.entity.flow.FlowRecord">
+   	 	update dms.tb_flow_record set is_delete=1 where flow_id=#{flow_id},bussiness_id=#{bussiness_id}  		
+	</update>
+</mapper>

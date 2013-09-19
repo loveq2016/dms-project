@@ -82,4 +82,14 @@ public class SysUserService {
 	public void deleteEntity(String id) {
 		sysUserDao.removeById(id);
 	}
+	
+	/**
+	 * 查询用户信息根据部门ID
+	 * @return
+	 */
+	public List<SysUser> getListByDepartmentId(String id){
+		HashMap<String,String> parameters = new HashMap<String,String>();
+		parameters.put("fk_department_id", id);
+		return sysUserDao.find(parameters);
+	}
 }

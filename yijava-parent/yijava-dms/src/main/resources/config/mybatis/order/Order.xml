@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Order">
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
+				  and dealer_id=#{dealer_id}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(order_code)">
+				  and order_code=#{order_code}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(order_status)">
+				  and order_status=#{order_status}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(start_date)">
+				 <![CDATA[ and order_date > #{start_date} ]]>
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(end_date)">
+				  <![CDATA[ and order_date < #{end_date} ]]>
+			</if>
+		</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>
+		    <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+		         ORDER BY ${orderSql}
+		    </when>
+		    <otherwise> 
+            </otherwise>
+	    </choose>
+	</sql>
+    <select id="selectByObjectcount" resultType="long">
+		SELECT COUNT(*) FROM(select t.*,d.dealer_name,d.business_contacts,d.business_phone,d.addess,
+		da.linkman as receive_linkman,da.linkphone as receive_linkphone,da.postcode as receive_postcode,da.address as receive_addess from tb_order t 
+		LEFT JOIN tb_dealer d ON t.dealer_id=d.dealer_id 
+		LEFT JOIN tb_dealer_address da ON t.dealer_address_id=da.id) t 
+		<include refid="adsWhere"/>
+	</select>
+ 	<select id="selectByObject" resultType="dms.yijava.entity.order.Order">
+		SELECT * FROM(select t.*,d.dealer_name,d.business_contacts,d.business_phone,d.addess,
+		da.linkman as receive_linkman,da.linkphone as receive_linkphone,da.postcode as receive_postcode,da.address as receive_addess from tb_order t 
+		LEFT JOIN tb_dealer d ON t.dealer_id=d.dealer_id 
+		LEFT JOIN tb_dealer_address da ON t.dealer_address_id=da.id) t 
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}
+	</select>	
+    <select id="selectByMap" resultType="dms.yijava.entity.order.Order">
+		select * from dms.tb_order where order_code = #{order_code}
+	</select>
+	<select id="selectOrderNum" resultType="dms.yijava.entity.order.Order">
+		select max(order_no) as order_no from dms.tb_order WHERE last_time between CURDATE() AND CONCAT(CURDATE(),' 23:59:59')
+	</select>
+	<insert id="insert" parameterType="dms.yijava.entity.order.Order">     
+    	  insert into dms.tb_order(dealer_id,order_code,order_date,dealer_address_id,last_time)
+    	  values(#{dealer_id},#{order_code},NOW(),#{dealer_address_id},NOW())
+    </insert>
+     <update id="updateAddress" parameterType="dms.yijava.entity.order.Order">
+    	update dms.tb_order set dealer_address_id=#{dealer_address_id} where order_code=#{order_code}
+    </update>
+    <update id="updateStatus" parameterType="dms.yijava.entity.order.Order">
+    	update dms.tb_order set order_status=#{order_status} where order_code=#{order_code}
+    </update>
+     <update id="updateMoneyNum" parameterType="dms.yijava.entity.order.Order">
+    	update dms.tb_order set order_money_sum=#{order_money_sum},order_number_sum=#{order_number_sum} where order_code=#{order_code}
+    </update>
+	<delete id="deleteByPrimaryKey" parameterType="int">
+   		 delete from dms.tb_order where order_code=#{order_code}
+    </delete>
+</mapper>
