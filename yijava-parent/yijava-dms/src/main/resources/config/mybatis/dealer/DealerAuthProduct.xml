@@ -39,7 +39,14 @@
 	limit #{offset},#{pagesize}
 </select>
 	
-
+<select id="selectByMap" resultType="dms.yijava.entity.dealer.DealerAuthProduct">
+	select * from (
+	  	select t1.dealer_id,t1.product_category_id,t2.category_name 
+	  	from dms.tb_dealer_auth_product t1 inner join dms.tb_product_category t2 
+  		on t1.product_category_id = t2.id
+	)t where dealer_id=#{dealer_id}
+</select>
+	
 	
 <insert id="insert" parameterType="dms.yijava.entity.dealer.DealerAuthProduct">
 	insert into tb_dealer_auth_product (dealer_id,product_category_id,product_remark,area_remark,status) 

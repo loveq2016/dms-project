@@ -33,6 +33,7 @@ public class ProductController {
 	@RequestMapping("paging")
 	public JsonPage<Product> paging(PageRequest pageRequest,HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
+		filters.add(PropertyFilters.build("ANDS_dealer_id", "9"));
 		return productService.paging(pageRequest,filters);
 	}
 

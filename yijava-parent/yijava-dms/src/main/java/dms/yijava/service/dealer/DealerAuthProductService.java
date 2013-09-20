@@ -35,6 +35,13 @@ public class DealerAuthProductService {
 	}
 	
 	
+	public List<DealerAuthProduct> getList(String dealer_id){
+		HashMap<String,String> parameters = new HashMap<String,String>();
+		parameters.put("dealer_id", dealer_id);
+		return dealerAuthProductDao.find(parameters);
+	}
+	
+	
 	public DealerAuthProduct getEntity(String id) {
 		return dealerAuthProductDao.get(id);
 	}
