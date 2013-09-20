@@ -21,5 +21,7 @@ public class Product {
 	private String category_id;
 	private String category_name;
 	
+	private String discount;
+	
 
 }

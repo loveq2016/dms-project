@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Question">
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(q_text)">
+				and q_text like CONCAT('%','${q_text}','%' ) 
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">
+				and dealer_name like CONCAT('%','${dealer_name}','%' ) 
+			</if>			
+		</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>
+		    <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+		         ORDER BY ${orderSql}
+		    </when>
+	    </choose>
+	</sql>
+    <select id="selectByObjectcount" resultType="long">
+		select count(1) from (
+			select id,q_text,q_date,a_text,t1.dealer_id,t2.dealer_name 
+			from dms.tb_question t1 left join dms.tb_dealer t2 on t1.dealer_id = t2.dealer_id
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">where t1.dealer_id = #{dealer_id}</if>
+		) t 
+		<include refid="adsWhere"/>
+	</select>
+ 	<select id="selectByObject" resultType="dms.yijava.entity.question.Question">
+ 	
+		select * from (
+			select id,q_text,q_date,a_text,t1.dealer_id,t2.dealer_name 
+			from dms.tb_question t1 left join dms.tb_dealer t2 on t1.dealer_id = t2.dealer_id
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">where t1.dealer_id = #{dealer_id}</if>
+		) t 
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}
+	</select>
+	<insert id="insert" parameterType="dms.yijava.entity.question.Question">     
+		insert into dms.tb_question(q_text,dealer_id,q_date) values(#{q_text},#{dealer_id},NOW());
+	</insert>
+    <update id="update" parameterType="dms.yijava.entity.question.Question">
+    	update dms.tb_question set q_text=#{q_text},q_date=NOW() where id=#{id}
+    </update>
+    <update id="updateQuestion" parameterType="dms.yijava.entity.question.Question">
+    	update dms.tb_question set a_text=#{a_text},user_id=#{user_id},a_date=NOW() where id=#{id}
+    </update>
+
+
+
+
+
+</mapper>

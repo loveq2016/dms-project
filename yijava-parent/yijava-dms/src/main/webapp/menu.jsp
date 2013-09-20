@@ -30,7 +30,7 @@
 </c:forEach>
 <a href="${basePath}api/sys/logout">退出</a>
 -->
-<div style="padding: 5px; width: 600px;">
+<div style="padding: 5px; width: 1000px;">
 	<a href="javascript:void(0)" id="mb1" class="easyui-menubutton"
 		data-options="menu:'#mm1',iconCls:'icon-filep'">系统管理</a>
 	<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
@@ -119,7 +119,10 @@
 </div>
 <div id="mm5" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="问题列表" url="question/view.jsp">问题列表</a>
+		<a href="javascript:void(0)" title="经销商问题列表" url="question/dealer_view.jsp">经销商问题列表</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="问题列表" url="question/view.jsp">管理员问题列表</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="公告维护" url="notice/view.jsp">公告维护</a>

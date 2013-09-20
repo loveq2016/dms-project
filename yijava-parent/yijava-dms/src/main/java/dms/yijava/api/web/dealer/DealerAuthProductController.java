@@ -18,6 +18,7 @@ import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.dealer.DealerAuthProduct;
+import dms.yijava.entity.dealer.DealerCategory;
 import dms.yijava.service.dealer.DealerAuthProductService;
 
 @Controller
@@ -34,6 +35,13 @@ public class DealerAuthProductController {
 	public JsonPage<DealerAuthProduct> paging(PageRequest pageRequest,HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
 		return dealerAuthProductService.paging(pageRequest,filters);
+	}
+	
+	@ResponseBody
+	@RequestMapping("list")
+	public List<DealerAuthProduct> list(
+			@RequestParam(value = "dealer_id", required = false) String dealer_id) {
+		return dealerAuthProductService.getList(dealer_id);
 	}
 	
 	
