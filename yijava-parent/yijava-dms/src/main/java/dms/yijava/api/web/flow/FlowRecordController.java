@@ -20,49 +20,78 @@ import dms.yijava.service.flow.FlowRecordService;
 @RequestMapping("/api/flowrecord")
 public class FlowRecordController {
 
-	private static final Logger logger = LoggerFactory.getLogger(FlowRecordController.class);
-	
-	
+	private static final Logger logger = LoggerFactory
+			.getLogger(FlowRecordController.class);
+
 	@Autowired
 	private FlowRecordService flowRecordService;
-	
-	
+
 	@ResponseBody
 	@RequestMapping("list")
-	public List<FlowRecord> getList(@RequestParam(value = "id", required = false) String id){
-		return flowRecordService.getList(id);
+	public List<FlowRecord> getList(
+			@RequestParam(value = "bussiness_id", required = false) String bussiness_id,
+			@RequestParam(value = "flow_id", required = false) String flow_id,
+			@RequestParam(value = "check_id", required = false) String check_id,
+			@RequestParam(value = "status", required = false) String status) {
+		
+		status="0";	
+		return flowRecordService.getRequetCheck(bussiness_id,flow_id,check_id,status);
 	}
-	
-	
+
 	@ResponseBody
 	@RequestMapping("save")
 	public Result<Integer> save(@ModelAttribute("entity") FlowRecord entity) {
 		try {
 			flowRecordService.saveEntity(entity);
 		} catch (Exception e) {
-			logger.error("error"+e);
+			logger.error("error" + e);
 		}
 		return new Result<Integer>(1, 1);
 	}
-	
+
+	@ResponseBody
+	@RequestMapping("savetest")
+	public Result<Integer> saveByFlow(
+			@RequestParam(value = "flow_id", required = false) String flow_id) {
+		try {
+			flowRecordService.saveFlowByFlowAndStep(flow_id, "0");
+		} catch (Exception e) {
+			logger.error("error" + e);
+		}
+		return new Result<Integer>(1, 1);
+	}
+
+	@ResponseBody
+	@RequestMapping("updatetest")
+	public Result<Integer> updateByFlow(
+			@RequestParam(value = "record_id", required = false) String record_id,
+			@RequestParam(value = "bussiness_id", required = false) String bussiness_id) {
+		try {
+			flowRecordService.updateFlowByFlowAndStep(record_id, bussiness_id);
+		} catch (Exception e) {
+			logger.error("error" + e);
+		}
+		return new Result<Integer>(1, 1);
+	}
+
 	@ResponseBody
 	@RequestMapping("update")
 	public Result<Integer> update(@ModelAttribute("entity") FlowRecord entity) {
 		try {
 			flowRecordService.updateEntity(entity);
 		} catch (Exception e) {
-			logger.error("error"+e);
+			logger.error("error" + e);
 		}
 		return new Result<Integer>(1, 1);
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("remove")
 	public Result<Integer> remove(@ModelAttribute("entity") FlowRecord entity) {
 		try {
 			flowRecordService.removeEntity(entity);
 		} catch (Exception e) {
-			logger.error("error"+e);
+			logger.error("error" + e);
 		}
 		return new Result<Integer>(1, 1);
 	}
