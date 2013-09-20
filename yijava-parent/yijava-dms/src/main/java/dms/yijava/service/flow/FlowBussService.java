@@ -147,18 +147,18 @@ public class FlowBussService {
 	 * 退回
 	 * @return
 	 */
-	public boolean rejectFlowStep(String flow_id,String send_Userid,String descTitle,String bussiness_id,String remark)
+	public boolean rejectFlowStep(String flow_id,String send_Userid,String check_userid,String descTitle,String bussiness_id,String remark)
 	{
 		boolean save_status=false;
 		//首先查找步骤记录
-		//List<FlowRecord> flowRecord=flowRecordService.getRequetCheck(bussiness_id,flow_id,check_id,status);
+		List<FlowRecord> flowRecord=flowRecordService.getRequetCheck(bussiness_id,flow_id,check_userid,"0");
 		
 		//更新本步骤的状态
 		FlowRecord entity=new FlowRecord();
-		entity.setRecord_id("2");
-		entity.setStatus("1");
+		entity.setRecord_id(flowRecord.get(0).getRecord_id());
+		entity.setStatus("2");
 		entity.setCheck_time(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-		entity.setCheck_reason("同意");
+		entity.setCheck_reason(remark);
 		
 		
 		try {
