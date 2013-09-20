@@ -80,8 +80,9 @@
 
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" title="查询结果" style="height:330px" url="${basePath}api/order/paging" method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="id" pagination="true" iconCls="icon-search" sortOrder="asc" toolbar="#tb">
+				<table id="dg" title="查询结果" style="height:300px" url="${basePath}api/order/paging" method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="id" pagination="true" 
+					iconCls="icon-search" sortOrder="asc" toolbar="#tbOrder" data-options="onClickRow:onClickOrderRow">
 					<thead>
 						<tr>
 							<th data-options="field:'id',width:240,align:'center'" hidden="true">id</th>
@@ -90,7 +91,6 @@
 							<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">总数量</th>
 							<th data-options="field:'order_money_sum',width:80,align:'center'" sortable="true">总金额</th>
 							<th data-options="field:'order_status',width:80,align:'center'" formatter="formatterStatus" sortable="true">状态</th>
-							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterProduct">产品</th>
 							<th data-options="field:'order_date',width:150,align:'center'" sortable="true">下单时间</th>
 							<th data-options="field:'dealer_address_id',width:60" hidden="true"></th>
 							<th data-options="field:'receive_linkman',width:60" hidden="true"></th>
@@ -99,10 +99,34 @@
 					</thead>
 				</table>
 			</div>
-			<div id="tb">
+			<div id="tbOrder">
 				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
 				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntity()">编辑</a>
         		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
+			</div>
+			<div style="margin: 10px 0;"></div>
+			<div style="margin: 10px 0;"></div>
+			<div style="padding-left: 10px; padding-right: 10px">
+				<table id="dgDetail" class="easyui-datagrid" title="包含产品" style="height: 300px" method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbOrderDetail">
+					<thead>
+						<tr>
+							<th data-options="field:'product_item_number',width:100,align:'center'" sortable="true">产品编码</th>
+							<th data-options="field:'product_name',width:200,align:'center'" sortable="true">产品名称</th>
+							<th data-options="field:'models',width:60,align:'center'" sortable="true">产品规格</th>
+							<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">数量</th>
+							<th data-options="field:'order_price',width:80,align:'center'" sortable="true">订购价格</th>
+							<th data-options="field:'order_money_sum',width:80,align:'center'" sortable="true">小计</th>
+							<th data-options="field:'discount',width:80,align:'center'" sortable="true">折扣</th>
+							<th data-options="field:'delivery_sum',width:80,align:'center'" sortable="true">发货数量</th>
+							<th data-options="field:'plan_send_date',width:150,align:'center'" sortable="true">预计发货日期</th>
+						</tr>
+					</thead>
+				</table>
+				<div id="tbOrderDetail">    
+				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="saveOrderDetail" onclick="newOrderDetailEntity();">添加产品</a>    
+				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="delOrderDetail" onclick="removeOrderDetailEntity();">删除产品</a>    
+				</div> 	
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
@@ -148,9 +172,105 @@
 				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="$('#w').window('close')">取消</a>					   
 			</div>
 		</div>
+		<div id="dlgOrderDetail" class="easyui-dialog" style="width:800px;height:495px;padding:5px 5px 5px 5px;"
+            modal="true" closed="true" buttons="#dlgOrderDetail-buttons">
+				<div class="easyui-panel" title="查询条件" style="width:775px;">
+						<div style="padding: 10px 0 0 60px">
+							<form id="ffdetail" method="post">
+								<table>
+									<tr>
+										<td>产品编号:</td>	
+										<td width="100px"><input class="easyui-validatebox" type="text" name="item_number"></input></td>
+										<td>选择分类:</td>
+										<td>
+						                <input id="cc" name="category_id" class="easyui-combotree"  value=""  required="true" editable="false" style="width:200px;"
+						                	data-options="
+						                			url: '${basePath}api/dealerAuthProduct/list?dealer_id=${user.fk_dealer_id}',
+													method: 'get',
+													lines: true,
+													onClick : function(node){
+													    var tree = $(this).tree;  
+														isLeaf = tree('isLeaf', node.target);
+														if(!isLeaf){
+															$('#cc').combotree('clear');
+														}else{
+															$('#cc').combotree('setValue', node.id);  
+														}	
+							            			}">  
+					                	</td>
+									</tr>
+								</table>
+							</form>
+						</div>
+						<div style="text-align: right; padding:5px">
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearchProduct()">查询</a>   
+						</div>
+					</div>
+				<div style="margin: 10px 0;"></div>
+					<table id="dgProduct" class="easyui-datagrid" title="查询结果" style="height:300px" url="${basePath}/api/product/paging" method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbProduct">
+						<thead>
+							<tr>
+								<th data-options="field:'item_number',width:100,align:'center'" sortable="true">产品编号</th>
+								<th data-options="field:'cname',width:150,align:'center'" sortable="true">中文名称</th>
+								<th data-options="field:'ename',width:150,align:'center'" sortable="true">英文说明</th>
+								<th data-options="field:'price',width:80,align:'center'" sortable="true">价格</th>
+								<th data-options="field:'discount',width:80,align:'center'" sortable="true">折扣</th>
+								<th data-options="field:'order_company',width:80,align:'center'">订购单位</th>
+								<th data-options="field:'is_order',width:80" formatter="formatterIs_order">是否可订货</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+		<div style="margin: 10px 0;"></div>
+	    <div id="dlgOrderDetail-buttons">
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductNumEntity()">添加产品</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgOrderDetail').dialog('close')">取消</a>
+	    </div>
+		<div id="dlgProductSum" class="easyui-dialog" style="width:300px;height:500px;padding:5px 5px 5px 5px;"
+	            modal="true" closed="true" buttons="#dlgProductSum-buttons">
+		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
+		        	<input type="hidden" name="id">
+		        	<input type="hidden" name="dealer_id" id="discount_dealer_id">
+					      <table> 
+					    		<tr>
+					             	<td>order_code</td>
+					             	<td><input name="order_code" class="easyui-validatebox" style="width:150px"></td>
+					            </tr>
+					            <tr>
+					             	<td>product_item_number</td>
+					             	<td><input name="product_item_number" class="easyui-validatebox" style="width:150px"></td>
+					            </tr>
+					            <tr>
+					             	<td>product_name</td>
+					             	<td><input name="product_name" class="easyui-validatebox" style="width:150px"></td>
+					            </tr>
+					            <tr>
+					             	<td>order_price</td>
+					             	<td><input name="order_price" class="easyui-validatebox" style="width:150px"></td>
+					            </tr>
+					            <tr>
+					             	<td>discount</td>
+					             	<td><input name="discount" class="easyui-validatebox" value="10" style="width:150px"></td>
+					            </tr>
+						        <tr>
+					             	<td>数量:</td>
+					             	<td><input name="order_number_sum" id="order_number_sum" class="easyui-numberbox" style="width:150px" value="1" required="true"></td>
+					             </tr>
+					      </table>        	
+		        </form>
+	    </div>
+	    <div id="dlgProductSum-buttons">
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveOrderDetailEntity();">保存</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProductSum').dialog('close')">取消</a>
+	    </div>
 	<script type="text/javascript">
+		var order_status;
+		var order_code;
 		$(function() {
 			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
+			pager.pagination();
+			var pager = $('#dgs').datagrid().datagrid('getPager'); // get the pager of datagrid
 			pager.pagination();
 		})
 		function doSearch(){
@@ -161,10 +281,6 @@
 		    	filter_ANDS_start_date: $('input[name=start_date]').val(),
 		    	filter_ANDS_end_date: $('input[name=end_date]').val(),
 		    });
-		}
-		function formatterProduct(value, row, index){
-			//row.order_code
-			return '<span>包含产品</span>';
 		}
 		function formatterStatus(value, row, index){
 			if(value=='0')
@@ -220,14 +336,14 @@
 				$('#w').window('open');
 			}else
 			{
-				$.messager.alert('提示','请选中数据!','warning');
+				$.messager.alert('提示','请选中某个订单!','warning');
 			}
 		}
 		function destroyEntity()
 		{
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
-				if(row.order_status=='0'){
+				if(order_status=='0'){
 				    $.ajax({
 						type : "POST",
 						url :basePath+'api/order/remove?id='+row.order_code,
@@ -248,13 +364,122 @@
 				}
 			}else
 			{
-				$.messager.alert('提示','请选中数据!','warning');
+				$.messager.alert('提示','请选中某个订单!','warning');
 			}
 		}
 		function clearForm(){
 			$('#ffadd').form('clear');
 		}
-		
+		function onClickOrderRow(rowIndex, rowData){
+            $('#dgDetail').datagrid('loadData', {total: 0, rows: [] });
+			order_code = rowData.order_code;
+			order_status=rowData.order_status;
+			$('#dgDetail').datagrid({
+				url : basePath + "api/orderdetail/paging",
+					queryParams: {
+						filter_ANDS_order_code : rowData.order_code
+					}
+			});
+			if(order_status!='0'){
+				$('#saveOrderDetail').linkbutton('disable');
+				$('#delOrderDetail').linkbutton('disable');
+			}else{
+				$('#saveOrderDetail').linkbutton('enable');
+				$('#delOrderDetail').linkbutton('enable');
+			}
+		}
+		//订单项
+		function removeOrderDetailEntity()
+		{
+			var row = $('#dgDetail').datagrid('getSelected');
+			if (row){
+				if(order_status=='0'){
+				    $.ajax({
+						type : "POST",
+						url :basePath+'api/orderdetail/remove?id='+row.id,
+						error : function(request) {
+							$.messager.alert('提示','抱歉,删除错误!','error');	
+						},
+						success:function(msg){
+						    var jsonobj = $.parseJSON(msg);
+        					if (jsonobj.state == 1) {
+        	                     $('#dgDetail').datagrid('reload');
+        	                     $('#dg').datagrid('reload');
+        					}else{
+        						$.messager.alert('提示','抱歉,删除错误!','error');	
+        					}
+						}
+					});
+				}else{
+					$.messager.alert('提示','无法删除已提交的订单!','error');
+				}
+			}else
+			{
+				$.messager.alert('提示','请选中某个产品!','warning');
+			}
+		}
+		function newOrderDetailEntity()
+		{
+			if(typeof(order_code) != "undefined"){
+				$('#dlgOrderDetail').dialog('open').dialog('setTitle','选择产品列表');
+				url =basePath+'api/orderdetail/save';
+				$('#dlgOrderDetail').window('open');
+			}else
+			{
+				$.messager.alert('提示','请选中某个订单!','warning');
+			}
+		}		
+		function newProductNumEntity() {
+			$('#order_number_sum').val('1');
+			var row = $('#dgProduct').datagrid('getSelected');
+			if(row){
+				$("#fm3 input[name=order_code]").val(order_code);
+				$("#fm3 input[name=product_item_number]").val(row.item_number);
+				$("#fm3 input[name=product_name]").val(row.cname);
+				$("#fm3 input[name=order_price]").val(row.price);
+				$("#fm3 input[name=discount]").val(row.discount);
+				
+				$('#dlgProductSum').dialog('open').dialog('setTitle','添加产品数量');
+			}else
+			{
+				$.messager.alert('提示','请选中某个产品!','warning');
+			}
+		}
+		function saveOrderDetailEntity(){
+			var row = $('#dgProduct').datagrid('getSelected');
+			if(row){
+				$('#fm3').form('submit', {
+					url :basePath+'api/orderdetail/save',
+				    method:"post",
+				    onSubmit: function(){
+				        return $(this).form('validate');;
+				    },
+				    success:function(msg){
+				    	var jsonobj = $.parseJSON(msg);
+				    	if(jsonobj.state==1){
+							 $('#dlgProductSum').dialog('close');     
+		                     $('#dgDetail').datagrid('reload');
+		                     $('#dg').datagrid('reload');
+				    	}else{
+				    		$.messager.alert('提示','Error!','error');	
+				    	}
+				    }		
+				});					
+			}else
+			{
+				$.messager.alert('提示','请选中某个产品!','warning');
+			}
+		}
+		function doSearchProduct(){
+		    $('#dgProduct').datagrid('load',{
+		    	filter_ANDS_product_name: $('input[name=product_name]').val(),
+		    	filter_ANDS_dealer_id: $('input[name=dealer_id]').val(),
+		    	filter_ANDS_category_id: $('input[name=category_id]').val()
+		    });
+		}
+		function formatterIs_order (value, row, index) { 
+			return value==1?"<span style='color:green'>是</span>":"<span style='color:red'>否</span>";
+		} 
 	</script>
 </body>
 </html>

@@ -8,6 +8,9 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(product_name)">
 				  and product_name=#{product_name}
 			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(order_code)">
+				  and order_code=#{order_code}
+			</if>
 		</trim>
 	</sql>
 	<sql id="adsOrder">
@@ -15,16 +18,16 @@
 		    <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
 		         ORDER BY ${orderSql}
 		    </when>
-		    <otherwise> 
+		    <otherwise>
             </otherwise>
 	    </choose>
 	</sql>
     <select id="selectByObjectcount" resultType="long">
-		select id,order_id,product_item_number,product_name,models,order_number_sum,order_price,order_money_sum,discount,delivery_sum,remark,plan_send_date,last_time from tb_order_detail t
+		select COUNT(*) from tb_order_detail t
 		<include refid="adsWhere"/>
 	</select>
  	<select id="selectByObject" resultType="dms.yijava.entity.order.OrderDetail">
-		select id,order_id,product_item_number,product_name,models,order_number_sum,order_price,order_money_sum,discount,delivery_sum,remark,plan_send_date,last_time from tb_order_detail t
+		select id,order_code,product_item_number,product_name,models,order_number_sum,order_price,order_money_sum,discount,delivery_sum,remark,plan_send_date,last_time from tb_order_detail t
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
 	    limit #{offset},#{pagesize}
@@ -33,10 +36,10 @@
 		select * from dms.tb_order_detail where order_code = #{order_code}
 	</select>
 	<insert id="insert" parameterType="dms.yijava.entity.order.OrderDetail">     
-    	  insert into dms.tb_order_detail(order_id,product_item_number,product_name,models,order_number_sum,order_price,order_money_sum,discount,remark,plan_send_date,last_time)
-    	  values(#{order_id},#{product_item_number},#{product_name},#{models},#{order_number_sum},#{order_price},#{},#{order_money_sum},#{discount},#{plan_send_date},NOW())
+    	  insert into dms.tb_order_detail(order_code,product_item_number,product_name,models,order_number_sum,order_price,order_money_sum,discount,remark,plan_send_date,last_time)
+    	  values(#{order_code},#{product_item_number},#{product_name},#{models},#{order_number_sum},#{order_price},#{order_money_sum},#{discount},#{remark},#{plan_send_date},NOW())
     </insert>
 	<delete id="deleteByPrimaryKey" parameterType="int">
-   		 delete from dms.tb_order_detail where product_item_number=#{product_item_number}
+   		 delete from dms.tb_order_detail where id=#{id}
     </delete>
 </mapper>

@@ -49,7 +49,7 @@ public class OrderDetailService {
 		orderDetailDao.insert(entity);
 	}
 	
-	public void removeEntity(OrderDetail entity) {
-		orderDetailDao.remove( entity);
+	public void removeEntity(String id) {
+		orderDetailDao.removeById(id);
 	}
 }

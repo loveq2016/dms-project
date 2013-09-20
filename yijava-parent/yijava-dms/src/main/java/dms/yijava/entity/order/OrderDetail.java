@@ -8,7 +8,7 @@ import dms.yijava.entity.flow.FlowRecord;
 @NoArgsConstructor
 public class OrderDetail {
 	public String id;
-	public String order_id;
+	public String order_code;
 	public String product_item_number;
 	public String product_name;
 	public String models;
