@@ -79,7 +79,7 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" title="查询结果" style="height:300px" url="${basePath}api/order/paging" method="get"
+				<table id="dg" title="查询结果" style="height:370px" url="${basePath}api/order/paging" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" pagination="true" 
 					iconCls="icon-search" sortOrder="asc" toolbar="#tbOrder">
 					<thead>
@@ -95,6 +95,10 @@
 							<th data-options="field:'dealer_address_id',width:60" hidden="true"></th>
 							<th data-options="field:'receive_linkman',width:60" hidden="true"></th>
 							<th data-options="field:'receive_linkphone',width:60" hidden="true"></th>
+							<th data-options="field:'business_contacts',width:60" hidden="true"></th>
+							<th data-options="field:'addess',width:60" hidden="true"></th>
+							<th data-options="field:'business_phone',width:60" hidden="true"></th>
+							<th data-options="field:'receive_postcode',width:60" hidden="true"></th>
 						</tr>
 					</thead>
 				</table>
@@ -147,9 +151,9 @@
 			</div>
 		</div>
 		</div>
-		<div id="dlgOrderDetail" class="easyui-dialog" title="订单明细" style="width:950px;height:575px;padding:5px 5px 5px 5px;"
+		<div id="dlgOrderDetail" class="easyui-dialog" title="订单明细" style="width:950px;height:545px;padding:5px 5px 5px 5px;"
             modal="true" closed="true">
-            <div class="easyui-panel" title="查询条件" style="width:925px;" style="margin: 10px 0;">
+            <div class="easyui-panel" style="width:925px;" style="margin: 10px 0;">
 					<form id="ffOrderDetail" method="post">
 							<table>
 								<tr>
@@ -161,7 +165,7 @@
 									</td>
 									<td width="50">状态:</td>
 									<td width="270">				
-										<input name="order_status" disabled="disabled" class="easyui-combobox" data-options="
+										<input name="order_status" readonly="readonly" class="easyui-combobox" data-options="
 											valueField: 'id',
 											textField: 'value',
 											data: [{
@@ -190,19 +194,89 @@
 								</tr>
 								<tr>
 									<td>订单日期:</td>	
-									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="order_code"></input></td>
+									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="order_date"></input></td>
 								</tr>
 							</table>
 					</form>
 			</div>
 			<div style="margin: 10px 0;"></div>
-			<div class="easyui-tabs" style="width:925px;height: auto;">
+			<div class="easyui-tabs" style="width:925px;height:auto;">
          		<div title="表头信息" style="padding: 5px 5px 5px 5px;height:370px">
-					
+         			<form id="ffOrderInfo" method="post">
+	         			<table style="border-collapse:collapse;border: none;">
+	         				<tr style="border-bottom:3px double #D3D3D3;">
+								<td width="80" height="30">订单信息</td>	
+								<td width="200"></td>
+								<td width="80" height="30">经销商信息</td>	
+								<td width="200"></td>	
+								<td width="100" height="30">经销商收货地址</td>	
+								<td width="200"></td>
+							</tr>
+							<tr height="">
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+		         			<tr>
+								<td>金额汇总:</td>	
+								<td><input class="easyui-validatebox" readonly="readonly" type="text" name="order_money_sum"></input></td>
+								<td>联系人:</td>	
+								<td><input class="easyui-validatebox" readonly="readonly" type="text" name="business_contacts"></input></td>
+								<td>收货地址:</td>	
+								<td>
+									<input class="easyui-combobox" readonly="readonly" name="dealer_address_id" style="width:150px" maxLength="100" class="easyui-validatebox" required="true"
+						             			data-options="
+							             			url:'${basePath}api/dealerAddress/list?id=${user.fk_dealer_id}',
+								                    method:'get',
+								                    valueField:'id',
+								                    textField:'address',
+								                    panelHeight:'auto',
+								                    onSelect:function functionS(s){
+														$('#receive_linkman').val(s.linkman);
+														$('#receive_linkphone').val(s.linkphone);
+													}
+						            			">
+								</td>
+							</tr>
+							<tr>
+								<td>数量汇总:</td>
+								<td>
+								    <input class="easyui-validatebox" readonly="readonly" type="text" name="order_number_sum"></input>
+								</td>
+								<td width="20">联系电话:</td>	
+								<td><input class="easyui-validatebox" readonly="readonly" type="text" name="business_phone"></input></td>
+								<td width="20">邮编:</td>	
+								<td><input class="easyui-validatebox" readonly="readonly" type="text" name="receive_postcode"></input></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td>联系地址:</td>	
+								<td><input class="easyui-validatebox" readonly="readonly" type="text" name="addess"></input></td>
+								<td width="20">收货人:</td>
+								<td>
+									<input class="easyui-validatebox" readonly="readonly" name="receive_linkman" id="receive_linkman" value="aa" style="width:150px" maxLength="100">
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td>收货电话:</td>
+								<td>
+									<input class="easyui-validatebox" readonly="readonly" name="receive_linkphone" id="receive_linkphone" style="width:150px" maxLength="100">
+								</td>
+							</tr>
+					</table>
+					</form>
 				</div>
 				<div title="明细行" style="padding: 5px 5px 5px 5px;" >
 					<table id="dgDetail" class="easyui-datagrid" title="订单明细信息" style="height:370px" method="get"
-						singleSelect="true"sortName="id" sortOrder="desc" toolbar="#tbOrderDetail">
+						 rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbOrderDetail">
 						<thead>
 							<tr>
 								<th data-options="field:'product_item_number',width:100,align:'center'" sortable="true">产品编码</th>
@@ -450,6 +524,7 @@
 			$('#dg').datagrid('selectRow',index);
 			var row = $('#dg').datagrid('getSelected');
 			$('#ffOrderDetail').form('load',row);
+			$('#ffOrderInfo').form('load',row);
 			$('#dlgOrderDetail').dialog('open');
             $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
 			order_code = row.order_code;
