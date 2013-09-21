@@ -40,21 +40,18 @@
 	<include refid="adsOrder" />
 	limit #{offset},#{pagesize}
 </select>
-	
 
-	<select id="selectByMap" resultType="dms.yijava.entity.user.UserDealer">
-			select id as user_id,fk_department_id as department_id 
-			from tb_manager_user where fk_department_id in (select id from tb_department where fk_parent_id = #{parent_id} )
-	</select>
-
-
-
+<select id="selectByMap" resultType="dms.yijava.entity.user.UserDealer">
+	select 
+	a.dealer_id,dealer_code,dealer_name,business_contacts,business_phone,b.id,b.user_id 
+	from tb_dealer a inner join tb_user_dealer b on a.dealer_id = b.dealer_id where b.user_id  in (
+		select id from tb_manager_user where fk_department_id in (select id from tb_department where FIND_IN_SET(id, getChildLst(#{parent_id})))
+	)
+</select>
 
 <select id="check_dealer" resultType="dms.yijava.entity.user.UserDealer">
     select dealer_id,user_id from tb_user_dealer where dealer_id=#{dealer_id} and user_id=#{user_id}
 </select>
-
-
 	
 <insert id="insert" parameterType="dms.yijava.entity.user.UserDealer">
 	insert into tb_user_dealer (dealer_id,user_id,last_date) values (#{dealer_id},#{user_id},NOW())

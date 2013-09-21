@@ -49,11 +49,8 @@ public class OrderController {
 	@ResponseBody
 	@RequestMapping("save")
 	public Result<Integer> save(@ModelAttribute("entity") Order entity,HttpServletRequest request) {
-		//SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-		SysUser sysUser=new SysUser();
-		sysUser.setFk_dealer_id("1");//测试
-		sysUser.setDealer_name("经销商1");//测试
 		//必须是经销商才可以添加订单
 		if(StringUtils.isNotEmpty(sysUser.getFk_dealer_id())){
 			Order order=orderService.getOrderNum();
