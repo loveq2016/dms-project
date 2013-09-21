@@ -56,7 +56,6 @@ public class UserDealerFunService {
 		return temList;
 	}
 	
-	
 	public UserDealer checkEntity(UserDealer entity) {
 		return userDealerFunDao.getObject(".check_dealer", entity);
 	}
