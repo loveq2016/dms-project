@@ -35,7 +35,7 @@
 
 			<div style="padding-left: 10px; padding-right: 10px">
 
-				<table id="dg" title="查询结果" style="height: 430px"  method="get"
+				<table id="dg" title="查询结果" style="height: 330px"  method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
@@ -62,7 +62,7 @@
 
    <div id="dlg" class="easyui-dialog" style="width:500px;height:380px;padding:10px 20px"
             modal="true" closed="true" buttons="#dlg-buttons">
-        <form id="fm" method="post" novalidate>
+        <form id="fm" method="post" novalidate enctype="multipart/form-data">
         	<input type="hidden" name="item_number">
              <table>
              	<tr>
