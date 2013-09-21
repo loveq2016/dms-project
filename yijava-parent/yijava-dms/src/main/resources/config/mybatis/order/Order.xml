@@ -26,7 +26,7 @@
 		    <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
 		         ORDER BY ${orderSql}
 		    </when>
-		    <otherwise> 
+		    <otherwise>
             </otherwise>
 	    </choose>
 	</sql>

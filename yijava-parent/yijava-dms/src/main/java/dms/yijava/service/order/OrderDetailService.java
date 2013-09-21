@@ -59,4 +59,8 @@ public class OrderDetailService {
 	public void removeByOrderCodeEntity(String id) {
 		orderDetailDao.removeObject(".deleteByOrderCode",id);
 	}
+	public OrderDetail getOrderDetail(OrderDetail entity) {
+		OrderDetail order=orderDetailDao.getObject(".selectOrderDetail",entity);
+		return order;
+	}
 }

@@ -619,6 +619,8 @@
 							 $('#dlgProductSum').dialog('close');     
 		                     $('#dgDetail').datagrid('reload');
 		                     $('#dg').datagrid('reload');
+				    	}else if(jsonobj.state==2){
+				    		$.messager.alert('提示','不可重复添加一个产品!','error');	
 				    	}else{
 				    		$.messager.alert('提示','Error!','error');	
 				    	}
