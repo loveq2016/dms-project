@@ -22,6 +22,7 @@ import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.order.Order;
 import dms.yijava.entity.system.SysUser;
+import dms.yijava.service.order.OrderDetailService;
 import dms.yijava.service.order.OrderService;
 
 @Controller
@@ -30,7 +31,8 @@ public class OrderController {
 
 	@Autowired
 	private OrderService orderService;
-	
+	@Autowired
+	private OrderDetailService orderDetailService;
 	@ResponseBody
 	@RequestMapping("paging")
 	public JsonPage<Order> paging(PageRequest pageRequest,HttpServletRequest request) {
@@ -83,6 +85,7 @@ public class OrderController {
 	@RequestMapping("remove")
 	public Result<Integer> remove(@RequestParam(value = "id", required = false) String id) {
 		orderService.removeEntity(id);
+		orderDetailService.removeByOrderCodeEntity(id);
 		return new Result<Integer>(1, 1);
 	}
 }

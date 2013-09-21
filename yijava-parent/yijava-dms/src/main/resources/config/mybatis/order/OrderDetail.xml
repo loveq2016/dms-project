@@ -42,4 +42,7 @@
 	<delete id="deleteByPrimaryKey" parameterType="String">
    		 delete from dms.tb_order_detail where id=#{id}
     </delete>
+    <delete id="deleteByOrderCode" parameterType="String">
+   		 delete from dms.tb_order_detail where order_code=#{order_code}
+    </delete>
 </mapper>

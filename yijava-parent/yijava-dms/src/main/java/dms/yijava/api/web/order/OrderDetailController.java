@@ -42,8 +42,9 @@ public class OrderDetailController {
 	
 	@ResponseBody
 	@RequestMapping("list")
-	public List<OrderDetail> getList(){
-		return orderDetailService.getList();
+	public List<OrderDetail> getList(HttpServletRequest request){
+		List<PropertyFilter> filters = PropertyFilters.build(request);
+		return orderDetailService.getList(filters);
 	}
 	
 	@ResponseBody
