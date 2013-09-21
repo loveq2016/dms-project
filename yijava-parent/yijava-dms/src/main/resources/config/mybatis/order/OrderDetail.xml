@@ -39,7 +39,7 @@
     	  insert into dms.tb_order_detail(order_code,product_item_number,product_name,models,order_number_sum,order_price,order_money_sum,discount,remark,plan_send_date,last_time)
     	  values(#{order_code},#{product_item_number},#{product_name},#{models},#{order_number_sum},#{order_price},#{order_money_sum},#{discount},#{remark},#{plan_send_date},NOW())
     </insert>
-	<delete id="deleteByPrimaryKey" parameterType="int">
+	<delete id="deleteByPrimaryKey" parameterType="String">
    		 delete from dms.tb_order_detail where id=#{id}
     </delete>
 </mapper>

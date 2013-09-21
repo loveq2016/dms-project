@@ -18,8 +18,10 @@ import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
+import dms.yijava.entity.order.Order;
 import dms.yijava.entity.order.OrderDetail;
 import dms.yijava.service.order.OrderDetailService;
+import dms.yijava.service.order.OrderService;
 
 @Controller
 @RequestMapping("/api/orderdetail")
@@ -27,6 +29,9 @@ public class OrderDetailController {
 
 	@Autowired
 	private OrderDetailService orderDetailService;
+	
+	@Autowired
+	private OrderService orderService;
 	
 	@ResponseBody
 	@RequestMapping("paging")
@@ -50,14 +55,26 @@ public class OrderDetailController {
 		double m=price*(Integer.parseInt(entity.getOrder_number_sum()))*discount;
 		entity.setOrder_money_sum(df.format(m));
 		orderDetailService.saveEntity(entity);
-		//修改订单总数，共计等，
+		//修改订单总数，共计
+		Order moneyAndNumberObj=orderService.getOrderDetailMoneyAndNumber(entity.getOrder_code());
+		orderService.updateMoneyNum(moneyAndNumberObj);
 		return new Result<Integer>(1, 1);
 	}
 	
 	@ResponseBody
 	@RequestMapping("remove")
-	public Result<Integer> remove(@RequestParam(value = "id", required = false) String id) {
+	public Result<Integer> remove(@RequestParam(value = "oc", required = false) String oc,
+			@RequestParam(value = "id", required = false) String id) {
 		orderDetailService.removeEntity(id);
+		//修改订单总数，共计等
+		Order moneyAndNumberObj=orderService.getOrderDetailMoneyAndNumber(oc);
+		if(null==moneyAndNumberObj){
+			moneyAndNumberObj=new Order();
+			moneyAndNumberObj.setOrder_code(oc);
+			moneyAndNumberObj.setOrder_money_sum("0");
+			moneyAndNumberObj.setOrder_number_sum("0");
+		}
+		orderService.updateMoneyNum(moneyAndNumberObj);
 		return new Result<Integer>(1, 1);
 	}
 }

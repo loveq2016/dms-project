@@ -1,5 +1,8 @@
 package dms.yijava.service.order;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +18,7 @@ import com.yijava.orm.core.PropertyFilter;
 import dms.yijava.dao.order.OrderDao;
 import dms.yijava.entity.flow.FlowRecord;
 import dms.yijava.entity.order.Order;
+import dms.yijava.entity.order.OrderDetail;
 import dms.yijava.entity.system.SysUser;
 
 
@@ -26,11 +30,24 @@ public class OrderService {
 	private OrderDao orderDao;
 	
 	public JsonPage<Order> paging(PageRequest pageRequest,List<PropertyFilter> filters) {
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");         
+
 		Map<String,String> parameters = new HashMap<String,String>();
-		for (PropertyFilter propertyFilter : filters) {
-			String propertyKey = propertyFilter.getPropertyNames()[0];
-			parameters.put(propertyKey, propertyFilter.getMatchValue());
-		}
+		try{
+			for (PropertyFilter propertyFilter : filters) {
+				String propertyKey = propertyFilter.getPropertyNames()[0];
+				String propertyValue = propertyFilter.getMatchValue();
+				String hhmmss="";
+				if(propertyKey.equals("start_date") || propertyKey.equals("end_date")){
+					if(propertyKey.equals("start_date"))
+						hhmmss=" 00:00:00";
+					if(propertyKey.equals("end_date"))
+						hhmmss=" 23:59:59";
+					propertyValue=propertyValue + hhmmss;
+				}
+				parameters.put(propertyKey, propertyValue);
+			}
+		}catch(Exception ex){}
 		return orderDao.getScrollData(parameters, pageRequest.getOffset(),
 				pageRequest.getPageSize(), pageRequest.getOrderBy(),
 				pageRequest.getOrderDir());
@@ -67,5 +84,8 @@ public class OrderService {
 			order.setOrder_no("001");
 		}
 		return order;
+	}
+	public Order getOrderDetailMoneyAndNumber(String o) {
+		return orderDao.getObject(".selectMoneyAndNumber", o);
 	}
 }

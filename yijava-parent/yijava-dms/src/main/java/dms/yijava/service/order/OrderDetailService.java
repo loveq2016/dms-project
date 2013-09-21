@@ -40,7 +40,7 @@ public class OrderDetailService {
 		HashMap<String,String> parameters = new HashMap<String,String>();
 		return orderDetailDao.find(parameters);
 	}
-
+	
 	public OrderDetail getEntity(String id) {
 		return orderDetailDao.get(id);
 	}

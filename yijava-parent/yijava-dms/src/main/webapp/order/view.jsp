@@ -86,8 +86,8 @@
 					<thead>
 						<tr>
 							<th data-options="field:'id',width:240,align:'center'" hidden="true">id</th>
-							<th data-options="field:'dealer_name',width:240,align:'center'" sortable="true">经销商</th>
 							<th data-options="field:'order_code',width:200,align:'center'" sortable="true">订单号</th>
+							<th data-options="field:'dealer_name',width:240,align:'center'" sortable="true">经销商</th>
 							<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">总数量</th>
 							<th data-options="field:'order_money_sum',width:80,align:'center'" sortable="true">总金额</th>
 							<th data-options="field:'order_status',width:80,align:'center'" formatter="formatterStatus" sortable="true">状态</th>
@@ -175,28 +175,22 @@
 		<div id="dlgOrderDetail" class="easyui-dialog" style="width:800px;height:495px;padding:5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlgOrderDetail-buttons">
 				<div class="easyui-panel" title="查询条件" style="width:775px;">
-						<div style="padding: 10px 0 0 60px">
+						<div style="padding: 10px 0 0 30px">
 							<form id="ffdetail" method="post">
 								<table>
 									<tr>
 										<td>产品编号:</td>	
-										<td width="100px"><input class="easyui-validatebox" type="text" name="item_number"></input></td>
+										<td width="100px"><input class="easyui-validatebox" type="text" name="item_number" id="item_number" ></input></td>
 										<td>选择分类:</td>
 										<td>
-						                <input id="cc" name="category_id" class="easyui-combotree"  value=""  required="true" editable="false" style="width:200px;"
-						                	data-options="
-						                			url: '${basePath}api/dealerAuthProduct/list?dealer_id=${user.fk_dealer_id}',
-													method: 'get',
-													lines: true,
-													onClick : function(node){
-													    var tree = $(this).tree;  
-														isLeaf = tree('isLeaf', node.target);
-														if(!isLeaf){
-															$('#cc').combotree('clear');
-														}else{
-															$('#cc').combotree('setValue', node.id);  
-														}	
-							            			}">  
+							            	<input class="easyui-combobox" name="category_id" id="category_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+						             			data-options="
+							             			url: '${basePath}api/dealerAuthProduct/list?dealer_id=${user.fk_dealer_id}',
+								                    method:'get',
+								                    valueField:'product_category_id',
+													textField:'category_name',
+								                    panelHeight:'auto'
+						            			"/>
 					                	</td>
 									</tr>
 								</table>
@@ -207,8 +201,8 @@
 						</div>
 					</div>
 				<div style="margin: 10px 0;"></div>
-					<table id="dgProduct" class="easyui-datagrid" title="查询结果" style="height:300px" url="${basePath}/api/product/paging" method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbProduct">
+					<table id="dgProduct" class="easyui-datagrid" title="查询结果" style="height:300px" method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="desc" toolbar="#tbProduct">
 						<thead>
 							<tr>
 								<th data-options="field:'item_number',width:100,align:'center'" sortable="true">产品编号</th>
@@ -227,35 +221,38 @@
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductNumEntity()">添加产品</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgOrderDetail').dialog('close')">取消</a>
 	    </div>
-		<div id="dlgProductSum" class="easyui-dialog" style="width:300px;height:500px;padding:5px 5px 5px 5px;"
+		<div id="dlgProductSum" class="easyui-dialog" style="width:300px;height:300px;padding:5px 5px 5px 5px;"
 	            modal="true" closed="true" buttons="#dlgProductSum-buttons">
 		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
-		        	<input type="hidden" name="id">
-		        	<input type="hidden" name="dealer_id" id="discount_dealer_id">
 					      <table> 
 					    		<tr>
-					             	<td>order_code</td>
-					             	<td><input name="order_code" class="easyui-validatebox" style="width:150px"></td>
+					             	<td>订单号:</td>
+					             	<td><input name="order_code" readonly="true" class="easyui-validatebox" style="width:150px;"></td>
 					            </tr>
 					            <tr>
-					             	<td>product_item_number</td>
-					             	<td><input name="product_item_number" class="easyui-validatebox" style="width:150px"></td>
+					             	<td>产品编码:</td>
+					             	<td><input name="product_item_number" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
 					            <tr>
-					             	<td>product_name</td>
-					             	<td><input name="product_name" class="easyui-validatebox" style="width:150px"></td>
+					             	<td>产品名称</td>
+					             	<td><input name="product_name" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
 					            <tr>
-					             	<td>order_price</td>
-					             	<td><input name="order_price" class="easyui-validatebox" style="width:150px"></td>
+					             	<td>订购价格</td>
+					             	<td><input name="order_price" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
 					            <tr>
-					             	<td>discount</td>
-					             	<td><input name="discount" class="easyui-validatebox" value="10" style="width:150px"></td>
+					             	<td>折扣</td>
+					             	<td><input name="discount" readonly="true" class="easyui-validatebox" value="10" style="width:150px"></td>
+					            </tr>
+					            <tr>
+					             	<td>小计</td>
+					             	<td><input name="order_money_sum" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
 						        <tr>
 					             	<td>数量:</td>
-					             	<td><input name="order_number_sum" id="order_number_sum" class="easyui-numberbox" style="width:150px" value="1" required="true"></td>
+					             	<td><input name="order_number_sum" id="order_number_sum" class="easyui-numberbox" style="width:150px" 
+									data-options="required:true"></td>
 					             </tr>
 					      </table>        	
 		        </form>
@@ -267,19 +264,25 @@
 	<script type="text/javascript">
 		var order_status;
 		var order_code;
+		var dealer_id=${user.fk_dealer_id};
 		$(function() {
 			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
-			pager.pagination();
-			var pager = $('#dgs').datagrid().datagrid('getPager'); // get the pager of datagrid
-			pager.pagination();
+			pager.pagination();			
+			$("#order_number_sum").keyup(function(){
+		    	var order_price= $('input[name=order_price]').val();
+				var discount= $('input[name=discount]').val();
+				var order_number_sum= $('#order_number_sum').val();
+				var m=order_price*order_number_sum*(discount*0.1);
+				$('input[name=order_money_sum]').val(m.toFixed(2));
+		    });
 		})
 		function doSearch(){
 		    $('#dg').datagrid('load',{
-		    	filter_ANDS_order_code: $('input[name=order_code]').val(),
-		    	filter_ANDS_dealer_id: $('input[name=dealer_id]').val(),
-		    	filter_ANDS_order_status: $('input[name=order_status]').val(),
-		    	filter_ANDS_start_date: $('input[name=start_date]').val(),
-		    	filter_ANDS_end_date: $('input[name=end_date]').val(),
+		    	filter_ANDS_order_code:$('#ff input[name=order_code]').val(),
+		    	filter_ANDS_dealer_id: $('#ff input[name=dealer_id]').val(),
+		    	filter_ANDS_order_status: $('#ff input[name=order_status]').val(),
+		    	filter_ANDS_start_date: $('#ff input[name=start_date]').val(),
+		    	filter_ANDS_end_date: $('#ff input[name=end_date]').val(),
 		    });
 		}
 		function formatterStatus(value, row, index){
@@ -370,15 +373,19 @@
 		function clearForm(){
 			$('#ffadd').form('clear');
 		}
+		function clearOrderDetailForm(){
+			$('#fm3').form('clear');
+		}
 		function onClickOrderRow(rowIndex, rowData){
             $('#dgDetail').datagrid('loadData', {total: 0, rows: [] });
 			order_code = rowData.order_code;
 			order_status=rowData.order_status;
 			$('#dgDetail').datagrid({
 				url : basePath + "api/orderdetail/paging",
-					queryParams: {
-						filter_ANDS_order_code : rowData.order_code
-					}
+				queryParams: {
+					filter_ANDS_order_code : rowData.order_code
+				},
+				title:'['+rowData.order_code+']包含产品'
 			});
 			if(order_status!='0'){
 				$('#saveOrderDetail').linkbutton('disable');
@@ -396,7 +403,7 @@
 				if(order_status=='0'){
 				    $.ajax({
 						type : "POST",
-						url :basePath+'api/orderdetail/remove?id='+row.id,
+						url :basePath+'api/orderdetail/remove?oc='+row.order_code+'&id='+row.id,
 						error : function(request) {
 							$.messager.alert('提示','抱歉,删除错误!','error');	
 						},
@@ -421,16 +428,20 @@
 		function newOrderDetailEntity()
 		{
 			if(typeof(order_code) != "undefined"){
-				$('#dlgOrderDetail').dialog('open').dialog('setTitle','选择产品列表');
-				url =basePath+'api/orderdetail/save';
-				$('#dlgOrderDetail').window('open');
+				$('#dlgOrderDetail').dialog('open').dialog('setTitle','['+order_code+']产品列表');
+				$('#dgProduct').datagrid({
+					 url:basePath+'api/product/paging',
+					 queryParams: {
+						filter_ANDS_dealer_id : dealer_id
+					 }
+				});
 			}else
 			{
 				$.messager.alert('提示','请选中某个订单!','warning');
 			}
 		}		
 		function newProductNumEntity() {
-			$('#order_number_sum').val('1');
+			clearOrderDetailForm();
 			var row = $('#dgProduct').datagrid('getSelected');
 			if(row){
 				$("#fm3 input[name=order_code]").val(order_code);
@@ -439,7 +450,7 @@
 				$("#fm3 input[name=order_price]").val(row.price);
 				$("#fm3 input[name=discount]").val(row.discount);
 				
-				$('#dlgProductSum').dialog('open').dialog('setTitle','添加产品数量');
+				$('#dlgProductSum').dialog('open').dialog('setTitle','添加产品');
 			}else
 			{
 				$.messager.alert('提示','请选中某个产品!','warning');
@@ -452,7 +463,7 @@
 					url :basePath+'api/orderdetail/save',
 				    method:"post",
 				    onSubmit: function(){
-				        return $(this).form('validate');;
+				        return $(this).form('validate');
 				    },
 				    success:function(msg){
 				    	var jsonobj = $.parseJSON(msg);
@@ -472,9 +483,9 @@
 		}
 		function doSearchProduct(){
 		    $('#dgProduct').datagrid('load',{
-		    	filter_ANDS_product_name: $('input[name=product_name]').val(),
-		    	filter_ANDS_dealer_id: $('input[name=dealer_id]').val(),
-		    	filter_ANDS_category_id: $('input[name=category_id]').val()
+		    	filter_ANDS_item_number: $("#ffdetail input[name=item_number]").val(),
+		    	filter_ANDS_dealer_id: dealer_id,
+		    	filter_ANDS_category_id: $("#ffdetail input[name=category_id]").val()
 		    });
 		}
 		function formatterIs_order (value, row, index) { 
