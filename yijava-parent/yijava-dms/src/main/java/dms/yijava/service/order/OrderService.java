@@ -39,9 +39,11 @@ public class OrderService {
 				String propertyValue = propertyFilter.getMatchValue();
 				String hhmmss="";
 				if(propertyKey.equals("start_date") || propertyKey.equals("end_date")){
-					if(propertyKey.equals("start_date"))
+					if(propertyKey.equals("start_date")&&
+							!"".equals(propertyValue))
 						hhmmss=" 00:00:00";
-					if(propertyKey.equals("end_date"))
+					if(propertyKey.equals("end_date")&&
+							!"".equals(propertyValue))
 						hhmmss=" 23:59:59";
 					propertyValue=propertyValue + hhmmss;
 				}

@@ -36,8 +36,12 @@ public class OrderDetailService {
 				pageRequest.getOrderDir());
 	}
 	
-	public List<OrderDetail> getList(){
-		HashMap<String,String> parameters = new HashMap<String,String>();
+	public List<OrderDetail> getList(List<PropertyFilter> filters){
+		Map<String,String> parameters = new HashMap<String,String>();
+		for (PropertyFilter propertyFilter : filters) {
+			String propertyKey = propertyFilter.getPropertyNames()[0];
+			parameters.put(propertyKey, propertyFilter.getMatchValue());
+		}
 		return orderDetailDao.find(parameters);
 	}
 	
@@ -51,5 +55,12 @@ public class OrderDetailService {
 	
 	public void removeEntity(String id) {
 		orderDetailDao.removeById(id);
+	}
+	public void removeByOrderCodeEntity(String id) {
+		orderDetailDao.removeObject(".deleteByOrderCode",id);
+	}
+	public OrderDetail getOrderDetail(OrderDetail entity) {
+		OrderDetail order=orderDetailDao.getObject(".selectOrderDetail",entity);
+		return order;
 	}
 }
