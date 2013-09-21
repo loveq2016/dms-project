@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Trial">
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+
+			<if test="dealer_user_id != null and dealer_user_id != '' ">
+				dealer_user_id = #{dealer_user_id}
+			</if>
+			<if test="hospital_id != null and hospital_id != '' ">
+				hospital_id = #{hospital_id}
+			</if>
+			<if test="(q_start_time != null and q_start_time != '')  and (q_end_time != null and q_end_time != '') ">
+				create_time between  #{q_start_time} and #{q_end_time}
+			</if>
+			<if test="(q_start_time != null and q_start_time != '')  and (q_end_time == null and q_end_time == '') ">				
+				<![CDATA[ create_time >= #q_start_time# ]]>
+			</if>
+			<if test="(q_start_time == null and q_start_time == '')  and (q_end_time != null and q_end_time != '') ">				
+				<![CDATA[ create_time <= #(q_end_time# ]]>
+			</if>
+		</trim>
+	</sql>
+
+	<sql id="adsOrder">
+		order by trial_id desc
+	</sql>
+
+	<select id="selectByObjectcount" resultType="long">
+		select count(*) from tb_trial
+		<include refid="adsWhere" />
+	</select>
+
+	<select id="selectByObject" resultType="dms.yijava.entity.trial.Trial">
+		select * from tb_trial
+		<include refid="adsWhere" />
+		<include refid="adsOrder" />
+		limit #{offset},#{pagesize}
+	</select>
+
+	<select id="select" parameterType="int" resultType="dms.yijava.entity.trial.Trial">
+		select * from tb_trial where trial_id = #{trial_id}
+	</select>
+
+	
+
+	<insert id="insert" parameterType="dms.yijava.entity.trial.Trial">
+		insert into
+		tb_trial(dealer_user_id,region_user_id,company_user_id,hospital_id,reason,trial_num_sum,create_time,status,last_update)
+		values(#{dealer_user_id},#{region_user_id},#{company_user_id},#{hospital_id},#{reason},#{trial_num_sum},#{create_time},#{status},#{last_update})
+	</insert>
+
+	<insert id="update" parameterType="dms.yijava.entity.trial.Trial">
+		update tb_trial
+		<set>
+			<if test="dealer_user_id != null">dealer_user_id=#{dealer_user_id},</if>
+			<if test="region_user_id != null">region_user_id=#{region_user_id},</if>
+			<if test="company_user_id != null">company_user_id=#{company_user_id},</if>
+			<if test="hospital_id != null">hospital_id=#{hospital_id},</if>
+			<if test="reason != null">reason=#{reason},</if>
+			<if test="trial_num_sum != null">trial_num_sum=#{trial_num_sum},</if>
+			<if test="create_time != null">create_time=#{create_time},</if>
+			<if test="status != null">status=#{status},</if>
+			<if test="last_update != null">last_update=#{last_update},</if>
+		</set>
+		where trial_id=#{trial_id}
+	</insert>
+
+	<update id="delete" parameterType="dms.yijava.entity.trial.Trial">
+		delete from tb_trial where trial_id=#{trial_id}
+	</update>
+</mapper>
