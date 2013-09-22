@@ -30,8 +30,7 @@ public class OrderService {
 	private OrderDao orderDao;
 	
 	public JsonPage<Order> paging(PageRequest pageRequest,List<PropertyFilter> filters) {
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");         
-
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Map<String,String> parameters = new HashMap<String,String>();
 		try{
 			for (PropertyFilter propertyFilter : filters) {

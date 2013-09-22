@@ -24,21 +24,22 @@
 	</sql>
     <select id="selectByObjectcount" resultType="long">
 		select COUNT(*) from (
-		select t1.*,t2.delivery_sum,t2.plan_send_date from tb_order_detail t1 
-		left join (
-		  select order_detail_id,sum(deliver_number_sum) as delivery_sum ,max(deliver_date) as plan_send_date 
-		  from dms.tb_delivery_detail  group by order_detail_id) t2 
-		  on t1.id = t2.order_detail_id 
+		SELECT tod.*,sum(tdd.deliver_number_sum) as delivery_sum ,max(tdd.deliver_date) as plan_send_date 
+		FROM tb_order_detail tod LEFT JOIN tb_delivery_detail tdd ON tod.id=tdd.order_detail_id GROUP BY tod.id
 		  ) t 
 		<include refid="adsWhere"/>
 	</select>
- 	<select id="selectByObject" resultType="dms.yijava.entity.order.OrderDetail">
-		select * from (
+ 	<!-- select * from (
 		select t1.*,t2.delivery_sum,t2.plan_send_date from tb_order_detail t1 
 		left join (
 		  select order_detail_id,sum(deliver_number_sum) as delivery_sum ,max(deliver_date) as plan_send_date 
 		  from dms.tb_delivery_detail  group by order_detail_id) t2 
 		  on t1.id = t2.order_detail_id 
+		  ) t  -->
+	<select id="selectByObject" resultType="dms.yijava.entity.order.OrderDetail">
+		select * from (
+		SELECT tod.*,sum(tdd.deliver_number_sum) as delivery_sum ,max(tdd.deliver_date) as plan_send_date 
+		FROM tb_order_detail tod LEFT JOIN tb_delivery_detail tdd ON tod.id=tdd.order_detail_id GROUP BY tod.id
 		  ) t 
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>

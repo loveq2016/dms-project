@@ -7,6 +7,9 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
 				  and dealer_id=#{dealer_id}
 			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)">
+				  and dealer_id in (${dealer_ids})
+			</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(order_code)">
 				  and order_code=#{order_code}
 			</if>
@@ -45,9 +48,9 @@
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
 	    limit #{offset},#{pagesize}
-	</select>	
-    <select id="selectByMap" resultType="dms.yijava.entity.order.Order">
-		select * from dms.tb_order where order_code = #{order_code}
+	</select>
+	<select id="selectByMap" resultType="dms.yijava.entity.order.Order">
+		select * from dms.tb_order where dealer_id = #{dealer_id}
 	</select>
 	<select id="selectOrderNum" resultType="dms.yijava.entity.order.Order">
 		select LPAD(max(order_no)+1,3,0) as order_no from dms.tb_order WHERE last_time between CURDATE() AND CONCAT(CURDATE(),' 23:59:59')

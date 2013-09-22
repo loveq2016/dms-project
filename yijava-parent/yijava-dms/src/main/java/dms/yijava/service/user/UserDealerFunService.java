@@ -15,6 +15,7 @@ import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.user.UserDealerFunDao;
+import dms.yijava.entity.system.SysLogin;
 import dms.yijava.entity.user.UserDealer;
 
 @Service
@@ -48,20 +49,13 @@ public class UserDealerFunService {
 				pageRequest.getOrderDir());
 	}
 	
-	
-	
-	
-	private Set<String> getUserIds(Set<String> userSet,String parent_id){
+	public List<UserDealer> getUserDealerList(String department_id,String user_id){
 		HashMap<String,String> parameters = new HashMap<String,String>();
-		parameters.put("parent_id", parent_id);
+		parameters.put("department_id", department_id);
+		parameters.put("user_id", user_id);
 		List<UserDealer> temList = userDealerFunDao.find(parameters);
-		for (UserDealer userDealer : temList) {
-			userSet.add(userDealer.getUser_id());
-			getUserIds(userSet,userDealer.getDepartment_id());
-		}
-		return userSet;
+		return temList;
 	}
-	
 	
 	public UserDealer checkEntity(UserDealer entity) {
 		return userDealerFunDao.getObject(".check_dealer", entity);

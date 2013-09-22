@@ -116,7 +116,7 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
-		<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:500px;height:336px;padding:10px;">
+		<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:500px;height:350px;padding:10px;">
 			<form id="ffadd" action="" method="post" enctype="multipart/form-data">
 				<table>
 					<tr>
@@ -131,16 +131,22 @@
 								                    panelHeight:'auto'
 						            			">
 						</td>
-						<td>部门:</td>
+						<td>状态:</td>
 						<td>
-							<input class="easyui-combotree" name="fk_department_id" id="fk_department_id" style="width:150px" maxLength="100" class="easyui-validatebox" required="true"
-						             			data-options="
-							             			url:'${basePath}api/department/listByParentId',
-								                    method:'get',
-								                    valueField:'id',
-													textField:'department_name',
-								                    panelHeight:'auto'
-						            			"/>
+							<input name="isdeleted" class="easyui-combobox" data-options="
+									required:true,
+									valueField: 'id',
+									textField: 'value',
+									data: [{
+										id: '0',
+										value: '启用'
+									},{
+										id: '1',
+										value: '禁用'
+									},{
+										id: '2',
+										value: '离职'
+									}]" />
 						</td>
 					</tr>
 					<tr>
@@ -167,32 +173,29 @@
 					<tr>
 						<td>经销商:</td>
 						<td>
-							<input class="easyui-combobox" name="fk_dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox" required="true"
-						             			data-options="
-							             			url:'${basePath}/api/dealer/list',
-								                    method:'get',
-								                    valueField:'dealer_id',
-								                    textField:'dealer_name',
-								                    panelHeight:'auto'
-						            			">
+							<input class="easyui-combobox" name="fk_dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+						             data-options="
+							         url:'${basePath}/api/dealer/list',
+								     method:'get',
+								     valueField:'dealer_id',
+								     textField:'dealer_name',
+								     panelHeight:'auto'
+						            ">
 						</td>
-						<td>用户状态:</td>
-						<td>
-							<input name="isdeleted" class="easyui-combobox" data-options="
-									required:true,
-									valueField: 'id',
-									textField: 'value',
-									data: [{
-										id: '0',
-										value: '启用'
-									},{
-										id: '1',
-										value: '禁用'
-									},{
-										id: '2',
-										value: '离职'
-									}]" />
+						<td>部门:</td>
+						<td><input class="easyui-combotree" name="fk_department_id" id="fk_department_id" style="width:150px" maxLength="100" class="easyui-validatebox" 
+						             data-options="
+							         url:'${basePath}api/department/listByParentId',
+								     method:'get',
+								     valueField:'id',
+									textField:'department_name',
+								    panelHeight:'auto'
+						      "/>
 						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><font color="red">注:部门和经销商必须二选一</font></td>
 					</tr>
 					<tr>
 						<td>生日:</td>

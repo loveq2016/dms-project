@@ -22,8 +22,10 @@ import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.order.Order;
 import dms.yijava.entity.system.SysUser;
+import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.order.OrderDetailService;
 import dms.yijava.service.order.OrderService;
+import dms.yijava.service.user.UserDealerFunService;
 
 @Controller
 @RequestMapping("/api/order")
@@ -33,11 +35,26 @@ public class OrderController {
 	private OrderService orderService;
 	@Autowired
 	private OrderDetailService orderDetailService;
+	
+	@Autowired
+	private UserDealerFunService userDealerFunService;
+	
 	@ResponseBody
 	@RequestMapping("paging")
 	public JsonPage<Order> paging(PageRequest pageRequest,HttpServletRequest request) {
+		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
 		List<PropertyFilter> filters = PropertyFilters.build(request);
-		return orderService.paging(pageRequest,filters);
+		if(null!=sysUser){
+			//经销商
+			if(!StringUtils.equals("0",sysUser.getFk_dealer_id())){
+				filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
+			}else if(!StringUtils.equals("0",sysUser.getFk_department_id())){
+				List<UserDealer> list=userDealerFunService.getUserDealerList(sysUser.getFk_department_id(),sysUser.getId());
+				filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(list)));
+			}
+			return orderService.paging(pageRequest,filters);
+		}
+		return null;
 	}
 	
 	@ResponseBody
@@ -49,11 +66,8 @@ public class OrderController {
 	@ResponseBody
 	@RequestMapping("save")
 	public Result<Integer> save(@ModelAttribute("entity") Order entity,HttpServletRequest request) {
-		//SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-		SysUser sysUser=new SysUser();
-		sysUser.setFk_dealer_id("1");//测试
-		sysUser.setDealer_name("经销商1");//测试
 		//必须是经销商才可以添加订单
 		if(StringUtils.isNotEmpty(sysUser.getFk_dealer_id())){
 			Order order=orderService.getOrderNum();
@@ -87,5 +101,25 @@ public class OrderController {
 		orderService.removeEntity(id);
 		orderDetailService.removeByOrderCodeEntity(id);
 		return new Result<Integer>(1, 1);
+	}
+	
+	/**
+	 * 把一个list转换为String返回过去
+	 */
+	public String listString(List<UserDealer> list) {
+		String listString = "";
+		for (int i = 0; i < list.size(); i++) {
+			try {
+				if (i == list.size() - 1) {
+					UserDealer ud=list.get(i);
+					listString += ud.getDealer_id();
+				} else {
+					UserDealer ud=list.get(i);
+					listString += ud.getDealer_id() + ",";
+				}
+			} catch (Exception e) {
+			}
+		}
+		return listString;
 	}
 }
