@@ -18,7 +18,9 @@ import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
+import dms.yijava.entity.flow.Step;
 import dms.yijava.entity.trial.Trial;
+import dms.yijava.service.flow.FlowBussService;
 import dms.yijava.service.trial.TrialService;
 
 @Controller
@@ -32,6 +34,9 @@ public class TrialController {
 	@Autowired
 	private TrialService trialService;
 
+	@Autowired
+	private FlowBussService flowBussService;
+	
 	@ResponseBody
 	@RequestMapping("paging")
 	public JsonPage<Trial> paging(PageRequest pageRequest,
@@ -48,6 +53,7 @@ public class TrialController {
 			trialService.saveEntity(entity);
 			
 			///以下开始走流程处理
+			processFlow();
 			result.setData(1);
 			result.setState(1);;
 		} catch (Exception e) {
@@ -58,6 +64,13 @@ public class TrialController {
 
 		return result;
 	}
+	
+	public void processFlow()
+	{
+		Step step=flowBussService.getFirstStep("3");
+	}
+	
+	
 
 	@ResponseBody
 	@RequestMapping("update")

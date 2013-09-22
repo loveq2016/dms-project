@@ -53,7 +53,7 @@
 
 	
 
-	<insert id="insert" parameterType="dms.yijava.entity.trial.Trial">
+	<insert id="insert" parameterType="dms.yijava.entity.trial.Trial" useGeneratedKeys="true" keyProperty="trial_id">
 		insert into
 		tb_trial(dealer_user_id,region_user_id,company_user_id,hospital_id,reason,trial_num_sum,create_time,status,last_update)
 		values(#{dealer_user_id},#{region_user_id},#{company_user_id},#{hospital_id},#{reason},#{trial_num_sum},#{create_time},#{status},#{last_update})
