@@ -33,8 +33,15 @@
 		<include refid="adsWhere" />
 	</select>
 
+<!-- 查询试用记录 -->
 	<select id="selectByObject" resultType="dms.yijava.entity.trial.Trial">
-		select * from tb_trial
+		select tb_trial.trial_id,tb_trial.dealer_user_id,tb_dealer.dealer_name,
+		tb_trial.region_user_id,tb_trial.company_user_id,tb_trial.hospital_id,
+		tb_hospital.hospital_name,tb_trial.reason,tb_trial.trial_num_sum,tb_trial.create_time,
+		tb_trial.status,tb_trial.last_update
+		 from tb_trial 
+		left join tb_dealer on tb_trial.dealer_user_id=tb_dealer.dealer_id
+		left join tb_hospital on tb_trial.hospital_id=tb_hospital.id
 		<include refid="adsWhere" />
 		<include refid="adsOrder" />
 		limit #{offset},#{pagesize}

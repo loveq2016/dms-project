@@ -12,42 +12,35 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yijava.orm.core.JsonPage;
-import com.yijava.orm.core.PageRequest;
-import com.yijava.orm.core.PropertyFilter;
-import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
-import dms.yijava.entity.trial.Trial;
-import dms.yijava.service.trial.TrialService;
+import dms.yijava.entity.trial.TrialDetail;
+import dms.yijava.service.trial.TrialDetailService;
 
 @Controller
-@RequestMapping("/api/trial")
-public class TrialController {
+@RequestMapping("/api/trialdetail")
+public class TrialDetailController {
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(TrialController.class);
-	
-	
+			.getLogger(TrialDetailController.class);
+
 	@Autowired
-	private TrialService trialService;
+	private TrialDetailService trialDetailService;
 
 	@ResponseBody
-	@RequestMapping("paging")
-	public JsonPage<Trial> paging(PageRequest pageRequest,
-			HttpServletRequest request) {
-		List<PropertyFilter> filters = PropertyFilters.build(request);
-		return trialService.paging(pageRequest, filters);
+	@RequestMapping("view")
+	public List<TrialDetail> view(String trial_id, HttpServletRequest request) {
+		List<TrialDetail> trialDetail = trialDetailService
+				.getTrialDetailByTrialId(trial_id);
+		return trialDetail;
 	}
-
+	
 	@ResponseBody
 	@RequestMapping("save")
-	public Result<Integer> save(@ModelAttribute("entity") Trial entity) {
+	public Result<Integer> save(@ModelAttribute("entity") TrialDetail entity) {
 		Result<Integer> result=new Result<Integer>(0, 0);
 		try {
-			trialService.saveEntity(entity);
-			
-			///以下开始走流程处理
+			trialDetailService.saveEntity(entity);
 			result.setData(1);
 			result.setState(1);;
 		} catch (Exception e) {
@@ -61,10 +54,24 @@ public class TrialController {
 
 	@ResponseBody
 	@RequestMapping("update")
-	public Result<Integer> update(@ModelAttribute("entity") Trial entity) {
+	public Result<Integer> update(@ModelAttribute("entity") TrialDetail entity) {
 		Result<Integer> result=new Result<Integer>(0, 0);
 		try {
-			trialService.updateEntity(entity);
+			trialDetailService.updateEntity(entity);
+			result.setData(1);
+			result.setState(1);;
+		} catch (Exception e) {
+			logger.error("error" + e);
+		}
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping("delete")
+	public Result<Integer> delete(@ModelAttribute("entity") TrialDetail entity) {
+		Result<Integer> result=new Result<Integer>(0, 0);
+		try {
+			trialDetailService.removeEntity(entity);
 			result.setData(1);
 			result.setState(1);;
 		} catch (Exception e) {

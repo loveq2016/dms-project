@@ -69,12 +69,11 @@
 					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="asc">
 					<thead>
 						<tr>
-							<th data-options="field:'flow_id',width:300"  sortable="true" hidden="true">id</th>
-							<th data-options="field:'flow_name',width:300"  sortable="true">流程名称</th>
-							<th data-options="field:'flow_desc',width:300" sortable="true">流程描述</th>
-							<th data-options="field:'is_system',width:100" sortable="true" formatter="formatterSystem">是否系统流程</th>
-							<th data-options="field:'add_date',width:200">创建日期</th>							
-							<th data-options="field:'dd',width:100" align="center" formatter="formatterInfo">查看详细流程</th>
+							<th data-options="field:'trial_id',width:300"  sortable="true" hidden="true">trial_id</th>
+							<th data-options="field:'dealer_name',width:300"  sortable="true">经销商名称</th>
+							<th data-options="field:'hospital_name',width:300"  sortable="true">医院名称</th>
+							<th data-options="field:'reason',width:300" sortable="true">试用理由</th>							
+							<th data-options="field:'create_time',width:200">申请日期</th>								
 						</tr>
 					</thead>
 				</table>
@@ -84,8 +83,8 @@
 		</div>
 		
 
-		
-	<div id="w" class="easyui-window" title="申请试用" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
+	<!--add start -->	
+	<div id="dlg" class="easyui-dialog" title="申请试用" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
 	style="width:720px;height:500px;padding:10px;">
 	
 	
@@ -95,7 +94,13 @@
 								<table>
 									<tr>
 										<td>试用医院:</td>
-										<td><input  style="width:260px;" type="text" name="flow_name" data-options="required:true"></input></td>								
+										<td>
+										<input  style="width:260px;" class="easyui-validatebox" type="text" name="hospital_id" data-options="required:true"></input></td>								
+									</tr>
+									<tr>
+										<td>经销商:</td>
+										<td>
+										<input  style="width:260px;" class="easyui-validatebox" type="text" name="dealer_user_id" data-options="required:true"></input></td>								
 									</tr>
 									<tr>
 										<td>试用时间:</td>
@@ -107,7 +112,7 @@
 									<tr>
 										<td>试用理由:</td>
 										<td>
-										<textarea name="flow_desc" style="height:120px;width:360px;"></textarea>
+										<textarea name="reason" style="height:120px;width:360px;"></textarea>
 										</td>								
 									</tr>
 								</table>
@@ -134,7 +139,7 @@
 			</div>
 		</div>
 	</div>
-	
+	<!--add end -->	
 	<div id="test" title="流程设计" style="top:10px;padding:1px;width:780px;height:590px;" title="Modal Window">
 	
     </div>
@@ -217,8 +222,8 @@
 		function newEntity()
 		{
 			 $('#ffadd').form('clear');
-	         url = basePath+'api/flow/save';
-			$('#w').window('open');
+	         url = basePath+'api/trial/save';
+	         $('#dlg').dialog('open').dialog('setTitle', '申请试用');
 		}
 		
 		function saveEntity()
@@ -236,8 +241,8 @@
 			    	var jsonobj= eval('('+msg+')');  
 			    	if(jsonobj.state==1)
 			    		{
-			    			clearForm();
-			    			$('#w').window('close');
+			    			clearForm();			    			
+			    			$('#dlg').dialog('close');
 			    			var pager = $('#dg').datagrid().datagrid('getPager');
 			    			pager.pagination('select');	
 				   			

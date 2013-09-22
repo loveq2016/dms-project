@@ -11,9 +11,11 @@ public class Trial {
 
 	private Integer trial_id;
 	private Integer dealer_user_id;
+	private String dealer_name;
 	private Integer region_user_id;
 	private Integer company_user_id;
 	private Integer hospital_id;
+	private String hospital_name;//仅查询使用
 	private String reason;
 	private Integer trial_num_sum;
 	private String create_time;
