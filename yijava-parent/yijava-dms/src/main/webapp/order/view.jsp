@@ -81,7 +81,7 @@
 			<div style="padding-left: 10px; padding-right: 10px">
 				<table id="dg" title="查询结果" style="height:370px" url="${basePath}api/order/paging" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" pagination="true" 
-					iconCls="icon-search" sortOrder="asc" toolbar="#tbOrder">
+					iconCls="icon-search" sortOrder="asc" toolbar="#tbOrder" data-options="onClickRow:onClickOrderRow">
 					<thead>
 						<tr>
 							<th data-options="field:'id',width:240,align:'center'" hidden="true">id</th>
@@ -519,6 +519,10 @@
 		function clearOrderDetailForm(){
 			$('#fm3').form('clear');
 		}
+		function onClickOrderRow(rowIndex, rowData){
+			order_code=rowData.rowData;
+			order_status=rowData.order_status;
+		}
 		//open订单项
 		function openOrderDetail(index){
 			$('#dg').datagrid('selectRow',index);
@@ -548,6 +552,7 @@
 		{
 			var row = $('#dgDetail').datagrid('getSelected');
 			if (row){
+				alert(order_status)
 				if(order_status=='0'){
 				    $.ajax({
 						type : "POST",

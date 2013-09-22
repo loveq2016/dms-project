@@ -49,9 +49,10 @@ public class UserDealerFunService {
 				pageRequest.getOrderDir());
 	}
 	
-	private List<UserDealer> getUserDealerList(String parent_id){
+	public List<UserDealer> getUserDealerList(String department_id,String user_id){
 		HashMap<String,String> parameters = new HashMap<String,String>();
-		parameters.put("parent_id", parent_id);
+		parameters.put("department_id", department_id);
+		parameters.put("user_id", user_id);
 		List<UserDealer> temList = userDealerFunDao.find(parameters);
 		return temList;
 	}
