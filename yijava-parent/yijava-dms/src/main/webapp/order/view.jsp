@@ -81,7 +81,7 @@
 			<div style="padding-left: 10px; padding-right: 10px">
 				<table id="dg" title="查询结果" style="height:370px" url="${basePath}api/order/paging" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" pagination="true" 
-					iconCls="icon-search" sortOrder="asc" toolbar="#tbOrder" data-options="onClickRow:onClickOrderRow">
+					iconCls="icon-search" sortOrder="asc" toolbar="#tbOrder">
 					<thead>
 						<tr>
 							<th data-options="field:'id',width:240,align:'center'" hidden="true">id</th>
@@ -403,7 +403,8 @@
 		var dealer_id=${user.fk_dealer_id};
 		$(function() {
 			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
-			pager.pagination();			
+			pager.pagination();
+			//计算订单项小计
 			$("#order_number_sum").keyup(function(){
 		    	var order_price= $('input[name=order_price]').val();
 				var discount= $('input[name=discount]').val();
@@ -484,7 +485,7 @@
 		{
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
-				if(order_status=='0'){
+				if(row.order_status=='0'){
 				    $.ajax({
 						type : "POST",
 						url :basePath+'api/order/remove?id='+row.order_code,
@@ -519,10 +520,6 @@
 		function clearOrderDetailForm(){
 			$('#fm3').form('clear');
 		}
-		function onClickOrderRow(rowIndex, rowData){
-			order_code=rowData.rowData;
-			order_status=rowData.order_status;
-		}
 		//open订单项
 		function openOrderDetail(index){
 			$('#dg').datagrid('selectRow',index);
@@ -552,7 +549,6 @@
 		{
 			var row = $('#dgDetail').datagrid('getSelected');
 			if (row){
-				alert(order_status)
 				if(order_status=='0'){
 				    $.ajax({
 						type : "POST",
