@@ -21,13 +21,13 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
-		<div id="w" class="easyui-window" title="部门信息" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:300px;height:250px;padding:10px;">
+		<div id="w" class="easyui-window" title="组织信息" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:300px;height:250px;padding:10px;">
 			<form id="ffadd" action="" method="post" enctype="multipart/form-data">
 				<table>
 					<input type="hidden" name="id"></input>
                     <input type="hidden" name="fk_parent_id"></input>
 					<tr>
-						<td>部门名:</td>
+						<td>组织名:</td>
                     	<td>
                     		<input class="easyui-validatebox" type="text" name="department_name" data-options="required:true"></input>
                     	</td>
@@ -46,7 +46,7 @@
 	<script type="text/javascript">
 		$(function() {
 			$('#treegrid').treegrid({
-                title:'部门信息',  
+                title:'组织信息',  
                 iconCls:'icon-save',
                 height:500,  
                 nowrap: false,  
@@ -57,7 +57,7 @@
                 idField:'id',
                 treeField:'department_name',	
                 frozenColumns:[[
-                    {title:'部门名称',field:'department_name',width:200} 
+                    {title:'组织名称',field:'department_name',width:200} 
                 ]],
                 columns:[[
                     {field:'remark',title:'备注',width:270,rowspan:2}

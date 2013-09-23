@@ -61,7 +61,7 @@
 		<a href="javascript:void(0)" title="菜单管理" url="system/log/view.jsp">日志管理</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="部门管理" url="department/view.jsp">部门管理</a>
+		<a href="javascript:void(0)" title="组织管理" url="department/view.jsp">组织管理</a>
 	</div>
 </div>
 <div id="mm2" style="width: 100px;">

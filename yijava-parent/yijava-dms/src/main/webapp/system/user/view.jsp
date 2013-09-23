@@ -51,7 +51,7 @@
 												value: '离职'
 											}]" />
 									</td>
-									<td width="50">部门:</td>
+									<td width="50">组织:</td>
 									<td width="270">
 										<input class="easyui-combotree" name="fk_department_id" id="fk_department_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 						             			data-options="
@@ -100,7 +100,7 @@
 							<th data-options="field:'fk_role_id',width:80,align:'center'" hidden="true"></th>
 							<th data-options="field:'isdeleted',width:55,align:'center'" formatter="formatterStatus" sortable="true">状态</th>
 							<th data-options="field:'role_name',width:80,align:'center'" sortable="true">角色</th>
-							<th data-options="field:'department_name',width:100,align:'center'">部门</th>
+							<th data-options="field:'department_name',width:100,align:'center'">组织</th>
 							<th data-options="field:'fk_department_id',width:60,align:'center'" hidden="true"></th>
 							<th data-options="field:'dealer_name',width:100,align:'center'">经销商</th>
 							<th data-options="field:'fk_dealer_id',width:60,align:'center'" hidden="true"></th>
@@ -182,7 +182,7 @@
 								     panelHeight:'auto'
 						            ">
 						</td>
-						<td>部门:</td>
+						<td>组织:</td>
 						<td><input class="easyui-combotree" name="fk_department_id" id="fk_department_id" style="width:150px" maxLength="100" class="easyui-validatebox" 
 						             data-options="
 							         url:'${basePath}api/department/listByParentId',
@@ -192,10 +192,6 @@
 								    panelHeight:'auto'
 						      "/>
 						</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td><font color="red">注:部门和经销商必须二选一</font></td>
 					</tr>
 					<tr>
 						<td>生日:</td>
