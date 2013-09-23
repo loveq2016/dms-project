@@ -105,10 +105,11 @@ public class DeliverService {
 				i++;
 				deliverDetailDao.insert(tempDeliverDetail);
 			}
-			Order order =new Order();
-			order.setOrder_code(entity.getOrder_code());
-			order.setOrder_status(entity.getDeliver_status());
-			orderDao.updateObject(".updateStatus", order);
+			
+//			Order order =new Order();
+//			order.setOrder_code(entity.getOrder_code());
+//			order.setOrder_status(entity.getDeliver_status());
+//			orderDao.updateObject(".updateStatus", order);
 		}
 		
 		

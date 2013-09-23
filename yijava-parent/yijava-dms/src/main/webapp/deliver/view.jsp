@@ -78,7 +78,7 @@
 			</div>
 			<div id="tb">
 				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="beginEntity()">发货</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="beginEntity()">填写快递</a>
+<!-- 				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="beginEntity()">填写快递</a> -->
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
