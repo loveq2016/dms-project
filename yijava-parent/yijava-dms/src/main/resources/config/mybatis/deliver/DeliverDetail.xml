@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DeliverDetail">
+
+	
+	<insert id="insert" parameterType="dms.yijava.entity.deliver.DeliverDetail" useGeneratedKeys="true" keyProperty="delivery_detail_id">     
+		insert into dms.tb_delivery_detail(deliver_id,deliver_code,order_code,order_detail_id,product_item_number,product_name,
+			models,order_number_sum,deliver_number_sum,deliver_date,arrival_date,deliver_remark) 
+		values(#{deliver_id},#{deliver_code},#{order_code},#{order_detail_id},#{product_item_number},#{product_name},
+			#{models},#{order_number_sum},#{deliver_number_sum},#{deliver_date},#{arrival_date},#{deliver_remark});
+	</insert>
+	
+	
+	
+    
+</mapper>

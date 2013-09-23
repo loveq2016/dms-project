@@ -135,6 +135,9 @@
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="订单管理" url="order/view.jsp">订单管理</a>
 	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="出货管理" url="deliver/view.jsp">出货管理</a>
+	</div>	
 </div>
 <div id="mm7" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
