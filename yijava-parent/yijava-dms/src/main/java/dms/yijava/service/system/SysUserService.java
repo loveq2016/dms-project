@@ -22,7 +22,7 @@ public class SysUserService {
 	@Autowired
 	public SysUserDao sysUserDao;
 	@Autowired
-	public SysUserRoleService SysUserRoleService;
+	public SysUserRoleService sysUserRoleService;
 	/**
 	 * 查询用户分页
 	 * @param pageRequest
@@ -61,7 +61,7 @@ public class SysUserService {
 		SysUserRole sysUserRole=new SysUserRole();
 		sysUserRole.setFk_role_id(entity.getFk_role_id());
 		sysUserRole.setFk_user_id(entity.getId());
-		SysUserRoleService.saveEntity(sysUserRole);
+		sysUserRoleService.saveEntity(sysUserRole);
 	}
 	/**
 	 * 修改用户
@@ -72,14 +72,15 @@ public class SysUserService {
 		SysUserRole sysUserRole=new SysUserRole();
 		sysUserRole.setFk_role_id(entity.getFk_role_id());
 		sysUserRole.setFk_user_id(entity.getId());
-		SysUserRoleService.delEntity(entity.getId());
-		SysUserRoleService.saveEntity(sysUserRole);
+		sysUserRoleService.delEntity(entity.getId());
+		sysUserRoleService.saveEntity(sysUserRole);
 	}
 	/**
 	 * 删除用户
 	 * @param id
 	 */
 	public void deleteEntity(String id) {
+		sysUserRoleService.delEntity(id);
 		sysUserDao.removeById(id);
 	}
 	

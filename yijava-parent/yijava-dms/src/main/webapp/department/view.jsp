@@ -57,7 +57,7 @@
                 idField:'id',
                 treeField:'department_name',	
                 frozenColumns:[[
-                    {title:'组织名称',field:'department_name',width:200} 
+                    {title:'组织名称',field:'department_name',width:500} 
                 ]],
                 columns:[[
                     {field:'remark',title:'备注',width:270,rowspan:2}
