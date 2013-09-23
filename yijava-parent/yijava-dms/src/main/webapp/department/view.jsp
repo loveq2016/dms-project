@@ -16,7 +16,7 @@
 			    <div id="mm" class="easyui-menu" style="width:120px;">  
 			        <div onclick="append()">添加</div>  
 			        <div onclick="updateEntity()">修改</div>  
-			        <div onclick="deleteEntity()">删除</div>  
+			        <div onclick="deleteEntity()" id="deleteEntity">删除</div>  
 			    </div>
 			</div>
 			<div style="margin: 10px 0;"></div>
@@ -65,7 +65,11 @@
                 onContextMenu: function(e,row){  
                     e.preventDefault();  
                     $(this).treegrid('unselectAll');  
-                    $(this).treegrid('select', row.id);  
+                    $(this).treegrid('select', row.id);
+                    if(row.id==1)
+                    	 $('#deleteEntity').hide();
+                    else
+                    	 $('#deleteEntity').show();
                     $('#mm').menu('show', {
                         left: e.pageX,  
                         top: e.pageY  

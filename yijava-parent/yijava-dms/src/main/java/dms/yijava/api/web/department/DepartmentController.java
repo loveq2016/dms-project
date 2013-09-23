@@ -46,6 +46,8 @@ public class DepartmentController {
 	@ResponseBody
 	@RequestMapping("delete")
 	public Result<String> delete(@RequestParam(value = "id", required = true) String id) {
+		if(!id.equals("-1"))
+			return new Result<String>(id, 2);
 		departmentService.deleteEntity(id);
 		return new Result<String>(id, 1);
 	}
