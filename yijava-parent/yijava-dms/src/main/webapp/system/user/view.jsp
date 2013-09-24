@@ -196,7 +196,7 @@
 					<tr>
 						<td>生日:</td>
 						<td>
-							<input class="easyui-datebox" type="text" name="birthday"></input>
+							<input class="easyui-datebox" type="text" name="birthday" data-options="validType:'birthd'"></input>
 						</td>
 						<td>性别:</td>
 						<td>
@@ -250,7 +250,7 @@
 				success:function(msg){
 				    var jsonobj= eval('('+msg+')'); 
 				    var options;  
-					for (var i = 0; i < jsonobj.length; i++) {  
+					for (var i = 0; i < jsonobj.length; i++) {
 						options += "<option value='" + jsonobj[i].id + "'>" + jsonobj[i].role_name + "</option>";  
 					}
 					$("#fk_role_id").append(options);

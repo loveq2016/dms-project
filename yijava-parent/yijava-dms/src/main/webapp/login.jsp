@@ -24,7 +24,7 @@
 								<tr>
 									<td>密码:</td>
 									<td>
-										<input class="easyui-validatebox" type="password" name="password" data-options="required:true" value="gaoyong"></input>
+										<input class="easyui-validatebox" type="password" name="password" data-options="required:true" value="111111"></input>
 									</td>
 								</tr>
 							</table>

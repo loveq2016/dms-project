@@ -151,8 +151,8 @@
 			</div>
 		</div>
 		</div>
-		<div id="dlgOrderDetail" class="easyui-dialog" title="订单明细" style="width:950px;height:545px;padding:5px 5px 5px 5px;"
-            modal="true" closed="true">
+		<div id="dlgOrderDetail" class="easyui-dialog" title="订单明细" style="width:950px;height:auto;padding:5px 5px 5px 5px;"
+            modal="true" closed="true" buttons="#dlg-buttons">
             <div class="easyui-panel" style="width:925px;" style="margin: 10px 0;">
 					<form id="ffOrderDetail" method="post">
 							<table>
@@ -201,78 +201,80 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div class="easyui-tabs" style="width:925px;height:auto;">
-         		<div title="表头信息" style="padding: 5px 5px 5px 5px;height:370px">
-         			<form id="ffOrderInfo" method="post">
-	         			<table style="border-collapse:collapse;border: none;">
-	         				<tr style="border-bottom:3px double #D3D3D3;">
-								<td width="80" height="30">订单信息</td>	
-								<td width="200"></td>
-								<td width="80" height="30">经销商信息</td>	
-								<td width="200"></td>	
-								<td width="100" height="30">经销商收货地址</td>	
-								<td width="200"></td>
-							</tr>
-							<tr height="">
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>
-		         			<tr>
-								<td>金额汇总:</td>	
-								<td><input class="easyui-validatebox" readonly="readonly" type="text" name="order_money_sum"></input></td>
-								<td>联系人:</td>	
-								<td><input class="easyui-validatebox" readonly="readonly" type="text" name="business_contacts"></input></td>
-								<td>收货地址:</td>	
-								<td>
-									<input class="easyui-combobox" readonly="readonly" name="dealer_address_id" style="width:150px" maxLength="100" class="easyui-validatebox" required="true"
-						             			data-options="
-							             			url:'${basePath}api/dealerAddress/list?id=${user.fk_dealer_id}',
-								                    method:'get',
-								                    valueField:'id',
-								                    textField:'address',
-								                    panelHeight:'auto',
-								                    onSelect:function functionS(s){
-														$('#receive_linkman').val(s.linkman);
-														$('#receive_linkphone').val(s.linkphone);
-													}
-						            			">
-								</td>
-							</tr>
-							<tr>
-								<td>数量汇总:</td>
-								<td>
-								    <input class="easyui-validatebox" readonly="readonly" type="text" name="order_number_sum"></input>
-								</td>
-								<td width="20">联系电话:</td>	
-								<td><input class="easyui-validatebox" readonly="readonly" type="text" name="business_phone"></input></td>
-								<td width="20">邮编:</td>	
-								<td><input class="easyui-validatebox" readonly="readonly" type="text" name="receive_postcode"></input></td>
-							</tr>
-							<tr>
-								<td></td>
-								<td></td>
-								<td>联系地址:</td>	
-								<td><input class="easyui-validatebox" readonly="readonly" type="text" name="addess"></input></td>
-								<td width="20">收货人:</td>
-								<td>
-									<input class="easyui-validatebox" readonly="readonly" name="receive_linkman" id="receive_linkman" value="aa" style="width:150px" maxLength="100">
-								</td>
-							</tr>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td>收货电话:</td>
-								<td>
-									<input class="easyui-validatebox" readonly="readonly" name="receive_linkphone" id="receive_linkphone" style="width:150px" maxLength="100">
-								</td>
-							</tr>
-					</table>
-					</form>
+         		<div title="表头信息" style="padding: 5px 5px 5px 5px;">
+         			<div class="easyui-layout" style="height:370px;">  
+	         			<form id="ffOrderInfo" method="post">
+		         			<table style="border-collapse:collapse;border:none;">
+		         				<tr style="border-bottom:3px double #D3D3D3;">
+									<td width="80" height="30">订单信息</td>	
+									<td width="200"></td>
+									<td width="80" height="30">经销商信息</td>	
+									<td width="200"></td>	
+									<td width="100" height="30">经销商收货地址</td>	
+									<td width="200"></td>
+								</tr>
+								<tr height="">
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+			         			<tr>
+									<td>金额汇总:</td>	
+									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="order_money_sum"></input></td>
+									<td>联系人:</td>	
+									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="business_contacts"></input></td>
+									<td>收货地址:</td>	
+									<td>
+										<input class="easyui-combobox" readonly="readonly" name="dealer_address_id" style="width:150px" maxLength="100" class="easyui-validatebox" required="true"
+							             			data-options="
+								             			url:'${basePath}api/dealerAddress/list?id=${user.fk_dealer_id}',
+									                    method:'get',
+									                    valueField:'id',
+									                    textField:'address',
+									                    panelHeight:'auto',
+									                    onSelect:function functionS(s){
+															$('#receive_linkman').val(s.linkman);
+															$('#receive_linkphone').val(s.linkphone);
+														}
+							            			">
+									</td>
+								</tr>
+								<tr>
+									<td>数量汇总:</td>
+									<td>
+									    <input class="easyui-validatebox" readonly="readonly" type="text" name="order_number_sum"></input>
+									</td>
+									<td width="20">联系电话:</td>	
+									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="business_phone"></input></td>
+									<td width="20">邮编:</td>	
+									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="receive_postcode"></input></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td></td>
+									<td>联系地址:</td>	
+									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="addess"></input></td>
+									<td width="20">收货人:</td>
+									<td>
+										<input class="easyui-validatebox" readonly="readonly" name="receive_linkman" id="receive_linkman" value="aa" style="width:150px" maxLength="100">
+									</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td>收货电话:</td>
+									<td>
+										<input class="easyui-validatebox" readonly="readonly" name="receive_linkphone" id="receive_linkphone" style="width:150px" maxLength="100">
+									</td>
+								</tr>
+							</table>
+						</form>
+					</div>
 				</div>
 				<div title="明细行" style="padding: 5px 5px 5px 5px;" >
 					<table id="dgDetail" class="easyui-datagrid" title="订单明细信息" style="height:370px" method="get"
@@ -308,6 +310,10 @@
 				</div>
 			</div>
 		</div>
+		<div id="dlg-buttons">
+	        <a id="saveEntityBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="alert('提交订单后将不能在修改，确定提交吗？')">提交订单</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgOrderDetail').dialog('close')">取消</a>
+	    </div>
 		<div id="dlgProduct" class="easyui-dialog" style="width:800px;height:495px;padding:5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlgProduct-buttons">
 				<div class="easyui-panel" title="查询条件" style="width:775px;">

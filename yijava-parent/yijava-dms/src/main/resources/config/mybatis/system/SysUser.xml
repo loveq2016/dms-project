@@ -72,16 +72,58 @@
 		select tmu.*,tmur.fk_role_id from dms.tb_manager_user tmu left join dms.tb_manager_user_role tmur ON tmu.id=tmur.fk_user_id where account=#{account} and isdeleted=0
     </select>
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="dms.yijava.entity.system.SysUser">     
-		insert into dms.tb_manager_user (account,realname,password,email,type,birthday,sex,phone,
-		province,address,postcode,fk_department_id,fk_dealer_id,isdeleted,create_time,last_time,remark,
-		customfield1,customfield2,customfield3,ext1,ext2,ext3)values(#{account},#{realname},#{password},#{email,jdbcType=VARCHAR},#{type,jdbcType=NUMERIC},#{birthday,jdbcType=DATE},#{sex,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},
-		#{province,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},#{postcode,jdbcType=NUMERIC},#{fk_department_id,jdbcType=NUMERIC},#{fk_dealer_id,jdbcType=NUMERIC},#{isdeleted,jdbcType=NUMERIC},NOW(),NOW(),#{remark,jdbcType=VARCHAR},
-		#{customfield1,jdbcType=VARCHAR},#{customfield2,jdbcType=VARCHAR},#{customfield3,jdbcType=VARCHAR},#{ext1,jdbcType=VARCHAR},#{ext2,jdbcType=VARCHAR},#{ext3,jdbcType=DATE});
+		insert into dms.tb_manager_user (account,realname,password,email,
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(type)">
+		type,
+		</if> 
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(birthday)">
+		birthday,
+		</if>
+		sex,phone,province,address,postcode,
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_department_id)">
+		fk_department_id,
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_dealer_id)">
+		fk_dealer_id,
+		</if>
+		isdeleted,create_time,last_time,remark,customfield1,customfield2,customfield3)values(#{account},#{realname},#{password},#{email}
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(type)">
+		,#{type}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(birthday)">
+		,#{birthday}
+		</if>
+		,#{sex},#{phone},#{province},#{address},#{postcode}
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_department_id)">
+		,#{fk_department_id}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_dealer_id)">
+		,#{fk_dealer_id}
+		</if>
+		,#{isdeleted},NOW(),NOW(),#{remark},#{customfield1},#{customfield2},#{customfield3})
 	</insert>
     <update id="update" parameterType="dms.yijava.entity.system.SysUser">
-    	update dms.tb_manager_user set realname=#{realname},password=#{password},email=#{email},type=#{type},birthday=#{birthday},sex=#{sex},phone=#{phone},
-		province=#{province},address=#{address},postcode=#{postcode},fk_department_id=#{fk_department_id},fk_dealer_id=#{fk_dealer_id},isdeleted=#{isdeleted},last_time=NOW(),remark=#{remark},
-		customfield1=#{customfield1},customfield2=#{customfield2},customfield3=#{customfield3},ext1=#{ext1},ext2=#{ext2},ext3=#{ext3} where id=#{id}
+       update dms.tb_manager_user 
+        <trim prefix="SET" suffixOverrides=",">  
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(realname)">realname=#{realname},</if> 
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(email)">email=#{email},</if>  
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(password)">password=#{password},</if>  
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(type)">type=#{type},</if>  
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(birthday)">birthday=#{birthday},</if>  
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(sex)">sex=#{sex},</if>
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(phone)">phone=#{phone},</if>
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(province)">province=#{province},</if>
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(address)">address=#{address},</if>
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(postcode)">postcode=#{postcode},</if>
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_department_id)">fk_department_id=#{fk_department_id},</if>
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_dealer_id)">fk_dealer_id=#{fk_dealer_id},</if>
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(isdeleted)">isdeleted=#{isdeleted},</if>
+            last_time=NOW(),
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(customfield1)">customfield1=#{customfield1},</if> 
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(customfield2)">customfield2=#{customfield2},</if> 
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(customfield3)">customfield3=#{customfield3}</if>
+        </trim>
+        where id=#{id}
     </update>
     <update id="deleteByPrimaryKey" parameterType="int">
 		delete from dms.tb_manager_user where id = #{id}
