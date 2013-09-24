@@ -22,8 +22,8 @@ import dms.yijava.service.deliver.DeliverDetailService;
 import dms.yijava.service.deliver.DeliverService;
 
 @Controller
-@RequestMapping("/api/deliver")
-public class DeliverController {
+@RequestMapping("/api/deliverApply")
+public class DeliverApplyController {
 	
 	@Autowired
 	private DeliverService deliverService;

@@ -22,7 +22,6 @@ import dms.yijava.dao.order.OrderDao;
 import dms.yijava.dao.order.OrderDetailDao;
 import dms.yijava.entity.deliver.Deliver;
 import dms.yijava.entity.deliver.DeliverDetail;
-import dms.yijava.entity.order.Order;
 import dms.yijava.entity.order.OrderDetail;
 
 @Service

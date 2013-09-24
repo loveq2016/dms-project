@@ -16,7 +16,8 @@ public class Deliver {
 	private String create_date;
 	private String remark;
 	private String deliver_status;
-	private String express_number;
+	private String check_status;
+	//private String express_number;
 	private String user_id;
 	private String dealer_id;
 	private String dealer_name;

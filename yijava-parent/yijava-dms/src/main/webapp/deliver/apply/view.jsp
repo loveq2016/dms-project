@@ -70,15 +70,14 @@
 							<th data-options="field:'create_date',width:150,align:'center'" sortable="true">编制时间</th>
 <!-- 							<th data-options="field:'express_number',width:150,align:'center'" sortable="true">快递号</th> -->
 							<th data-options="field:'deliver_status',width:80,align:'center'" formatter="formatterDeliverStatus" sortable="true">发货状态</th>
-							<th data-options="field:'flow_status',width:80,align:'center'">审核状态</th>
+							<th data-options="field:'check_status',width:80,align:'center'"  formatter="formatterCheckStatus">审核状态</th>
 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
 						</tr>
 					</thead>
 				</table>
 			</div>
 			<div id="tb">
-				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="beginEntity()">发货</a>
-<!-- 				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="beginEntity()">填写快递</a> -->
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="beginEntity()">申请发货</a>
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
@@ -110,6 +109,12 @@
 	        	<input type="hidden" name="order_date" id="order_date">
 	        	<input type="hidden" name="dealer_id" id="dealer_id">
 			<table>
+				<tr>
+					<td>经销商名称:</td>
+					<td><input class="easyui-validatebox" type="text" style="width:200px;"
+						name="dealer_name" id="dealer_name" data-options="required:false" readonly="readonly"></input>
+					</td>
+				</tr>
 				<tr>
 					<td>订单号:</td>
 					<td><input class="easyui-validatebox" type="text" style="width:200px;"
@@ -151,9 +156,6 @@
 							<th data-options="field:'product_name',width:100,align:'center'" sortable="true">产品名称</th>
 							<th data-options="field:'models',width:65,align:'center'" sortable="true">产品规格</th>
 							<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">数量</th>
-<!-- 							<th data-options="field:'order_price',width:80,align:'center'" sortable="true">订购价格</th> -->
-<!-- 							<th data-options="field:'order_money_sum',width:80,align:'center'" sortable="true">小计</th> -->
-<!-- 							<th data-options="field:'discount',width:80,align:'center'" sortable="true">折扣</th> -->
 							<th data-options="field:'deliver_number_sum',width:80,align:'center',editor:'numberbox'">发货数量</th>
 							<th data-options="field:'deliver_date',width:100,align:'center',editor:'datebox'">预计发货日期</th>
 							<th data-options="field:'arrival_date',width:100,align:'center',editor:'datebox'">预计到货日期</th>
@@ -175,11 +177,109 @@
     </div>
 		
 		
+	<div id="dlgDeliverDetail" class="easyui-dialog" title="申请出货明细" style="width:950px;height:auto;padding:5px 5px 5px 5px;"
+            modal="true" closed="true" buttons="#dlg-buttons">
+            <div class="easyui-panel" style="width:925px;" style="margin: 10px 0;">
+					<form id="ffDeliverDetail" method="post">
+							<table>
+								<tr>
+									<td>经销商:</td>
+									<td>
+						            	<input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="dealer_name"></input>
+									</td>
+								</tr>
+								<tr>
+									<td>订单号:</td>	
+									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="order_code"></input></td>
+									<td></td>
+									<td>订单日期:</td>	
+									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="order_date"></input></td>
+								</tr>
+								<tr>
+									<td>出货单号:</td>	
+									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="deliver_code"></input></td>
+									<td></td>
+									<td>出货单日期:</td>	
+									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="create_date"></input></td>
+									<td></td>
+									<td>出货状态:</td>	
+									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="check_status"
+											data-options="
+												valueField: 'id',
+												textField: 'value',
+												data: [{
+													id: '0',
+													value: '未提交'
+												},{
+													id: '1',
+													value: '已提交'
+												},{
+													id: '2',
+													value: '驳回'
+												},{
+													id: '3',
+													value: '已审核'
+												},{
+													id: '4',
+													value: '已发货'
+												},{
+													id: '5',
+													value: '部分发货'
+												},{
+													id: '6',
+													value: '已完成'
+												}]" /></input>
+									  </td>
+								</tr>
+							</table>
+					</form>
+			</div>
+			<div style="margin: 10px 0;"></div>
+			<div class="easyui-tabs" style="width:925px;height:auto;">
+				<div title="明细行" style="padding: 5px 5px 5px 5px;" >
+					<table id="dgDetail" class="easyui-datagrid" title="订单明细信息" style="height:370px" method="get"
+						 rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbOrderDetail">
+						<thead>
+							<tr>
+								<th data-options="field:'product_item_number',width:100,align:'center'" sortable="true">产品编码</th>
+								<th data-options="field:'product_name',width:200,align:'center'" sortable="true">产品名称</th>
+								<th data-options="field:'models',width:60,align:'center'" sortable="true">产品规格</th>
+								<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">数量</th>
+								<th data-options="field:'order_price',width:80,align:'center'" sortable="true">订购价格</th>
+								<th data-options="field:'order_money_sum',width:80,align:'center'" sortable="true">小计</th>
+								<th data-options="field:'discount',width:80,align:'center'" sortable="true">折扣</th>
+								<th data-options="field:'delivery_sum',width:80,align:'center'" sortable="true">发货数量</th>
+								<th data-options="field:'plan_send_date',width:100,align:'center'" sortable="true">预计发货日期</th>
+							</tr>
+						</thead>
+					</table>
+					<div id="tbOrderDetail">    
+					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="saveOrderDetail" onclick="newOrderDetailEntity();">添加产品</a>    
+					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="delOrderDetail" onclick="removeOrderDetailEntity();">删除产品</a>    
+					</div>
+				</div>
+				<div title="修改记录" style="padding: 5px 5px 5px 5px;" >
+					<table id="dgUpdateLog" class="easyui-datagrid" title="修改记录" style="height:370px" method="get"
+						rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc">
+						<thead>
+							<tr>
+								
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div id="dlg-buttons">
+	        <a id="saveEntityBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="alert('提交订单后将不能在修改，确定提交吗？')">提交订单</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgOrderDetail').dialog('close')">取消</a>
+	    </div>
+		
 		
 	<script type="text/javascript">
 		$(function() {
 			$('#dg').datagrid({
-				  url : basePath +"api/deliver/paging" ,
+				  url : basePath +"api/deliverApply/paging" ,
 					queryParams: {
 						filter_ANDS_order_status : $('#deliver_status').combobox('getValue')
 					}
@@ -201,6 +301,10 @@
 				return '<span>全部出货</span>'; 
 			else if(value=='5')
 				return '<span>部分出货</span>'; 
+		}
+		
+		function formatterCheckStatus(value, row, index){
+			return formatterStatus(value, row, index);
 		}
 		
 		function formatterDetail(value, row, index){
@@ -226,7 +330,7 @@
 		
 		function beginEntity(){
 			$('#dlgOneSetp').dialog('close');
-			$('#dlgOrder').dialog('open').dialog('setTitle', '添加发货信息第一步');
+			$('#dlgOrder').dialog('open').dialog('setTitle', '发货申请第一步');
 			$('#dgOrder').datagrid({
 				  url : basePath +"api/order/paging" ,
 					queryParams: {
@@ -239,12 +343,13 @@
 			var row = $('#dgOrder').datagrid('getSelected');
 			if (row){
 				$('#dlgOrder').dialog('close');
-				$('#dlgOneSetp').dialog('open').dialog('setTitle', '添加发货信息第二部');
+				$('#dlgOneSetp').dialog('open').dialog('setTitle', '发货申请第二部');
 				$('#fm').form('clear');
 				$("#order_id").val(row.id);
 				$("#order_code").val(row.order_code);
 				$("#order_date").val(row.order_date);
 				$("#dealer_id").val(row.dealer_id);
+				$("#dealer_name").val(row.dealer_name)
 				$('#dgOrderOneSetp').datagrid({
 					url : basePath + "api/orderdetail/list",
 					onClickRow: onClickRow,
@@ -343,7 +448,7 @@
 					$("#arrival_dates").val(arrival_dates.join(","));
 					$("#deliver_remarks").val(deliver_remarks.join(","));
 					$('#fm').form('submit', {
-						url : basePath + 'api/deliver/save',
+						url : basePath + 'api/deliverApply/save',
 						method : "post",
 						onSubmit : function() {
 							return $(this).form('validate');
@@ -366,9 +471,21 @@
 
 		}
 		
-
+		var order_code ;
 		function openDeliverDetail(index){
-			alert(index)
+			$('#dg').datagrid('selectRow',index);
+			var row = $('#dg').datagrid('getSelected');
+			$('#ffDeliverDetail').form('load',row);
+			$('#dlgDeliverDetail').dialog('open');
+			order_code = row.order_code;
+            $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
+			$('#dgDetail').datagrid({
+				url : basePath + "api/orderdetail/paging",
+				queryParams: {
+					filter_ANDS_order_code : order_code
+				}
+			});
+
 		}
 		
 	</script>
