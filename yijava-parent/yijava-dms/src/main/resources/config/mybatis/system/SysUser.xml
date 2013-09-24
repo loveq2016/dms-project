@@ -69,7 +69,12 @@
 				LEFT join dms.tb_department tb ON(tb.id=tt.fk_department_id)) t where isdeleted=0 and id = #{id}
     </select>
     <select id="selectByAccount"  parameterType="String" resultType="dms.yijava.entity.system.SysUser">
-		select tmu.*,tmur.fk_role_id from dms.tb_manager_user tmu left join dms.tb_manager_user_role tmur ON tmu.id=tmur.fk_user_id where account=#{account} and isdeleted=0
+		SELECT * FROM(
+		SELECT tt.*,tmr.role_name ,td.dealer_name,tb.department_name FROM (
+		select tmu.*,tmur.fk_role_id from dms.tb_manager_user tmu left join dms.tb_manager_user_role tmur ON tmu.id=tmur.fk_user_id 
+		) tt LEFT join dms.tb_manager_role tmr ON (tt.fk_role_id=tmr.id)
+				LEFT join dms.tb_dealer td ON (tt.fk_dealer_id=td.dealer_id)
+				LEFT join dms.tb_department tb ON(tb.id=tt.fk_department_id)) t where account=#{account} and isdeleted=0
     </select>
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="dms.yijava.entity.system.SysUser">     
 		insert into dms.tb_manager_user (account,realname,password,email,
