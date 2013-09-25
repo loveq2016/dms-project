@@ -17,13 +17,9 @@ public class TeamLayouService {
 	@Autowired
 	private TeamLayouDao  teamLayouDao ;
 	
-	public List<TeamLayou> getList(){
-		HashMap<String,String> parameters = new HashMap<String,String>();
-		return teamLayouDao.find(parameters);
-	}
 	public List<TeamLayou> getList(String id){
-		HashMap<String,String> parameters = new HashMap<String,String>();
-		parameters.put("fk_parent_id", id);
+		HashMap<String, String> parameters = new HashMap<String, String>();
+		parameters.put("parent_id", id);
 		return teamLayouDao.find(parameters);
 	}
 	public TeamLayou getEntity(String id) {

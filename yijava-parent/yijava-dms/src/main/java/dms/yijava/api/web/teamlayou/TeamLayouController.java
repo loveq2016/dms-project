@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.teamlayou.TeamLayou;
+import dms.yijava.entity.teamlayou.UserLayou;
 import dms.yijava.service.teamlayou.TeamLayouService;
 import dms.yijava.service.teamlayou.UserLayouService;
 
@@ -40,6 +41,13 @@ public class TeamLayouController {
 	}
 	
 	@ResponseBody
+	@RequestMapping("saveuser")
+	public Result<String> saveuser(@ModelAttribute("entity") UserLayou entity) {
+		userLayouService.saveEntity(entity);
+		return new Result<String>(entity.getId(), 1);
+	}
+	
+	@ResponseBody
 	@RequestMapping("update")
 	public Result<String> update(@ModelAttribute("entity") TeamLayou entity) {
 		teamLayouService.updateEntity(entity);
@@ -51,5 +59,12 @@ public class TeamLayouController {
 	public Result<String> delete(@RequestParam(value = "id", required = true) String id) {
 		teamLayouService.deleteEntity(id);
 		return new Result<String>(id, 1);
+	}
+	
+	@ResponseBody
+	@RequestMapping("deluser")
+	public Result<String> deleteuser(@ModelAttribute("entity") UserLayou entity) {
+		userLayouService.deleteEntity(entity);
+		return new Result<String>(entity.getFk_user_id(),1);
 	}
 }
