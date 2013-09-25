@@ -18,7 +18,7 @@ import dms.yijava.service.teamlayou.UserLayouService;
 
 @Controller
 @RequestMapping("/api/teamlayou")
-public class TeamController {
+public class TeamLayouController {
 	
 	@Autowired
 	private TeamLayouService teamLayouService;
