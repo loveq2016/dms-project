@@ -2,7 +2,6 @@ package dms.yijava.entity.order;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import dms.yijava.entity.flow.FlowRecord;
 
 @Data  
 @NoArgsConstructor

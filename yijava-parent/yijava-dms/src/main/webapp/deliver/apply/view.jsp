@@ -23,16 +23,16 @@
 									<td><input class="easyui-validatebox" type="text" name="deliver_code"></input></td>
 									<td width="50">状态:</td>
 									<td width="270">										
-										<input name="deliver_status" class="easyui-combobox" id="deliver_status"
+										<input name="deliver_status" class="easyui-combobox" id="deliver_status_s"
 											data-options="
 												valueField: 'id',
 												textField: 'value',
 												panelHeight:'auto',
 												data: [{
-													id: '1',
+													id: '4',
 													value: '全部发货'
 												},{
-													id: '2',
+													id: '5',
 													value: '部分发货'
 												}]" />
 									</td>
@@ -77,7 +77,9 @@
 				</table>
 			</div>
 			<div id="tb">
-				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="beginEntity()">申请发货</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntity()">编辑</a>
+        		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity()">删除</a>
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
@@ -85,7 +87,7 @@
 		
    	<div id="dlgOrder" class="easyui-dialog" style="width:703px;height:450px;padding: 5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlg-buttonsOrder">
-				<table id="dgOrder" title="订单查询结果" style="height:365px;width:680px;" method="get"
+				<table id="dgOrder" title="订单查询结果" style="height:365px;width:680px;" method="get" toolbar="#dgOrder-tb"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" pagination="true" iconCls="icon-search" sortOrder="asc">
 					<thead>
 						<tr>
@@ -96,15 +98,20 @@
 						</tr>
 					</thead>
 				</table>
+				<div id="dgOrder-tb" style="padding:5px;height:auto">
+						订单号:&nbsp;&nbsp;<input class="easyui-validatebox" type="text" style="width:200px; " name="dg_order_code"></input>
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearchOrder()">查询</a>
+				</div>
     </div>
     <div id="dlg-buttonsOrder">
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-redo" onclick="oneSetp();">下一步</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-redo" onclick="nextSetp();">下一步</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgOrder').dialog('close')">取消</a>
     </div>
     
     <div id="dlgOneSetp" class="easyui-dialog" style="width:803px;height:450px;padding: 5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlg-buttonsOneSetp">
 	        <form id="fm" method="post" novalidate enctype="multipart/form-data">
+	        	<input type="hidden" name="deliver_id" id="deliver_id">
 	        	<input type="hidden" name="order_id" id="order_id">
 	        	<input type="hidden" name="order_date" id="order_date">
 	        	<input type="hidden" name="dealer_id" id="dealer_id">
@@ -146,7 +153,7 @@
 	        	<input type="hidden"  name="arrival_dates" id="arrival_dates">
 	        	<input type="hidden"  name="deliver_remarks" id="deliver_remarks">
 			<div style="width:755px; padding: 5px 5px 5px 5px;">
-				<table id="dgOrderOneSetp" title="订单详情查询结果" style="height:330px" method="get" toolbar='#tbOneSetp'
+				<table id="dgOrderOneSetp" title="详情查询结果" style="height:330px" method="get" toolbar='#tbOneSetp'
 						rownumbers="true" singleSelect="false" pagination="false" iconCls="icon-search" sortName="id" sortOrder="asc">
 						<thead>
 							<tr>
@@ -166,13 +173,15 @@
 			</div>
 	        </form>
 	         <div id="tbOneSetp" style="height:auto">
-	         	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true" onclick="$('#dgOrderOneSetp').datagrid('reload');">刷新</a>
+	         	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true" 
+	         		onclick="$('#dgOrderOneSetp').datagrid('reload');">刷新</a>
 <!-- 		        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">保存</a> -->
 		    </div>
     </div>
     <div id="dlg-buttonsOneSetp">
-     	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-undo" onclick="beginEntity();">上一步</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="deliverSubmit();">提交</a>
+     	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-undo" id="preSetp" onclick="newEntity();">上一步</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" id="btnSetp1" onclick="saveEntity();">保存</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" id="btnSetp2" onclick="updateEntity();">保存</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgOneSetp').dialog('close')">取消</a>
     </div>
 		
@@ -202,33 +211,17 @@
 									<td>出货单日期:</td>	
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="create_date"></input></td>
 									<td></td>
-									<td>出货状态:</td>	
-									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="check_status"
-											data-options="
-												valueField: 'id',
-												textField: 'value',
-												data: [{
-													id: '0',
-													value: '未提交'
-												},{
-													id: '1',
-													value: '已提交'
-												},{
-													id: '2',
-													value: '驳回'
-												},{
-													id: '3',
-													value: '已审核'
-												},{
-													id: '4',
-													value: '已发货'
-												},{
-													id: '5',
-													value: '部分发货'
-												},{
-													id: '6',
-													value: '已完成'
-												}]" /></input>
+									<td>发货状态:</td>	
+									<td><input name="deliver_status" class="easyui-combobox" id="deliver_status_ss"
+												data-options="
+													required:true,
+													valueField: 'id',
+													textField: 'value',
+													panelHeight:'auto',
+													data: [
+														{id: '4',value: '全部发货'},
+														{id: '5',value: '部分发货'}
+														]" />
 									  </td>
 								</tr>
 							</table>
@@ -238,25 +231,19 @@
 			<div class="easyui-tabs" style="width:925px;height:auto;">
 				<div title="明细行" style="padding: 5px 5px 5px 5px;" >
 					<table id="dgDetail" class="easyui-datagrid" title="订单明细信息" style="height:370px" method="get"
-						 rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbOrderDetail">
+						 rownumbers="true" singleSelect="true" pagination="true" sortName="delivery_detail_id" sortOrder="desc">
 						<thead>
 							<tr>
-								<th data-options="field:'product_item_number',width:100,align:'center'" sortable="true">产品编码</th>
-								<th data-options="field:'product_name',width:200,align:'center'" sortable="true">产品名称</th>
-								<th data-options="field:'models',width:60,align:'center'" sortable="true">产品规格</th>
-								<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">数量</th>
-								<th data-options="field:'order_price',width:80,align:'center'" sortable="true">订购价格</th>
-								<th data-options="field:'order_money_sum',width:80,align:'center'" sortable="true">小计</th>
-								<th data-options="field:'discount',width:80,align:'center'" sortable="true">折扣</th>
-								<th data-options="field:'delivery_sum',width:80,align:'center'" sortable="true">发货数量</th>
-								<th data-options="field:'plan_send_date',width:100,align:'center'" sortable="true">预计发货日期</th>
+							<th data-options="field:'product_name',width:100,align:'center'" sortable="true">产品名称</th>
+							<th data-options="field:'models',width:65,align:'center'" sortable="true">产品规格</th>
+							<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">数量</th>
+							<th data-options="field:'deliver_number_sum',width:80,align:'center',editor:'numberbox'">发货数量</th>
+							<th data-options="field:'deliver_date',width:100,align:'center',editor:'datebox'">预计发货日期</th>
+							<th data-options="field:'arrival_date',width:100,align:'center',editor:'datebox'">预计到货日期</th>
+							<th data-options="field:'deliver_remark',width:150,align:'center',editor:'text'">备注</th>
 							</tr>
 						</thead>
 					</table>
-					<div id="tbOrderDetail">    
-					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="saveOrderDetail" onclick="newOrderDetailEntity();">添加产品</a>    
-					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="delOrderDetail" onclick="removeOrderDetailEntity();">删除产品</a>    
-					</div>
 				</div>
 				<div title="修改记录" style="padding: 5px 5px 5px 5px;" >
 					<table id="dgUpdateLog" class="easyui-datagrid" title="修改记录" style="height:370px" method="get"
@@ -271,8 +258,8 @@
 			</div>
 		</div>
 		<div id="dlg-buttons">
-	        <a id="saveEntityBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="alert('提交订单后将不能在修改，确定提交吗？')">提交订单</a>
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgOrderDetail').dialog('close')">取消</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="alert('提交后将不能在修改，确定提交吗？')">提交</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgDeliverDetail').dialog('close')">取消</a>
 	    </div>
 		
 		
@@ -281,7 +268,7 @@
 			$('#dg').datagrid({
 				  url : basePath +"api/deliverApply/paging" ,
 					queryParams: {
-						filter_ANDS_order_status : $('#deliver_status').combobox('getValue')
+						filter_ANDS_order_status : $('#deliver_status_s').combobox('getValue')
 					}
 			});
 		});
@@ -328,9 +315,9 @@
 				return '<span>已完成</span>'; 
 		}
 		
-		function beginEntity(){
+		function newEntity(){
 			$('#dlgOneSetp').dialog('close');
-			$('#dlgOrder').dialog('open').dialog('setTitle', '发货申请第一步');
+			$('#dlgOrder').dialog('open').dialog('setTitle', '发货申请第一部');
 			$('#dgOrder').datagrid({
 				  url : basePath +"api/order/paging" ,
 					queryParams: {
@@ -339,24 +326,39 @@
 			});		
 		}		
 		
-		function oneSetp(){
+		function doSearchOrder(){
+		    $('#dgOrder').datagrid('load',{
+		    	filter_ANDS_order_code: $('input[name=dg_order_code]').val()
+		    });
+		}
+		
+		function nextSetp(){
 			var row = $('#dgOrder').datagrid('getSelected');
 			if (row){
 				$('#dlgOrder').dialog('close');
 				$('#dlgOneSetp').dialog('open').dialog('setTitle', '发货申请第二部');
 				$('#fm').form('clear');
+				$('#preSetp').show();
 				$("#order_id").val(row.id);
 				$("#order_code").val(row.order_code);
 				$("#order_date").val(row.order_date);
 				$("#dealer_id").val(row.dealer_id);
-				$("#dealer_name").val(row.dealer_name)
+				$("#dealer_name").val(row.dealer_name);
+				$('#deliver_status').combobox('enable');
+				$("#btnSetp1").show();
+				$("#btnSetp2").hide();
 				$('#dgOrderOneSetp').datagrid({
 					url : basePath + "api/orderdetail/list",
 					onClickRow: onClickRow,
 					queryParams: {
 						filter_ANDS_order_code : row.order_code
+					},
+					onLoadSuccess:function(data){ 
+						 $('#dgOrderOneSetp').datagrid('showColumn',"id");  
 					}
 				});
+				//$("#btnSetp").unbind("click");
+				//$("#btnSetp").bind("click",function (){saveEntity();});
 			}else{
 				$.messager.alert('提示','请选中数据!','warning');
 			}
@@ -384,8 +386,6 @@
 	                }
 	            }
 	     }
-	     
-
 	     function endEdit(){
  			var rows = $('#dgOrderOneSetp').datagrid('getRows');
            	for ( var i = 0; i < rows.length; i++) {
@@ -394,7 +394,7 @@
            	editIndex = undefined;
 	     }
 		
-		function deliverSubmit(){
+		function saveEntity(){
 			endEdit();
 			var isSubmit = true ; 
 			var checkedItems = $('#dgOrderOneSetp').datagrid('getChecked');
@@ -468,21 +468,163 @@
 				$.messager.alert('提示', '请选中数据!', 'warning');
 				isSubmit = false;
 			}
-
 		}
 		
-		var order_code ;
+		
+		function editEntity(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+				if(row.check_status=='0'){
+					$('#dlgOneSetp').dialog('open').dialog('setTitle', '发货申请更新');
+					$('#fm').form('clear');
+					$('#fm').form('load', row);
+					$("#preSetp").hide();
+					$("#btnSetp2").show();
+					$("#btnSetp1").hide();
+					$('#deliver_status').combobox('disable');
+					$('#dgOrderOneSetp').datagrid({
+						url : basePath + "api/deliverApply/detailList",
+						onClickRow: onClickRow,
+						queryParams: {
+							filter_ANDS_deliver_code : row.deliver_code
+						},
+						onLoadSuccess:function(data){ 
+							 $('#dgOrderOneSetp').datagrid('hideColumn',"id");  
+						}
+					});					
+				}else{
+					$.messager.alert('提示','无法更新已提交的出货单!','error');
+				}
+
+			}else{
+				$.messager.alert('提示','请选中数据!','warning');
+			}
+		}
+		
+		function updateEntity(){
+			endEdit();
+			var isSubmit = true ; 
+			//var checkedItems = $('#dgOrderOneSetp').datagrid('getRows');
+			var ids = [];
+			var deliver_number_sums = [];
+			var deliver_dates = [];
+			var arrival_dates = [];
+			var deliver_remarks = [];
+			//$.each(checkedItems, function(index, item){
+			//	ids.push(item.delivery_detail_id);
+			//});
+			//if(ids.length > 0){
+				var updated = $('#dgOrderOneSetp').datagrid('getChanges',"updated");
+		//		if (updated == 0) {
+			//		$.messager.alert('提示', '数据不能为空!', 'warning');
+				//	isSubmit = false;
+				//	return;
+			//	}
+				for ( var i = 0; i < updated.length; i++) {
+						ids.push(updated[i].delivery_detail_id);
+				//	if ($.inArray(updated[i].delivery_detail_id, ids) != -1) {
+						if (updated[i].deliver_number_sum != "") 
+							deliver_number_sums.push(updated[i].deliver_number_sum);
+						if (updated[i].deliver_date != "") 
+							deliver_dates.push(updated[i].deliver_date);
+						if (updated[i].arrival_date != "") 
+							arrival_dates.push(updated[i].arrival_date);
+						deliver_remarks.push(updated[i].deliver_remark);
+					//}
+				}
+				
+				if(deliver_number_sums.length != ids.length){
+					isSubmit = false;
+					$.messager.alert('提示', '发货数量不能为空!', 'warning');
+					return;
+				}
+				if(deliver_dates.length != ids.length){
+					isSubmit = false;
+					$.messager.alert('提示', '预计发货日期不能为空!', 'warning');
+					return;
+				}
+				if(arrival_dates.length != ids.length){
+					isSubmit = false;
+					$.messager.alert('提示', '预计到货日期不能为空!', 'warning');
+					return;
+				}
+				
+				if (isSubmit) {
+					$("#ids").val(ids.join(","));
+					$("#deliver_number_sums").val(deliver_number_sums.join(","));
+					$("#deliver_dates").val(deliver_dates.join(","));
+					$("#arrival_dates").val(arrival_dates.join(","));
+					$("#deliver_remarks").val(deliver_remarks.join(","));
+					$('#fm').form('submit', {
+						url : basePath + 'api/deliverApply/update',
+						method : "post",
+						onSubmit : function() {
+							return $(this).form('validate');
+						},
+						success : function(msg) {
+							var jsonobj = $.parseJSON(msg);
+							if (jsonobj.state == 1) {
+								$('#dlgOneSetp').dialog('close');
+								$('#dg').datagrid('reload');
+							} else {
+								$.messager.alert('提示', 'Error!', 'error');
+							}
+						}
+					});
+				}
+			//} else {
+			//	$.messager.alert('提示', '请选中数据!', 'warning');
+			//	isSubmit = false;
+			//}
+		}
+		
+		
+		function deleteEntity(){
+	           var row = $('#dg').datagrid('getSelected');
+	            if (row){
+	            	if(row.check_status=='0'){
+		                $.messager.confirm('Confirm','是否确定删除?',function(r){
+		                    if (r){
+		            			$.ajax({
+		            				type : "POST",
+		            				url : basePath + 'api/deliverApply/delete',
+		            				data : {id:row.deliver_id},
+		            				error : function(request) {
+		            					$.messager.alert('提示','Error!','error');	
+		            				},
+		            				success : function(data) {
+		            					var jsonobj = $.parseJSON(data);
+		            					if (jsonobj.state == 1) {  
+		            	                     $('#dg').datagrid('reload');
+		            					}else{
+		            						$.messager.alert('提示','Error!','error');	
+		            					}
+		            				}
+		            			});                    	
+		                    }
+		                });	            		
+	            	}else{
+	            		$.messager.alert('提示','无法删除已提交的出货单!','error');
+	            	}
+	            }else{
+					$.messager.alert('提示','请选中数据!','warning');				
+				 }	
+		}
+		
+		
+		var deliver_code ;
 		function openDeliverDetail(index){
 			$('#dg').datagrid('selectRow',index);
 			var row = $('#dg').datagrid('getSelected');
 			$('#ffDeliverDetail').form('load',row);
+			$('#deliver_status_ss').combobox('disable');
 			$('#dlgDeliverDetail').dialog('open');
-			order_code = row.order_code;
+			deliver_code = row.deliver_code;
             $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
 			$('#dgDetail').datagrid({
-				url : basePath + "api/orderdetail/paging",
+				url : basePath + "api/deliverApply/detailPaging",
 				queryParams: {
-					filter_ANDS_order_code : order_code
+					filter_ANDS_deliver_code : deliver_code
 				}
 			});
 

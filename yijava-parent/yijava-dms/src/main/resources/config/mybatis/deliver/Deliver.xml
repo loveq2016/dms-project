@@ -44,6 +44,13 @@
 		values(#{deliver_code},#{deliver_no},#{order_id},#{order_code},#{order_date},NOW(),#{remark},#{deliver_status},#{user_id},#{dealer_id});
 	</insert>
 	
+	<insert id="update" parameterType="dms.yijava.entity.deliver.Deliver">     
+		update dms.tb_deliver set remark = #{remark} where deliver_id =#{deliver_id}
+	</insert>
+	
+	<delete id="deleteByPrimaryKey" parameterType="int">
+   		 delete from dms.tb_deliver where deliver_id=#{deliver_id}
+    </delete>
 	
 	
     

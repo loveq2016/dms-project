@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yijava.orm.core.JsonPage;
@@ -38,17 +39,64 @@ public class DeliverApplyController {
 		return deliverService.paging(pageRequest,filters);
 	}
 	
+	
+	@ResponseBody
+	@RequestMapping("detailList")
+	public List<DeliverDetail> getList(HttpServletRequest request){
+		List<PropertyFilter> filters = PropertyFilters.build(request);
+		return deliverDetailService.getList(filters);
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("detailPaging")
+	public JsonPage<DeliverDetail> detailPaging(PageRequest pageRequest,HttpServletRequest request) {
+		List<PropertyFilter> filters = PropertyFilters.build(request);
+		return deliverDetailService.paging(pageRequest,filters);
+	}
+	
+	
+	
 	@ResponseBody
 	@RequestMapping("save")
 	public Result<String> save(@ModelAttribute("entity") Deliver entity,@ModelAttribute("deliverDetail") DeliverDetail deliverDetail) {
 		entity.setUser_id("13");
 		try {
 			deliverService.saveEntity(entity,deliverDetail);
+			return new Result<String>(entity.getDeliver_id(), 1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new Result<String>(entity.getDeliver_id(), 1);
+		return new Result<String>(entity.getDeliver_id(),0);
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping("update")
+	public Result<String> update(@ModelAttribute("entity") Deliver entity,@ModelAttribute("deliverDetail") DeliverDetail deliverDetail) {
+		entity.setUser_id("13");
+		try {
+			deliverService.updateEntity(entity,deliverDetail);
+			return new Result<String>(entity.getDeliver_id(), 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(entity.getDeliver_id(),0);
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("delete")
+	public Result<String> delete(@RequestParam(value = "id", required = true) String id) {
+		try {
+			deliverService.deleteEntity(id);
+			return new Result<String>(id, 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(id, 0);
+	}
+	
 	
 
 	
