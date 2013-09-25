@@ -18,7 +18,6 @@ import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.deliver.DeliverDao;
 import dms.yijava.dao.deliver.DeliverDetailDao;
-import dms.yijava.dao.order.OrderDao;
 import dms.yijava.dao.order.OrderDetailDao;
 import dms.yijava.entity.deliver.Deliver;
 import dms.yijava.entity.deliver.DeliverDetail;
@@ -32,8 +31,6 @@ public class DeliverService {
 	private DeliverDao  deliverDao ;
 	@Autowired
 	private DeliverDetailDao  deliverDetailDao ;
-	@Autowired
-	private OrderDao  orderDao ;
 	@Autowired
 	private OrderDetailDao  orderDetailDao ;
 	
@@ -78,7 +75,7 @@ public class DeliverService {
 			String[] deliver_number_sums = deliverDetail.getDeliver_number_sums().split(",");
 			String[] deliver_dates = deliverDetail.getDeliver_dates().split(",");
 			String[] arrival_dates = deliverDetail.getArrival_dates().split(",");
-			String[] deliver_remarks = deliverDetail.getDeliver_remarks().split(",");
+			String[] deliver_remarks = StringUtils.splitPreserveAllTokens(deliverDetail.getDeliver_remarks(), ",");
 			if (deliver_remarks == null || deliver_remarks.length == 0)
 				deliver_remarks = new String[ids.length];
 			int i =0;
@@ -104,16 +101,48 @@ public class DeliverService {
 				i++;
 				deliverDetailDao.insert(tempDeliverDetail);
 			}
-			
-//			Order order =new Order();
-//			order.setOrder_code(entity.getOrder_code());
-//			order.setOrder_status(entity.getDeliver_status());
-//			orderDao.updateObject(".updateStatus", order);
+		}
+	}
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
+	public void updateEntity(Deliver entity,DeliverDetail deliverDetail) {
+		if(StringUtils.isNotBlank(entity.getDeliver_id())){
+			deliverDao.update(entity);
 		}
 		
+		DeliverDetail tempDeliverDetail = null;
+		String[] ids = deliverDetail.getIds().split(",");
+		String[] deliver_number_sums = deliverDetail.getDeliver_number_sums().split(",");
+		String[] deliver_dates = deliverDetail.getDeliver_dates().split(",");
+		String[] arrival_dates = deliverDetail.getArrival_dates().split(",");
+		String[] deliver_remarks = StringUtils.splitPreserveAllTokens(deliverDetail.getDeliver_remarks(), ",");
+		if (deliver_remarks == null || deliver_remarks.length == 0)
+			deliver_remarks = new String[ids.length];
+		if (ids.length > 0) {
+			int i =0;
+			for (String id : ids) {
+				if(StringUtils.isNotBlank(id)){
+					tempDeliverDetail = new DeliverDetail();
+					tempDeliverDetail.setDelivery_detail_id(id);
+					tempDeliverDetail.setDeliver_number_sum(deliver_number_sums[i]);
+					tempDeliverDetail.setDeliver_date(deliver_dates[i]);
+					tempDeliverDetail.setArrival_date(arrival_dates[i]);
+					tempDeliverDetail.setDeliver_remark(deliver_remarks[i]);
+					deliverDetailDao.update(tempDeliverDetail);
+					i++;
+				}
+			}
+		}
+
 		
 		
 		
+	}
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
+	public void deleteEntity(String deliver_id) {
+		deliverDao.removeById(deliver_id);
+		deliverDetailDao.removeById(deliver_id);
 	}
 		
 }

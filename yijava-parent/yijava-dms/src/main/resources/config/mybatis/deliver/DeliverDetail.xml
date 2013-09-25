@@ -4,6 +4,34 @@
 
 <mapper namespace="DeliverDetail">
 
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(deliver_code)">and deliver_code = #{deliver_code} </if>
+		</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>
+		    <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+		         ORDER BY ${orderSql}
+		    </when>
+	    </choose>
+	</sql>
+    <select id="selectByObjectcount" resultType="long">
+		select count(*) from (
+			select * from dms.tb_delivery_detail 
+		) t
+		<include refid="adsWhere"/>
+	</select>
+ 	<select id="selectByObject" resultType="dms.yijava.entity.deliver.DeliverDetail">
+ 		select * from (
+			select * from dms.tb_delivery_detail 
+		)t	
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}
+	</select>
+	
+	
 	
 	<insert id="insert" parameterType="dms.yijava.entity.deliver.DeliverDetail" useGeneratedKeys="true" keyProperty="delivery_detail_id">     
 		insert into dms.tb_delivery_detail(deliver_id,deliver_code,order_code,order_detail_id,product_item_number,product_name,
@@ -13,6 +41,18 @@
 	</insert>
 	
 	
+	<select id="selectByMap" resultType="dms.yijava.entity.deliver.DeliverDetail">
+		select * from dms.tb_delivery_detail where deliver_code = #{deliver_code}
+	</select>
 	
+	<insert id="update" parameterType="dms.yijava.entity.deliver.DeliverDetail">     
+		update dms.tb_delivery_detail set deliver_number_sum = #{deliver_number_sum},deliver_date=#{deliver_date},arrival_date=#{arrival_date},deliver_remark=#{deliver_remark} 
+		where delivery_detail_id =#{delivery_detail_id}
+	</insert>
+	
+	
+	<delete id="deleteByPrimaryKey" parameterType="int">
+   		 delete from dms.tb_delivery_detail where deliver_id=#{deliver_id}
+    </delete>
     
 </mapper>
