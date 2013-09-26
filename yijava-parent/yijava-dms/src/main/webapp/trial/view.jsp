@@ -74,7 +74,8 @@
 							<th data-options="field:'hospital_name',width:200"  sortable="true">医院名称</th>									
 							<th data-options="field:'reason',width:300" sortable="true">试用理由</th>							
 							<th data-options="field:'create_time',width:200">申请日期</th>	
-							<th data-options="field:'status',width:90" sortable="true" formatter="formatterstatus">单据状态</th>							
+							<th data-options="field:'status',width:90" sortable="true" formatter="formatterstatus">单据状态</th>
+							<th data-options="field:'id',width:90" sortable="true" formatter="formatterdesc">明细</th>							
 						</tr>
 					</thead>
 				</table>
@@ -96,6 +97,12 @@
 									<tr>
 										<td>试用医院:</td>
 										<td>
+										
+										
+										<input  style="width:260px;" class="easyui-validatebox" type="hidden" 
+										name="trial_id" data-options="required:true" ></input>
+										
+										
 										<input  style="width:260px;" class="easyui-validatebox" type="text" 
 										name="hospital_id" data-options="required:true"></input></td>								
 									</tr>
@@ -127,14 +134,14 @@
 			</div>
 			
 			<div title="产品明细行" >
-				<table id="dg1" title="查询结果" style="width:650px;height: 340px" url="${basePath}api/protrial/paging" method="get"
+				<table id="dg1" title="查询结果" style="width:650px;height: 340px" url="${basePath}api/flow/paging" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="asc">
 					<thead>
 						<tr>
 							<th data-options="field:'flow_id',width:10"  sortable="true" hidden="true">id</th>
 							<th data-options="field:'flow_name',width:100"  sortable="true">产品名称</th>
 							<th data-options="field:'flow_desc',width:100" sortable="true">规格型号</th>
-							<th data-options="field:'is_system',width:50" sortable="true" formatter="formatterSystem">数量</th>
+							<th data-options="field:'is_system',width:50" sortable="true">数量</th>
 							
 							<th data-options="field:'add_date',width:50">备注</th>										
 						</tr>
@@ -153,7 +160,7 @@
 	
 	<div class="easyui-tabs" style="width:680px;height:380px">	
 		<div title="基本信息" >
-				<form id="ffadd" action="" method="post" enctype="multipart/form-data">
+				<form id="basequery" action="" method="post" enctype="multipart/form-data">
 								<table>
 									<tr>
 										<td>试用医院:</td>
@@ -182,21 +189,18 @@
 									</tr>
 								</table>
 				</form>			
-				<div style="text-align: center; padding: 50px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveEntity()">确定</a>
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="clearForm()">取消</a>					   
-				</div>
+				
 			</div>
 			
 			<div title="产品明细行" >
-				<table id="dg1" title="查询结果" style="width:650px;height: 340px" url="${basePath}api/protrial/paging" method="get"
+				<table id="dgflow" title="查询结果" style="width:650px;height: 340px" url="${basePath}api/flow/paging" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="asc">
 					<thead>
 						<tr>
 							<th data-options="field:'flow_id',width:10"  sortable="true" hidden="true">id</th>
 							<th data-options="field:'flow_name',width:100"  sortable="true">产品名称</th>
 							<th data-options="field:'flow_desc',width:100" sortable="true">规格型号</th>
-							<th data-options="field:'is_system',width:50" sortable="true" formatter="formatterSystem">数量</th>
+							<th data-options="field:'is_system',width:50" sortable="true">数量</th>
 							
 							<th data-options="field:'add_date',width:50">备注</th>										
 						</tr>
@@ -204,28 +208,24 @@
 				</table>
 			</div>
 			<div title="流程记录" >
-				<table id="dg1" title="查询结果" style="width:650px;height: 340px" url="${basePath}api/protrial/paging" method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="asc">
+				<table id="dgflow_record" title="查询结果" style="width:650px;height: 340px">
 					<thead>
 						<tr>
-							<th data-options="field:'flow_id',width:10"  sortable="true" hidden="true">id</th>
-							<th data-options="field:'flow_name',width:100"  sortable="true">产品名称</th>
-							<th data-options="field:'flow_desc',width:100" sortable="true">规格型号</th>
-							<th data-options="field:'is_system',width:50" sortable="true" formatter="formatterSystem">数量</th>
 							
-							<th data-options="field:'add_date',width:50">备注</th>										
+							<th data-options="field:'send_id',width:130"  sortable="true">修改人</th>							
+							<th data-options="field:'send_time',width:150" sortable="true">日期</th>
+							<th data-options="field:'title',width:150"  sortable="true">动作</th>				
+							<th data-options="field:'remark',width:200">备注</th>										
 						</tr>
 					</thead>
-				</table>
+				</table> 
 			</div>
 		</div>
 	</div>
 	<!--flow end -->	
 	
 	
-	<div id="test" title="流程设计" style="top:10px;padding:1px;width:780px;height:590px;" title="Modal Window">
 	
-    </div>
 
 
 	<script type="text/javascript">
@@ -273,18 +273,23 @@
 		 function formatterInfo (value, row, index) { 
 			 return '<span style="color:red" onclick="openview(' + row.flow_id + ');">查看详细流程 </span>'; 
 		} 
+		 
+		 function formatterdesc (value, row, index) { 
+			 return '<span><img src="'+basePath+'resource/themes/icons/detail.png" onclick="View_Entity(' + index + ');"></span>'; 
+		} 
+		
 		
 		 function formatterstatus (value, row, index) { 
 			 if(value=='0')
-					return '<span>未提交</span>'; 
+				 return '<span style="color:green" >未提交</span>'; 
 				else if(value=='1')
-					return '<span>已提交</span>'; 
+					return '<span style="color:red">已提交</span>'; 
 				else if(value=='2')
-					return '<span>驳回</span>'; 
+					return '<span style="color:red">驳回</span>'; 
 				else if(value=='3')
-					return '<span>已审核</span>'; 				
+					return '<span style="color:red">已审核</span>'; 				
 				else if(value=='4')
-					return '<span>已完成</span>'; 
+					return '<span style="color:red">已完成</span>'; 
 			
 		}
 		
@@ -312,10 +317,31 @@
 			
 		});
 		$(function() {
-			var pager = $('#dg1').datagrid().datagrid('getPager'); // get the pager of datagrid
-			pager.pagination(); 
+			var pager1 = $('#dg1').datagrid().datagrid('getPager'); // get the pager of datagrid
+			pager1.pagination(); 
 			
 		});
+		 $(function() {
+			var pagerflow = $('#dgflow').datagrid().datagrid('getPager'); 
+			pagerflow.pagination(); 
+			
+		});
+		/* $(function() {
+			var pagerflow_record = $('#dgflow_record').datagrid().datagrid('getPager'); 
+			
+			
+			pagerflow_record.pagination(); 
+			
+		});  */
+		
+		function  LoadFlowRecord(bussinessId)
+		{
+			 $('#dgflow_record').datagrid({
+			    url:basePath+'api/flowrecord/list?bussiness_id='+bussinessId
+			}); 
+			//pagerflow_record.pagination(); 
+		}
+		
 		function doSearch(){
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_flow_name: $('#flow_name').val()
@@ -326,7 +352,7 @@
 		{
 			 $('#ffadd').form('clear');
 			 url = basePath+'api/protrial/save';
-	         $('#dlg').dialog('open').dialog('setTitle', '申请试用');
+	         $('#dlg').dialog('open').dialog('setTitle', '填写申请试用');
 		}
 		
 		function saveEntity()
@@ -357,20 +383,20 @@
 		function viewEntity()
 		{
 			var row = $('#dg').datagrid('getSelected');			
-			if (row){			   
+			if (row && row.status ==0){		  
 			    $('#ffadd').form('load', row);
 			    url = basePath+'api/protrial/update?flow_id='+row.flow_id;
-			    $('#w').window('open');
+			    $('#dlg').dialog('open').dialog('setTitle', '修改申请试用');
 			}else
 			{
-				$.messager.alert('提示','请选中数据!','warning');				
+				$.messager.alert('提示---数据已经提交不能修改','请选中数据!','warning');				
 			}			
 		}
 		
 		function deleteEntity()
 		{
 			var row = $('#dg').datagrid('getSelected');
-			if (row){
+			if (row && row.status ==0){		
 				 $.messager.confirm('确定','确定要删除吗 ?',function(r){
 					 if (r){
 	                        $.post(basePath+'api/protrial/remove',{trial_id:row.trial_id},function(result){
@@ -391,7 +417,7 @@
 			    
 			}else
 			{
-				$.messager.alert('提示','请选中数据!','warning');
+				$.messager.alert('提示---数据已经提交不能修改','请选中数据!','warning');
 			}
 			
 		}
@@ -403,7 +429,7 @@
 		
 		function ToCheckEntity(){
 			var row = $('#dg').datagrid('getSelected');
-			if (row){
+			if (row && row.status ==0){			
 				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
 					 if (r){
 	                        $.post(basePath+'api/protrial/updatetocheck',{trial_id:row.trial_id},function(result){
@@ -424,14 +450,19 @@
 			    
 			}else
 			{
-				$.messager.alert('提示','请选中数据!','warning');
+				$.messager.alert('提示---数据已经提交不能修改','请选中数据!','warning');
 			}
 		}
 		
 		function CheckEntity(){
 			var row = $('#dg').datagrid('getSelected');
-			if (row){
-				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
+			if (row && row.status ==1){				
+				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){
+					 
+					 //填充基本信息
+					  $('#basequery').form('load', row);
+					 //加载流程记录
+					 LoadFlowRecord(row.trial_id);
 					 
 					 $('#dlgflow').dialog('open').dialog('setTitle', '审核');
 				 });
@@ -440,6 +471,20 @@
 				$.messager.alert('提示','请选中数据!','warning');
 			}
 			 
+		}
+		
+		function View_Entity(index){
+			 //填充基本信息
+			 //selectRow
+			 $('#dg').datagrid('selectRow', index);
+			 var row = $('#dg').datagrid('getSelected');
+			  $('#basequery').form('load', row);
+			 //加载流程记录
+			 LoadFlowRecord(row.trial_id);
+			 
+			 $('#dlgflow').dialog('open').dialog('setTitle', '审核');
+			//var row = $('#dg').datagrid('getSelected');
+			//if (row && row.status ==1){				
 		}
 	</script>
 

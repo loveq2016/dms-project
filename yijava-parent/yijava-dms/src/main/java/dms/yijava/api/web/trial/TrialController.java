@@ -60,6 +60,8 @@ public class TrialController {
 	public Result<Integer> save(@ModelAttribute("entity") Trial entity,HttpServletRequest request) {
 		Result<Integer> result=new Result<Integer>(0, 0);
 		try {
+			if(entity.getStatus()==null)
+				entity.setStatus(0);
 			trialService.saveEntity(entity);
 			
 			
@@ -75,6 +77,13 @@ public class TrialController {
 		return result;
 	}
 	
+	
+	
+	/**
+	 * 开始流程
+	 * @param trial_id
+	 * @param currentUserId
+	 */
 	public void processFlow(Integer trial_id,String currentUserId)
 	{
 		Step step=flowBussService.getFirstStep(flowIdentifierNumber);
@@ -89,7 +98,11 @@ public class TrialController {
 	}
 	
 	
-
+	/**
+	 * 修改试用申请
+	 * @param entity
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("update")
 	public Result<Integer> update(@ModelAttribute("entity") Trial entity) {
@@ -104,6 +117,12 @@ public class TrialController {
 		return result;
 	}
 	
+	/**
+	 * 修改状态
+	 * @param trial_id
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("updatetocheck")
 	public Result<Integer> updatetocheck(Integer trial_id,HttpServletRequest request) {
@@ -127,6 +146,11 @@ public class TrialController {
 		return result;
 	}
 	
+	/**
+	 * 删除
+	 * @param trial_id
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("remove")
 	public Result<Integer> remove(Integer trial_id) {
