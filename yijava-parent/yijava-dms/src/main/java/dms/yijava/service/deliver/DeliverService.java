@@ -116,6 +116,8 @@ public class DeliverService {
 		String[] deliver_dates = deliverDetail.getDeliver_dates().split(",");
 		String[] arrival_dates = deliverDetail.getArrival_dates().split(",");
 		String[] deliver_remarks = StringUtils.splitPreserveAllTokens(deliverDetail.getDeliver_remarks(), ",");
+		if (deliver_remarks == null || deliver_remarks.length == 0)
+			deliver_remarks = new String[ids.length];
 		if (ids.length > 0) {
 			int i =0;
 			for (String id : ids) {
