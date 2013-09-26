@@ -41,7 +41,9 @@
 </select>
 
 <select id="selectByMap" resultType="dms.yijava.entity.user.UserDealer">
-	select * FROM tb_user_dealer b where b.user_id  in (
+	select 
+	a.dealer_id,dealer_code,dealer_name,business_contacts,business_phone,b.id,b.user_id 
+	from tb_dealer a inner join tb_user_dealer b on a.dealer_id = b.dealer_id where b.user_id  in (
 	<foreach item="item" index="index" collection="sourceIds" separator="union">
 		SELECT fk_user_id FROM tb_user_layou WHERE fk_team_id in (select id from tb_team_layou where FIND_IN_SET(id,getChildLst(#{item})) AND id!=#{item})
 	</foreach>
