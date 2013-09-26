@@ -3,7 +3,6 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="UserOrganization">
-
 	<select id="selectByMap" resultType="dms.yijava.entity.user.UserOrganization">
 			select * from (
 				select id,department_name as text,'closed'as state,fk_parent_id as parent_id from tb_department a where fk_parent_id = #{parent_id}
@@ -11,5 +10,4 @@
 				select id,realname,'open'as state,fk_department_id from tb_manager_user b where b.fk_department_id = #{parent_id}
 		) t order by state desc 
 	</select>
-	
 </mapper>

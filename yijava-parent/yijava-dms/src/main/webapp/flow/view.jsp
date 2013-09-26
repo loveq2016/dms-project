@@ -40,7 +40,7 @@
 					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="asc">
 					<thead>
 						<tr>
-							<th data-options="field:'flow_id',width:300"  sortable="true" hidden="true">id</th>
+							<th data-options="field:'flow_id',width:100"  sortable="true" >流程编号</th>
 							<th data-options="field:'flow_name',width:300"  sortable="true">流程名称</th>
 							<th data-options="field:'flow_desc',width:300" sortable="true">流程描述</th>
 							<th data-options="field:'is_system',width:100" sortable="true" formatter="formatterSystem">是否系统流程</th>
