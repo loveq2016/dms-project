@@ -62,9 +62,8 @@ public class TrialController {
 		try {
 			trialService.saveEntity(entity);
 			
-			SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
-			///以下开始走流程处理
-			processFlow(entity.getTrial_id(),sysUser.getId());
+			
+			
 			result.setData(1);
 			result.setState(1);;
 		} catch (Exception e) {
@@ -97,6 +96,29 @@ public class TrialController {
 		Result<Integer> result=new Result<Integer>(0, 0);
 		try {
 			trialService.updateEntity(entity);
+			result.setData(1);
+			result.setState(1);;
+		} catch (Exception e) {
+			logger.error("error" + e);
+		}
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping("updatetocheck")
+	public Result<Integer> updatetocheck(Integer trial_id,HttpServletRequest request) {
+		Result<Integer> result=new Result<Integer>(0, 0);
+		try {
+			
+			
+			
+			trialService.updateEntityStatus(trial_id,1);
+			
+			
+			///以下开始走流程处理
+			SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+			processFlow(trial_id,sysUser.getId());	
+			
 			result.setData(1);
 			result.setState(1);;
 		} catch (Exception e) {

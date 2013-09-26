@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DeliverExpressDetail">
+
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(deliver_code)">and deliver_code = #{deliver_code} </if>
+		</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>
+		    <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+		         ORDER BY ${orderSql}
+		    </when>
+	    </choose>
+	</sql>
+    <select id="selectByObjectcount" resultType="long">
+		select count(*) from (
+			select * from dms.tb_deliver_express_detail 
+		) t
+		<include refid="adsWhere"/>
+	</select>
+ 	<select id="selectByObject" resultType="dms.yijava.entity.deliver.DeliverExpressDetail">
+ 		select * from (
+			select * from dms.tb_deliver_express_detail 
+		)t	
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}
+	</select>
+	
+	<select id="selectSumById" resultType="dms.yijava.entity.deliver.DeliverExpressDetail">
+		select * from (
+			select sum(exprees_num) AS exprees_num  from dms.tb_deliver_express_detail where delivery_detail_id = #{delivery_detail_id}
+			) t 
+	</select>
+	
+	<select id="selectSn" resultType="dms.yijava.entity.deliver.DeliverExpressDetail">
+		select * from dms.tb_deliver_express_detail where express_sn = trim(upper(#{express_sn})) and delivery_detail_id = #{delivery_detail_id} 
+	</select>
+	
+	<insert id="insert" parameterType="dms.yijava.entity.deliver.DeliverExpressDetail" useGeneratedKeys="true" keyProperty="id">     
+		insert into dms.tb_deliver_express_detail(delivery_detail_id,deliver_id,deliver_code,order_code,order_detail_id,product_item_number,product_name,
+			models,exprees_num,express_sn,validity_date,remark,user_id) 
+		values(#{delivery_detail_id},#{deliver_id},#{deliver_code},#{order_code},#{order_detail_id},#{product_item_number},#{product_name},
+			#{models},#{exprees_num},trim(upper(#{express_sn})),#{validity_date},#{remark},#{user_id});
+	</insert>
+
+	<update id="update" parameterType="dms.yijava.entity.deliver.DeliverExpressDetail">
+		update dms.tb_deliver_express_detail set exprees_num=exprees_num+#{exprees_num},validity_date=#{validity_date},remark=#{remark} where id=#{id}
+	</update>
+	
+	<delete id="deleteByPrimaryKey" parameterType="int">
+   		 delete from dms.tb_deliver_express_detail where id=#{id}
+    </delete>
+    
+</mapper>

@@ -147,6 +147,9 @@
 </div>
 <div id="mm8" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="出货管理" url="deliver/apply/view.jsp">出货管理</a>
+		<a href="javascript:void(0)" title="发货单管理" url="deliver/apply/view.jsp">发货单管理</a>
 	</div>	
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="发货管理" url="deliver/express/view.jsp">发货管理</a>
+	</div>
 </div>

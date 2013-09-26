@@ -71,10 +71,10 @@
 						<tr>
 							<th data-options="field:'trial_id',width:100"  sortable="true" hidden="true">trial_id</th>
 							<th data-options="field:'dealer_name',width:200"  sortable="true">经销商名称</th>
-							<th data-options="field:'hospital_name',width:200"  sortable="true">医院名称</th>
-							<th data-options="field:'status',width:50" sortable="true">状态</th>		
+							<th data-options="field:'hospital_name',width:200"  sortable="true">医院名称</th>									
 							<th data-options="field:'reason',width:300" sortable="true">试用理由</th>							
-							<th data-options="field:'create_time',width:200">申请日期</th>								
+							<th data-options="field:'create_time',width:200">申请日期</th>	
+							<th data-options="field:'status',width:90" sortable="true" formatter="formatterstatus">单据状态</th>							
 						</tr>
 					</thead>
 				</table>
@@ -126,7 +126,84 @@
 				</div>
 			</div>
 			
-			<div title="明细行" >
+			<div title="产品明细行" >
+				<table id="dg1" title="查询结果" style="width:650px;height: 340px" url="${basePath}api/protrial/paging" method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="asc">
+					<thead>
+						<tr>
+							<th data-options="field:'flow_id',width:10"  sortable="true" hidden="true">id</th>
+							<th data-options="field:'flow_name',width:100"  sortable="true">产品名称</th>
+							<th data-options="field:'flow_desc',width:100" sortable="true">规格型号</th>
+							<th data-options="field:'is_system',width:50" sortable="true" formatter="formatterSystem">数量</th>
+							
+							<th data-options="field:'add_date',width:50">备注</th>										
+						</tr>
+					</thead>
+				</table>
+			</div>
+			
+		</div>
+	</div>
+	<!--add end -->	
+	
+	<!--flow start -->	
+	<div id="dlgflow" class="easyui-dialog" title="申请试用" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
+	style="width:720px;height:500px;padding:10px;">
+	
+	
+	<div class="easyui-tabs" style="width:680px;height:380px">	
+		<div title="基本信息" >
+				<form id="ffadd" action="" method="post" enctype="multipart/form-data">
+								<table>
+									<tr>
+										<td>试用医院:</td>
+										<td>
+										<input  style="width:260px;" class="easyui-validatebox" type="text" 
+										name="hospital_id" data-options="required:true"></input></td>								
+									</tr>
+									<tr>
+										<td>经销商:</td>
+										<td>
+										<input  style="width:260px;" class="easyui-validatebox" type="text"
+										 name="dealer_user_id" data-options="required:true"></input></td>								
+									</tr>
+									<tr>
+										<td>试用时间:</td>
+										<td>
+										<input name="create_time"  class="easyui-datebox"></input>
+										
+										</td>								
+									</tr>
+									<tr>
+										<td>试用理由:</td>
+										<td>
+										<textarea name="reason" style="height:120px;width:360px;"></textarea>
+										</td>								
+									</tr>
+								</table>
+				</form>			
+				<div style="text-align: center; padding: 50px">
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveEntity()">确定</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="clearForm()">取消</a>					   
+				</div>
+			</div>
+			
+			<div title="产品明细行" >
+				<table id="dg1" title="查询结果" style="width:650px;height: 340px" url="${basePath}api/protrial/paging" method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="asc">
+					<thead>
+						<tr>
+							<th data-options="field:'flow_id',width:10"  sortable="true" hidden="true">id</th>
+							<th data-options="field:'flow_name',width:100"  sortable="true">产品名称</th>
+							<th data-options="field:'flow_desc',width:100" sortable="true">规格型号</th>
+							<th data-options="field:'is_system',width:50" sortable="true" formatter="formatterSystem">数量</th>
+							
+							<th data-options="field:'add_date',width:50">备注</th>										
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div title="流程记录" >
 				<table id="dg1" title="查询结果" style="width:650px;height: 340px" url="${basePath}api/protrial/paging" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="asc">
 					<thead>
@@ -143,7 +220,9 @@
 			</div>
 		</div>
 	</div>
-	<!--add end -->	
+	<!--flow end -->	
+	
+	
 	<div id="test" title="流程设计" style="top:10px;padding:1px;width:780px;height:590px;" title="Modal Window">
 	
     </div>
@@ -166,13 +245,27 @@
 		        handler:function(){
 		        	viewEntity();
 				}
-		    },'-',{
+		    }
+		    ,'-',{
 		        text:'删除',
 		        iconCls:'icon-remove',
 		        handler:function(){
 		        	deleteEntity();
 		        }
-		    }]
+		    },{
+		        text:'提交审核',
+		        iconCls:'icon-ok',
+		        handler:function(){
+		        	ToCheckEntity();
+				}
+		    },{
+		        text:'审核',
+		        iconCls:'icon-check',
+		        handler:function(){
+		        	CheckEntity();
+				}
+		    }
+		    ]
 		});
 		
 
@@ -181,11 +274,17 @@
 			 return '<span style="color:red" onclick="openview(' + row.flow_id + ');">查看详细流程 </span>'; 
 		} 
 		
-		 function formatterSystem (value, row, index) { 
-			 if(value==1)
-				 return "是";
-			 else
-				 return "否";
+		 function formatterstatus (value, row, index) { 
+			 if(value=='0')
+					return '<span>未提交</span>'; 
+				else if(value=='1')
+					return '<span>已提交</span>'; 
+				else if(value=='2')
+					return '<span>驳回</span>'; 
+				else if(value=='3')
+					return '<span>已审核</span>'; 				
+				else if(value=='4')
+					return '<span>已完成</span>'; 
 			
 		}
 		
@@ -302,7 +401,46 @@
 			$('#ffadd').form('clear');
 		}
 		
+		function ToCheckEntity(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
+					 if (r){
+	                        $.post(basePath+'api/protrial/updatetocheck',{trial_id:row.trial_id},function(result){
+	                        	
+	        			    	if(result.state==1){
+	        			    		var pager = $('#dg').datagrid().datagrid('getPager');
+	    			    			pager.pagination('select');	
+	                            } else {
+	                                $.messager.show({    // show error message
+	                                    title: 'Error',
+	                                    msg: result.errorMsg
+	                                });
+	                            } 
+	                        },'json');
+	                    }
+				 });
+			    
+			    
+			}else
+			{
+				$.messager.alert('提示','请选中数据!','warning');
+			}
+		}
 		
+		function CheckEntity(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
+					 
+					 $('#dlgflow').dialog('open').dialog('setTitle', '审核');
+				 });
+			}else
+			{
+				$.messager.alert('提示','请选中数据!','warning');
+			}
+			 
+		}
 	</script>
 
 	<script type="text/javascript"> 

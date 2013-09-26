@@ -19,6 +19,9 @@
 .icon-ok{
 	background:url('icons/ok.png') no-repeat center center;
 }
+.icon-check{
+	background:url('icons/check.png') no-repeat center center;
+}
 .icon-no{
 	background:url('icons/no.png') no-repeat center center;
 }
