@@ -16,6 +16,8 @@ public class TeamLayouService {
 
 	@Autowired
 	private TeamLayouDao  teamLayouDao ;
+	@Autowired
+	private UserLayouService  userLayouService ;
 	
 	public List<TeamLayou> getList(String id){
 		HashMap<String, String> parameters = new HashMap<String, String>();
@@ -33,5 +35,6 @@ public class TeamLayouService {
 	}
 	public void deleteEntity(String id) {
 		teamLayouDao.removeById(id);
+		userLayouService.deleteByTeamId(id);
 	}
 }

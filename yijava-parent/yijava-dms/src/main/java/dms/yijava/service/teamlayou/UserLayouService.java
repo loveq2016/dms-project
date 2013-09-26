@@ -33,4 +33,7 @@ public class UserLayouService {
 	public void deleteEntity(String id) {
 		userLayouDao.removeById(id);
 	}
+	public void deleteByTeamId(String id) {
+		userLayouDao.removeObject(".deleteByTeamId",id);
+	}
 }
