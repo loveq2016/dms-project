@@ -177,7 +177,7 @@
                 frozenColumns:[[
                     {title:'组织名称',field:'text',width:500} 
                 ]],
-                onContextMenu: function(e,row){  
+                onContextMenu: function(e,row){
                     e.preventDefault();  
                     $(this).treegrid('unselectAll');  
                     $(this).treegrid('select', row.id);
@@ -294,7 +294,7 @@
 	            				success : function(data) {
 	            					var jsonobj = $.parseJSON(data);
 	            					if (jsonobj.state == 1) {
-	            						$('#treegrid').treegrid('reload',node.fk_parent_id);
+	            						$('#treegrid').treegrid('reload',node.parent_id);
 	            					}
 	            				}
 	            			});                    	
@@ -340,7 +340,7 @@
 	            			$.ajax({
 	            				type : "POST",
 	            				url : basePath + 'api/teamlayou/deluser',
-	            				data : {fk_user_id:node.id,fk_team_id:parent_id},
+	            				data : {id:node.id},
 	            				error : function(request) {
 	            					$.messager.alert('提示','Error!','error');	
 	            				},
@@ -360,7 +360,7 @@
 		function appendUserDetail()
 		{
 			$('#dlgUserDetail').dialog('open');
-			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
+			var pager = $('#dg').datagrid().datagrid('getPager'); 
 			pager.pagination();
 		}
 		function doSearch(){

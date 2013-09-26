@@ -30,7 +30,10 @@ public class UserLayouService {
 	public void updateEntity(UserLayou entity) {
 		userLayouDao.update(entity);
 	}
-	public void deleteEntity(UserLayou entity) {
-		userLayouDao.remove(entity);
+	public void deleteEntity(String id) {
+		userLayouDao.removeById(id);
+	}
+	public void deleteByTeamId(String id) {
+		userLayouDao.removeObject(".deleteByTeamId",id);
 	}
 }

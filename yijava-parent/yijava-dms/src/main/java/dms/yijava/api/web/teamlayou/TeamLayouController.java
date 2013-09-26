@@ -63,8 +63,9 @@ public class TeamLayouController {
 	
 	@ResponseBody
 	@RequestMapping("deluser")
-	public Result<String> deleteuser(@ModelAttribute("entity") UserLayou entity) {
-		userLayouService.deleteEntity(entity);
-		return new Result<String>(entity.getFk_user_id(),1);
+	public Result<String> deleteuser(@RequestParam(value = "id", required = true) String id) {
+		id=id.split("\\|")[1];
+		userLayouService.deleteEntity(id);
+		return new Result<String>(id,1);
 	}
 }
