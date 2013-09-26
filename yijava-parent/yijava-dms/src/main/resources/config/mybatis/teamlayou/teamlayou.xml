@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
     <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="TeamLayou">
 	<select id="selectByMap" resultType="dms.yijava.entity.teamlayou.TeamLayou">
 		select * from (
-			select id,team_name as text,'closed' as state,'1' as type,parent_id from tb_team_layou a where parent_id = #{parent_id}
+			select id,team_name as text,'closed' as state,'1' as type,parent_id,'0' as fk_user_id from tb_team_layou a where parent_id = #{parent_id}
 			union all
-			select fk_user_id,fk_user_name,'open' as state,'2' as type,fk_team_id from tb_user_layou b where b.fk_team_id = #{parent_id}
+			select concat('USER|',id),fk_user_name,'open' as state,'2' as type,fk_team_id,fk_user_id from tb_user_layou b where b.fk_team_id = #{parent_id}
 		) t order by state desc 
 	</select>
 	<insert id="insert" parameterType="dms.yijava.entity.teamlayou.TeamLayou">

@@ -26,7 +26,7 @@
     	update dms.tb_user_layou set fk_team_id=#{fk_team_id},fk_team_name=#{fk_team_name},fk_user_id=#{fk_user_id},
     	fk_user_name=#{fk_user_name},fk_role_id=#{fk_role_id},remark=#{remark},ext1=#{ext1},ext2=#{ext2},ext3=#{ext3} where id=#{id}
     </update>
-	<delete id="delete" parameterType="dms.yijava.entity.teamlayou.UserLayou">
-   		 delete from dms.tb_user_layou where fk_team_id = #{fk_team_id} and fk_user_id = #{fk_user_id}
+	<delete id="deleteByPrimaryKey" parameterType="int">
+   		 delete from dms.tb_user_layou where id = #{id}
     </delete>
 </mapper>
