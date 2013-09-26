@@ -17,13 +17,20 @@ import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
+import dms.yijava.entity.deliver.Deliver;
 import dms.yijava.entity.deliver.DeliverExpressDetail;
+import dms.yijava.entity.order.Order;
 import dms.yijava.service.deliver.DeliverExpressDetailService;
+import dms.yijava.service.deliver.DeliverService;
+import dms.yijava.service.order.OrderService;
 
 @Controller
 @RequestMapping("/api/deliverExpress")
 public class DeliverExpressController {
-	
+	@Autowired
+	private DeliverService deliverService;
+	@Autowired
+	private OrderService orderService;
 	@Autowired
 	private DeliverExpressDetailService deliverExpressDetailService;
 	
@@ -82,5 +89,30 @@ public class DeliverExpressController {
 		}
 		return new Result<String>(id, 0);
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping("submitExpress")
+	public Result<String> submitExpress(@ModelAttribute("entity") DeliverExpressDetail entity) {
+		
+		try {
+			Deliver deliverEntity = new Deliver();
+			deliverEntity.setDeliver_code(entity.getDeliver_code());
+			deliverEntity.setExpress_code(entity.getExpress_code());
+			deliverService.submitExpress(deliverEntity);
+			Order orderEntity = new Order();
+			orderEntity.setOrder_code(entity.getOrder_code());
+			orderEntity.setOrder_status(entity.getDeliver_status());
+			orderEntity.setExpress_code(entity.getExpress_code());
+			orderService.submitExpress(orderEntity);
+			return new Result<String>("1", 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new Result<String>("1", 0);
+	}
+	
+	
 	
 }

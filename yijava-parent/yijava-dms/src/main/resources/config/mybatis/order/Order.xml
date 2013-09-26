@@ -75,4 +75,9 @@
 	<delete id="deleteByPrimaryKey" parameterType="int">
    		 delete from dms.tb_order where order_code=#{order_code}
     </delete>
+    <update id="submitExpress" parameterType="dms.yijava.entity.order.Order">
+    	update dms.tb_order set express_code=#{express_code},order_status=#{order_status} where order_code=#{order_code}
+    </update>
+    
+    
 </mapper>

@@ -35,4 +35,5 @@ public class SysUser {
 	public String ext1;
 	public String ext2;
 	public String ext3;
+	public String teams;
 }

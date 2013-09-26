@@ -312,24 +312,28 @@
 			{
 				var row = $('#dg').datagrid('getSelected');
 				if (row){
-				    $.ajax({
-						type : "POST",
-						url :basePath+'api/teamlayou/saveuser',
-						data:{fk_team_id:id,fk_team_name:text,fk_user_id:row.id,fk_user_name:row.account,fk_role_id:row.fk_role_id},
-						error : function(request) {
-							$.messager.alert('提示','Error!','error');
-						},
-						success:function(msg){
-						    var jsonobj= eval('('+msg+')');  
-						    if(jsonobj.state==1)
-						    {
-						    	$('#treegrid').treegrid('reload',id);
-						    }
-						}
-					});
+					if(row.fk_dealer_id==0){
+					    $.ajax({
+							type : "POST",
+							url :basePath+'api/teamlayou/saveuser',
+							data:{fk_team_id:id,fk_team_name:text,fk_user_id:row.id,fk_user_name:row.account,fk_role_id:row.fk_role_id},
+							error : function(request) {
+								$.messager.alert('提示','Error!','error');
+							},
+							success:function(msg){
+							    var jsonobj= eval('('+msg+')');  
+							    if(jsonobj.state==1)
+							    {
+							    	$('#treegrid').treegrid('reload',id);
+							    }
+							}
+						});
+					}else{
+						$.messager.alert('提示','禁止添加经销商用户!','error');	
+					}
 				}else
 				{
-					alert("请选中某个用户! ");	
+					$.messager.alert('提示','请选中某个用户!','error');
 				}			
 		 }
 	    function deleteUser(){

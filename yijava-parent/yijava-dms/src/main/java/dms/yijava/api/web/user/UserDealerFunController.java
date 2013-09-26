@@ -52,10 +52,9 @@ public class UserDealerFunController {
 
 	@ResponseBody
 	@RequestMapping("list")
-	public List<UserDealer> list(
-			@RequestParam(value = "d_id", required = true) String d_id,
-			@RequestParam(value = "u_id", required = true) String u_id) {
-		return userDealerFunService.getUserDealerList(d_id,u_id);
+	public List<UserDealer> list(@RequestParam(value = "u_id", required = true) String u_id,
+			@RequestParam(value = "u_id", required = true) String t_id) {
+		return userDealerFunService.getUserDealerList(u_id,t_id.split(","));
 	}
 
 	@ResponseBody

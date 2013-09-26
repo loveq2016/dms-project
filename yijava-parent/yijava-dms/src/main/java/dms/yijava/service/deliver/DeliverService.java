@@ -144,5 +144,12 @@ public class DeliverService {
 		deliverDao.removeById(deliver_id);
 		deliverDetailDao.removeById(deliver_id);
 	}
+	
+	
+	public void submitExpress(Deliver entity){
+		deliverDao.updateObject(".submitExpress", entity);
+	}
+	
+	
 		
 }

@@ -12,6 +12,7 @@ public class DeliverExpressDetail {
 	private String deliver_id;
 	private String deliver_code;
 	private String deliver_number_sum;
+	private String deliver_status;
 	private String order_detail_id;
 	private String order_code;
 	private String product_item_number;
@@ -22,6 +23,8 @@ public class DeliverExpressDetail {
 	private String validity_date;
 	private String remark;
 	private String user_id;
+	
+	private String express_code;
 	
 	
 

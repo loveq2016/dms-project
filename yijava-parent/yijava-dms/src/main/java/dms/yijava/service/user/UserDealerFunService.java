@@ -1,10 +1,8 @@
 package dms.yijava.service.user;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +13,6 @@ import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.user.UserDealerFunDao;
-import dms.yijava.entity.system.SysLogin;
 import dms.yijava.entity.user.UserDealer;
 
 @Service
@@ -43,25 +40,26 @@ public class UserDealerFunService {
 //		uid = uid.substring(0, uid.length() - 1);
 //		parameters.put("user_ids", uid);
 		
-		
 		return userDealerFunDao.getScrollData(parameters, pageRequest.getOffset(),
 				pageRequest.getPageSize(), pageRequest.getOrderBy(),
 				pageRequest.getOrderDir());
 	}
 	
-	public List<UserDealer> getUserDealerList(String department_id,String user_id){
-		HashMap<String,String> parameters = new HashMap<String,String>();
-		parameters.put("department_id", department_id);
-		parameters.put("user_id", user_id);
-		List<UserDealer> temList = userDealerFunDao.find(parameters);
-		return temList;
+	public List<UserDealer> getUserDealerList(String user_id,String [] sourceIds){
+		try{
+			HashMap<String,Object> parameters = new HashMap<String,Object>();
+			parameters.put("user_id", user_id);
+			parameters.put("sourceIds", sourceIds);
+			List<UserDealer> temList = userDealerFunDao.find(parameters);
+			return temList;
+		}catch(Exception e){
+			return null;
+		}
 	}
 	
 	public UserDealer checkEntity(UserDealer entity) {
 		return userDealerFunDao.getObject(".check_dealer", entity);
 	}
-	
-	
 	
 	public void saveEntity(UserDealer entity) {
 		userDealerFunDao.insert(entity);

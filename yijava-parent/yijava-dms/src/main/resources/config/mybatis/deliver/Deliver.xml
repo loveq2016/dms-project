@@ -41,8 +41,8 @@
 		
 		
 	<insert id="insert" parameterType="dms.yijava.entity.deliver.Deliver" useGeneratedKeys="true" keyProperty="deliver_id">     
-		insert into dms.tb_deliver(deliver_code,deliver_no,order_id,order_code,order_date,create_date,remark,deliver_status,user_id,dealer_id) 
-		values(#{deliver_code},#{deliver_no},#{order_id},#{order_code},#{order_date},NOW(),#{remark},#{deliver_status},#{user_id},#{dealer_id});
+		insert into dms.tb_deliver(deliver_code,deliver_no,order_id,order_code,order_date,create_date,remark,deliver_status,user_id,dealer_id,dealer_address_id) 
+		values(#{deliver_code},#{deliver_no},#{order_id},#{order_code},#{order_date},NOW(),#{remark},#{deliver_status},#{user_id},#{dealer_id},#{dealer_address_id});
 	</insert>
 	
 	<insert id="update" parameterType="dms.yijava.entity.deliver.Deliver">     
@@ -52,6 +52,10 @@
 	<delete id="deleteByPrimaryKey" parameterType="int">
    		 delete from dms.tb_deliver where deliver_id=#{deliver_id}
     </delete>
+    
+    <update id="submitExpress" parameterType="dms.yijava.entity.deliver.Deliver">
+    	update dms.tb_deliver set express_code = #{express_code} where deliver_code =#{deliver_code}
+    </update>
 	
 	
     
