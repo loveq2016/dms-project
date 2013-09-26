@@ -18,6 +18,9 @@
 		from tb_user_layou a 
 		<include refid="adsWhere"/>
 	</select>
+	<select id="selectTeamIdsByUserId" resultType="dms.yijava.entity.teamlayou.UserLayou">
+		select cast(group_concat(fk_team_id separator ',') as char(100000)) as fk_team_id FROM tb_user_layou WHERE fk_user_id = #{user_id}
+	</select>
 	<insert id="insert" parameterType="dms.yijava.entity.teamlayou.UserLayou">
 		insert into dms.tb_user_layou(fk_team_id,fk_team_name,fk_user_id,fk_user_name,fk_role_id,remark,ext1,ext2,ext3) 
 		values(#{fk_team_id},#{fk_team_name},#{fk_user_id},#{fk_user_name},#{fk_role_id},#{remark},#{ext1},#{ext2},#{ext3})

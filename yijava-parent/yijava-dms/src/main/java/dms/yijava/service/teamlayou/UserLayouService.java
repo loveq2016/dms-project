@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dms.yijava.dao.teamlayou.UserLayouDao;
 import dms.yijava.entity.teamlayou.UserLayou;
+import dms.yijava.entity.user.UserDealer;
 
 @Service
 @Transactional
@@ -21,6 +22,12 @@ public class UserLayouService {
 		HashMap<String,String> parameters = new HashMap<String,String>();
 		return userLayouDao.find(parameters);
 	}
+
+	public UserLayou getTeamIdsByUserId(String user_id){
+		UserLayou userLayou = userLayouDao.getObject(".selectTeamIdsByUserId", user_id);
+		return userLayou;
+	}
+	
 	public UserLayou getEntity(String id) {
 		return userLayouDao.get(id);
 	}

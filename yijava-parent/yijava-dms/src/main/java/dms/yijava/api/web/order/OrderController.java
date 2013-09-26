@@ -25,6 +25,7 @@ import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.order.OrderDetailService;
 import dms.yijava.service.order.OrderService;
+import dms.yijava.service.teamlayou.UserLayouService;
 import dms.yijava.service.user.UserDealerFunService;
 
 @Controller
@@ -35,9 +36,10 @@ public class OrderController {
 	private OrderService orderService;
 	@Autowired
 	private OrderDetailService orderDetailService;
-	
 	@Autowired
 	private UserDealerFunService userDealerFunService;
+	@Autowired
+	private  UserLayouService userLayouService;
 	
 	@ResponseBody
 	@RequestMapping("paging")
@@ -49,7 +51,8 @@ public class OrderController {
 			if(!StringUtils.equals("0",sysUser.getFk_dealer_id())){
 				filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
 			}else if(!StringUtils.equals("0",sysUser.getFk_department_id())){
-				List<UserDealer> list=userDealerFunService.getUserDealerList(sysUser.getFk_department_id(),sysUser.getId());
+				String[] ids=userLayouService.getTeamIdsByUserId(sysUser.getId()).getFk_team_id().split(",");//用户节点
+				List<UserDealer> list=userDealerFunService.getUserDealerList(sysUser.getId(),ids);//节点用户
 				filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(list)));
 			}
 			return orderService.paging(pageRequest,filters);

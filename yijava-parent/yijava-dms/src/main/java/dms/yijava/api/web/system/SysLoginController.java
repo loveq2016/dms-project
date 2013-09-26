@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.yijava.web.vo.Result;
 
@@ -27,6 +26,7 @@ import dms.yijava.service.system.SysMenuService;
 import dms.yijava.service.system.SysRoleFunctionService;
 import dms.yijava.service.system.SysRoleService;
 import dms.yijava.service.system.SysUserService;
+import dms.yijava.service.user.UserDealerFunService;
 
 @Controller
 @RequestMapping("/api/sys")
