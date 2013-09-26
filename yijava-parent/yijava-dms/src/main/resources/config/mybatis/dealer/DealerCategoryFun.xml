@@ -28,12 +28,12 @@
 
     
 <select id="selectByObjectcount" resultType="long">
-	select count(1) from (select dealer_id,dealer_name,dealer_code,t1.category_id,t2.category_name from tb_dealer t1 inner join tb_dealer_category t2 on t1.category_id = t2.id) t
+	select count(1) from (select dealer_id,dealer_name,dealer_code,t1.category_id,t2.category_name from tb_dealer t1 left join tb_dealer_category t2 on t1.category_id = t2.id) t
 	<include refid="adsWhere" />
 </select>
 
 <select id="selectByObject" resultType="dms.yijava.entity.dealer.DealerCategoryFun">
-	select * from (select dealer_id,dealer_name,dealer_code,t1.category_id,t2.category_name from tb_dealer t1 inner join tb_dealer_category t2 on t1.category_id = t2.id) t
+	select * from (select dealer_id,dealer_name,dealer_code,t1.category_id,t2.category_name from tb_dealer t1 left join tb_dealer_category t2 on t1.category_id = t2.id) t
 	<include refid="adsWhere" />
 	<include refid="adsOrder" />
 	limit #{offset},#{pagesize}

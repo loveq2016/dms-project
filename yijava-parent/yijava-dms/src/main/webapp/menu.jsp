@@ -94,6 +94,9 @@
 		<a href="javascript:void(0)" title="经销商仓库信息维护" url="dealer/storage/view.jsp">经销商仓库信息维护</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="经销商关系管理" url="dealer/relation/view.jsp">经销商关系管理</a>
+	</div>	
+	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="产品信息维护" url="product/view.jsp">产品信息维护</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">

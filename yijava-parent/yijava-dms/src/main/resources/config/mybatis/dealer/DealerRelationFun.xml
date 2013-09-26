@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DealerRelationFun">
+
+
+<sql id="adsWhere">
+	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">
+			and dealer_name=#{dealer_name}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_code)">
+			and dealer_code=#{dealer_code}
+		</if>
+	</trim>
+</sql>
+
+<sql id="adsOrder">
+	<choose>
+		<when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">
+			order by ${orderSql}
+		</when>
+		<otherwise>
+		</otherwise>
+	</choose>
+</sql>
+
+    
+<select id="selectByObjectcount" resultType="long">
+	select count(1) from (
+		select t3.id,t1.dealer_id,dealer_name,dealer_code,t1.category_id,t2.category_name,t3.parent_dealer_id from dms.tb_dealer t1 
+		left join dms.tb_dealer_category t2 on t1.category_id = t2.id
+		left join dms.tb_dealer_relation t3 on t1.dealer_id = t3.dealer_id
+		where  category_id !=  4 
+	) t
+	<include refid="adsWhere" />
+</select>
+
+<select id="selectByObject" resultType="dms.yijava.entity.dealer.DealerRelationFun">
+
+	select * from (
+		select t3.id,t1.dealer_id,dealer_name,dealer_code,t1.category_id,t2.category_name,t3.parent_dealer_id from dms.tb_dealer t1 
+		left join dms.tb_dealer_category t2 on t1.category_id = t2.id
+		left join dms.tb_dealer_relation t3 on t1.dealer_id = t3.dealer_id
+		where  category_id !=  4 
+	) t
+	<include refid="adsWhere" />
+	<include refid="adsOrder" />
+	limit #{offset},#{pagesize}
+</select>
+
+    
+    <insert id="insert" parameterType="dms.yijava.entity.dealer.DealerRelationFun">
+	 	insert into dms.tb_dealer_relation(dealer_id,parent_dealer_id)
+	 	values (#{dealer_id},#{parent_dealer_id})
+	</insert>
+
+	<update id="update" parameterType="dms.yijava.entity.dealer.DealerRelationFun">
+		 update dms.tb_dealer_relation set  parent_dealer_id=#{parent_dealer_id} where dealer_id = #{dealer_id}
+	</update>
+
+
+	<select id="selectByMap" resultType="dms.yijava.entity.dealer.DealerRelationFun">
+		select dealer_id,dealer_name,dealer_code from dms.tb_dealer where  category_id = 4 
+	</select>
+
+</mapper>
