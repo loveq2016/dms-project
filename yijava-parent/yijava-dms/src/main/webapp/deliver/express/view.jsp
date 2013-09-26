@@ -44,7 +44,7 @@
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
 				<table id="dg" title="查询结果" style="height:330px"  method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="deliver_id" pagination="true" iconCls="icon-search" 
+					rownumbers="true" singleSelect="true" pagination="true" sortName="express_code" pagination="true" iconCls="icon-search" 
 					sortOrder="asc" toolbar="#tb">
 					<thead>
 						<tr>
@@ -56,6 +56,7 @@
 <!-- 							<th data-options="field:'express_number',width:150,align:'center'" sortable="true">快递号</th> -->
 							<th data-options="field:'deliver_status',width:80,align:'center'" formatter="formatterDeliverStatus" sortable="true">发货状态</th>
 							<th data-options="field:'check_status',width:80,align:'center'"  formatter="formatterCheckStatus">审核状态</th>
+							<th data-options="field:'express_code',width:180,align:'center'"  formatter="formatterExpressStatus" sortable="true">物流状态</th>
 <!-- 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th> -->
 						</tr>
 					</thead>
@@ -251,6 +252,15 @@
 			return '<span style="color:red;cursor:pointer" onclick="openDeliverDetail(\''+index+'\')">明细</span>'; 
 		}
 		
+		
+		function formatterExpressStatus(value, row, index){
+			if(value)
+				return '<span>'+value+'</span>'; 
+			else
+				return '<span>尚未发货</span>'; 
+		}
+		
+		
 		function formatterStatus(value, row, index){
 			if(value=='0')
 				return '<span>未提交</span>'; 
@@ -272,6 +282,7 @@
 		function newEntity(){
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
+				$('#ffDeliverDetail').form('clear');
 				$('#ffDeliverDetail').form('load',row);
 				$('#dlgDeliverDetail').dialog('open');
 				deliver_code = row.deliver_code;
@@ -309,6 +320,7 @@
 			var row = $('#dgDetail').datagrid('getSelected');
 			if (row){
 				$('#dlgExpress').dialog('open').dialog('setTitle', '物流产品信息添加');
+				$('#fm').form('clear');
 				$('#fm').form('load',row);
 			}else{
 				$.messager.alert('提示','请选中数据!','warning');
