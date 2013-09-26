@@ -52,8 +52,8 @@ public class TrialService {
 		trialDao.update( entity);
 	}
 	
-	public void removeEntity(Trial entity) {
-		trialDao.remove( entity);
+	public void removeEntity(Integer trial_id) {
+		trialDao.removeById(trial_id);
 	}
 	
 	

@@ -5,7 +5,9 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop" 
 	xmlns:cache="http://www.springframework.org/schema/cache" 
+	xmlns:util="http://www.springframework.org/schema/util" 
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	
 	http://www.springframework.org/schema/beans/spring-beans.xsd 
 	http://www.springframework.org/schema/tx 
 	http://www.springframework.org/schema/tx/spring-tx.xsd 
@@ -14,13 +16,15 @@
 	http://www.springframework.org/schema/aop 
 	http://www.springframework.org/schema/aop/spring-aop.xsd 
 	http://www.springframework.org/schema/cache 
-	http://www.springframework.org/schema/cache/spring-cache.xsd">
+	http://www.springframework.org/schema/cache/spring-cache.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
 	<description>Spring公共配置 </description>
 	
 	<!-- 定义受环境影响易变的变量 -->
-	<context:property-placeholder ignore-resource-not-found="true" location="classpath*:/config/properties/application.properties" />
+	<context:property-placeholder ignore-resource-not-found="true" location="WEB-INF/classes/config/properties/application.properties" />
 	
+	<util:properties id="properties" location="WEB-INF/classes/config/properties/application.properties"/>
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
 	
 	<!-- 使用annotation 自动注册bean,并保证@Required,@Autowired的属性被注入 -->
