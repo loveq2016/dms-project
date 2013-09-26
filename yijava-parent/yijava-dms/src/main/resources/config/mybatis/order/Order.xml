@@ -22,6 +22,7 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(end_date)">
 				  <![CDATA[ and order_date < #{end_date}]]>
 			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">and dealer_name like CONCAT('%','${dealer_name}','%' ) </if>
 		</trim>
 	</sql>
 	<sql id="adsOrder">

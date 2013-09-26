@@ -99,6 +99,7 @@
 					</thead>
 				</table>
 				<div id="dgOrder-tb" style="padding:5px;height:auto">
+						经销商名称:&nbsp;&nbsp;<input class="easyui-validatebox" type="text" style="width:200px; " name="dg_dealer_name"></input>
 						订单号:&nbsp;&nbsp;<input class="easyui-validatebox" type="text" style="width:200px; " name="dg_order_code"></input>
 						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearchOrder()">查询</a>
 				</div>
@@ -328,7 +329,9 @@
 		
 		function doSearchOrder(){
 		    $('#dgOrder').datagrid('load',{
-		    	filter_ANDS_order_code: $('input[name=dg_order_code]').val()
+		    	filter_ANDS_order_code: $('input[name=dg_order_code]').val(),
+		    	filter_ANDS_dealer_name: $('input[name=dg_dealer_name]').val()
+		    	
 		    });
 		}
 		
@@ -397,6 +400,7 @@
 		function saveEntity(){
 			endEdit();
 			var isSubmit = true ; 
+			var isNumError = false;
 			var checkedItems = $('#dgOrderOneSetp').datagrid('getChecked');
 			var ids = [];
 			var deliver_number_sums = [];
@@ -415,12 +419,10 @@
 				}
 				for ( var i = 0; i < updated.length; i++) {
 					if ($.inArray(updated[i].id, ids) != -1) {
-						if (updated[i].deliver_number_sum != "") 
-							deliver_number_sums.push(updated[i].deliver_number_sum);
-						if (updated[i].deliver_date != "") 
-							deliver_dates.push(updated[i].deliver_date);
-						if (updated[i].arrival_date != "") 
-							arrival_dates.push(updated[i].arrival_date);
+						if (updated[i].deliver_number_sum != "") deliver_number_sums.push(updated[i].deliver_number_sum);
+						if (parseInt(updated[i].deliver_number_sum) > parseInt(updated[i].order_number_sum)) isNumError = true;
+						if (updated[i].deliver_date != "") deliver_dates.push(updated[i].deliver_date);
+						if (updated[i].arrival_date != "") arrival_dates.push(updated[i].arrival_date);
 						deliver_remarks.push(updated[i].deliver_remark);
 					}
 				}
@@ -428,6 +430,11 @@
 				if(deliver_number_sums.length != ids.length){
 					isSubmit = false;
 					$.messager.alert('提示', '发货数量不能为空!', 'warning');
+					return;
+				}
+				if(isNumError){
+					isSubmit = false;
+					$.messager.alert('提示', '发货数量不能大约订单数量!', 'warning');
 					return;
 				}
 				if(deliver_dates.length != ids.length){
@@ -503,6 +510,7 @@
 		
 		function updateEntity(){
 			endEdit();
+			var isNumError = false;
 			var isSubmit = true ; 
 			//var checkedItems = $('#dgOrderOneSetp').datagrid('getRows');
 			var ids = [];
@@ -523,12 +531,10 @@
 				for ( var i = 0; i < updated.length; i++) {
 						ids.push(updated[i].delivery_detail_id);
 				//	if ($.inArray(updated[i].delivery_detail_id, ids) != -1) {
-						if (updated[i].deliver_number_sum != "") 
-							deliver_number_sums.push(updated[i].deliver_number_sum);
-						if (updated[i].deliver_date != "") 
-							deliver_dates.push(updated[i].deliver_date);
-						if (updated[i].arrival_date != "") 
-							arrival_dates.push(updated[i].arrival_date);
+						if (updated[i].deliver_number_sum != "") deliver_number_sums.push(updated[i].deliver_number_sum);
+						if (parseInt(updated[i].deliver_number_sum) > parseInt(updated[i].order_number_sum)) isNumError = true;
+						if (updated[i].deliver_date != "") deliver_dates.push(updated[i].deliver_date);
+						if (updated[i].arrival_date != "") arrival_dates.push(updated[i].arrival_date);
 						deliver_remarks.push(updated[i].deliver_remark);
 					//}
 				}
@@ -536,6 +542,11 @@
 				if(deliver_number_sums.length != ids.length){
 					isSubmit = false;
 					$.messager.alert('提示', '发货数量不能为空!', 'warning');
+					return;
+				}
+				if(isNumError){
+					isSubmit = false;
+					$.messager.alert('提示', '发货数量不能大约订单数量!', 'warning');
 					return;
 				}
 				if(deliver_dates.length != ids.length){

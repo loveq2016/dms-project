@@ -8,6 +8,7 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(order_code)">and order_code like CONCAT('%','${order_code}','%' ) </if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(deliver_code)">and deliver_code like CONCAT('%','${deliver_code}','%' ) </if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(deliver_status)">and deliver_status = #{deliver_status}</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(check_status)">and check_status = #{check_status}</if>
 		</trim>
 	</sql>
 	<sql id="adsOrder">
