@@ -49,7 +49,7 @@
 	</insert>
 
 	<update id="update" parameterType="dms.yijava.entity.deliver.DeliverExpressDetail">
-		update dms.tb_deliver_express_detail set exprees_num=exprees_num+#{exprees_num} where id=#{id}
+		update dms.tb_deliver_express_detail set exprees_num=exprees_num+#{exprees_num},validity_date=#{validity_date},remark=#{remark} where id=#{id}
 	</update>
 	
 	<delete id="deleteByPrimaryKey" parameterType="int">

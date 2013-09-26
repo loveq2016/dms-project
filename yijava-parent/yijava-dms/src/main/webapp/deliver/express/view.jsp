@@ -56,13 +56,14 @@
 <!-- 							<th data-options="field:'express_number',width:150,align:'center'" sortable="true">快递号</th> -->
 							<th data-options="field:'deliver_status',width:80,align:'center'" formatter="formatterDeliverStatus" sortable="true">发货状态</th>
 							<th data-options="field:'check_status',width:80,align:'center'"  formatter="formatterCheckStatus">审核状态</th>
-							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
+<!-- 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th> -->
 						</tr>
 					</thead>
 				</table>
 			</div>
 			<div id="tb">
 				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">发货</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="newEntity()">编辑</a>
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
@@ -72,7 +73,7 @@
 	<div id="dlgDeliverDetail" class="easyui-dialog" title="发货物流明细" style="width:950px;height:auto;padding:5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlg-buttons">
             <div class="easyui-panel" style="width:925px;" style="margin: 10px 0;">
-					<form id="ffDeliverDetail" method="post">
+					<form id="ffDeliverDetail" method="post" enctype="multipart/form-data">
 							<table>
 								<tr>
 									<td>经销商:</td>
@@ -95,7 +96,7 @@
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="create_date"></input></td>
 									<td></td>
 									<td>发货状态:</td>	
-									<td><input name="deliver_status" class="easyui-combobox" id="deliver_status"
+									<td><input name="deliver_status" class="easyui-combobox" id="deliver_statusCombobox" readonly="readonly"
 												data-options="
 													required:true,
 													valueField: 'id',
@@ -108,8 +109,18 @@
 									  </td>
 								</tr>
 								<tr>
+									<td>送货地址:</td>	
+									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:250px;" id="address"></input></td>
+									<td></td>
+									<td>联系人:</td>	
+									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:100px;" id="linkman"></input></td>
+									<td></td>
+									<td>联系电话:</td>	
+									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:100px;" id="linkphone"></input></td>
+								</tr>
+								<tr>
 									<td>快递单号:</td>	
-			             			<td colspan="4"><textarea name="remark" cols="65" style="height:30px;"></textarea></td>
+			             			<td colspan="4"><textarea id="express_code" name="express_code" cols="65" style="height:30px;"></textarea></td>
 								</tr>
 							</table>
 					</form>
@@ -157,7 +168,7 @@
 			</div>
 		</div>
 		<div id="dlg-buttons">
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="alert('提交后将不能在修改，确定提交吗？')">提交</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="submitExpress();">提交</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgDeliverDetail').dialog('close')">取消</a>
 	    </div>
 	    
@@ -262,9 +273,19 @@
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
 				$('#ffDeliverDetail').form('load',row);
-				$('#deliver_status').combobox('disable');
 				$('#dlgDeliverDetail').dialog('open');
 				deliver_code = row.deliver_code;
+				
+				
+				$.getJSON(basePath + "api/dealerAddress/entity?id="+ row.dealer_address_id,function(result){
+					$("#address").val(result.address);
+					$("#linkman").val(result.linkman);
+					$("#linkphone").val(result.linkphone);
+				});		
+				
+				
+				
+				
 	            $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
 				$('#dgDetail').datagrid({
 					url : basePath + "api/deliverApply/detailPaging",
@@ -317,7 +338,6 @@
 			});
 		}
 		
-		
 		function deleteExpress(){
 	           var row = $('#dgExpress').datagrid('getSelected');
 	            if (row){
@@ -349,6 +369,43 @@
 					$.messager.alert('提示','请选中数据!','warning');				
 				 }	
 		}
+		
+		
+		function isEmpty(s1){
+		    var sValue = s1 + "";
+		    var test = / /g;
+		    sValue = sValue.replace(test, "");
+		    return sValue==null || sValue.length<=0;
+		}
+		
+		
+		function submitExpress(){
+			
+			if(!isEmpty($("#express_code").val())){
+				$('#ffDeliverDetail').form('submit', {
+					url : basePath + 'api/deliverExpress/submitExpress',
+					method : "post",
+					onSubmit : function() {
+						return $(this).form('validate');
+					},
+					success : function(msg) {
+						var jsonobj = $.parseJSON(msg);
+						if (jsonobj.state == 1) {
+							$('#dlgDeliverDetail').dialog('close');
+							$('#dg').datagrid('reload');
+						}else {
+							$.messager.alert('提示', 'Error!', 'error');
+						}
+					}
+				});
+			}else{
+				$.messager.alert('提示','快递单号不能为空!','warning');			
+			}
+
+		}
+		
+		
+		
 		
 		function openDeliverDetail(index){
 			$('#dg').datagrid('selectRow',index);

@@ -2,7 +2,6 @@ package dms.yijava.service.order;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,10 +15,7 @@ import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.order.OrderDao;
-import dms.yijava.entity.flow.FlowRecord;
 import dms.yijava.entity.order.Order;
-import dms.yijava.entity.order.OrderDetail;
-import dms.yijava.entity.system.SysUser;
 
 
 @Service
@@ -88,5 +84,9 @@ public class OrderService {
 	}
 	public Order getOrderDetailMoneyAndNumber(String o) {
 		return orderDao.getObject(".selectMoneyAndNumber", o);
+	}
+	
+	public void submitExpress(Order entity) {
+		orderDao.updateObject(".submitExpress",entity);
 	}
 }

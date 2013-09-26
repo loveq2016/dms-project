@@ -116,6 +116,7 @@
 	        	<input type="hidden" name="order_id" id="order_id">
 	        	<input type="hidden" name="order_date" id="order_date">
 	        	<input type="hidden" name="dealer_id" id="dealer_id">
+	        	<input type="hidden" name="dealer_address_id" id="dealer_address_id">
 			<table>
 				<tr>
 					<td>经销商名称:</td>
@@ -347,6 +348,7 @@
 				$("#order_date").val(row.order_date);
 				$("#dealer_id").val(row.dealer_id);
 				$("#dealer_name").val(row.dealer_name);
+				$("#dealer_address_id").val(row.dealer_address_id);
 				$('#deliver_status').combobox('enable');
 				$("#btnSetp1").show();
 				$("#btnSetp2").hide();
