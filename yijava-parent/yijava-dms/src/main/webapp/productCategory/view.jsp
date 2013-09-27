@@ -97,7 +97,7 @@
 			var t = $('#tree');
 			var node = t.tree('getSelected');
 			if (node) {
-				p_target = $('#tree').tree('getParent',node.target).target;
+				//p_target = $('#tree').tree('getParent',node.target).target;
 				$('#productCagegoryFrom').form('load', {
 					parent_id : '' + node.id + ''
 				});
@@ -110,7 +110,7 @@
 			var t = $('#tree');
 			var node = t.tree('getSelected');
 			if (node) {
-				p_target = $('#tree').tree('getParent',node.target).target;
+				//p_target = $('#tree').tree('getParent',node.target).target;
 				$('#productCagegoryFrom').form('load', node);
 				$('#treeEdit').window('open');
 			}
@@ -127,7 +127,7 @@
 				success : function(data) {
 					var jsonobj = $.parseJSON(data);
 					if (jsonobj.state == 1) {
-						$('#tree').tree('reload',p_target);
+						$('#tree').tree('reload');
 						p_target = null;
 						$('#treeEdit').window('close');
 					}
@@ -139,7 +139,7 @@
 			var t = $('#tree');
 			var node = t.tree('getSelected');
 			if (node) {
-				p_target = $('#tree').tree('getParent',node.target).target;
+				//p_target = $('#tree').tree('getParent',node.target).target;
 				$.ajax({
 					type : "POST",
 					url : basePath + 'api/productCategory/remove',
