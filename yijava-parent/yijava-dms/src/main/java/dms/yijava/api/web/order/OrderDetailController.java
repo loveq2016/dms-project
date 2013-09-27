@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -52,6 +53,8 @@ public class OrderDetailController {
 	public Result<Integer> save(@ModelAttribute("entity") OrderDetail entity) {
         DecimalFormat df = new DecimalFormat("#.00");
 		double price=Double.parseDouble(entity.getOrder_price());
+		if(StringUtils.isEmpty(entity.getDiscount()))
+			entity.setDiscount("10");
 		double discount=(double) (Double.parseDouble(entity.getDiscount()) * 0.1);
 		double m=price*(Integer.parseInt(entity.getOrder_number_sum()))*discount;
 		entity.setOrder_money_sum(df.format(m));
