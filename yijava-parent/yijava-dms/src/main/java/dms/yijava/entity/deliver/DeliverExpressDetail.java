@@ -18,13 +18,17 @@ public class DeliverExpressDetail {
 	private String product_item_number;
 	private String product_name;
 	private String models;
-	private String exprees_num;
+	private String express_num;
 	private String express_sn;
 	private String validity_date;
 	private String remark;
 	private String user_id;
 	
 	private String express_code;
+	private String express_date;
+	
+	private String exprees_total;
+	private String sn_total;
 	
 	
 

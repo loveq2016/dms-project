@@ -2,12 +2,11 @@
     <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="Deliver">
+<mapper namespace="OrderDeliver">
 	<sql id="adsWhere">
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(order_code)">and order_code like CONCAT('%','${order_code}','%' ) </if>
-			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(deliver_code)">and deliver_code like CONCAT('%','${deliver_code}','%' ) </if>
-			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(deliver_status)">and deliver_status = #{deliver_status}</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">and dealer_name like CONCAT('%','${dealer_name}','%' ) </if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(order_code)">and order_code = like CONCAT('%','${order_code}','%' )</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(check_status)">and check_status = #{check_status}</if>
 		</trim>
 	</sql>
@@ -20,15 +19,27 @@
 	</sql>
     <select id="selectByObjectcount" resultType="long">
 		select count(*) from (
-			select t1.*,t2.dealer_name from  dms.tb_deliver t1
- 			left join dms.tb_dealer t2 on t1.dealer_id = t2.dealer_id
+				select 
+				t1.deliver_id,t1.deliver_code,t1.express_code,t1.express_date,t1.consignee_user_id,t1.consignee_date,t1.consignee_status,
+				t2.order_code,
+				t3.dealer_name
+				from dms.tb_deliver t1 
+				inner join dms.tb_order t2 on t1.order_id = t2.id
+				inner join dms.tb_dealer t3 on t1.dealer_id = t3.dealer_id
+				where t1.consignee_status is not null
 		) t
 		<include refid="adsWhere"/>
 	</select>
- 	<select id="selectByObject" resultType="dms.yijava.entity.deliver.Deliver">
+ 	<select id="selectByObject" resultType="dms.yijava.entity.orderDeliver.OrderDeliver">
  		select * from (
-			select t1.*,t2.dealer_name from  dms.tb_deliver t1
- 			left join dms.tb_dealer t2 on t1.dealer_id = t2.dealer_id
+			select 
+			t1.deliver_id,t1.deliver_code,t1.express_code,t1.express_date,t1.consignee_user_id,t1.consignee_date,t1.consignee_status,
+			t2.order_code,
+			t3.dealer_name
+			from dms.tb_deliver t1 
+			inner join dms.tb_order t2 on t1.order_id = t2.id
+			inner join dms.tb_dealer t3 on t1.dealer_id = t3.dealer_id
+			where t1.consignee_status is not null
 		)t	
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
@@ -54,8 +65,7 @@
     </delete>
     
     <update id="submitExpress" parameterType="dms.yijava.entity.deliver.Deliver">
-    	update dms.tb_deliver set express_code = #{express_code},express_date=#{express_date},consignee_status = 0  
-    	where deliver_code =#{deliver_code}
+    	update dms.tb_deliver set express_code = #{express_code} where deliver_code =#{deliver_code}
     </update>
 	
 	

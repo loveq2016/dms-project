@@ -33,7 +33,7 @@
 	
 	<select id="selectSumById" resultType="dms.yijava.entity.deliver.DeliverExpressDetail">
 		select * from (
-			select sum(exprees_num) AS exprees_num  from dms.tb_deliver_express_detail where delivery_detail_id = #{delivery_detail_id}
+			select sum(express_num) AS express_num  from dms.tb_deliver_express_detail where delivery_detail_id = #{delivery_detail_id}
 			) t 
 	</select>
 	
@@ -41,15 +41,23 @@
 		select * from dms.tb_deliver_express_detail where express_sn = trim(upper(#{express_sn})) and delivery_detail_id = #{delivery_detail_id} 
 	</select>
 	
+	<select id="checkSn" resultType="dms.yijava.entity.deliver.DeliverExpressDetail">
+		select * from (
+			select sum(express_num) AS exprees_total,
+				sum((select count(1) from dms.tb_deliver_express_detail_sn t2 where t1.id = t2.deliver_express_detail_id )) AS sn_total
+			from dms.tb_deliver_express_detail t1  where deliver_code = #{deliver_code}
+			) t 
+	</select>
+	
 	<insert id="insert" parameterType="dms.yijava.entity.deliver.DeliverExpressDetail" useGeneratedKeys="true" keyProperty="id">     
 		insert into dms.tb_deliver_express_detail(delivery_detail_id,deliver_id,deliver_code,order_code,order_detail_id,product_item_number,product_name,
-			models,exprees_num,express_sn,validity_date,remark,user_id) 
+			models,express_num,express_sn,validity_date,remark,user_id) 
 		values(#{delivery_detail_id},#{deliver_id},#{deliver_code},#{order_code},#{order_detail_id},#{product_item_number},#{product_name},
-			#{models},#{exprees_num},trim(upper(#{express_sn})),#{validity_date},#{remark},#{user_id});
+			#{models},#{express_num},trim(upper(#{express_sn})),#{validity_date},#{remark},#{user_id});
 	</insert>
 
 	<update id="update" parameterType="dms.yijava.entity.deliver.DeliverExpressDetail">
-		update dms.tb_deliver_express_detail set exprees_num=exprees_num+#{exprees_num},validity_date=#{validity_date},remark=#{remark} where id=#{id}
+		update dms.tb_deliver_express_detail set express_num=express_num+#{express_num},validity_date=#{validity_date},remark=#{remark} where id=#{id}
 	</update>
 	
 	<delete id="deleteByPrimaryKey" parameterType="int">

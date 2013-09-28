@@ -54,9 +54,10 @@
 							<th data-options="field:'order_date',width:150,align:'center'" sortable="true">下单时间</th>
 							<th data-options="field:'create_date',width:150,align:'center'" sortable="true">编制时间</th>
 <!-- 							<th data-options="field:'express_number',width:150,align:'center'" sortable="true">快递号</th> -->
-							<th data-options="field:'deliver_status',width:80,align:'center'" formatter="formatterDeliverStatus" sortable="true">发货状态</th>
+							<th data-options="field:'deliver_status',width:80,align:'center'" formatter="formatterDeliverStatus" sortable="true">发货类型</th>
 							<th data-options="field:'check_status',width:80,align:'center'"  formatter="formatterCheckStatus">审核状态</th>
-							<th data-options="field:'express_code',width:180,align:'center'"  formatter="formatterExpressStatus" sortable="true">物流状态</th>
+<!-- 							<th data-options="field:'express_code',width:180,align:'center'"  formatter="formatterExpressStatus" sortable="true">物流状态</th> -->
+							<th data-options="field:'express_code',width:180,align:'center'">快递号</th>
 <!-- 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th> -->
 						</tr>
 					</thead>
@@ -71,7 +72,7 @@
 
 		
 		
-	<div id="dlgDeliverDetail" class="easyui-dialog" title="发货物流明细" style="width:950px;height:auto;padding:5px 5px 5px 5px;"
+	<div id="dlgDeliverDetail" class="easyui-dialog" title="出货物流明细" style="width:950px;height:auto;padding:5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlg-buttons">
             <div class="easyui-panel" style="width:925px;" style="margin: 10px 0;">
 					<form id="ffDeliverDetail" method="post" enctype="multipart/form-data">
@@ -96,7 +97,7 @@
 									<td>出货单日期:</td>	
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="create_date"></input></td>
 									<td></td>
-									<td>发货状态:</td>	
+									<td>发货类型:</td>	
 									<td><input name="deliver_status" class="easyui-combobox" id="deliver_statusCombobox" readonly="readonly"
 												data-options="
 													required:true,
@@ -121,7 +122,10 @@
 								</tr>
 								<tr>
 									<td>快递单号:</td>	
-			             			<td colspan="4"><textarea id="express_code" name="express_code" cols="65" style="height:30px;"></textarea></td>
+			             			<td><input class="easyui-validatebox" type="text" style="width:250px;" name="express_code" data-options="required:true"/></td>
+			             			<td></td>
+			             			<td>发货日期:</td>	
+									<td><input class="easyui-datebox" type="text" style="width:150px;" name="express_date" data-options="required:true"/></td>
 								</tr>
 							</table>
 					</form>
@@ -140,7 +144,6 @@
 							<th data-options="field:'deliver_date',width:100,align:'center',editor:'datebox'">预计发货日期</th>
 							<th data-options="field:'arrival_date',width:100,align:'center',editor:'datebox'">预计到货日期</th>
 							<th data-options="field:'deliver_remark',width:150,align:'center',editor:'text'">备注</th>
-							<th data-options="field:'deliver_remark',width:150,align:'center',editor:'text'">发货明细</th>
 							</tr>
 						</thead>
 					</table>
@@ -155,15 +158,16 @@
 							<tr>
 							<th data-options="field:'product_name',width:100,align:'center'" sortable="true">产品名称</th>
 							<th data-options="field:'models',width:65,align:'center'" sortable="true">产品规格</th>
-							<th data-options="field:'exprees_num',width:80,align:'center'">发货数量</th>
+							<th data-options="field:'express_num',width:80,align:'center'">出货数量</th>
 							<th data-options="field:'express_sn',width:100,align:'center'">规格、批号</th>
 							<th data-options="field:'validity_date',width:100,align:'center'">有效期</th>
 							<th data-options="field:'remark',width:100,align:'center'">备注</th>
+							<th data-options="field:'product_sn',width:100,align:'center'" formatter="formatterProductSn">序列号</th>
 							</tr>
 						</thead>
 					</table>
 					<div id="tb2">
-						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="deleteExpress()">删除</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteExpress()">删除</a>
 					</div>
 				</div>
 			</div>
@@ -192,12 +196,12 @@
 					             	<td><input name="models" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
 					            <tr>
-					             	<td>发货数量:</td>
+					             	<td>出货数量:</td>
 					             	<td><input name="deliver_number_sum" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
 					            <tr>
 					             	<td>数量:</td>
-					             	<td><input name="exprees_num" class="easyui-numberbox" style="width:150px" data-options="min:1,required:true"></td>
+					             	<td><input name="express_num" class="easyui-numberbox" style="width:150px" data-options="min:1,required:true"></td>
 					             </tr>
 					            <tr>
 					             	<td>规格、批号</td>
@@ -219,6 +223,41 @@
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgExpress').dialog('close')">取消</a>
 	    </div>
 		
+		
+	<div id="dlgProductSn" class="easyui-dialog" style="width:403px;height:413px;padding: 5px 5px 5px 5px;"
+            modal="true" closed="true">
+				<table id="dgProductSn"  class="easyui-datagrid" title="查询结果" style="height:365px;width:380px;" method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="deliver_express_detail_id"  toolbar="#tb3"
+						pagination="true" iconCls="icon-search" sortOrder="asc">
+					<thead>
+						<tr>
+							<th data-options="field:'product_sn',width:240,align:'center'" sortable="true">序列号</th>
+						</tr>
+					</thead>
+				</table>
+				<div id="tb3">
+					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addExpressSn()">添加</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editExpressSn()">编辑</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteExpressSn()">删除</a>
+				</div>
+    </div>
+   	<div id="dlgProductSn2" class="easyui-dialog" style="width:300px;height:300px;padding:5px 5px 5px 5px;"
+	            modal="true" closed="true" buttons="#dlgProductSn-buttons">
+		        <form id="fm2" action="" method="post" enctype="multipart/form-data">
+		        		  <input name="id" type="hidden">
+		         		  <input name="deliver_express_detail_id" id="deliver_express_detail_id" type="hidden">
+					      <table> 
+					    		<tr>
+					             	<td>序列号:</td>
+					             	<td><input name="product_sn"  type="text" class="easyui-validatebox" style="width:150px;" data-options="required:true" ></td>
+					            </tr>
+					      </table>        	
+		        </form>
+	    </div>
+	    <div id="dlgProductSn-buttons">
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveExpressSn();">保存</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProductSn2').dialog('close')">取消</a>
+	    </div>
 		
 	<script type="text/javascript">
 		$(function() {
@@ -252,14 +291,12 @@
 			return '<span style="color:red;cursor:pointer" onclick="openDeliverDetail(\''+index+'\')">明细</span>'; 
 		}
 		
-		
 		function formatterExpressStatus(value, row, index){
 			if(value)
 				return '<span>'+value+'</span>'; 
 			else
 				return '<span>尚未发货</span>'; 
 		}
-		
 		
 		function formatterStatus(value, row, index){
 			if(value=='0')
@@ -278,6 +315,12 @@
 				return '<span>已完成</span>'; 
 		}
 		
+		
+		 function formatterProductSn (value, row, index) { 
+			 	return '<a class="productSnBtn" href="javascript:void(0)"  onclick="openProductSn('+index+')" ></a>';
+		} 
+		 
+		 
 		var deliver_code ;
 		function newEntity(){
 			var row = $('#dg').datagrid('getSelected');
@@ -286,17 +329,11 @@
 				$('#ffDeliverDetail').form('load',row);
 				$('#dlgDeliverDetail').dialog('open');
 				deliver_code = row.deliver_code;
-				
-				
 				$.getJSON(basePath + "api/dealerAddress/entity?id="+ row.dealer_address_id,function(result){
 					$("#address").val(result.address);
 					$("#linkman").val(result.linkman);
 					$("#linkphone").val(result.linkphone);
 				});		
-				
-				
-				
-				
 	            $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
 				$('#dgDetail').datagrid({
 					url : basePath + "api/deliverApply/detailPaging",
@@ -309,7 +346,10 @@
 					url : basePath + "api/deliverExpress/paging",
 					queryParams: {
 						filter_ANDS_deliver_code : deliver_code
-					}
+					},
+					onLoadSuccess:function(data){ 
+						  $(".productSnBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
+					 }
 				});
 			}else{
 				$.messager.alert('提示','请选中数据!','warning');
@@ -393,7 +433,6 @@
 		
 		function submitExpress(){
 			
-			if(!isEmpty($("#express_code").val())){
 				$('#ffDeliverDetail').form('submit', {
 					url : basePath + 'api/deliverExpress/submitExpress',
 					method : "post",
@@ -405,19 +444,15 @@
 						if (jsonobj.state == 1) {
 							$('#dlgDeliverDetail').dialog('close');
 							$('#dg').datagrid('reload');
+						}else if (jsonobj.state == 2) {
+							$("#tab").tabs("select","物流明细行");
+							$.messager.alert('提示', '物流明细行中序列号不能为空!', 'warning');
 						}else {
 							$.messager.alert('提示', 'Error!', 'error');
 						}
 					}
-				});
-			}else{
-				$.messager.alert('提示','快递单号不能为空!','warning');			
-			}
-
+				});	
 		}
-		
-		
-		
 		
 		function openDeliverDetail(index){
 			$('#dg').datagrid('selectRow',index);
@@ -433,8 +468,104 @@
 					filter_ANDS_deliver_code : deliver_code
 				}
 			});
+		}
+		
+		var deliver_express_detail_id;
+		var sn_num;
+		function openProductSn(index){
+			$('#dgExpress').datagrid('selectRow',index);
+			var row = $('#dgExpress').datagrid('getSelected');
+			$('#dlgProductSn').dialog('open').dialog('setTitle', '['+row.express_sn+']产品序列号维护');
+			deliver_express_detail_id = row.id;
+			sn_num = row.express_num;
+			$('#dgProductSn').datagrid('loadData', {total: 0, rows: []});
+			$('#dgProductSn').datagrid({
+				url : basePath + "api/deliverExpressSn/paging",
+				queryParams: {
+					filter_ANDS_deliver_express_detail_id : deliver_express_detail_id
+				}
+			});
+		}
+		
+		var url;
+		function addExpressSn(){
+			data = $('#dgProductSn').datagrid('getData');
+			if(parseInt(data.total) ==0 || parseInt(data.total) < parseInt(sn_num) ){
+				$('#dlgProductSn2').dialog('open').dialog('setTitle', '序列号添加');
+				$('#fm2').form('clear');
+				$('#fm2').form('load',{"deliver_express_detail_id":deliver_express_detail_id});
+				url = basePath + 'api/deliverExpressSn/save';
+			}else{
+				$.messager.alert('提示','序列号数量已满!','warning');
+			}
+
 
 		}
+		
+		function editExpressSn(){
+			var row = $('#dgProductSn').datagrid('getSelected');
+			if (row){
+				$('#dlgProductSn2').dialog('open').dialog('setTitle', '序列号更新');
+				$('#fm2').form('clear');
+				$('#fm2').form('load',row);
+				url = basePath + 'api/deliverExpressSn/update';
+			}else{
+				$.messager.alert('提示','请选中数据!','warning');
+			}		
+		}
+		function saveExpressSn(){
+			$('#fm2').form('submit', {
+					url : url,
+					method : "post",
+					onSubmit : function() {
+						return $(this).form('validate');
+					},
+					success : function(msg) {
+						var jsonobj = $.parseJSON(msg);
+						if (jsonobj.state == 1) {
+							$('#dlgProductSn2').dialog('close');
+							$('#dgProductSn').datagrid('reload');
+						}else if (jsonobj.state == 2) {
+							$.messager.alert('提示', '序列号重复', 'warning');
+						}else {
+							$.messager.alert('提示', 'Error!', 'error');
+						}
+					}
+				});
+		}
+		
+		function deleteExpressSn(){
+	           var row = $('#dgProductSn').datagrid('getSelected');
+	            if (row){
+	            //	if(row.check_status=='0'){
+		                $.messager.confirm('Confirm','是否确定删除?',function(r){
+		                    if (r){
+		            			$.ajax({
+		            				type : "POST",
+		            				url : basePath + 'api/deliverExpressSn/delete',
+		            				data : {id:row.id},
+		            				error : function(request) {
+		            					$.messager.alert('提示','Error!','error');	
+		            				},
+		            				success : function(data) {
+		            					var jsonobj = $.parseJSON(data);
+		            					if (jsonobj.state == 1) {  
+		            	                     $('#dgProductSn').datagrid('reload');
+		            					}else{
+		            						$.messager.alert('提示','Error!','error');	
+		            					}
+		            				}
+		            			});                    	
+		                    }
+		                });	            		
+	            //	}else{
+	            	//	$.messager.alert('提示','无法删除已提交的出货单!','error');
+	            	//}
+	            }else{
+					$.messager.alert('提示','请选中数据!','warning');				
+				 }	
+		}
+		
 		
 	</script>
 </body>

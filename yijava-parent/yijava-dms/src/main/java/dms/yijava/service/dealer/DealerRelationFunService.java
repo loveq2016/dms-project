@@ -47,9 +47,13 @@ public class DealerRelationFunService {
 		dealerRelationFunDao.update(entity);
 	}
 
-	
-
+	public void deleteEntity(String id) {
+		dealerRelationFunDao.removeById(id);
+	}
 		
+	public DealerRelationFun selectRelation(DealerRelationFun dealerRelationFun) {
+		return dealerRelationFunDao.getObject(".selectRelation", dealerRelationFun);
+	}
 
 	
 	
