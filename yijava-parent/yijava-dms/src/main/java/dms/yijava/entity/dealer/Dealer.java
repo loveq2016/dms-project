@@ -39,6 +39,10 @@ public class Dealer {
 	private String column2;
 	private String column3;
 	
+	private String not_category_id;
+	private String category_id;
+	private String category_name;
+	
 	
 
 	

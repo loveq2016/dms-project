@@ -12,6 +12,9 @@
 		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">
 			and dealer_name=#{dealer_name}
 		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(not_category_id)">
+			and category_id != #{not_category_id}
+		</if>
 	</trim>
 </sql>
 
@@ -27,12 +30,18 @@
 
     
 <select id="selectByObjectcount" resultType="long">
-	select count(1) from tb_dealer
+	select count(1) from (
+		select t1.*,t2.category_name from dms.tb_dealer t1 
+		left join dms.tb_dealer_category t2 on t1.category_id = t2.id
+	)t
 	<include refid="adsWhere" />
 </select>
 
 <select id="selectByObject" resultType="dms.yijava.entity.dealer.Dealer">
-	select * from tb_dealer
+	select * from (
+		select t1.*,t2.category_name from dms.tb_dealer t1 
+		left join dms.tb_dealer_category t2 on t1.category_id = t2.id
+	)t
 	<include refid="adsWhere" />
 	<include refid="adsOrder" />
 	limit #{offset},#{pagesize}
