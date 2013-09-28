@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DeliverExpressSn">
+
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(deliver_express_detail_id)">and deliver_express_detail_id = #{deliver_express_detail_id} </if>
+		</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>
+		    <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+		         ORDER BY ${orderSql}
+		    </when>
+	    </choose>
+	</sql>
+    <select id="selectByObjectcount" resultType="long">
+		select count(*) from (
+			select * from dms.tb_deliver_express_detail_sn 
+		) t
+		<include refid="adsWhere"/>
+	</select>
+ 	<select id="selectByObject" resultType="dms.yijava.entity.deliver.DeliverExpressSn">
+ 		select * from (
+			select * from dms.tb_deliver_express_detail_sn 
+		)t	
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}
+	</select>
+	
+
+	<insert id="insert" parameterType="dms.yijava.entity.deliver.DeliverExpressSn" useGeneratedKeys="true" keyProperty="id">     
+		insert into dms.tb_deliver_express_detail_sn(deliver_express_detail_id,product_sn) 
+		values(#{deliver_express_detail_id},#{product_sn})
+	</insert>
+
+	<update id="update" parameterType="dms.yijava.entity.deliver.DeliverExpressSn">
+		update dms.tb_deliver_express_detail_sn set product_sn=#{product_sn} where id=#{id}
+	</update>
+	
+	<delete id="deleteByPrimaryKey" parameterType="int">
+   		 delete from dms.tb_deliver_express_detail_sn where id=#{id}
+    </delete>
+    
+</mapper>

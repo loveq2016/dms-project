@@ -43,6 +43,10 @@ public class DeliverExpressDetailService {
 	}
 	
 	
+	public DeliverExpressDetail checkSn(String deliver_code) {
+		return deliverExpressDetailDao.getObject(".checkSn", deliver_code);
+	}
+	
 	public void saveEntity(DeliverExpressDetail entity) {
 		deliverExpressDetailDao.insert(entity);
 	}

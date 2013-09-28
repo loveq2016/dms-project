@@ -42,7 +42,6 @@ public class DeliverExpressController {
 		return deliverExpressDetailService.paging(pageRequest,filters);
 	}
 	
-	
 	@ResponseBody
 	@RequestMapping("save")
 	public Result<String> save(@ModelAttribute("entity") DeliverExpressDetail entity) {
@@ -50,14 +49,14 @@ public class DeliverExpressController {
 		try {
 			DeliverExpressDetail tempDeliverExpressDetail =  deliverExpressDetailService.selectSumById(entity.getDelivery_detail_id());
 			if(tempDeliverExpressDetail ==null){//产品空
-				if(Integer.parseInt(entity.getExprees_num()) <=  Integer.parseInt(entity.getDeliver_number_sum())){
+				if(Integer.parseInt(entity.getExpress_num()) <=  Integer.parseInt(entity.getDeliver_number_sum())){
 					deliverExpressDetailService.saveEntity(entity);
 					return new Result<String>(entity.getId(), 1);
 				}else{
 					return new Result<String>(entity.getId(), 2);
 				}
 			}else{
-				int count = Integer.parseInt(tempDeliverExpressDetail.getExprees_num()) + Integer.parseInt(entity.getExprees_num());
+				int count = Integer.parseInt(tempDeliverExpressDetail.getExpress_num()) + Integer.parseInt(entity.getExpress_num());
 				if(count <=  Integer.parseInt(entity.getDeliver_number_sum())){
 					DeliverExpressDetail existsDeliverExpressDetail = deliverExpressDetailService.selectSn(entity);
 					if (existsDeliverExpressDetail == null) {
@@ -96,16 +95,21 @@ public class DeliverExpressController {
 	public Result<String> submitExpress(@ModelAttribute("entity") DeliverExpressDetail entity) {
 		
 		try {
-			Deliver deliverEntity = new Deliver();
-			deliverEntity.setDeliver_code(entity.getDeliver_code());
-			deliverEntity.setExpress_code(entity.getExpress_code());
-			deliverService.submitExpress(deliverEntity);
-			Order orderEntity = new Order();
-			orderEntity.setOrder_code(entity.getOrder_code());
-			orderEntity.setOrder_status(entity.getDeliver_status());
-			orderEntity.setExpress_code(entity.getExpress_code());
-			orderService.submitExpress(orderEntity);
-			return new Result<String>("1", 1);
+			DeliverExpressDetail checkDeliverExpressDetail =  deliverExpressDetailService.checkSn(entity.getDeliver_code());
+			if(checkDeliverExpressDetail.getExprees_total().equals(checkDeliverExpressDetail.getSn_total())){
+				Deliver deliverEntity = new Deliver();
+				deliverEntity.setDeliver_code(entity.getDeliver_code());
+				deliverEntity.setExpress_code(entity.getExpress_code());
+				deliverService.submitExpress(deliverEntity);
+				Order orderEntity = new Order();
+				orderEntity.setOrder_code(entity.getOrder_code());
+				orderEntity.setOrder_status(entity.getDeliver_status());
+				orderEntity.setExpress_code(entity.getExpress_code());
+				orderService.submitExpress(orderEntity);
+				return new Result<String>("1", 1);
+			}else{
+				return new Result<String>("1", 2);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
