@@ -25,6 +25,8 @@ public class DeliverExpressDetail {
 	private String user_id;
 	
 	private String express_code;
+	private String express_date;
+	
 	private String exprees_total;
 	private String sn_total;
 	

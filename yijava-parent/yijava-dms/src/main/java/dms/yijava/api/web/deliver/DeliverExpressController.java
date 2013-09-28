@@ -96,10 +96,14 @@ public class DeliverExpressController {
 		
 		try {
 			DeliverExpressDetail checkDeliverExpressDetail =  deliverExpressDetailService.checkSn(entity.getDeliver_code());
+			if (checkDeliverExpressDetail == null) {
+				return new Result<String>("1", 2);
+			}
 			if(checkDeliverExpressDetail.getExprees_total().equals(checkDeliverExpressDetail.getSn_total())){
 				Deliver deliverEntity = new Deliver();
 				deliverEntity.setDeliver_code(entity.getDeliver_code());
 				deliverEntity.setExpress_code(entity.getExpress_code());
+				deliverEntity.setExpress_date(entity.getExpress_date());
 				deliverService.submitExpress(deliverEntity);
 				Order orderEntity = new Order();
 				orderEntity.setOrder_code(entity.getOrder_code());

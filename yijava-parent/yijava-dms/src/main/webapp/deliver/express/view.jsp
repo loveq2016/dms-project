@@ -54,9 +54,10 @@
 							<th data-options="field:'order_date',width:150,align:'center'" sortable="true">下单时间</th>
 							<th data-options="field:'create_date',width:150,align:'center'" sortable="true">编制时间</th>
 <!-- 							<th data-options="field:'express_number',width:150,align:'center'" sortable="true">快递号</th> -->
-							<th data-options="field:'deliver_status',width:80,align:'center'" formatter="formatterDeliverStatus" sortable="true">发货状态</th>
+							<th data-options="field:'deliver_status',width:80,align:'center'" formatter="formatterDeliverStatus" sortable="true">发货类型</th>
 							<th data-options="field:'check_status',width:80,align:'center'"  formatter="formatterCheckStatus">审核状态</th>
-							<th data-options="field:'express_code',width:180,align:'center'"  formatter="formatterExpressStatus" sortable="true">物流状态</th>
+<!-- 							<th data-options="field:'express_code',width:180,align:'center'"  formatter="formatterExpressStatus" sortable="true">物流状态</th> -->
+							<th data-options="field:'express_code',width:180,align:'center'">快递号</th>
 <!-- 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th> -->
 						</tr>
 					</thead>
@@ -71,7 +72,7 @@
 
 		
 		
-	<div id="dlgDeliverDetail" class="easyui-dialog" title="发货物流明细" style="width:950px;height:auto;padding:5px 5px 5px 5px;"
+	<div id="dlgDeliverDetail" class="easyui-dialog" title="出货物流明细" style="width:950px;height:auto;padding:5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlg-buttons">
             <div class="easyui-panel" style="width:925px;" style="margin: 10px 0;">
 					<form id="ffDeliverDetail" method="post" enctype="multipart/form-data">
@@ -96,7 +97,7 @@
 									<td>出货单日期:</td>	
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="create_date"></input></td>
 									<td></td>
-									<td>发货状态:</td>	
+									<td>发货类型:</td>	
 									<td><input name="deliver_status" class="easyui-combobox" id="deliver_statusCombobox" readonly="readonly"
 												data-options="
 													required:true,
@@ -121,7 +122,10 @@
 								</tr>
 								<tr>
 									<td>快递单号:</td>	
-			             			<td colspan="4"><textarea id="express_code" name="express_code" cols="65" style="height:30px;"></textarea></td>
+			             			<td><input class="easyui-validatebox" type="text" style="width:250px;" name="express_code" data-options="required:true"/></td>
+			             			<td></td>
+			             			<td>发货日期:</td>	
+									<td><input class="easyui-datebox" type="text" style="width:150px;" name="express_date" data-options="required:true"/></td>
 								</tr>
 							</table>
 					</form>
@@ -140,7 +144,6 @@
 							<th data-options="field:'deliver_date',width:100,align:'center',editor:'datebox'">预计发货日期</th>
 							<th data-options="field:'arrival_date',width:100,align:'center',editor:'datebox'">预计到货日期</th>
 							<th data-options="field:'deliver_remark',width:150,align:'center',editor:'text'">备注</th>
-							<th data-options="field:'deliver_remark',width:150,align:'center',editor:'text'">发货明细</th>
 							</tr>
 						</thead>
 					</table>
@@ -155,7 +158,7 @@
 							<tr>
 							<th data-options="field:'product_name',width:100,align:'center'" sortable="true">产品名称</th>
 							<th data-options="field:'models',width:65,align:'center'" sortable="true">产品规格</th>
-							<th data-options="field:'express_num',width:80,align:'center'">发货数量</th>
+							<th data-options="field:'express_num',width:80,align:'center'">出货数量</th>
 							<th data-options="field:'express_sn',width:100,align:'center'">规格、批号</th>
 							<th data-options="field:'validity_date',width:100,align:'center'">有效期</th>
 							<th data-options="field:'remark',width:100,align:'center'">备注</th>
@@ -193,7 +196,7 @@
 					             	<td><input name="models" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
 					            <tr>
-					             	<td>发货数量:</td>
+					             	<td>出货数量:</td>
 					             	<td><input name="deliver_number_sum" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
 					            <tr>
@@ -430,7 +433,6 @@
 		
 		function submitExpress(){
 			
-			if(!isEmpty($("#express_code").val())){
 				$('#ffDeliverDetail').form('submit', {
 					url : basePath + 'api/deliverExpress/submitExpress',
 					method : "post",
@@ -449,11 +451,7 @@
 							$.messager.alert('提示', 'Error!', 'error');
 						}
 					}
-				});
-			}else{
-				$.messager.alert('提示','快递单号不能为空!','warning');			
-			}
-
+				});	
 		}
 		
 		function openDeliverDetail(index){
