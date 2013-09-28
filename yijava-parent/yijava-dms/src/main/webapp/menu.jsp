@@ -48,11 +48,9 @@
 	<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
 		data-options="menu:'#mm8',iconCls:'icon-filep'">出货管理</a>	
 	<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
-<<<<<<< HEAD
-		data-options="menu:'#mm9',iconCls:'icon-filep'">销售管理</a>	
-=======
-		data-options="menu:'#mm9',iconCls:'icon-filep'">采购管理</a>	
->>>>>>> 9a3013d30b5fbbd9cac0b63c10f8a085de6f9186
+		data-options="menu:'#mm9',iconCls:'icon-filep'">采购管理</a>
+	<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
+		data-options="menu:'#mm10',iconCls:'icon-filep'">销售管理</a>
 </div>
 <div id="mm1" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
@@ -162,18 +160,15 @@
 		<a href="javascript:void(0)" title="出货管理" url="deliver/express/view.jsp">出货管理</a>
 	</div>
 </div>
-<<<<<<< HEAD
-<div id="mm8" style="width: 150px;">
+<div id="mm9" style="width: 150px;">
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="经销商采购入库" url="orderPurchase/view.jsp">经销商采购入库</a>
+	</div>
+</div>
+<div id="mm10" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="发货单管理" url="pullstorage/salesview.jsp">分销出库管理</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="发货管理" url="pullstorage/loansview.jsp">借贷出库管理</a>
-	</div>
-=======
-<div id="mm9" style="width: 150px;">
-	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="经销商采购入库" url="orderPurchase/view.jsp">经销商采购入库</a>
-	</div>	
->>>>>>> 9a3013d30b5fbbd9cac0b63c10f8a085de6f9186
 </div>
