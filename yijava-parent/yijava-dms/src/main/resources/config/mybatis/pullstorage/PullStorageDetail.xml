@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PullStorageDetail">
+
+<sql id="adsWhere">
+<trim prefix="WHERE" prefixOverrides="AND|OR">
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(item_number)">
+		  and item_number=#{item_number}
+	</if>
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(category_id)">
+		  and category_id=#{category_id}
+	</if>
+</trim>
+</sql>
+
+<sql id="adsOrder">
+	<choose>  
+            <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+                order by ${orderSql}
+            </when>
+            <otherwise> 
+            </otherwise>  
+        </choose>
+</sql>
+
+    
+    <select id="selectByObjectcount" resultType="long"> 
+		select count(1) from (
+			select t1.*,t2.category_name
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
+				,t4.discount
+			</if>
+			from tb_product t1 left join tb_product_category t2 on t1.category_id = t2.id
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
+				left join dms.tb_dealer_auth_product t3 on t3.product_category_id = t2.id 
+				left join dms.tb_dealer_auth_discount t4 on t1.item_number = t4.item_number
+				where t3.dealer_id = #{dealer_id}
+			</if>
+		) t 
+		<include refid="adsWhere"/>
+	</select>
+
+ 	<select id="selectByObject" resultType="dms.yijava.entity.product.Product">
+		select * from (
+			select t1.*,t2.category_name
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
+				,t4.discount
+			</if>
+			from tb_product t1 left join tb_product_category t2 on t1.category_id = t2.id
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
+				left join dms.tb_dealer_auth_product t3 on t3.product_category_id = t2.id 
+				left join dms.tb_dealer_auth_discount t4 on t1.item_number = t4.item_number
+				where t3.dealer_id = #{dealer_id}
+			</if>
+			) t 
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}  
+	</select>
+	
+	
+	<select id="selectByMap" resultType="dms.yijava.entity.product.Product">
+		select item_number,cname,ename from tb_product where category_id = #{category_id}
+	</select>
+	
+	<select id="select"  parameterType="int" resultType="dms.yijava.entity.product.Product">
+        select * from tb_product where item_number = #{item_number}
+    </select>
+	
+	<insert id="insert" parameterType="dms.yijava.entity.product.Product" useGeneratedKeys="true" keyProperty="item_number">     
+    	  insert into tb_product (cname,ename,remark,price,order_company,is_order,category_id,column1,column2,column3) 
+    	  values(#{cname},#{ename},#{remark},#{price},#{order_company},#{is_order},#{category_id},#{column1},#{column2},#{column3})
+    </insert>
+    
+    <update id="update" parameterType="dms.yijava.entity.product.Product">
+    	update tb_product set cname=#{cname},ename=#{ename},remark=#{remark},price=#{price},order_company=#{order_company},is_order=#{is_order},category_id=#{category_id},
+    	column1=#{column1},column2=#{column2},column3=#{column3} 
+    	where item_number = #{item_number}
+    </update>
+    
+    <delete id="delete" parameterType="int">
+    	delete from tb_product where item_number = #{id}
+    </delete>
+    
+    
+    
+    
+</mapper>

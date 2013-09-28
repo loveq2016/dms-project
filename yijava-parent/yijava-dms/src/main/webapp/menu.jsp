@@ -47,6 +47,8 @@
 		data-options="menu:'#mm7',iconCls:'icon-filep'">试用管理</a>
 	<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
 		data-options="menu:'#mm8',iconCls:'icon-filep'">出货管理</a>	
+	<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
+		data-options="menu:'#mm9',iconCls:'icon-filep'">销售管理</a>	
 </div>
 <div id="mm1" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
@@ -154,5 +156,13 @@
 	</div>	
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="发货管理" url="deliver/express/view.jsp">发货管理</a>
+	</div>
+</div>
+<div id="mm8" style="width: 150px;">
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="发货单管理" url="pullstorage/salesview.jsp">分销出库管理</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="发货管理" url="pullstorage/loansview.jsp">借贷出库管理</a>
 	</div>
 </div>

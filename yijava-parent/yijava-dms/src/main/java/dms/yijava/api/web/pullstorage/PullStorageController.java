@@ -1,4 +1,4 @@
-package dms.yijava.api.web.order;
+package dms.yijava.api.web.pullstorage;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,86 +21,77 @@ import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.order.Order;
+import dms.yijava.entity.pullstorage.PullStorage;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.user.UserDealer;
-import dms.yijava.service.order.OrderDetailService;
-import dms.yijava.service.order.OrderService;
-import dms.yijava.service.teamlayou.UserLayouService;
-import dms.yijava.service.user.UserDealerFunService;
-
+import dms.yijava.service.pullstorage.PullStorageService;
 @Controller
-@RequestMapping("/api/order")
-public class OrderController {
+@RequestMapping("/api/pullstorage")
+public class PullStorageController {
 
 	@Autowired
-	private OrderService orderService;
-	@Autowired
-	private OrderDetailService orderDetailService;
+	private PullStorageService pullStorageService;
 	
 	@ResponseBody
 	@RequestMapping("paging")
-	public JsonPage<Order> paging(PageRequest pageRequest,HttpServletRequest request) {
+	public JsonPage<PullStorage> paging(PageRequest pageRequest,HttpServletRequest request) {
 		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
 		List<PropertyFilter> filters = PropertyFilters.build(request);
 		if(null!=sysUser){
 			//经销商
 			if(!StringUtils.equals("0",sysUser.getFk_dealer_id())){
-				filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
+				filters.add(PropertyFilters.build("ANDS_fk_pull_storage_party_id",sysUser.getFk_dealer_id()));
 			}else if(!StringUtils.equals("0",sysUser.getFk_department_id())){
-				
-				filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
+				filters.add(PropertyFilters.build("ANDS_fk_pull_storage_party_ids", this.listString(sysUser.getUserDealerList())));
 			}
-			return orderService.paging(pageRequest,filters);
+			return pullStorageService.paging(pageRequest,filters);
 		}
 		return null;
 	}
 	
 	@ResponseBody
 	@RequestMapping("list")
-	public List<Order> getList(){
-		return orderService.getList();
+	public List<PullStorage> getList(HttpServletRequest request){
+		List<PropertyFilter> filters = PropertyFilters.build(request);
+		return pullStorageService.getList(filters);
 	}
 	
 	@ResponseBody
 	@RequestMapping("save")
-	public Result<Integer> save(@ModelAttribute("entity") Order entity,HttpServletRequest request) {
+	public Result<Integer> save(@ModelAttribute("entity") PullStorage entity,HttpServletRequest request) {
 		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-		//必须是经销商才可以添加订单
+		SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");
+		//必须是经销商才可以添加出货单
 		if(StringUtils.isNotEmpty(sysUser.getFk_dealer_id())){
-			Order order=orderService.getOrderNum(sysUser.getFk_dealer_id());
-			entity.setOrder_code("JRKL-"+formatter.format(new Date())+"-"+order.getOrder_no());
-			entity.setOrder_no(String.valueOf((Integer.parseInt(order.getOrder_no()))));
-			entity.setDealer_name(sysUser.getDealer_name());
-			entity.setDealer_id(sysUser.getFk_dealer_id());
-			orderService.saveEntity(entity);
+			PullStorage pullObj=pullStorageService.getPullStorageCode(sysUser.getFk_dealer_id());
+			PullStorage putObj=pullStorageService.getPutStorageCode(entity.getFk_put_storage_party_id());
+			//出货单
+			entity.setPull_storage_code(sysUser.getDeliver_code()+"RN"+formatter.format(new Date())+pullObj.getPull_storage_no());
+			entity.setPull_storage_no(String.valueOf((Integer.parseInt(pullObj.getPull_storage_no()))));
+			entity.setFk_pull_storage_party_id(sysUser.getFk_dealer_id());
+			//收货单
+			entity.setPut_storage_code(entity.getPull_storage_party_code()+"PR"+formatter.format(new Date())+putObj.getPut_storage_no());
+			entity.setPut_storage_no(String.valueOf((Integer.parseInt(putObj.getPull_storage_no()))));
+			pullStorageService.saveEntity(entity);
 			return new Result<Integer>(1, 1);
 		}else{
 			return new Result<Integer>(1, 0);
 		}
 	}
-	
 	@ResponseBody
-	@RequestMapping("updateAddress")
-	public Result<Integer> updateAddress(@ModelAttribute("entity") Order entity) {
-		orderService.updateAddress(entity);
-		return new Result<Integer>(1, 1);
-	}
-	@ResponseBody
-	@RequestMapping("updateStatus")
-	public Result<Integer> updateStatus(@ModelAttribute("entity") Order entity) {
-		orderService.updateStatus(entity);
+	@RequestMapping("update")
+	public Result<Integer> updateStatus(@ModelAttribute("entity") PullStorage entity) {
+		pullStorageService.updateEntity(entity);
 		return new Result<Integer>(1, 1);
 	}
 	
 	@ResponseBody
 	@RequestMapping("remove")
 	public Result<Integer> remove(@RequestParam(value = "id", required = false) String id) {
-		orderService.removeEntity(id);
-		orderDetailService.removeByOrderCodeEntity(id);
+		pullStorageService.removeEntity(id);
 		return new Result<Integer>(1, 1);
 	}
-	
+
 	/**
 	 * 把一个list转换为String返回过去
 	 */

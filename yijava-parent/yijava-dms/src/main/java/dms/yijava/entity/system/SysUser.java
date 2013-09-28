@@ -25,6 +25,7 @@ public class SysUser {
 	public String department_name;
 	public String fk_dealer_id;
 	public String dealer_name;
+	public String deliver_code;
 	public String fk_role_id;
 	public String role_name;
 	public String isdeleted;
