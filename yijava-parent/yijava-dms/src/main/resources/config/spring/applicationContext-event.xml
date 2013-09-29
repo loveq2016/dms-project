@@ -1,0 +1,15 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:eventbus="http://sargis.info/eventbus"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://sargis.info/eventbus http://sargis.info/eventbus/eventbus-spring-1.0.xsd">
+
+   <eventbus:handler-scan base-package="dms.yijava.event"  eventbus-ref="eventBus">
+        <eventbus:include type="assignable"
+            expression="dms.yijava.event.handler.EventHandler" />
+        <eventbus:include type="annotation"  expression="dms.yijava.event.EventDriven"/>
+       
+    </eventbus:handler-scan>
+
+    <bean id="eventBus" class="com.google.common.eventbus.EventBus" />
+
+</beans>
