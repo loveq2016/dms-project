@@ -74,8 +74,8 @@ public class OrderService {
 	public void removeEntity(String id) {
 		orderDao.removeById(id);
 	}
-	public Order getOrderNum() {
-		Order order=orderDao.getObject(".selectOrderNum",null);
+	public Order getOrderNum(String dear_id) {
+		Order order=orderDao.getObject(".selectOrderNum",dear_id);
 		if(null==order || null==order.getOrder_no() || order.getOrder_no().equals("")){
 			order=new Order();
 			order.setOrder_no("001");

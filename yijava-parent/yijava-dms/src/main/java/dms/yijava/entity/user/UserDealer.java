@@ -14,10 +14,6 @@ public class UserDealer {
 	private String business_contacts;
 	private String business_phone;
 	
-	
 	private String user_id;
 	private String department_id;
-	
-	
-	
 }

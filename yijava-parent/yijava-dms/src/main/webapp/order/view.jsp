@@ -420,6 +420,8 @@
 			$("#order_number_sum").keyup(function(){
 		    	var order_price= $('input[name=order_price]').val();
 				var discount= $('input[name=discount]').val();
+				if (typeof(discount) == "undefined"||discount=='')
+					discount=10;
 				var order_number_sum= $('#order_number_sum').val();
 				var m=order_price*order_number_sum*(discount*0.1);
 				$('input[name=order_money_sum]').val(m.toFixed(2));

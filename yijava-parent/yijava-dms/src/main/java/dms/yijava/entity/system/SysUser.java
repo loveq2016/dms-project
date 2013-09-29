@@ -1,8 +1,10 @@
 package dms.yijava.entity.system;
 
+import java.util.List;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import dms.yijava.entity.dealer.DealerAddress;
+import dms.yijava.entity.user.UserDealer;
 
 @Data
 @NoArgsConstructor
@@ -23,6 +25,7 @@ public class SysUser {
 	public String department_name;
 	public String fk_dealer_id;
 	public String dealer_name;
+	public String deliver_code;
 	public String fk_role_id;
 	public String role_name;
 	public String isdeleted;
@@ -35,5 +38,6 @@ public class SysUser {
 	public String ext1;
 	public String ext2;
 	public String ext3;
-	public String teams;
+	public String[] teams;
+	public List<UserDealer> userDealerList;
 }

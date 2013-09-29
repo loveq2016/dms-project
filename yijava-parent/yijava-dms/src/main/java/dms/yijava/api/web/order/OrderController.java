@@ -36,10 +36,6 @@ public class OrderController {
 	private OrderService orderService;
 	@Autowired
 	private OrderDetailService orderDetailService;
-	@Autowired
-	private UserDealerFunService userDealerFunService;
-	@Autowired
-	private  UserLayouService userLayouService;
 	
 	@ResponseBody
 	@RequestMapping("paging")
@@ -51,9 +47,8 @@ public class OrderController {
 			if(!StringUtils.equals("0",sysUser.getFk_dealer_id())){
 				filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
 			}else if(!StringUtils.equals("0",sysUser.getFk_department_id())){
-				String[] ids=userLayouService.getTeamIdsByUserId(sysUser.getId()).getFk_team_id().split(",");//用户节点
-				List<UserDealer> list=userDealerFunService.getUserDealerList(sysUser.getId(),ids);//节点用户
-				filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(list)));
+				
+				filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
 			}
 			return orderService.paging(pageRequest,filters);
 		}
@@ -73,7 +68,7 @@ public class OrderController {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		//必须是经销商才可以添加订单
 		if(StringUtils.isNotEmpty(sysUser.getFk_dealer_id())){
-			Order order=orderService.getOrderNum();
+			Order order=orderService.getOrderNum(sysUser.getFk_dealer_id());
 			entity.setOrder_code("JRKL-"+formatter.format(new Date())+"-"+order.getOrder_no());
 			entity.setOrder_no(String.valueOf((Integer.parseInt(order.getOrder_no()))));
 			entity.setDealer_name(sysUser.getDealer_name());

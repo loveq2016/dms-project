@@ -54,7 +54,7 @@
 		select * from dms.tb_order where dealer_id = #{dealer_id}
 	</select>
 	<select id="selectOrderNum" resultType="dms.yijava.entity.order.Order">
-		select LPAD(max(order_no)+1,3,0) as order_no from dms.tb_order WHERE last_time between CURDATE() AND CONCAT(CURDATE(),' 23:59:59')
+		select LPAD(max(order_no)+1,3,0) as order_no from dms.tb_order WHERE order_date between CURDATE() AND CONCAT(CURDATE(),' 23:59:59') AND dealer_id=#{dear_id}
 	</select>
 	<select id="selectMoneyAndNumber" resultType="dms.yijava.entity.order.Order"> 
 		SELECT order_code,SUM(order_money_sum) as order_money_sum,SUM(order_number_sum) as order_number_sum FROM dms.tb_order_detail WHERE order_code=#{order_code}
@@ -64,20 +64,19 @@
     	  values(#{dealer_id},#{order_code},#{order_no},NOW(),#{dealer_address_id},NOW())
     </insert>
      <update id="updateAddress" parameterType="dms.yijava.entity.order.Order">
-    	update dms.tb_order set dealer_address_id=#{dealer_address_id} where order_code=#{order_code}
+    	update dms.tb_order set dealer_address_id=#{dealer_address_id},last_time=NOW() where order_code=#{order_code}
     </update>
     <update id="updateStatus" parameterType="dms.yijava.entity.order.Order">
-    	update dms.tb_order set order_status=#{order_status} where order_code=#{order_code}
+    	update dms.tb_order set order_status=#{order_status},last_time=NOW() where order_code=#{order_code}
     </update>
      <update id="updateMoneyNum" parameterType="dms.yijava.entity.order.Order">
-    	update dms.tb_order set order_money_sum=#{order_money_sum},order_number_sum=#{order_number_sum} where order_code=#{order_code}
+    	update dms.tb_order set order_money_sum=#{order_money_sum},order_number_sum=#{order_number_sum},last_time=NOW() where order_code=#{order_code}
     </update>
 	<delete id="deleteByPrimaryKey" parameterType="int">
    		 delete from dms.tb_order where order_code=#{order_code}
     </delete>
     <update id="submitExpress" parameterType="dms.yijava.entity.order.Order">
-    	update dms.tb_order set express_code=#{express_code},order_status=#{order_status} where order_code=#{order_code}
+    	update dms.tb_order set express_code=#{express_code},order_status=#{order_status},last_time=NOW() where order_code=#{order_code}
     </update>
-    
     
 </mapper>

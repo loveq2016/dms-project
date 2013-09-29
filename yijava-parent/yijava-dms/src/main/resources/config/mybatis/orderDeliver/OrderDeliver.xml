@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="OrderDeliver">
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">and dealer_name like CONCAT('%','${dealer_name}','%' ) </if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(order_code)">and order_code = like CONCAT('%','${order_code}','%' )</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(check_status)">and check_status = #{check_status}</if>
+		</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>
+		    <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+		         ORDER BY ${orderSql}
+		    </when>
+	    </choose>
+	</sql>
+    <select id="selectByObjectcount" resultType="long">
+		select count(*) from (
+				select 
+				t1.deliver_id,t1.deliver_code,t1.express_code,t1.express_date,t1.consignee_user_id,t1.consignee_date,t1.consignee_status,
+				t2.order_code,
+				t3.dealer_name
+				from dms.tb_deliver t1 
+				inner join dms.tb_order t2 on t1.order_id = t2.id
+				inner join dms.tb_dealer t3 on t1.dealer_id = t3.dealer_id
+				where t1.consignee_status is not null
+		) t
+		<include refid="adsWhere"/>
+	</select>
+ 	<select id="selectByObject" resultType="dms.yijava.entity.orderDeliver.OrderDeliver">
+ 		select * from (
+			select 
+			t1.deliver_id,t1.deliver_code,t1.express_code,t1.express_date,t1.consignee_user_id,t1.consignee_date,t1.consignee_status,
+			t2.order_code,
+			t3.dealer_name
+			from dms.tb_deliver t1 
+			inner join dms.tb_order t2 on t1.order_id = t2.id
+			inner join dms.tb_dealer t3 on t1.dealer_id = t3.dealer_id
+			where t1.consignee_status is not null
+		)t	
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}
+	</select>
+		
+	<select id="queryDeliverNo" resultType="dms.yijava.entity.deliver.Deliver">
+		select LPAD(max(deliver_no)+1,3,0) as deliver_no from dms.tb_deliver WHERE create_date between CURDATE() AND CONCAT(CURDATE(),' 23:59:59')
+	</select>
+		
+		
+	<insert id="insert" parameterType="dms.yijava.entity.deliver.Deliver" useGeneratedKeys="true" keyProperty="deliver_id">     
+		insert into dms.tb_deliver(deliver_code,deliver_no,order_id,order_code,order_date,create_date,remark,deliver_status,user_id,dealer_id,dealer_address_id) 
+		values(#{deliver_code},#{deliver_no},#{order_id},#{order_code},#{order_date},NOW(),#{remark},#{deliver_status},#{user_id},#{dealer_id},#{dealer_address_id});
+	</insert>
+	
+	<insert id="update" parameterType="dms.yijava.entity.deliver.Deliver">     
+		update dms.tb_deliver set remark = #{remark} where deliver_id =#{deliver_id}
+	</insert>
+	
+	<delete id="deleteByPrimaryKey" parameterType="int">
+   		 delete from dms.tb_deliver where deliver_id=#{deliver_id}
+    </delete>
+    
+    <update id="submitExpress" parameterType="dms.yijava.entity.deliver.Deliver">
+    	update dms.tb_deliver set express_code = #{express_code} where deliver_code =#{deliver_code}
+    </update>
+	
+	
+    
+</mapper>

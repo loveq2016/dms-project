@@ -20,12 +20,14 @@ import com.yijava.web.vo.Result;
 import dms.yijava.entity.system.SysLogin;
 import dms.yijava.entity.system.SysMenuFunction;
 import dms.yijava.entity.system.SysUser;
+import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.system.SysLoginService;
 import dms.yijava.service.system.SysMenuFunctionService;
 import dms.yijava.service.system.SysMenuService;
 import dms.yijava.service.system.SysRoleFunctionService;
 import dms.yijava.service.system.SysRoleService;
 import dms.yijava.service.system.SysUserService;
+import dms.yijava.service.teamlayou.UserLayouService;
 import dms.yijava.service.user.UserDealerFunService;
 
 @Controller
@@ -44,6 +46,10 @@ public class SysLoginController {
 	public SysMenuFunctionService sysMenuFunctionService;
 	@Autowired
 	public SysRoleFunctionService sysRoleFunctionService;
+	@Autowired
+	private UserDealerFunService userDealerFunService;
+	@Autowired
+	private  UserLayouService userLayouService;
 	
 	@ResponseBody
 	@RequestMapping(value = "/login")
@@ -56,11 +62,17 @@ public class SysLoginController {
 			sysUser.setAccount(account);
 			sysUser = sysUserService.getEntityByAccount(sysUser);
 			if(isExsitUser(sysUser,password)){
+				List<SysLogin> sysLoginList= sysLoginService.getRoleMenuFunList(sysUser.getFk_role_id());
+				try{
+					String[] teams=userLayouService.getTeamIdsByUserId(sysUser.getId()).getFk_team_id().split(",");//用户节点
+					List<UserDealer> userDealerList=userDealerFunService.getUserDealerList(sysUser.getId(),teams);//节点用户
+					sysUser.setUserDealerList(userDealerList);
+					sysUser.setTeams(teams);
+				}catch(Exception e){}
+				List<SysMenuFunction> sysMenuFunctionList=sysMenuFunctionService.getAllList();
+				request.getSession().setAttribute("roleFunctionList", sysLoginList);
+				request.getSession().setAttribute("allFunctionList", sysMenuFunctionList);
 				request.getSession().setAttribute("user", sysUser);
-				List<SysLogin> list= sysLoginService.getRoleMenuFunList(sysUser.getFk_role_id());
-				List<SysMenuFunction> list2=sysMenuFunctionService.getAllList();
-				request.getSession().setAttribute("roleFunctionList", list);
-				request.getSession().setAttribute("allFunctionList", list2);
 				return new Result<String>("succeess", 1);
 			}
 		}

@@ -18,9 +18,12 @@ public class Deliver {
 	private String deliver_status;
 	private String check_status;
 	private String express_code;
+	private String express_date;
 	private String user_id;
 	private String dealer_id;
 	private String dealer_name;
 	private String dealer_address_id;
+	
+
 
 }

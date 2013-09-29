@@ -70,7 +70,7 @@
 		<%-- 右键菜单--%>
 		<div id="treeEdit" class="easyui-window" title="产品分类详细信息" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
 		style="width:650px;height:200px;padding:10px;">
-			<form id="productCagegoryFrom" method="post">
+			<form id="productCagegoryFrom" method="post" enctype="multipart/form-data">
 					<input type="hidden" name="id"/>
 					<input type="hidden" name="parent_id"/>
 					<table>
@@ -97,7 +97,7 @@
 			var t = $('#tree');
 			var node = t.tree('getSelected');
 			if (node) {
-				p_target = $('#tree').tree('getParent',node.target).target;
+				//p_target = $('#tree').tree('getParent',node.target).target;
 				$('#productCagegoryFrom').form('load', {
 					parent_id : '' + node.id + ''
 				});
@@ -110,26 +110,27 @@
 			var t = $('#tree');
 			var node = t.tree('getSelected');
 			if (node) {
-				p_target = $('#tree').tree('getParent',node.target).target;
+				//p_target = $('#tree').tree('getParent',node.target).target;
 				$('#productCagegoryFrom').form('load', node);
 				$('#treeEdit').window('open');
 			}
 
 		}
 		function saveEntity() {
-			$.ajax({
-				type : "POST",
+			
+			$('#productCagegoryFrom').form('submit', {
 				url : basePath + 'api/productCategory/save',
-				data : $('#productCagegoryFrom').serialize(),
-				error : function(request) {
-					$.messager.alert('提示','Error!','error');	
+				method : "post",
+				onSubmit : function() {
+					return $(this).form('validate');
 				},
-				success : function(data) {
-					var jsonobj = $.parseJSON(data);
+				success : function(msg) {
+					var jsonobj = $.parseJSON(msg);
 					if (jsonobj.state == 1) {
-						$('#tree').tree('reload',p_target);
-						p_target = null;
+						$('#tree').tree('reload');
 						$('#treeEdit').window('close');
+					}else {
+						$.messager.alert('提示', 'Error!', 'error');
 					}
 				}
 			});
@@ -139,7 +140,7 @@
 			var t = $('#tree');
 			var node = t.tree('getSelected');
 			if (node) {
-				p_target = $('#tree').tree('getParent',node.target).target;
+				//p_target = $('#tree').tree('getParent',node.target).target;
 				$.ajax({
 					type : "POST",
 					url : basePath + 'api/productCategory/remove',

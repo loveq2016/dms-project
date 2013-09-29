@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PullStorageProDetail">
+	<sql id="adsWhere">
+	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(pull_storage_code)">
+			  and pull_storage_code=#{pull_storage_code}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(put_storage_code)">
+			  and put_storage_code=#{put_storage_code}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(batch_no)">
+			  and batch_no=#{batch_no}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(product_sn)">
+			  and product_sn=#{product_sn}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_storage_id)">
+			  and fk_storage_id=#{fk_storage_id}
+		</if>
+	</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>
+	        <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+	            order by ${orderSql}
+	        </when>
+	    </choose>
+	</sql>
+    <select id="selectByObjectcount" resultType="long"> 
+		SELECT COUNT(*) FROM dms.tb_pull_storage_pro_detail
+		<include refid="adsWhere"/>
+	</select>
+ 	<select id="selectByObject" resultType="dms.yijava.entity.pullstorage.PullStorageProDetail">
+		SELECT * FROM dms.tb_pull_storage_pro_detail
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}  
+	</select>
+	<select id="selectByMap" resultType="dms.yijava.entity.pullstorage.PullStorageProDetail">
+		SELECT * FROM dms.tb_pull_storage_pro_detail
+		<include refid="adsWhere"/>
+	</select>
+	<select id="selectPullStorageProDetail"  parameterType="int" resultType="dms.yijava.entity.pullstorage.PullStorageProDetail">
+        SELECT * FROM dms.tb_pull_storage_pro_detail 
+        <include refid="adsWhere"/>
+    </select>
+	<insert id="insert" parameterType="dms.yijava.entity.pullstorage.PullStorageProDetail" useGeneratedKeys="true" keyProperty="item_number"> 
+		insert into dms.tb_pull_storage_pro_detail(fk_storage_id,pull_storage_code,put_storage_code,product_sn,batch_no,valid_date,last_time) 
+    	  values(#{fk_storage_id},#{pull_storage_code},#{put_storage_code},#{product_sn},#{batch_no},#{valid_date},NOW())
+    </insert>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+    	delete from dms.tb_pull_storage_pro_detail where id = #{id}
+    </delete>
+    <delete id="deleteByPullStorageCode" parameterType="String">
+   		 delete from dms.tb_pull_storage_pro_detail where pull_storage_code=#{pull_storage_code}
+    </delete>
+</mapper>

@@ -54,7 +54,8 @@
     </delete>
     
     <update id="submitExpress" parameterType="dms.yijava.entity.deliver.Deliver">
-    	update dms.tb_deliver set express_code = #{express_code} where deliver_code =#{deliver_code}
+    	update dms.tb_deliver set express_code = #{express_code},express_date=#{express_date},consignee_status = 0  
+    	where deliver_code =#{deliver_code}
     </update>
 	
 	

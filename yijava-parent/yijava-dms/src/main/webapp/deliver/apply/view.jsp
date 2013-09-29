@@ -21,7 +21,7 @@
 									<td><input class="easyui-validatebox" type="text" name="order_code"></input></td>
 									<td>出货单号:</td>	
 									<td><input class="easyui-validatebox" type="text" name="deliver_code"></input></td>
-									<td width="50">状态:</td>
+									<td width="50">类型:</td>
 									<td width="270">										
 										<input name="deliver_status" class="easyui-combobox" id="deliver_status_s"
 											data-options="
@@ -69,7 +69,7 @@
 							<th data-options="field:'order_date',width:150,align:'center'" sortable="true">下单时间</th>
 							<th data-options="field:'create_date',width:150,align:'center'" sortable="true">编制时间</th>
 <!-- 							<th data-options="field:'express_number',width:150,align:'center'" sortable="true">快递号</th> -->
-							<th data-options="field:'deliver_status',width:80,align:'center'" formatter="formatterDeliverStatus" sortable="true">发货状态</th>
+							<th data-options="field:'deliver_status',width:80,align:'center'" formatter="formatterDeliverStatus" sortable="true">发货类型</th>
 							<th data-options="field:'check_status',width:80,align:'center'"  formatter="formatterCheckStatus">审核状态</th>
 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
 						</tr>
@@ -213,7 +213,7 @@
 									<td>出货单日期:</td>	
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="create_date"></input></td>
 									<td></td>
-									<td>发货状态:</td>	
+									<td>发货类型:</td>	
 									<td><input name="deliver_status" class="easyui-combobox" id="deliver_status_ss"
 												data-options="
 													required:true,
