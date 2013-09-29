@@ -30,7 +30,7 @@
 </c:forEach>
 <a href="${basePath}api/sys/logout">退出</a>
 -->
-<div style="padding: 5px; width: 1000px;">
+<div style="padding: 5px; width: 1200px;">
 	<a href="javascript:void(0)" id="mb1" class="easyui-menubutton"
 		data-options="menu:'#mm1',iconCls:'icon-filep'">系统管理</a>
 	<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
@@ -171,5 +171,6 @@
 	</div>
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="发货管理" url="pullstorage/loansview.jsp">借贷出库管理</a>
+	</div>
 </div>
 </div>
