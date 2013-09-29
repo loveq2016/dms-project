@@ -31,8 +31,8 @@
     	  ,#{status},#{check_reason},#{is_delete},#{create_time},#{remark},#{ext1},#{ext2},#{ext3})
     </insert> -->
     <insert id="insert" parameterType="dms.yijava.entity.flow.FlowRecord">  		
-    	  insert into dms.tb_flow_record(flow_id,bussiness_id,title,send_id,send_time,check_id,status,create_time,remark)
-    	  values(#{flow_id},#{bussiness_id},#{title},#{send_id},#{send_time},#{check_id},#{status},#{create_time},#{remark})
+    	  insert into dms.tb_flow_record(flow_id,bussiness_id,title,send_id,send_time,check_id,status,create_time,remark,step_order_no)
+    	  values(#{flow_id},#{bussiness_id},#{title},#{send_id},#{send_time},#{check_id},#{status},#{create_time},#{remark},#{step_order_no})
     </insert>
     
     <insert id="update" parameterType="dms.yijava.entity.flow.FlowRecord">  
@@ -64,5 +64,21 @@
     </update> -->
     <update id="delete" parameterType="dms.yijava.entity.flow.FlowRecord">
    	 	update dms.tb_flow_record set is_delete=1 where flow_id=#{flow_id},bussiness_id=#{bussiness_id}  		
+	</update>
+	
+	
+	<update id="updateByProperty" parameterType="dms.yijava.entity.flow.FlowRecord">
+   	 	update dms.tb_flow_record
+     	<set>
+	     	  
+	     	  <if test="check_time != null">check_time=#{check_time},</if>
+	     	  <if test="check_department_id != null">check_department_id=#{check_department_id},</if>
+	     	  <if test="status != null">status=#{status},</if>
+	     	  <if test="check_reason != null">check_reason=#{check_reason},</if>     	  
+	     	  <if test="ext1 != null">ext1=#{ext1},</if>
+	     	  <if test="ext2 != null">ext1=#{ext2},</if>
+	     	  <if test="ext3 != null">ext1=#{ext3}</if>
+     	</set>    	
+     	where flow_id=#{flow_id} and bussiness_id=#{bussiness_id} and check_id=#{check_id} 		
 	</update>
 </mapper>

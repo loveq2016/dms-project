@@ -3,21 +3,16 @@ package dms.yijava.service.flow;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yijava.common.utils.DateUtils;
-import com.yijava.orm.core.JsonPage;
-import com.yijava.orm.core.PageRequest;
-import com.yijava.orm.core.PropertyFilter;
 
+import dms.yijava.api.web.model.flow.ProcFlowModel;
 import dms.yijava.dao.flow.FlowRecordDao;
-import dms.yijava.entity.flow.Flow;
 import dms.yijava.entity.flow.FlowRecord;
-import dms.yijava.entity.system.SysRoleFunction;
 
 
 @Service
@@ -102,6 +97,30 @@ public class FlowRecordService {
 		return flowRecordDao.find(parameters);
 	}*/
 
+	
+	
+	public void updateFlowByFlowUB(ProcFlowModel model)
+	{
+		updateFlowByFlowUB(model.getFlow_id(),model.getUser_id(),model.getBussiness_id(),model.getCheck_reason(),model.getStatus());
+	}
+	/**
+	 * 按照审核人，业务号，流程号跟新流程记录，表明这一步的完成
+	 * @param flow_id
+	 * @param user_id
+	 * @param bussiness_id
+	 */
+	public void updateFlowByFlowUB(String flow_id,String user_id,String bussiness_id,String check_reason,String status)
+	{
+		FlowRecord entity=new FlowRecord();
+		entity.setFlow_id(flow_id);
+		entity.setCheck_id(user_id);
+		entity.setBussiness_id(bussiness_id);
+		entity.setStatus(status);
+		entity.setCheck_time(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+		entity.setCheck_reason(check_reason);
+		flowRecordDao.updateObject(".updateByProperty",entity);
+	}
+	
 	public FlowRecord getEntity(String id) {
 		return flowRecordDao.get(id);
 	}

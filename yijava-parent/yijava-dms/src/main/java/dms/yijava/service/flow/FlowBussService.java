@@ -103,7 +103,7 @@ public class FlowBussService {
 	 * @param remark
 	 * @return
 	 */
-	public boolean insertStep(String flow_id,String send_Userid,String descTitle,String bussiness_id,String check_id,String remark)
+	public boolean insertStep(String flow_id,String send_Userid,String descTitle,String bussiness_id,String check_id,String remark,String status,String step_order_no)
 	{
 		boolean save_status=false;
 		FlowRecord entity=new FlowRecord();
@@ -115,7 +115,8 @@ public class FlowBussService {
 		entity.setSend_time(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		entity.setCreate_time(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		entity.setRemark(remark);
-	
+		entity.setStatus(status);
+		entity.setStep_order_no(step_order_no);
 		try {
 			flowRecordService.saveEntity(entity);
 		} catch (Exception e) {

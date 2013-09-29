@@ -23,6 +23,7 @@ public class FlowRecord {
 	public String is_delete;
 	public String create_time;
 	public String remark;
+	public String step_order_no;
 	public String ext1;
 	public String ext2;
 	public String ext3;

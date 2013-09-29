@@ -1,5 +1,6 @@
 package dms.yijava.api.web.trial;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,17 +14,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yijava.common.utils.DateUtils;
 import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
+import dms.yijava.entity.flow.FlowLog;
 import dms.yijava.entity.flow.Step;
 import dms.yijava.entity.flow.StepDepartment;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.trial.Trial;
 import dms.yijava.service.flow.FlowBussService;
+import dms.yijava.service.flow.FlowLogService;
 import dms.yijava.service.trial.TrialService;
 
 @Controller
@@ -43,7 +47,8 @@ public class TrialController {
 	@Autowired
 	private FlowBussService flowBussService;
 	
-	
+	@Autowired
+	private FlowLogService flowLogService;
 	
 	
 
@@ -79,23 +84,7 @@ public class TrialController {
 	
 	
 	
-	/**
-	 * 开始流程
-	 * @param trial_id
-	 * @param currentUserId
-	 */
-	public void processFlow(Integer trial_id,String currentUserId)
-	{
-		Step step=flowBussService.getFirstStep(flowIdentifierNumber);
-		StepDepartment stepDepartment=step.getStepDepartments().get(0);
-		stepDepartment.getUsers().get(0).getId();
-		
-		
-
-		
-		flowBussService.insertStep(flowIdentifierNumber, currentUserId,  
-				"提交给区域经理审核", trial_id.toString(), stepDepartment.getUsers().get(0).getId(), "提交给区域经理审核");
-	}
+	
 	
 	
 	/**
@@ -116,36 +105,6 @@ public class TrialController {
 		}
 		return result;
 	}
-	
-	/**
-	 * 修改状态
-	 * @param trial_id
-	 * @param request
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping("updatetocheck")
-	public Result<Integer> updatetocheck(Integer trial_id,HttpServletRequest request) {
-		Result<Integer> result=new Result<Integer>(0, 0);
-		try {
-			
-			
-			
-			trialService.updateEntityStatus(trial_id,1);
-			
-			
-			///以下开始走流程处理
-			SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
-			processFlow(trial_id,sysUser.getId());	
-			
-			result.setData(1);
-			result.setState(1);;
-		} catch (Exception e) {
-			logger.error("error" + e);
-		}
-		return result;
-	}
-	
 	/**
 	 * 删除
 	 * @param trial_id
@@ -164,4 +123,65 @@ public class TrialController {
 		}
 		return result;
 	}
+	
+	/**
+	 * 修改状态 提交审核
+	 * @param trial_id
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("updatetocheck")
+	public Result<Integer> updatetocheck(Integer trial_id,HttpServletRequest request) {
+		Result<Integer> result=new Result<Integer>(0, 0);
+		try {			
+						
+			///以下开始走流程处理
+			SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+			processFlow(trial_id,sysUser.getId(),sysUser.getRealname());	
+			
+			
+			//更新状态
+			trialService.updateEntityStatus(trial_id,1);
+			
+			
+			result.setData(1);
+			result.setState(1);;
+		} catch (Exception e) {
+			logger.error("error" + e);
+		}
+		return result;
+	}
+	
+	/**
+	 * 开始流程
+	 * @param trial_id
+	 * @param currentUserId
+	 */
+	public void processFlow(Integer trial_id,String currentUserId,String realname)
+	{
+		Step step=flowBussService.getFirstStep(flowIdentifierNumber);
+		//此处需要根据当前用户从所属的部门里找到用户id
+		String check_id ;
+		
+		StepDepartment stepDepartment=step.getStepDepartments().get(0);
+		check_id=stepDepartment.getUsers().get(0).getId();
+		
+		//先记录处理日志
+		//写处理日志
+		FlowLog flowLog=new FlowLog();
+		flowLog.setFlow_id(flowIdentifierNumber);
+		flowLog.setUser_id(currentUserId);
+		flowLog.setUser_name(realname);
+		flowLog.setBussiness_id(trial_id.toString());
+		flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+		flowLog.setAction_name("提交");
+		flowLogService.saveEntity(flowLog);
+		
+		//记录流程
+		flowBussService.insertStep(flowIdentifierNumber, currentUserId,  
+				"提交", trial_id.toString(), check_id, "提交","0","0");
+	}
+	
+	
 }

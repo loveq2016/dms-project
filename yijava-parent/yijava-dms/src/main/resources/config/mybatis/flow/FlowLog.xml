@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FlowLog">
+
+    <select id="selectByMap" resultType="dms.yijava.entity.flow.FlowLog">
+		select * from dms.tb_flow_log 
+		<where>
+			<if test="bussiness_id != null">
+	        	 bussiness_id = #{bussiness_id}
+	    	</if> 
+	    	 <if test="flow_id != null">
+		        AND flow_id = #{flow_id}
+		    </if>
+		     <if test="user_id != null">
+		        AND user_id = #{user_id}
+		    </if>		    	    		    
+		</where>	
+	</select>
+	
+    <insert id="insert" parameterType="dms.yijava.entity.flow.FlowLog">  		
+    	  insert into dms.tb_flow_log(flow_record_id,flow_id,user_id,user_name,bussiness_id,action_name,check_user_id,check_user_name,check_reason,sign,create_date)
+    	  values(#{flow_record_id},#{flow_id},#{user_id},#{user_name},#{bussiness_id},#{action_name},#{check_user_id},#{check_user_name},#{check_reason},,#{sign},#{create_date})
+    </insert>
+    
+    
+   
+    <update id="delete" parameterType="dms.yijava.entity.flow.FlowLog">
+   	 	delete from  dms.tb_flow_log  where user_id=#{user_id} and flow_id=#{flow_id} and bussiness_id=#{bussiness_id}  		
+	</update>
+	
+	
+	
+</mapper>
