@@ -37,19 +37,21 @@
 		SELECT * FROM dms.tb_pull_storage_pro_detail
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
-	    limit #{offset},#{pagesize}  
+	    limit #{offset},#{pagesize}
 	</select>
 	<select id="selectByMap" resultType="dms.yijava.entity.pullstorage.PullStorageProDetail">
 		SELECT * FROM dms.tb_pull_storage_pro_detail
 		<include refid="adsWhere"/>
 	</select>
-	<select id="selectPullStorageProDetail"  parameterType="int" resultType="dms.yijava.entity.pullstorage.PullStorageProDetail">
+	<select id="selectPullStorageProDetail" resultType="dms.yijava.entity.pullstorage.PullStorageProDetail">
         SELECT * FROM dms.tb_pull_storage_pro_detail 
         <include refid="adsWhere"/>
     </select>
-	<insert id="insert" parameterType="dms.yijava.entity.pullstorage.PullStorageProDetail" useGeneratedKeys="true" keyProperty="item_number"> 
-		insert into dms.tb_pull_storage_pro_detail(fk_storage_id,pull_storage_code,put_storage_code,product_sn,batch_no,valid_date,last_time) 
-    	  values(#{fk_storage_id},#{pull_storage_code},#{put_storage_code},#{product_sn},#{batch_no},#{valid_date},NOW())
+	<insert id="insert" parameterType="java.util.List"> 
+		insert into dms.tb_pull_storage_pro_detail(fk_storage_id,pull_storage_code,put_storage_code,product_sn,batch_no,last_time)values
+    	<foreach collection="list" item="item" index="index" separator=",">   
+	        (#{item.fk_storage_id},#{item.pull_storage_code},#{item.put_storage_code},#{item.product_sn},#{item.batch_no},NOW())
+	    </foreach>
     </insert>
     <delete id="deleteByPrimaryKey" parameterType="int">
     	delete from dms.tb_pull_storage_pro_detail where id = #{id}

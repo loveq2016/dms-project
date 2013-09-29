@@ -15,6 +15,7 @@ import com.yijava.orm.core.PropertyFilter;
 import dms.yijava.dao.pullstorage.PullStorageProDetailDao;
 import dms.yijava.entity.pullstorage.PullStorageDetail;
 import dms.yijava.entity.pullstorage.PullStorageProDetail;
+import dms.yijava.entity.system.SysRoleFunction;
 @Service
 @Transactional
 public class PullStorageProDetailService{
@@ -44,8 +45,8 @@ public class PullStorageProDetailService{
 		return pullStorageProDetailDao.get(id);
 	}
 	
-	public void saveEntity(PullStorageProDetail entity) {
-		pullStorageProDetailDao.insert(entity);
+	public void saveEntity(List<PullStorageProDetail> list) {
+		pullStorageProDetailDao.insert(list);
 	}
 	
 	public void removeByIdEntity(String id) {

@@ -89,6 +89,9 @@ public class PullStorageController {
 	@RequestMapping("remove")
 	public Result<Integer> remove(@RequestParam(value = "id", required = false) String id) {
 		pullStorageService.removeEntity(id);
+		
+		//需要回滚库存。
+		
 		return new Result<Integer>(1, 1);
 	}
 
