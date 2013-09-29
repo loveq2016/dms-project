@@ -270,6 +270,12 @@
 	            modal="true" closed="true" buttons="#dlgProductSum-buttons">
 		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
 					      <table> 
+					      	     
+					      	     <tr>
+					             	<td>仓库:</td>
+					             	<input name="fk_storage_id" hidden="true" class="easyui-validatebox" style="width:150px;">
+					             	<td><input name="storage_name" readonly="true" class="easyui-validatebox" style="width:150px;"></td>
+					            </tr>
 					    		<tr>
 					             	<td>出库单号:</td>
 					             	<td><input name="pull_storage_code" readonly="true" class="easyui-validatebox" style="width:150px;"></td>
@@ -285,6 +291,10 @@
 					            <tr>
 					             	<td>批次</td>
 					             	<td><input name="batch_no" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					            </tr>
+					            <tr>
+					             	<td>单价</td>
+					             	<td><input name="money" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
 					            <tr>
 					             	<td>库存量:</td>
@@ -489,8 +499,11 @@
 				$("#fm3 input[name=pull_storage_code]").val(pull_storage_code);
 				$("#fm3 input[name=product_item_number]").val(row.product_item_number);
 				$("#fm3 input[name=product_name]").val(row.product_name);
-				$("#fm3 input[name=batch_no]").val(row.batch_no);				
+				$("#fm3 input[name=batch_no]").val(row.batch_no);	
+				$("#fm3 input[name=money]").val(row.money);	
 				$("#fm3 input[name=inventory_number]").val(row.inventory_number);	
+				$("#fm3 input[name=fk_storage_id]").val(row.fk_storage_id);	
+				$("#fm3 input[name=storage_name]").val(row.storage_name);
 				$('#dlgProductSum').dialog('open').dialog('setTitle','添加产品');
 			}else
 			{
