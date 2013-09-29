@@ -92,6 +92,12 @@
 		select LPAD(max(put_storage_no)+1,3,0) as put_storage_no from dms.tb_pull_storage WHERE 
 		put_storage_date between CURDATE() AND CONCAT(CURDATE(),' 23:59:59') AND put_storage_party_id =#{put_storage_party_id}
 	</select>
+	<select id="selectStorageDetailTotalNumber" resultType="dms.yijava.entity.pullstorage.PullStorage">
+		SELECT SUM(sales_number) as total_number FROM tb_pull_storage_detail WHERE pull_storage_code=#{pull_storage_code}
+	</select>
+	<select id="selectMoneyAndNumber" resultType="dms.yijava.entity.order.Order"> 
+		SELECT order_code,SUM(order_money_sum) as order_money_sum,SUM(order_number_sum) as order_number_sum FROM dms.tb_order_detail WHERE order_code=#{order_code}
+	</select>
 	<select id="selectPullStorageCode" resultType="dms.yijava.entity.pullstorage.PullStorage">
 		select LPAD(max(pull_storage_no)+1,3,0) as pull_storage_no from dms.tb_pull_storage WHERE
 		 pull_storage_date between CURDATE() AND CONCAT(CURDATE(),' 23:59:59') AND pull_storage_party_id =#{pull_storage_party_id}
