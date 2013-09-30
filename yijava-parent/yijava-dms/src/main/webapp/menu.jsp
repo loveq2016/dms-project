@@ -51,6 +51,8 @@
 		data-options="menu:'#mm9',iconCls:'icon-filep'">采购管理</a>
 	<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
 		data-options="menu:'#mm10',iconCls:'icon-filep'">销售管理</a>
+	<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
+		data-options="menu:'#mm11',iconCls:'icon-filep'">库存管理</a>
 </div>
 <div id="mm1" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
@@ -171,6 +173,11 @@
 	</div>
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="发货管理" url="pullstorage/loansview.jsp">借贷出库管理</a>
+	</div>
+</div>
+<div id="mm11" style="width: 150px;">
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="库存管理" url="storage/inventory/view.jsp">库存管理</a>
 	</div>
 </div>
 </div>
