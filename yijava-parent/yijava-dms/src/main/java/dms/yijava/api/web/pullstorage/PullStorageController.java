@@ -66,7 +66,7 @@ public class PullStorageController {
 			PullStorage pullObj=pullStorageService.getPullStorageCode(sysUser.getFk_dealer_id());
 			PullStorage putObj=pullStorageService.getPutStorageCode(entity.getFk_put_storage_party_id());
 			//出货单
-			entity.setPull_storage_code(sysUser.getDeliver_code()+"RN"+formatter.format(new Date())+pullObj.getPull_storage_no());
+			entity.setPull_storage_code(sysUser.getDealer_code()+"RN"+formatter.format(new Date())+pullObj.getPull_storage_no());
 			entity.setPull_storage_no(String.valueOf((Integer.parseInt(pullObj.getPull_storage_no()))));
 			entity.setFk_pull_storage_party_id(sysUser.getFk_dealer_id());
 			//收货单
@@ -89,6 +89,9 @@ public class PullStorageController {
 	@RequestMapping("remove")
 	public Result<Integer> remove(@RequestParam(value = "id", required = false) String id) {
 		pullStorageService.removeEntity(id);
+		
+		//需要回滚库存。
+		
 		return new Result<Integer>(1, 1);
 	}
 

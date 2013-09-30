@@ -180,7 +180,7 @@ public class TrialController {
 		
 		//记录流程
 		flowBussService.insertStep(flowIdentifierNumber, currentUserId,  
-				"提交", trial_id.toString(), check_id, "提交","0");
+				"提交", trial_id.toString(), check_id, "提交","0","0");
 	}
 	
 	

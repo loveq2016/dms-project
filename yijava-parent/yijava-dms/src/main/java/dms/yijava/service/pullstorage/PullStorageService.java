@@ -71,6 +71,10 @@ public class PullStorageService{
 	public void removeEntity(String id) {
 		pullStorageDao.removeById(id);
 	}
+	public PullStorage getStorageDetailTotalNumber(String pull_storage_code) {
+		PullStorage pullStorage=pullStorageDao.getObject(".selectStorageDetailTotalNumber",pull_storage_code);
+		return pullStorage;
+	}
 	public PullStorage getPutStorageCode(String put_storage_party_id) {
 		PullStorage pullStorage=pullStorageDao.getObject(".selectPutStorageCode",put_storage_party_id);
 		if(null==pullStorage || StringUtils.isNotEmpty(pullStorage.getPut_storage_no())){
