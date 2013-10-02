@@ -54,7 +54,7 @@
 							<th field="cm" width="50" align="center" formatter="formatterCM">发货方</th>
 							<th field="express_date" width="100" align="center" sortable="true">发货日期</th>
 							<th field="consignee_date" width="100" align="center" sortable="true">收货日期</th>
-							<th field="money" width="100" align="center" sortable="true" >金额</th>
+							<th field="totalMoney" width="100" align="center" sortable="true" >金额</th>
 							<th field="consignee_status" width="100" align="center" sortable="true" formatter="formatterConsigneeStatus">单据状态</th>
 							<th field="info" width="100" align="center" sortable="true" formatter="formatterInfo">明细</th>
 						</tr>
@@ -92,10 +92,10 @@
 								</tr>
 								<tr>
 									<td>发货日期:</td>	
-									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="deliver_code"></input></td>
+									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="express_date"></input></td>
 									<td></td>
 									<td>出货日期:</td>	
-									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="express_date"></input></td>
+									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="consignee_date"></input></td>
 									<td></td>
 									<td>单据状态:</td>	
 									<td><input name="consignee_status" class="easyui-combobox" readonly="readonly" 
@@ -112,7 +112,7 @@
 								</tr>
 								<tr>
 									<td>金额:</td>	
-									<td colspan="4"><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="money"></input></td>
+									<td colspan="4"><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="totalMoney"></input></td>
 								</tr>
 
 							</table>
@@ -124,18 +124,18 @@
 						 rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc">
 						<thead>
 							<tr>
-							<th data-options="field:'product_name',width:100,align:'center'" sortable="true">产品批号</th>
-							<th data-options="field:'models',width:65,align:'center'" sortable="true">有效期</th>
-							<th data-options="field:'express_num',width:80,align:'center'">销售单位</th>
-							<th data-options="field:'express_sn',width:100,align:'center'">销售数量</th>
-							<th data-options="field:'validity_date',width:100,align:'center'">含税销售价格</th>
+							<th data-options="field:'express_sn',width:100,align:'center'" sortable="true">产品批号</th>
+							<th data-options="field:'validity_date',width:100,align:'center'" sortable="true">有效期</th>
+							<th data-options="field:'abc',width:100,align:'center'">销售单位</th>
+							<th data-options="field:'express_num',width:100,align:'center'">销售数量</th>
+							<th data-options="field:'totalMoney',width:100,align:'center'">含税销售价格</th>
 							</tr>
 						</thead>
 					</table>
 			</div>
 		</div>
 		<div id="dlg-buttons">
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="submitExpress();">确认收货</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" id="submitConsignee" onclick="submitConsignee();">确认收货</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgDeliverDetail').dialog('close')">取消</a>
 	    </div>
 	
@@ -170,7 +170,7 @@
 			 	
 		} 
 		 
-	
+		 var deliver_code;
 		 function openInfo(index){
 				$('#dg').datagrid('selectRow',index);
 				var row = $('#dg').datagrid('getSelected');
@@ -179,15 +179,17 @@
 					$('#ffDeliverDetail').form('clear');
 					$('#ffDeliverDetail').form('load', row);
 					$('#ffDeliverDetail').form('load', {"cm":"Bard"});
-					
-					
-					
-					
-					$('#dgRelation').datagrid('loadData', {total: 0, rows: []});
-					$('#dgRelation').datagrid({
-						url : basePath + "api/dealerRelationFun/paging",
+					if(row.consignee_status== 1){
+						$("#submitConsignee").linkbutton('disable');
+					}else{
+						$("#submitConsignee").linkbutton('enable');
+					}
+					deliver_code = row.deliver_code;
+					$('#dgExpress').datagrid('loadData', {total: 0, rows: []});
+					$('#dgExpress').datagrid({
+						url : basePath + "api/deliverExpress/paging",
 						queryParams: {
-							filter_ANDS_dealer_id : dealer_id
+							filter_ANDS_deliver_code : deliver_code
 						}
 					});
 		          }else{
@@ -195,9 +197,6 @@
 				 }				 
 		 }
 		 
-		 
-		
-		  
 		function doSearch(){
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_dealer_name: $('#dealer_name').val(),
@@ -205,7 +204,28 @@
 		    });
 		}
 		
-		
+		function submitConsignee(){
+			$("#submitConsignee").linkbutton('disable');
+			$.ajax({
+				type : "POST",
+				url : basePath + 'api/orderDeliver/consignee',
+				data : {deliver_code:deliver_code},
+				error : function(request) {
+					$("#submitConsignee").linkbutton('enable');
+					$.messager.alert('提示','Error!','error');	
+				},
+				success : function(data) {
+					var jsonobj = $.parseJSON(data);
+					if (jsonobj.state == 1) {  
+						 $('#dg').datagrid('reload');
+						 $('#dlgDeliverDetail').dialog('close');
+					}else{
+						$("#submitConsignee").linkbutton('enable');
+						$.messager.alert('提示','Error!','error');	
+					}
+				}
+			}); 
+		}
 		
 
 

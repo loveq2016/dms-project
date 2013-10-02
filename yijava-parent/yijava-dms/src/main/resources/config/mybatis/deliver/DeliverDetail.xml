@@ -35,14 +35,18 @@
 	
 	<insert id="insert" parameterType="dms.yijava.entity.deliver.DeliverDetail" useGeneratedKeys="true" keyProperty="delivery_detail_id">     
 		insert into dms.tb_delivery_detail(deliver_id,deliver_code,order_code,order_detail_id,product_item_number,product_name,
-			models,order_number_sum,deliver_number_sum,deliver_date,arrival_date,deliver_remark) 
+			models,order_number_sum,order_price,discount,deliver_number_sum,deliver_date,arrival_date,deliver_remark) 
 		values(#{deliver_id},#{deliver_code},#{order_code},#{order_detail_id},#{product_item_number},#{product_name},
-			#{models},#{order_number_sum},#{deliver_number_sum},#{deliver_date},#{arrival_date},#{deliver_remark});
+			#{models},#{order_number_sum},#{order_price},#{discount},#{deliver_number_sum},#{deliver_date},#{arrival_date},#{deliver_remark});
 	</insert>
 	
 	
 	<select id="selectByMap" resultType="dms.yijava.entity.deliver.DeliverDetail">
 		select * from dms.tb_delivery_detail where deliver_code = #{deliver_code}
+	</select>
+	
+	<select id="select"  parameterType="int" resultType="dms.yijava.entity.deliver.DeliverDetail">
+		select * from dms.tb_delivery_detail where delivery_detail_id = #{delivery_detail_id}
 	</select>
 	
 	<insert id="update" parameterType="dms.yijava.entity.deliver.DeliverDetail">     
