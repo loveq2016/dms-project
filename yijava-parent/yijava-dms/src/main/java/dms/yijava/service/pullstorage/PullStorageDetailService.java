@@ -15,6 +15,7 @@ import com.yijava.orm.core.PropertyFilter;
 import dms.yijava.dao.pullstorage.PullStorageDetailDao;
 import dms.yijava.entity.order.OrderDetail;
 import dms.yijava.entity.pullstorage.PullStorageDetail;
+import dms.yijava.entity.pullstorage.PullStorageProDetail;
 @Service
 @Transactional
 public class PullStorageDetailService{
@@ -32,7 +33,6 @@ public class PullStorageDetailService{
 				pageRequest.getPageSize(), pageRequest.getOrderBy(),
 				pageRequest.getOrderDir());
 	}
-	
 	public List<PullStorageDetail> getList(List<PropertyFilter> filters){
 		Map<String,String> parameters = new HashMap<String,String>();
 		for (PropertyFilter propertyFilter : filters) {
@@ -41,7 +41,6 @@ public class PullStorageDetailService{
 		}
 		return pullStorageDetailDao.find(parameters);
 	}
-	
 	public PullStorageDetail getEntity(String id) {
 		return pullStorageDetailDao.get(id);
 	}
@@ -55,6 +54,9 @@ public class PullStorageDetailService{
 	}
 	public void removeByPullStorageCode(String pull_storage_code) {
 		pullStorageDetailDao.removeObject(".deleteByPullStorageCode",pull_storage_code);
+	}
+	public void removeByStorageOrBatchNo(PullStorageProDetail entity) {
+		pullStorageDetailDao.removeObject(".deleteByStorageOrBatchNo",entity);
 	}
 	public PullStorageDetail getPullStorageDetail(PullStorageDetail entity) {
 		PullStorageDetail d=pullStorageDetailDao.getObject(".selectPullStorageDetail",entity);

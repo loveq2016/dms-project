@@ -17,9 +17,9 @@
 						<form id="ff" method="post">
 							<table>
 								<tr>
-									<td>分销出库号:</td>	
+									<td width="150">分销出库号:</td>	
 									<td><input class="easyui-validatebox" type="text" name="pull_storage_code"></input></td>
-									<td width="100">经销商:</td>
+									<td width="150">经销商:</td>
 									<td>
 									<c:if test="${user.fk_dealer_id!='0'}">
 										<input class="easyui-validatebox" disabled="disabled" id="pull_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
@@ -37,17 +37,19 @@
 						            </c:if>
 									</td>
 									<!-- 此处查询需要修改，如果是经销商，必须查询子经销商 -->
-									<td width="100">收货经销商:</td>
+									<td width="150">收货经销商:</td>
 									<td>
-										<input class="easyui-combobox" name="fk_put_storage_party_id" id="fk_put_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+						            	<input class="easyui-combobox" name="fk_put_storage_party_id" id="fk_put_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 						             			data-options="
-							             			url:'${basePath}api/userDealerFun/list?d_id=${user.fk_department_id}&u_id=${user.id}',
+							             			url:'${basePath}/api/dealer/list',
 								                    method:'get',
 								                    valueField:'dealer_id',
 								                    textField:'dealer_name',
 								                    panelHeight:'auto'
 						            			"/>
 									</td>
+								</tr>
+								<tr>
 									<td width="50">状态:</td>
 									<td width="270">										
 										<input name="status" class="easyui-combobox" data-options="
@@ -67,8 +69,6 @@
 												value: '取消'
 											},]" />
 									</td>
-								</tr>
-								<tr>
 									<td width="100">开始时间:</td>
 									<td width="270">
 										<input name="pull_start_date" id="pull_start_date" class="easyui-datebox"></input>
@@ -93,13 +93,14 @@
 					iconCls="icon-search" sortOrder="asc" toolbar="#tbPullStorage">
 					<thead>
 						<tr>
-							<th data-options="field:'id',width:240,align:'center'" hidden="true">id</th>
-							<th data-options="field:'pull_storage_party_name',width:240,align:'center'" sortable="true">经销商</th>
-							<th data-options="field:'pull_storage_code',width:200,align:'center'" sortable="true">出库单号</th>
-							<th data-options="field:'put_storage_party_name',width:240,align:'center'" sortable="true">收货经销商</th>
+							<th data-options="field:'id',width:10,align:'center'" hidden="true">id</th>
+							<th data-options="field:'pull_storage_party_name',width:200,align:'center'" sortable="true">经销商</th>
+							<th data-options="field:'pull_storage_code',width:100,align:'center'" sortable="true">分销出库单号</th>
+							<th data-options="field:'put_storage_code',width:100,align:'center'" sortable="true">入库出库单号</th>
+							<th data-options="field:'put_storage_party_name',width:200,align:'center'" sortable="true">收货经销商</th>
 							<th data-options="field:'total_number',width:80,align:'center'" sortable="true">总数量</th>
-							<th data-options="field:'pull_storage_date',width:150,align:'center'" sortable="true">出库时间</th>
-							<th data-options="field:'pull_storage_party_name',width:150,align:'center'" sortable="true">出库人</th>
+							<th data-options="field:'pull_storage_date',width:100,align:'center'" sortable="true">出库时间</th>
+							<th data-options="field:'pull_storage_user_name',width:150,align:'center'" sortable="true">出库人</th>
 							<th data-options="field:'status',width:80,align:'center'" formatter="formatterStatus" sortable="true">单据状态</th>
 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
 						</tr>
@@ -108,7 +109,6 @@
 			</div>
 			<div id="tbPullStorage">
 				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntity()">编辑</a>
         		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
 			</div>
 			<div style="margin: 10px 0;"></div>
@@ -119,17 +119,19 @@
 					<!-- 此处查询需要修改，如果是经销商，必须查询子经销商 -->
 						<td>收货经销商:</td>
 						<td>
-							<input hidden="true" id="type" name="type" value="1"/>
-							<input hidden="true" id="put_storage_party_code" name="put_storage_party_code"></input>
+							<input type="hidden" id="type" name="type" value="1"/>
+							<input type="hidden" id="put_storage_code" name="put_storage_code"/>
 						    <input class="easyui-combobox" name="fk_put_storage_party_id" id="fk_put_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 						             			data-options="
-							             			url:'${basePath}api/userDealerFun/list?d_id=${user.fk_department_id}&u_id=${user.id}',
+							             			url:'${basePath}/api/dealer/list',
 								                    method:'get',
 								                    valueField:'dealer_id',
 								                    textField:'dealer_name',
 								                    panelHeight:'auto',
 								                    onSelect:function functionS(s){
-														$('#pul_storage_code').val(s.deliver_code);
+														$('#receive_linkman').val(s.business_contacts);
+														$('#put_storage_code').val(s.dealer_code);
+														$('#receive_linkphone').val(s.business_phone);
 													}
 						            			"/>
 						</td>
@@ -137,13 +139,13 @@
 					<tr>
 						<td>收货人:</td>
 						<td>
-							<input class="easyui-validatebox" disabled="disabled" name="receive_linkman" id="receive_linkman" value="aa" style="width:150px" maxLength="100">
+							<input class="easyui-validatebox" readonly="true" name="receive_linkman" id="receive_linkman" style="width:150px" maxLength="100">
 						</td>
 					</tr>
 					<tr>
 						<td>收货电话:</td>
 						<td>
-							<input class="easyui-validatebox" disabled="disabled" name="receive_linkphone" id="receive_linkphone" style="width:150px" maxLength="100">
+							<input class="easyui-validatebox" readonly="true" name="receive_linkphone" id="receive_linkphone" style="width:150px" maxLength="100">
 						</td>
 					</tr>
 				</table>
@@ -165,7 +167,7 @@
 									<td>
 						            	<input class="easyui-validatebox" readonly="readonly" type="text" name="pull_storage_party_name"></input>
 									</td>
-									<td>出货单号:</td>	
+									<td width="100">出货单号:</td>	
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="pull_storage_code"></input></td>
 									<td>出货时间:</td>	
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="pull_storage_date"></input></td>
@@ -177,7 +179,7 @@
 									</td>
 									<td width="50">状态:</td>
 									<td width="270">				
-										<input name="status" class="easyui-combobox" data-options="
+										<input name="status" readonly="readonly" class="easyui-combobox" data-options="
 											valueField: 'id',
 											textField: 'value',
 											data: [{
@@ -199,7 +201,7 @@
 					</form>
 			</div>
 			<div style="margin: 10px 0;"></div>
-			<div style="padding-left: 10px; padding-right: 10px">
+			<div >
 				<table id="dgDetail" class="easyui-datagrid" title="明细信息" style="height:370px" method="get"
 					 rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbPullStorageDetail">
 					<thead>
@@ -210,7 +212,7 @@
 							<th data-options="field:'batch_no',width:200,align:'center'" sortable="true">产品批次</th>
 							<th data-options="field:'valid_date',width:100,align:'center'" sortable="true">有效日期</th>
 							<th data-options="field:'inventory_number',width:80,align:'center'" sortable="true">库存量</th>
-							<th data-options="field:'sales_numberr',width:80,align:'center'" sortable="true">销售数量</th>
+							<th data-options="field:'sales_number',width:80,align:'center'" sortable="true">销售数量</th>
 						</tr>
 					</thead>
 				</table>
@@ -222,6 +224,7 @@
 			<div style="margin: 10px 0;"></div>
 		</div>
 		<div id="dlg-buttons">
+			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="javascript:$('#dlgPullStorageDetail').dialog('close')">保存草稿</a>
 	        <a id="saveEntityBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="alert('提交后将不能在修改，确定提交吗？')">提交</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgPullStorageDetail').dialog('close')">取消</a>
 	    </div>
@@ -347,6 +350,7 @@
 		function newEntity()
 		{
 			clearForm();
+			$("#type").val(1);
 			$('#w').dialog('open').dialog('setTitle','添加信息');
 			url =basePath+'api/pullstorage/save';
 			$('#w').window('open');
@@ -370,19 +374,6 @@
 			    	}
 			    }
 			});
-		}
-		function editEntity()
-		{
-			var row = $('#dg').datagrid('getSelected');
-			if (row){
-				$('#w').dialog('open').dialog('setTitle','更新信息');
-			    $('#ffadd').form('load', row);
-				url = basePath+'api/pullstorage/updateAddress';
-				$('#w').window('open');
-			}else
-			{
-				$.messager.alert('提示','请选中某个订单!','warning');
-			}
 		}
 		function destroyEntity()
 		{
@@ -428,13 +419,12 @@
 			$('#dg').datagrid('selectRow',index);
 			var row = $('#dg').datagrid('getSelected');
 			$('#ffPullStorageDetail').form('load',row);
-			$('#ffPullStorageInfo').form('load',row);
 			$('#dlgPullStorageDetail').dialog('open');
             $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
             pull_storage_code = row.pull_storage_code;
 			status=row.status;
 			$('#dgDetail').datagrid({
-				url : basePath + "api/pullstoragedetail/paging",
+				url : basePath + "api/pullstoragedetail/detailpaging",
 				queryParams: {
 					filter_ANDS_pull_storage_code : pull_storage_code
 				}
@@ -514,7 +504,7 @@
 			var row = $('#dgProduct').datagrid('getSelected');
 			if(row){
 				$('#fm3').form('submit', {
-					url :basePath+'api/pullstoragedetail/save',
+					url :basePath+'api/pullstoragedetail/savedetail',
 				    method:"post",
 				    onSubmit: function(){
 				        return $(this).form('validate');

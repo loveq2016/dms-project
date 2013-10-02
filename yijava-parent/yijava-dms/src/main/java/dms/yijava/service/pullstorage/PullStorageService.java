@@ -75,17 +75,27 @@ public class PullStorageService{
 		PullStorage pullStorage=pullStorageDao.getObject(".selectStorageDetailTotalNumber",pull_storage_code);
 		return pullStorage;
 	}
+	/**
+	 * 返回入库单据
+	 * @param put_storage_party_id
+	 * @return
+	 */
 	public PullStorage getPutStorageCode(String put_storage_party_id) {
 		PullStorage pullStorage=pullStorageDao.getObject(".selectPutStorageCode",put_storage_party_id);
-		if(null==pullStorage || StringUtils.isNotEmpty(pullStorage.getPut_storage_no())){
+		if(null==pullStorage || StringUtils.isEmpty(pullStorage.getPut_storage_no())){
 			pullStorage=new PullStorage();
 			pullStorage.setPut_storage_no("001");
 		}
 		return pullStorage;
 	}
+	/**
+	 * 返回出库单据
+	 * @param pull_storage_party_id
+	 * @return
+	 */
 	public PullStorage getPullStorageCode(String pull_storage_party_id) {
 		PullStorage pullStorage=pullStorageDao.getObject(".selectPullStorageCode",pull_storage_party_id);
-		if(null==pullStorage || StringUtils.isNotEmpty(pullStorage.getPull_storage_no())){
+		if(null==pullStorage || StringUtils.isEmpty(pullStorage.getPull_storage_no())){
 			pullStorage=new PullStorage();
 			pullStorage.setPull_storage_no("001");
 		}

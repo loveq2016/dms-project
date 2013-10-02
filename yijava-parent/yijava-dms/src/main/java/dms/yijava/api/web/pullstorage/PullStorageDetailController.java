@@ -87,23 +87,23 @@ public class PullStorageDetailController {
 	
 	@ResponseBody
 	@RequestMapping("remove")
-	public Result<Integer> remove(HttpServletRequest request,
-			@RequestParam(value = "id", required = false) String pull_storage_code) {
+	public Result<Integer> remove(@ModelAttribute("entity") PullStorageProDetail entity) {
 		//根据出货经销ID
 		//批次
 		//sn 
 		
 		
+		pullStorageDetailService.removeByStorageOrBatchNo(entity);
 		
 		//List list =pullStorageProDetailService.getList(filters); //sn list 需要回滚库存
 		//获取SN 回滚SN库存
-		
+		pullStorageProDetailService.removeByStorageOrBatchNo(entity);
 		
 		//修改总数
-		PullStorage pullStorage = pullStorageService.getStorageDetailTotalNumber(pull_storage_code);
+		PullStorage pullStorage = pullStorageService.getStorageDetailTotalNumber(entity.getPull_storage_code());
 		if(null==pullStorage){
 			pullStorage=new PullStorage();
-			pullStorage.setPull_storage_code(pull_storage_code);
+			pullStorage.setPull_storage_code(entity.getPull_storage_code());
 			pullStorage.setTotal_number("0");
 		}
 		pullStorageService.updateEntity(pullStorage);//修改单据总数

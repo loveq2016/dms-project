@@ -72,4 +72,7 @@
     <delete id="deleteByPullStorageCode" parameterType="String">
    		 delete from dms.tb_pull_storage_detail where pull_storage_code=#{pull_storage_code}
     </delete>
+    <delete id="deleteByStorageOrBatchNo" parameterType="dms.yijava.entity.pullstorage.PullStorageDetail">
+   		 delete from dms.tb_pull_storage_detail where fk_storage_id=#{fk_storage_id} and batch_no=#{batch_no}
+    </delete>
 </mapper>

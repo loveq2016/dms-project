@@ -48,7 +48,7 @@
 </select>
 	
 <select id="selectByMap" resultType="dms.yijava.entity.dealer.Dealer">
-	select dealer_id,dealer_name,dealer_code  from  tb_dealer
+	select *  from  tb_dealer
 </select>	
 	
 	
