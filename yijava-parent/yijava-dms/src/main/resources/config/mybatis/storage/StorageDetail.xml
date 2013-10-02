@@ -38,4 +38,26 @@
 	    limit #{offset},#{pagesize}
 	</select>
 	
+	
+	<select id="queryStorageDetail" resultType="dms.yijava.entity.storage.StorageDetail">
+			select * from dms.tb_storage_detail 
+			where fk_storage_id=#{fk_storage_id} and fk_dealer_id=#{fk_dealer_id} 
+    		and product_item_number=#{product_item_number} and batch_no =#{batch_no}
+	</select>
+	
+	
+	<insert id="saveStorageDetail" parameterType="dms.yijava.entity.storage.StorageDetail">
+		insert into dms.tb_storage_detail(fk_storage_id,fk_dealer_id,product_item_number,batch_no,inventory_number,valid_date)
+		values(#{fk_storage_id},#{fk_dealer_id},#{product_item_number},#{batch_no},#{inventory_number},#{valid_date})
+	</insert>
+	
+	<update id="updateStorageDetail" parameterType="dms.yijava.entity.storage.StorageDetail">
+    	update dms.tb_storage_detail set inventory_number=inventory_number+#{inventory_number}
+    	where fk_storage_id=#{fk_storage_id} and fk_dealer_id=#{fk_dealer_id} 
+    	and product_item_number=#{product_item_number} and batch_no =#{batch_no}
+    </update>
+    
+
+    
+    
 </mapper>
