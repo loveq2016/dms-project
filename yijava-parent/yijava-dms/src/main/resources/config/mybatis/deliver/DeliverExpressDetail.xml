@@ -24,7 +24,7 @@
 	</select>
  	<select id="selectByObject" resultType="dms.yijava.entity.deliver.DeliverExpressDetail">
  		select * from (
-			select * from dms.tb_deliver_express_detail 
+			select *,(express_num * order_price * discount) AS totalMoney from dms.tb_deliver_express_detail 
 		)t	
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
@@ -50,10 +50,10 @@
 	</select>
 	
 	<insert id="insert" parameterType="dms.yijava.entity.deliver.DeliverExpressDetail" useGeneratedKeys="true" keyProperty="id">     
-		insert into dms.tb_deliver_express_detail(delivery_detail_id,deliver_id,deliver_code,order_code,order_detail_id,product_item_number,product_name,
-			models,express_num,express_sn,validity_date,remark,user_id) 
-		values(#{delivery_detail_id},#{deliver_id},#{deliver_code},#{order_code},#{order_detail_id},#{product_item_number},#{product_name},
-			#{models},#{express_num},trim(upper(#{express_sn})),#{validity_date},#{remark},#{user_id});
+		insert into dms.tb_deliver_express_detail(delivery_detail_id,deliver_id,deliver_code,order_code,order_detail_id,product_item_number,
+			order_price,discount,product_name,models,express_num,express_sn,validity_date,remark,user_id) 
+		values(#{delivery_detail_id},#{deliver_id},#{deliver_code},#{order_code},#{order_detail_id},#{product_item_number},
+			#{order_price},#{discount},#{product_name},#{models},#{express_num},trim(upper(#{express_sn})),#{validity_date},#{remark},#{user_id});
 	</insert>
 
 	<update id="update" parameterType="dms.yijava.entity.deliver.DeliverExpressDetail">

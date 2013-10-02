@@ -16,6 +16,8 @@ public class DeliverExpressDetail {
 	private String order_detail_id;
 	private String order_code;
 	private String product_item_number;
+	private String order_price;
+	private String discount;
 	private String product_name;
 	private String models;
 	private String express_num;
@@ -30,6 +32,8 @@ public class DeliverExpressDetail {
 	private String exprees_total;
 	private String sn_total;
 	
+	
+	private String totalMoney;
 	
 
 	

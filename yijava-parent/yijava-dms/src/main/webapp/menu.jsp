@@ -164,7 +164,7 @@
 </div>
 <div id="mm9" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="经销商采购入库" url="orderPurchase/view.jsp">经销商采购入库</a>
+		<a href="javascript:void(0)" title="经销商采购入库" url="orderDeliver/view.jsp">经销商采购入库</a>
 	</div>
 </div>
 <div id="mm10" style="width: 150px;">
