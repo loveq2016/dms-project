@@ -31,6 +31,7 @@ public class UserOrganizationController {
 		for (TeamLayou teamLayou : list) {
 			Map<String,String> attributes = new HashMap<String,String>();
 			attributes.put("parent_id", teamLayou.getParent_id());
+			attributes.put("user_id", teamLayou.getFk_user_id());
 			teamLayou.setAttributes(attributes);
 		}
 		return list;
