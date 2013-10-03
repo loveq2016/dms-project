@@ -183,7 +183,7 @@ public class StorageDetailService {
 	
 	@Data
 	@NoArgsConstructor
-	class PullStorageOpt {
+	public class PullStorageOpt {
 		private String status;
 		private List<StorageProDetail> list;
 	}
