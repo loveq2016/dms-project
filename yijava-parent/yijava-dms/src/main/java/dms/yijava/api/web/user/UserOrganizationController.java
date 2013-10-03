@@ -11,26 +11,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import dms.yijava.entity.user.UserOrganization;
-import dms.yijava.service.user.UserOrganizationService;
+import dms.yijava.entity.teamlayou.TeamLayou;
+import dms.yijava.service.teamlayou.TeamLayouService;
 
 @Controller
 @RequestMapping("/api/userOrganization")
 public class UserOrganizationController {
 
+	//@Autowired
+	//private UserOrganizationService userOrganizationService;
 	@Autowired
-	private UserOrganizationService userOrganizationService;
-	
+	private TeamLayouService teamLayouService;
 
 	@ResponseBody
 	@RequestMapping("list")
-	public List<UserOrganization> list(@RequestParam(value = "id", required = false) String id) {
+	public List<TeamLayou> list(@RequestParam(value = "id", required = false) String id) {
 		id = StringUtils.isBlank(id) == true ? "-1" : id;
-		List<UserOrganization> list = userOrganizationService.getList(id);
-		for (UserOrganization userOrganization : list) {
+		List<TeamLayou> list = teamLayouService.getList(id);
+		for (TeamLayou teamLayou : list) {
 			Map<String,String> attributes = new HashMap<String,String>();
-			attributes.put("parent_id", userOrganization.getParent_id());
-			userOrganization.setAttributes(attributes);
+			attributes.put("parent_id", teamLayou.getParent_id());
+			teamLayou.setAttributes(attributes);
 		}
 		return list;
 	}

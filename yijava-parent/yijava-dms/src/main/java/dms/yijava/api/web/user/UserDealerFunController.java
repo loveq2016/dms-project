@@ -33,6 +33,12 @@ public class UserDealerFunController {
 	public JsonPage<UserDealer> paging(PageRequest pageRequest,
 			HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
+		
+		for (PropertyFilter propertyFilter : filters) {
+			//if(propertyFilter.get)
+		}
+		//filters.add(PropertyFilters.build("ANDS_user_id", "11"));
+		
 		return userDealerFunService.paging(pageRequest, filters);
 	}
 
