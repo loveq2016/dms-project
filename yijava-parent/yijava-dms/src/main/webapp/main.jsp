@@ -19,9 +19,9 @@
 		style="width: 150px; padding: 10px;">west content
 	</div>
 	<div
-		data-options="region:'east',split:true,collapsed:false,title:'待处理事项'"
+		data-options="region:'east',split:true,collapsed:false,title:'待处理事项',tools:'#treetool'"
 		style="width: 200px; padding: 10px;">
-			<ul id="tt" class="easyui-tree" data-options="url:'${basePath}api/flowrecord/tocheck',method:'get',animate:true"></ul>
+			<ul id="tochecktree" class="easyui-tree" data-options="url:'${basePath}api/flowrecord/tocheck',method:'get',animate:true"></ul>
 		</div>
 	<div data-options="region:'south',border:false"
 		style="height: 20px; background: #ddd; padding: 10px;"></div>
@@ -32,22 +32,27 @@
 			</div>
 		</div>
 	</div>
+	<div id="treetool">
+		<a href="javascript:void(0)" class="icon-reload" onclick="javascript:checkReload();"></a>
+		
+	</div>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#mm1').menu();  
 });
-$('#tt').tree({
+$('#tochecktree').tree({
 	onClick: function(node){
 		if(node.id==trialflow_identifier_num)
 		{
-			alert("跳转到试用处理");
+			alert("跳转到试用处理1");
 		}
 			
 	}
 });
-function toCheckClick(flow_id)
-{
-	//alert(flow_id);
+function checkReload()
+{  
+	$('#tochecktree').tree('reload');
+	
 }
 </script>
 </body>
