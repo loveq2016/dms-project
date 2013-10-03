@@ -35,6 +35,13 @@ public class DealerStorageService {
 	}
 	
 	
+	public List<DealerStorage> getList(String dealer_id){
+		HashMap<String,String> parameters = new HashMap<String,String>();
+		parameters.put("dealer_id", dealer_id);
+		return dealerStorageDao.find(parameters);
+	}
+	
+	
 	public DealerStorage getEntity(String id) {
 		return dealerStorageDao.get(id);
 	}

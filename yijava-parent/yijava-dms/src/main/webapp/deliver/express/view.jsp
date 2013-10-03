@@ -322,9 +322,11 @@
 		 
 		 
 		var deliver_code ;
+		var isExpress ; 
 		function newEntity(){
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
+				isExpress = row.express_code;
 				$('#ffDeliverDetail').form('clear');
 				$('#ffDeliverDetail').form('load',row);
 				$('#dlgDeliverDetail').dialog('open');
@@ -359,9 +361,13 @@
 		function newExpress(){
 			var row = $('#dgDetail').datagrid('getSelected');
 			if (row){
-				$('#dlgExpress').dialog('open').dialog('setTitle', '物流产品信息添加');
-				$('#fm').form('clear');
-				$('#fm').form('load',row);
+				if(!isExpress){
+					$('#dlgExpress').dialog('open').dialog('setTitle', '物流产品信息添加');
+					$('#fm').form('clear');
+					$('#fm').form('load',row);
+				}else{
+					$.messager.alert('提示','已发货，不能修改!','warning');
+				}
 			}else{
 				$.messager.alert('提示','请选中数据!','warning');
 			}		
@@ -393,7 +399,7 @@
 		function deleteExpress(){
 	           var row = $('#dgExpress').datagrid('getSelected');
 	            if (row){
-	            //	if(row.check_status=='0'){
+					if(!isExpress){
 		                $.messager.confirm('Confirm','是否确定删除?',function(r){
 		                    if (r){
 		            			$.ajax({
@@ -413,10 +419,10 @@
 		            				}
 		            			});                    	
 		                    }
-		                });	            		
-	            //	}else{
-	            	//	$.messager.alert('提示','无法删除已提交的出货单!','error');
-	            	//}
+		                });
+					}else{
+						$.messager.alert('提示','已发货，不能修改!','warning');
+					}
 	            }else{
 					$.messager.alert('提示','请选中数据!','warning');				
 				 }	
@@ -432,7 +438,18 @@
 		
 		
 		function submitExpress(){
-			
+			if(isExpress){
+				submitExpressR()
+			}else{
+				   $.messager.confirm('Confirm','填写快递单号后无法修改出货明细,可以修改快递单号?',function(r){
+	                    if (r){
+	                    	submitExpressR();
+	                    }
+				   });
+			}
+		}
+		
+		function submitExpressR(){
 				$('#ffDeliverDetail').form('submit', {
 					url : basePath + 'api/deliverExpress/submitExpress',
 					method : "post",
@@ -451,7 +468,7 @@
 							$.messager.alert('提示', 'Error!', 'error');
 						}
 					}
-				});	
+				});
 		}
 		
 		function openDeliverDetail(index){
@@ -489,15 +506,20 @@
 		
 		var url;
 		function addExpressSn(){
-			data = $('#dgProductSn').datagrid('getData');
-			if(parseInt(data.total) ==0 || parseInt(data.total) < parseInt(sn_num) ){
-				$('#dlgProductSn2').dialog('open').dialog('setTitle', '序列号添加');
-				$('#fm2').form('clear');
-				$('#fm2').form('load',{"deliver_express_detail_id":deliver_express_detail_id});
-				url = basePath + 'api/deliverExpressSn/save';
+			if(!isExpress){
+				data = $('#dgProductSn').datagrid('getData');
+				if(parseInt(data.total) ==0 || parseInt(data.total) < parseInt(sn_num) ){
+					$('#dlgProductSn2').dialog('open').dialog('setTitle', '序列号添加');
+					$('#fm2').form('clear');
+					$('#fm2').form('load',{"deliver_express_detail_id":deliver_express_detail_id});
+					url = basePath + 'api/deliverExpressSn/save';
+				}else{
+					$.messager.alert('提示','序列号数量已满!','warning');
+				}
 			}else{
-				$.messager.alert('提示','序列号数量已满!','warning');
+				$.messager.alert('提示','已发货，不能修改!','warning');
 			}
+
 
 
 		}
@@ -505,10 +527,15 @@
 		function editExpressSn(){
 			var row = $('#dgProductSn').datagrid('getSelected');
 			if (row){
-				$('#dlgProductSn2').dialog('open').dialog('setTitle', '序列号更新');
-				$('#fm2').form('clear');
-				$('#fm2').form('load',row);
-				url = basePath + 'api/deliverExpressSn/update';
+				if(!isExpress){
+					$('#dlgProductSn2').dialog('open').dialog('setTitle', '序列号更新');
+					$('#fm2').form('clear');
+					$('#fm2').form('load',row);
+					url = basePath + 'api/deliverExpressSn/update';
+				}else{
+					$.messager.alert('提示','已发货，不能修改!','warning');
+				}
+
 			}else{
 				$.messager.alert('提示','请选中数据!','warning');
 			}		
@@ -537,7 +564,7 @@
 		function deleteExpressSn(){
 	           var row = $('#dgProductSn').datagrid('getSelected');
 	            if (row){
-	            //	if(row.check_status=='0'){
+	            	if(!isExpress){
 		                $.messager.confirm('Confirm','是否确定删除?',function(r){
 		                    if (r){
 		            			$.ajax({
@@ -557,10 +584,10 @@
 		            				}
 		            			});                    	
 		                    }
-		                });	            		
-	            //	}else{
-	            	//	$.messager.alert('提示','无法删除已提交的出货单!','error');
-	            	//}
+		                });
+	            	}else{
+	            		$.messager.alert('提示','已发货，不能修改!','warning');
+	            	}
 	            }else{
 					$.messager.alert('提示','请选中数据!','warning');				
 				 }	

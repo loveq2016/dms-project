@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yijava.orm.core.JsonPage;
@@ -32,6 +33,15 @@ public class OrderDeliverService {
 		return orderDeliverDao.getScrollData(parameters,
 				pageRequest.getOffset(), pageRequest.getPageSize(),
 				pageRequest.getOrderBy(), pageRequest.getOrderDir());
+	}
+	
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
+	public void submitConsignee(OrderDeliver entity) {
+		orderDeliverDao.updateObject(".submitConsignee",entity);
+		
+		
+		
 	}
 
 }

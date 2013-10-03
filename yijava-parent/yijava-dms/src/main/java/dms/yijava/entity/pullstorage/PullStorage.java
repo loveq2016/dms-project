@@ -34,5 +34,7 @@ public class PullStorage {
 	public String pull_end_date;
 	public String put_start_date;
 	public String put_end_date;
+	
+	public String create_date;
 	public String last_time;
 }

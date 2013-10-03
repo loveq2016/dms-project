@@ -16,6 +16,8 @@ public class DeliverDetail {
 	private String product_name;
 	private String models;
 	private String order_number_sum;
+	private String order_price;
+	private String discount;
 	private String deliver_number_sum;
 	private String deliver_date;
 	private String arrival_date;

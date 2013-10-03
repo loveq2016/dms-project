@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="StorageDetail">
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_storage_id)">and fk_storage_id = #{fk_storage_id}</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_dealer_id)">and fk_dealer_id = #{fk_dealer_id}</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(product_item_number)">and batch_no like CONCAT('%','${batch_no}','%' ) </if>
+		</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>
+		    <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+		         ORDER BY ${orderSql}
+		    </when>
+	    </choose>
+	</sql>
+    <select id="selectByObjectcount" resultType="long">
+		select count(1) from (
+			select t1.*,t2.cname AS product_cname,t3.storage_name,t4.dealer_name from dms.tb_storage_detail t1 
+			inner join dms.tb_product t2 on t1.product_item_number = t2.item_number
+			inner join dms.tb_storage t3 on t1.fk_storage_id = t3.id
+			inner join dms.tb_dealer t4 on t1.fk_dealer_id = t4.dealer_id
+		)t
+		<include refid="adsWhere"/>
+	</select>
+ 	<select id="selectByObject" resultType="dms.yijava.entity.storage.StorageDetail">
+		select * from (
+			select t1.*,t2.cname AS product_cname,t3.storage_name,t4.dealer_name from dms.tb_storage_detail t1 
+			inner join dms.tb_product t2 on t1.product_item_number = t2.item_number
+			inner join dms.tb_storage t3 on t1.fk_storage_id = t3.id
+			inner join dms.tb_dealer t4 on t1.fk_dealer_id = t4.dealer_id
+		)t
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}
+	</select>
+	
+	
+	<select id="queryStorageDetail" resultType="dms.yijava.entity.storage.StorageDetail">
+			select * from dms.tb_storage_detail 
+			where fk_storage_id=#{fk_storage_id} and fk_dealer_id=#{fk_dealer_id} 
+    		and product_item_number=#{product_item_number} and batch_no =#{batch_no}
+	</select>
+	
+	
+	<insert id="saveStorageDetail" parameterType="dms.yijava.entity.storage.StorageDetail">
+		insert into dms.tb_storage_detail(fk_storage_id,fk_dealer_id,product_item_number,batch_no,inventory_number,valid_date)
+		values(#{fk_storage_id},#{fk_dealer_id},#{product_item_number},#{batch_no},#{inventory_number},#{valid_date})
+	</insert>
+	
+	<update id="updateStorageDetail" parameterType="dms.yijava.entity.storage.StorageDetail">
+    	update dms.tb_storage_detail set inventory_number=inventory_number+#{inventory_number}
+    	where fk_storage_id=#{fk_storage_id} and fk_dealer_id=#{fk_dealer_id} 
+    	and product_item_number=#{product_item_number} and batch_no =#{batch_no}
+    </update>
+    
+
+    
+    
+</mapper>

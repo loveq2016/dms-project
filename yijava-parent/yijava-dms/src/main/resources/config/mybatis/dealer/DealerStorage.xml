@@ -52,7 +52,12 @@
 	limit #{offset},#{pagesize}
 </select>
 	
-
+	<select id="selectByMap" resultType="dms.yijava.entity.dealer.DealerStorage">
+		select t2.id,t1.dealer_id,dealer_name,t3.id AS storage_id,t3.storage_name,t3.category_id,t4.category_name,t3.province,t3.city,t3.area,t3.address,t3.postcode,t3.phone,t3.tex 
+		from tb_dealer t1 inner join tb_dealer_storage t2 on t1.dealer_id = t2.dealer_id inner join tb_storage t3 on t2.storage_id = t3.id 
+		inner join tb_storage_category t4 on t3.category_id = t4.id
+		where t1.dealer_id = #{dealer_id}
+	</select>
 	
 <insert id="insert" parameterType="dms.yijava.entity.dealer.DealerStorage">
 	insert into tb_dealer_storage (dealer_id,storage_id) values (#{dealer_id},#{storage_id})

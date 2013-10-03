@@ -24,6 +24,8 @@ import dms.yijava.entity.order.Order;
 import dms.yijava.entity.pullstorage.PullStorage;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.user.UserDealer;
+import dms.yijava.service.pullstorage.PullStorageDetailService;
+import dms.yijava.service.pullstorage.PullStorageProDetailService;
 import dms.yijava.service.pullstorage.PullStorageService;
 @Controller
 @RequestMapping("/api/pullstorage")
@@ -31,6 +33,10 @@ public class PullStorageController {
 
 	@Autowired
 	private PullStorageService pullStorageService;
+	@Autowired
+	private PullStorageDetailService pullStorageDetailService;
+	@Autowired
+	private PullStorageProDetailService pullStorageProDetailService;
 	
 	@ResponseBody
 	@RequestMapping("paging")
@@ -70,8 +76,8 @@ public class PullStorageController {
 			entity.setPull_storage_no(String.valueOf((Integer.parseInt(pullObj.getPull_storage_no()))));
 			entity.setFk_pull_storage_party_id(sysUser.getFk_dealer_id());
 			//收货单
-			entity.setPut_storage_code(entity.getPull_storage_party_code()+"PR"+formatter.format(new Date())+putObj.getPut_storage_no());
-			entity.setPut_storage_no(String.valueOf((Integer.parseInt(putObj.getPull_storage_no()))));
+			entity.setPut_storage_code(entity.getPut_storage_code()+"PR"+formatter.format(new Date())+putObj.getPut_storage_no());
+			entity.setPut_storage_no(String.valueOf((Integer.parseInt(putObj.getPut_storage_no()))));
 			pullStorageService.saveEntity(entity);
 			return new Result<Integer>(1, 1);
 		}else{
@@ -79,22 +85,33 @@ public class PullStorageController {
 		}
 	}
 	@ResponseBody
-	@RequestMapping("update")
+	@RequestMapping("updateStatus")
 	public Result<Integer> updateStatus(@ModelAttribute("entity") PullStorage entity) {
 		pullStorageService.updateEntity(entity);
 		return new Result<Integer>(1, 1);
 	}
-	
+		
 	@ResponseBody
 	@RequestMapping("remove")
-	public Result<Integer> remove(@RequestParam(value = "id", required = false) String id) {
-		pullStorageService.removeEntity(id);
+	public Result<Integer> remove(HttpServletRequest request,
+			@RequestParam(value = "id", required = false) String pull_storage_code) {
+		//出货经销ID
+		//批次
+		//sn 
 		
-		//需要回滚库存。
+		pullStorageDetailService.removeByPullStorageCode(pull_storage_code);//删除出库明细
+		List<PropertyFilter> filters = PropertyFilters.build(request);
 		
+		
+		List list =pullStorageProDetailService.getList(filters); //sn list 需要回滚库存
+		//获取SN 回滚SN库存
+		
+		pullStorageProDetailService.removeByPullStorageCode(pull_storage_code); //删SN明细
+		pullStorageService.removeEntity(pull_storage_code);
 		return new Result<Integer>(1, 1);
 	}
-
+	
+	
 	/**
 	 * 把一个list转换为String返回过去
 	 */

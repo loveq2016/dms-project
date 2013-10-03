@@ -85,6 +85,8 @@ public class DeliverService {
 					if(id.equals(orderDetail.getId())){
 						tempDeliverDetail.setProduct_item_number(orderDetail.getProduct_item_number());
 						tempDeliverDetail.setProduct_name(orderDetail.getProduct_name());
+						tempDeliverDetail.setOrder_price(orderDetail.getOrder_price());
+						tempDeliverDetail.setDiscount(orderDetail.getDiscount());
 						tempDeliverDetail.setModels(orderDetail.getModels());
 						tempDeliverDetail.setOrder_number_sum(orderDetail.getOrder_number_sum());
 						break;

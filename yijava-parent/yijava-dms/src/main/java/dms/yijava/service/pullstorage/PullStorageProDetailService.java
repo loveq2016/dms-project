@@ -40,20 +40,20 @@ public class PullStorageProDetailService{
 		}
 		return pullStorageProDetailDao.find(parameters);
 	}
-	
 	public PullStorageProDetail getEntity(String id) {
 		return pullStorageProDetailDao.get(id);
 	}
-	
 	public void saveEntity(List<PullStorageProDetail> list) {
 		pullStorageProDetailDao.insert(list);
 	}
-	
 	public void removeByIdEntity(String id) {
 		pullStorageProDetailDao.removeById(id);
 	}
 	public void removeByPullStorageCode(String pull_storage_code) {
 		pullStorageProDetailDao.removeObject(".deleteByPullStorageCode",pull_storage_code);
+	}
+	public void removeByStorageOrBatchNo(PullStorageProDetail entity) {
+		pullStorageProDetailDao.removeObject(".deleteByStorageOrBatchNo",entity);
 	}
 	/**
 	 * pull_storage_code

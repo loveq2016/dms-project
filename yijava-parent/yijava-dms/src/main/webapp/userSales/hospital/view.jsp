@@ -23,7 +23,7 @@
 								if(!isLeaf){
 									//$('#cc').combotree('clear');
 								}else{
-									loadUserHospital(node.id,node.attributes.parent_id)
+									loadUserHospital(node.attributes.user_id,node.attributes.parent_id)
 									//$('#cc').combotree('setValue', node.id);  
 								}	
 	            			}
@@ -33,7 +33,7 @@
         <div title="负责医院" data-options="region:'center'">
 
 		  <table id="dg" class="easyui-datagrid" title="查询结果" style="height:420px"
-		           rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" >
+		           rownumbers="true" singleSelect="true" pagination="true" sortName="dealer_id" sortOrder="desc" >
 		        <thead>
 		            <tr>
 		            		<th field="dealer_name" width="150" align="center" sortable="true">经销商名称</th>

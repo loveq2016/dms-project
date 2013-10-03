@@ -105,7 +105,6 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 		//return null;
 	}
 	@Override
-	
 	public JsonPage<T> getScrollData(Map parameters, int offset, int pagesize,String OrderBy,String OrderDir) {		
 		Long total = (Long) getSqlSession().selectOne(entityClass.getSimpleName() + POSTFIX_SELECTOBJECT_COUNT,parameters);		
 		parameters.put("offset", offset);
@@ -122,31 +121,22 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 
 	@Override
 	public <T> List<T> find(String sql) {
-		// TODO Auto-generated method stub
 		return getSqlSession().selectList(sql);
-		//return getSqlSession().selectList(sql);
 	}
-	
 	@Override
 	public <T> List<T> find(Map parameters) {
-		// TODO Auto-generated method stub
 		return getSqlSession().selectList(entityClass.getSimpleName() + POSTFIX_SELECTMAP,parameters);
-		
+	}
+	public <T> List<T> findObject(String postfix_selectmap,Object o) {
+		return getSqlSession().selectList(entityClass.getSimpleName() + postfix_selectmap,o);
 	}
 	
-	@Override
-	public <T> List<T> find(String postfix_selectmap ,Object o) {
-		// TODO Auto-generated method stub
-		return getSqlSession().selectList(entityClass.getSimpleName() + postfix_selectmap,o);
-		
-	}
 
 	public <T> T getObject(String postfix_selectmap ,Object o) {
 		@SuppressWarnings("unchecked")
 		T obj = (T) this.getSqlSession().selectOne(entityClass.getSimpleName() + postfix_selectmap,o);		
 		return obj;
 	}
-	
 	public <T> T getObject(String postfix_selectmap ,String o) {
 		@SuppressWarnings("unchecked")
 		T obj = (T) this.getSqlSession().selectOne(entityClass.getSimpleName() + postfix_selectmap,o);		

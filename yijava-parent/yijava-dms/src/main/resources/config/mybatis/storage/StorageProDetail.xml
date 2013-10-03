@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="StorageProDetail">
+
+ 	<select id="selectStorageProDetailByStatus" resultType="dms.yijava.entity.storage.StorageProDetail">
+		select * from  dms.tb_storage_pro_detail 
+		where fk_storage_id=#{fk_storage_id} and fk_dealer_id=#{fk_dealer_id} and batch_no = #{batch_no} and status = #{status} 
+		limit #{size}
+	</select>
+	
+	<update id="lockSn" parameterType="dms.yijava.entity.storage.StorageProDetail">
+		update dms.tb_storage_pro_detail  set status = 0 where id = #{id}
+	</update>
+	
+	<update id="unlockSn" parameterType="dms.yijava.entity.storage.StorageProDetail">
+		update dms.tb_storage_pro_detail  set status = 1 where fk_storage_id=#{fk_storage_id} and fk_dealer_id=#{fk_dealer_id} 
+		and batch_no = #{batch_no} and product_sn = #{product_sn}
+	</update>
+    
+    
+    <insert id="saveSnSub" parameterType="dms.yijava.entity.storage.StorageProDetail">
+    	insert into dms.tb_storage_pro_detail (fk_storage_id,fk_dealer_id,status,batch_no,product_sn)
+    	values(#{fk_storage_id},#{fk_dealer_id},1,#{batch_no},#{product_sn})
+    </insert>
+    
+    
+    <update id="updateSnSub" parameterType="dms.yijava.entity.storage.StorageProDetail">
+   		update dms.tb_storage_pro_detail  set status = 1 , fk_storage_id=#{fk_storage_id} , fk_dealer_id=#{fk_dealer_id}
+   		where batch_no = #{batch_no} and product_sn = #{product_sn}
+    </update>
+    
+    
+    
+</mapper>

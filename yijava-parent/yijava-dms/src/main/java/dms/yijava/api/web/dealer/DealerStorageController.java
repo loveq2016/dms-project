@@ -38,6 +38,13 @@ public class DealerStorageController {
 	
 	
 	@ResponseBody
+	@RequestMapping("list")
+	public List<DealerStorage> list(@RequestParam(value = "dealer_id", required = false) String dealer_id) {
+		return dealerStorageService.getList(dealer_id);
+	}
+	
+	
+	@ResponseBody
 	@RequestMapping("save")
 	public Result<String> save(@ModelAttribute("entity") DealerStorage entity) {
 		dealerStorageService.saveEntity(entity);

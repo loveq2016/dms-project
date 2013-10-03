@@ -23,7 +23,7 @@
 								if(!isLeaf){
 									//$('#cc').combotree('clear');
 								}else{
-									loadUserDealer(node.id,node.attributes.parent_id)
+									loadUserDealer(node.attributes.user_id,node.attributes.parent_id)
 									//$('#cc').combotree('setValue', node.id);  
 								}	
 	            			}
@@ -91,7 +91,10 @@
 		
 		
 		function loadUserDealer(user_id,parent_id){
-			uid = user_id;
+			//alert(user_id.split("|")[1])
+			//alert(parent_id)
+			//uid = user_id.split("|")[1];
+			uid = user_id ; 
 			$('#dg').datagrid({
 				  url : basePath +"api/userDealerFun/paging" ,
 				  queryParams: {

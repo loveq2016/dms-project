@@ -37,35 +37,48 @@ public class PullStorageDetailController {
 	private PullStorageProDetailService pullStorageProDetailService;
 	
 	@ResponseBody
-	@RequestMapping("paging")
+	@RequestMapping("detailpaging")
 	public JsonPage<PullStorageDetail> paging(PageRequest pageRequest,HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
 		return pullStorageDetailService.paging(pageRequest,filters);
 	}
 	
 	@ResponseBody
-	@RequestMapping("save")
-	public Result<String> save(@ModelAttribute("entity") PullStorageDetail entity) {
+	@RequestMapping("savedetail")
+	public Result<String> savedetail(@ModelAttribute("entity") PullStorageDetail entity) {
 		//同一个仓库下的，同一个批次 不能重复添加
 		PullStorageDetail psd= pullStorageDetailService.getPullStorageDetail(entity);
 		if(null!=psd){
 			pullStorageDetailService.saveEntity(entity);//保存产品
+			PullStorage pullStorage = pullStorageService.getStorageDetailTotalNumber(entity.getPull_storage_code());
+			pullStorageService.updateEntity(pullStorage);//修改出库单据总数量
+			return new Result<String>(entity.getId(), 1);
+		}else{
+			return new Result<String>(entity.getId(), 2);
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping("saveprodetail")
+	public Result<String> saveprodetail(@ModelAttribute("entity") PullStorageProDetail entity) {
+		//同一个仓库下的，同一个批次，同一个序号   不能重复添加
+		PullStorageProDetail pspd= pullStorageProDetailService.getPullStorageProDetail(entity);
+		if(null!=pspd){
 			String[] prosns=null;//获取sn（根据 批次，仓库，数量），更新仓库
+			//if 如果返回null 为库存不够 提醒用户
 			List<PullStorageProDetail> list=new ArrayList<PullStorageProDetail>();
 			if(null!=list){
 				for(int i=0;i<prosns.length;i++){
-					PullStorageProDetail pspd=new PullStorageProDetail();
+					PullStorageProDetail pspds=new PullStorageProDetail();
 					//pspd.setBatch_no(batch_no);
 					//pspd.setFk_storage_id(fk_storage_id);
 					//pspd.setProduct_sn(product_sn);
 					//pspd.setPull_storage_code(pull_storage_code);
 					//pspd.setPut_storage_code(put_storage_code);
-					list.add(pspd);
+					list.add(pspds);
 				}
 				pullStorageProDetailService.saveEntity(list);
 			}
-			PullStorage pullStorage = pullStorageService.getStorageDetailTotalNumber(entity.getPull_storage_code());
-			pullStorageService.updateEntity(pullStorage);
 			return new Result<String>(entity.getId(), 1);
 		}else{
 			return new Result<String>(entity.getId(), 2);
@@ -74,26 +87,26 @@ public class PullStorageDetailController {
 	
 	@ResponseBody
 	@RequestMapping("remove")
-	public Result<Integer> remove(HttpServletRequest request,
-			@RequestParam(value = "id", required = false) String pull_storage_code) {
-		//出货经销ID
+	public Result<Integer> remove(@ModelAttribute("entity") PullStorageProDetail entity) {
+		//根据出货经销ID
 		//批次
 		//sn 
 		
-		pullStorageDetailService.removeByPullStorageCode(pull_storage_code);
-		List<PropertyFilter> filters = PropertyFilters.build(request);
-		List list =pullStorageProDetailService.getList(filters); //sn list 需要回滚库存
 		
+		pullStorageDetailService.removeByStorageOrBatchNo(entity);
 		
-		pullStorageProDetailService.removeByPullStorageCode(pull_storage_code);
+		//List list =pullStorageProDetailService.getList(filters); //sn list 需要回滚库存
+		//获取SN 回滚SN库存
+		pullStorageProDetailService.removeByStorageOrBatchNo(entity);
+		
 		//修改总数
-		PullStorage pullStorage = pullStorageService.getStorageDetailTotalNumber(pull_storage_code);
+		PullStorage pullStorage = pullStorageService.getStorageDetailTotalNumber(entity.getPull_storage_code());
 		if(null==pullStorage){
 			pullStorage=new PullStorage();
-			pullStorage.setPull_storage_code(pull_storage_code);
+			pullStorage.setPull_storage_code(entity.getPull_storage_code());
 			pullStorage.setTotal_number("0");
 		}
-		pullStorageService.updateEntity(pullStorage);
+		pullStorageService.updateEntity(pullStorage);//修改单据总数
 		return new Result<Integer>(1, 1);
 	}
 }
