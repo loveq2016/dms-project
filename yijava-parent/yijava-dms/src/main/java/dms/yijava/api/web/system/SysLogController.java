@@ -29,7 +29,6 @@ public class SysLogController {
 	@ResponseBody
 	@RequestMapping("paging")
 	public JsonPage<SysLog> paging(PageRequest pageRequest,HttpServletRequest request) {
-		String dsss=request.getParameter("start_date");
 		List<PropertyFilter> filters = PropertyFilters.build(request);
 		return sysLogService.paging(pageRequest,filters);
 	}

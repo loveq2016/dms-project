@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +24,10 @@ public class StorageService {
 	@Autowired
 	private StorageDao  storageDao ;
 	
-	public List<Storage> getList(){
+	public List<Storage> getList(String id){
 		HashMap<String,String> parameters = new HashMap<String,String>();
+		if(StringUtils.isNotEmpty(id))
+			parameters.put("dealer_id", id);
 		return storageDao.find(parameters);
 	}
 		
