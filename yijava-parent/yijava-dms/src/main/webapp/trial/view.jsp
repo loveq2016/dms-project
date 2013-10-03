@@ -326,8 +326,8 @@
 							</tr>
 							
 							<tr height="60"><td colspan="2">
-							<input type="text" name="bussiness_id" id="bussiness_id">
-							<input type="text" name="flow_id" id="flow_id" value="">
+							<input type="hidden" name="bussiness_id" id="bussiness_id">
+							<input type="hidden" name="flow_id" id="flow_id" value="">
 							<div style="text-align: right; padding: 5px">
 									<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveFlowCheck()">提交</a>
 									<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="clearForm()">取消</a>					   
@@ -492,7 +492,7 @@
 			    	if(jsonobj.state==1)
 			    		{
 			    			clearForm();			    			
-			    			$('#dlg').dialog('close');
+			    			$('#dlgadd').dialog('close');
 			    			var pager = $('#dg').datagrid().datagrid('getPager');
 			    			pager.pagination('select');	
 				   			
@@ -678,7 +678,7 @@
 			    	if(jsonobj.state==1)
 			    		{
 			    			clearForm();			    			
-			    			$('#dlg').dialog('close');
+			    			$('#dlgflowcheck').dialog('close');
 			    			var pager = $('#dg').datagrid().datagrid('getPager');
 			    			pager.pagination('select');	
 				   			

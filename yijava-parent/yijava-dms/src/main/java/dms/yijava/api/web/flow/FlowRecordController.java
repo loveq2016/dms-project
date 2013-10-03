@@ -88,7 +88,7 @@ public class FlowRecordController {
 	@ResponseBody
 	@RequestMapping("do_flow")
 	public Result<Integer> doFlow(@ModelAttribute("entity") ProcFlowModel entity,HttpServletRequest request){
-		Result<Integer> result=new Result<Integer>(0, 0);
+		Result<Integer> result=new Result<Integer>(1, 1);
 		
 		if (entity!=null)
 		{
