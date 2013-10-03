@@ -94,7 +94,7 @@
 									<td>发货日期:</td>	
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="express_date"></input></td>
 									<td></td>
-									<td>出货日期:</td>	
+									<td>收货日期:</td>	
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="consignee_date"></input></td>
 									<td></td>
 									<td>单据状态:</td>	
@@ -170,6 +170,7 @@
 			 	
 		} 
 		 
+		 var dealer_id;
 		 var deliver_code;
 		 function openInfo(index){
 				$('#dg').datagrid('selectRow',index);
@@ -185,6 +186,7 @@
 						$("#submitConsignee").linkbutton('enable');
 					}
 					deliver_code = row.deliver_code;
+					dealer_id = row.dealer_id;
 					$('#dgExpress').datagrid('loadData', {total: 0, rows: []});
 					$('#dgExpress').datagrid({
 						url : basePath + "api/deliverExpress/paging",
@@ -209,7 +211,7 @@
 			$.ajax({
 				type : "POST",
 				url : basePath + 'api/orderDeliver/consignee',
-				data : {deliver_code:deliver_code},
+				data : {deliver_code:deliver_code,dealer_id:dealer_id},
 				error : function(request) {
 					$("#submitConsignee").linkbutton('enable');
 					$.messager.alert('提示','Error!','error');	

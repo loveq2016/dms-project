@@ -20,7 +20,7 @@
 				select 
 				t1.deliver_id,t1.deliver_code,t1.express_code,t1.express_date,t1.consignee_user_id,t1.consignee_date,t1.consignee_status,
 				t2.order_code,
-				t3.dealer_name
+				t3.dealer_id,t3.dealer_name
 				from dms.tb_deliver t1 
 				inner join dms.tb_order t2 on t1.order_id = t2.id
 				inner join dms.tb_dealer t3 on t1.dealer_id = t3.dealer_id
@@ -33,7 +33,7 @@
 			select 
 			t1.deliver_id,t1.deliver_code,t1.express_code,t1.express_date,t1.consignee_user_id,t1.consignee_date,t1.consignee_status,
 			t2.order_code,
-			t3.dealer_name,
+			t3.dealer_id,t3.dealer_name,
 			sum(t4.express_num * t4.order_price * t4.discount) as totalMoney
 			from dms.tb_deliver t1 
 			inner join dms.tb_order t2 on t1.order_id = t2.id
@@ -47,6 +47,11 @@
 	</select>
 		
 
+	<select id="queryDeliverConsigneeStatus" resultType="dms.yijava.entity.orderDeliver.OrderDeliver">
+		select * from dms.tb_deliver where consignee_status = 0 and deliver_code =#{deliver_code}
+	</select>
+	
+	
     <update id="submitConsignee" parameterType="dms.yijava.entity.orderDeliver.OrderDeliver">
     	update dms.tb_deliver set consignee_user_id = #{consignee_user_id},consignee_date = NOW(),consignee_status = 1 where deliver_code =#{deliver_code}
     </update>

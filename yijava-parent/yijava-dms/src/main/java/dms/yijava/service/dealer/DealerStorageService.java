@@ -42,6 +42,11 @@ public class DealerStorageService {
 	}
 	
 	
+	public DealerStorage getDefaultStorage(String dealer_id) {
+		return dealerStorageDao.getObject(".queryDefaultStorage", dealer_id);
+	}
+	
+	
 	public DealerStorage getEntity(String id) {
 		return dealerStorageDao.get(id);
 	}

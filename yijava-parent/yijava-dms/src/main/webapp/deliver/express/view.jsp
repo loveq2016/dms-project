@@ -246,6 +246,7 @@
 		        <form id="fm2" action="" method="post" enctype="multipart/form-data">
 		        		  <input name="id" type="hidden">
 		         		  <input name="deliver_express_detail_id" id="deliver_express_detail_id" type="hidden">
+		         		  <input name="deliver_code" id="deliver_code" type="hidden">
 					      <table> 
 					    		<tr>
 					             	<td>序列号:</td>
@@ -511,89 +512,91 @@
 				if(parseInt(data.total) ==0 || parseInt(data.total) < parseInt(sn_num) ){
 					$('#dlgProductSn2').dialog('open').dialog('setTitle', '序列号添加');
 					$('#fm2').form('clear');
-					$('#fm2').form('load',{"deliver_express_detail_id":deliver_express_detail_id});
+					$('#fm2').form('load',{
+						"deliver_express_detail_id":deliver_express_detail_id,
+						"deliver_code" : deliver_code});
 					url = basePath + 'api/deliverExpressSn/save';
-				}else{
-					$.messager.alert('提示','序列号数量已满!','warning');
+				} else {
+					$.messager.alert('提示', '序列号数量已满!', 'warning');
 				}
-			}else{
-				$.messager.alert('提示','已发货，不能修改!','warning');
+			} else {
+				$.messager.alert('提示', '已发货，不能修改!', 'warning');
 			}
 
-
-
 		}
-		
-		function editExpressSn(){
+
+		function editExpressSn() {
 			var row = $('#dgProductSn').datagrid('getSelected');
-			if (row){
-				if(!isExpress){
-					$('#dlgProductSn2').dialog('open').dialog('setTitle', '序列号更新');
+			if (row) {
+				if (!isExpress) {
+					$('#dlgProductSn2').dialog('open').dialog('setTitle',
+							'序列号更新');
 					$('#fm2').form('clear');
-					$('#fm2').form('load',row);
+					$('#fm2').form('load', row);
 					url = basePath + 'api/deliverExpressSn/update';
-				}else{
-					$.messager.alert('提示','已发货，不能修改!','warning');
+				} else {
+					$.messager.alert('提示', '已发货，不能修改!', 'warning');
 				}
 
-			}else{
-				$.messager.alert('提示','请选中数据!','warning');
-			}		
+			} else {
+				$.messager.alert('提示', '请选中数据!', 'warning');
+			}
 		}
-		function saveExpressSn(){
+		function saveExpressSn() {
 			$('#fm2').form('submit', {
-					url : url,
-					method : "post",
-					onSubmit : function() {
-						return $(this).form('validate');
-					},
-					success : function(msg) {
-						var jsonobj = $.parseJSON(msg);
-						if (jsonobj.state == 1) {
-							$('#dlgProductSn2').dialog('close');
-							$('#dgProductSn').datagrid('reload');
-						}else if (jsonobj.state == 2) {
-							$.messager.alert('提示', '序列号重复', 'warning');
-						}else {
-							$.messager.alert('提示', 'Error!', 'error');
-						}
+				url : url,
+				method : "post",
+				onSubmit : function() {
+					return $(this).form('validate');
+				},
+				success : function(msg) {
+					var jsonobj = $.parseJSON(msg);
+					if (jsonobj.state == 1) {
+						$('#dlgProductSn2').dialog('close');
+						$('#dgProductSn').datagrid('reload');
+					} else if (jsonobj.state == 2) {
+						$.messager.alert('提示', '序列号重复', 'warning');
+					} else {
+						$.messager.alert('提示', 'Error!', 'error');
 					}
-				});
+				}
+			});
 		}
-		
-		function deleteExpressSn(){
-	           var row = $('#dgProductSn').datagrid('getSelected');
-	            if (row){
-	            	if(!isExpress){
-		                $.messager.confirm('Confirm','是否确定删除?',function(r){
-		                    if (r){
-		            			$.ajax({
-		            				type : "POST",
-		            				url : basePath + 'api/deliverExpressSn/delete',
-		            				data : {id:row.id},
-		            				error : function(request) {
-		            					$.messager.alert('提示','Error!','error');	
-		            				},
-		            				success : function(data) {
-		            					var jsonobj = $.parseJSON(data);
-		            					if (jsonobj.state == 1) {  
-		            	                     $('#dgProductSn').datagrid('reload');
-		            					}else{
-		            						$.messager.alert('提示','Error!','error');	
-		            					}
-		            				}
-		            			});                    	
-		                    }
-		                });
-	            	}else{
-	            		$.messager.alert('提示','已发货，不能修改!','warning');
-	            	}
-	            }else{
-					$.messager.alert('提示','请选中数据!','warning');				
-				 }	
+
+		function deleteExpressSn() {
+			var row = $('#dgProductSn').datagrid('getSelected');
+			if (row) {
+				if (!isExpress) {
+					$.messager.confirm('Confirm', '是否确定删除?', function(r) {
+						if (r) {
+							$.ajax({
+								type : "POST",
+								url : basePath + 'api/deliverExpressSn/delete',
+								data : {
+									id : row.id
+								},
+								error : function(request) {
+									$.messager.alert('提示', 'Error!', 'error');
+								},
+								success : function(data) {
+									var jsonobj = $.parseJSON(data);
+									if (jsonobj.state == 1) {
+										$('#dgProductSn').datagrid('reload');
+									} else {
+										$.messager.alert('提示', 'Error!',
+												'error');
+									}
+								}
+							});
+						}
+					});
+				} else {
+					$.messager.alert('提示', '已发货，不能修改!', 'warning');
+				}
+			} else {
+				$.messager.alert('提示', '请选中数据!', 'warning');
+			}
 		}
-		
-		
 	</script>
 </body>
 </html>

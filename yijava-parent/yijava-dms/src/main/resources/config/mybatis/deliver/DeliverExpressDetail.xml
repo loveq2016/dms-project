@@ -31,6 +31,12 @@
 	    limit #{offset},#{pagesize}
 	</select>
 	
+	<select id="selectDeliverExpressMap" resultType="dms.yijava.entity.deliver.DeliverExpressDetail">
+		select * from dms.tb_deliver_express_detail where deliver_code = #{deliver_code}
+	</select>
+	
+	
+	
 	<select id="selectSumById" resultType="dms.yijava.entity.deliver.DeliverExpressDetail">
 		select * from (
 			select sum(express_num) AS express_num  from dms.tb_deliver_express_detail where delivery_detail_id = #{delivery_detail_id}

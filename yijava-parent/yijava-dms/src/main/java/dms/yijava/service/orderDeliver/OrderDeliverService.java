@@ -36,6 +36,11 @@ public class OrderDeliverService {
 	}
 	
 	
+	public OrderDeliver queryDeliverConsigneeStatus(String deliver_code){
+		return orderDeliverDao.getObject(".queryDeliverConsigneeStatus", deliver_code);
+	}
+	
+	
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
 	public void submitConsignee(OrderDeliver entity) {
 		orderDeliverDao.updateObject(".submitConsignee",entity);
