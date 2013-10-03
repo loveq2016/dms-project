@@ -13,6 +13,7 @@ import com.yijava.common.utils.DateUtils;
 import dms.yijava.api.web.model.flow.ProcFlowModel;
 import dms.yijava.dao.flow.FlowRecordDao;
 import dms.yijava.entity.flow.FlowRecord;
+import dms.yijava.web.model.UserToCheck;
 
 
 @Service
@@ -119,6 +120,36 @@ public class FlowRecordService {
 		entity.setCheck_time(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		entity.setCheck_reason(check_reason);
 		flowRecordDao.updateObject(".updateByProperty",entity);
+	}
+	
+	/**
+	 * 得到用户待处理事项，汇总后的
+	 * @param check_id
+	 * @return
+	 */
+	public List<UserToCheck>  getRequetCheckSum(String check_userId)
+	{			
+		return flowRecordDao.find(".selectToCheckByUser", check_userId);		
+	}
+	
+	
+	/**
+	 * 
+	 * @param bussiness_id
+	 * @param flow_id
+	 * @param check_id
+	 * @param status
+	 * @return
+	 */
+	public List<FlowRecord>  getRequetCheck(String flow_id,String check_id)
+	{
+		HashMap<String,String> parameters = new HashMap<String,String>();
+		
+		parameters.put("flow_id", flow_id);
+		parameters.put("check_id", check_id);
+		parameters.put("status", "0");
+		return flowRecordDao.find(parameters);
+		//flowRecordDao.find(parameters)
 	}
 	
 	public FlowRecord getEntity(String id) {

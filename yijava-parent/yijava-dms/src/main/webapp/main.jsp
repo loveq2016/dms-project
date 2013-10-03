@@ -20,7 +20,8 @@
 	</div>
 	<div
 		data-options="region:'east',split:true,collapsed:false,title:'待处理事项'"
-		style="width: 100px; padding: 10px;">east region
+		style="width: 200px; padding: 10px;">
+			<ul id="tt" class="easyui-tree" data-options="url:'${basePath}api/flowrecord/tocheck',method:'get',animate:true"></ul>
 		</div>
 	<div data-options="region:'south',border:false"
 		style="height: 20px; background: #ddd; padding: 10px;"></div>
@@ -35,6 +36,19 @@
 $(document).ready(function(){
 	$('#mm1').menu();  
 });
+$('#tt').tree({
+	onClick: function(node){
+		if(node.id==trialflow_identifier_num)
+		{
+			alert("跳转到试用处理");
+		}
+			
+	}
+});
+function toCheckClick(flow_id)
+{
+	//alert(flow_id);
+}
 </script>
 </body>
 </html>

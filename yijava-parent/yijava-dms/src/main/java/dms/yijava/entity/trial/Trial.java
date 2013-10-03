@@ -12,8 +12,9 @@ public class Trial {
 	private Integer trial_id;
 	private String dealer_user_id;
 	private String dealer_name;
-	private Integer region_user_id;
-	private Integer company_user_id;
+	private String sales_user_id;//销售id
+	private Integer region_user_id;//区域负责人
+	private Integer company_user_id;//公司负责人
 	private String hospital_id;
 	private String hospital_name;//仅查询使用
 	private String reason;

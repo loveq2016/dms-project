@@ -38,4 +38,13 @@ public class DepartmentService {
 	public void deleteEntity(String id) {
 		departmentDao.removeById(id);
 	}
+	/*<!-- 以下为zhjt修改，用做流程处理 -->*/
+	/**
+	 * 根据部门id得到所有子部门
+	 * @param id
+	 * @return
+	 */
+	public List<Department> getChildDeparmentById(String id){		
+		return departmentDao.find(".selectChildById", id);
+	}
 }

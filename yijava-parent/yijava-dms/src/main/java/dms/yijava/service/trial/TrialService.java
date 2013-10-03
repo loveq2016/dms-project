@@ -55,7 +55,7 @@ public class TrialService {
 	public void updateEntityStatus(Integer trial_id,Integer status)
 	{
 		Trial entity = new Trial ();
-		entity.setStatus(1);
+		entity.setStatus(status);
 		entity.setTrial_id(trial_id);
 		trialDao.update( entity);
 	}

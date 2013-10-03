@@ -25,4 +25,10 @@
 	<delete id="deleteByPrimaryKey" parameterType="int">
    		 delete from dms.tb_department where id = #{id}
     </delete>
+    <!-- 以下为zhjt修改，用做流程处理 -->
+    <select id="selectChildById" parameterType="int" resultType="dms.yijava.entity.department.Department">
+		SELECT id,department_name,chkerid,fk_parent_id,isdelete,remark,ext1,ext2,ext3
+		from tb_department
+		where fk_parent_id = #{id}
+	</select>
 </mapper>

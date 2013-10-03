@@ -155,10 +155,10 @@
 	
 	<!--dlgdetail start -->	
 	<div id="dlgdetail" class="easyui-dialog" title="申请试用" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
-	style="width:720px;height:500px;padding:10px;">
+	style="width:850px;height:500px;padding:10px;">
 	
 	
-	<div class="easyui-tabs" style="width:680px;height:380px">	
+	<div class="easyui-tabs" style="width:820px;height:380px">	
 		<div title="基本信息" >
 				<form id="base_form_detail" action="" method="post" enctype="multipart/form-data">
 								<table>
@@ -209,15 +209,19 @@
 			</div>
 			
 			<div title="流程记录" >
-				<table id="dgdescflow_record" title="查询结果" style="width:650px;height: 340px">
+				<table id="dgdescflow_record" title="查询结果" style="width:810px;height: 340px">
 					<thead>
 						<tr>
 							
-							<th data-options="field:'user_id',width:80"  sortable="true">修改人</th>							
+							<th data-options="field:'user_id',width:80"  sortable="true" hidden="true">修改人id</th>	
+							<th data-options="field:'user_name',width:80"  sortable="true">修改人</th>							
 							<th data-options="field:'create_date',width:120" sortable="true">日期</th>
-							<th data-options="field:'action_name',width:130"  sortable="true">动作</th>				
-							<th data-options="field:'check_reason',width:200">处理意见</th>	
-							<th data-options="field:'id',width:100" formatter="formattersign">签名</th>									
+							<th data-options="field:'action_name',width:120"  sortable="true">动作</th>
+							<th data-options="field:'content',width:220"  sortable="true" formatter="FormatFlowlog" >内容</th>
+							<th data-options="field:'check_user_id',width:10"  sortable="true" hidden="true">修改人id</th>	
+							<th data-options="field:'check_user_name',width:10"  sortable="true" hidden="true">修改人</th>						
+							<th data-options="field:'check_reason',width:150">处理意见</th>	
+							<th data-options="field:'sign',width:100" formatter="formattersign">签名</th>												
 						</tr>
 					</thead>
 				</table> 
@@ -228,10 +232,10 @@
 	
 	<!--flow check start -->	
 	<div id="dlgflowcheck" class="easyui-dialog" title="申请试用-审核" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
-	style="width:820px;height:500px;padding:10px;">
+	style="width:850px;height:500px;padding:10px;">
 	
 	
-	<div class="easyui-tabs" style="width:780px;height:380px">	
+	<div class="easyui-tabs" style="width:820px;height:380px">	
 		<div title="基本信息" >
 				<form id="base_form_flowcheck" action="" method="post" enctype="multipart/form-data">
 								<table>
@@ -282,18 +286,18 @@
 			</div>
 			
 			<div title="流程记录" >
-				<table id="dgflow_record" title="查询结果" style="width:760px;height: 340px">
+				<table id="dgflow_record" title="查询结果" style="width:810px;height: 340px">
 					<thead>
 						<tr>
 							
 							<th data-options="field:'user_id',width:80"  sortable="true" hidden="true">修改人id</th>	
 							<th data-options="field:'user_name',width:80"  sortable="true">修改人</th>							
 							<th data-options="field:'create_date',width:120" sortable="true">日期</th>
-							<th data-options="field:'action_name',width:90"  sortable="true">动作</th>
-							<th data-options="field:'content',width:150"  sortable="true" formatter="FormatFlowlog" >内容</th>
-							<th data-options="field:'check_user_id',width:80"  sortable="true" hidden="true">修改人id</th>	
-							<th data-options="field:'check_user_name',width:80"  sortable="true" hidden="true">修改人</th>						
-							<th data-options="field:'check_reason',width:180">处理意见</th>	
+							<th data-options="field:'action_name',width:120"  sortable="true">动作</th>
+							<th data-options="field:'content',width:220"  sortable="true" formatter="FormatFlowlog" >内容</th>
+							<th data-options="field:'check_user_id',width:10"  sortable="true" hidden="true">修改人id</th>	
+							<th data-options="field:'check_user_name',width:10"  sortable="true" hidden="true">修改人</th>						
+							<th data-options="field:'check_reason',width:150">处理意见</th>	
 							<th data-options="field:'sign',width:100" formatter="formattersign">签名</th>														
 						</tr>
 					</thead>
@@ -323,7 +327,7 @@
 							
 							<tr height="60"><td colspan="2">
 							<input type="text" name="bussiness_id" id="bussiness_id">
-							<input type="text" name="doflow_id" id="doflow_id" value="">
+							<input type="text" name="flow_id" id="flow_id" value="">
 							<div style="text-align: right; padding: 5px">
 									<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveFlowCheck()">提交</a>
 									<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="clearForm()">取消</a>					   
@@ -391,7 +395,7 @@
 		} 
 		 function formattersign(value, row, index)
 		 {
-			 if(row.sign)
+			 if(row.sign && row.sign==1)
 			 	return '<span><img src="'+basePath+'resource/signimg/10049_qz.jpg" width="50" height="50"></span>'; 
 		 }
 		 
@@ -410,7 +414,7 @@
 				else if(value=='2')
 					return '<span style="color:red">驳回</span>'; 
 				else if(value=='3')
-					return '<span style="color:red">已审核</span>'; 				
+					return '<span style="color:#0044BB">已审核</span>'; 				
 				else if(value=='4')
 					return '<span style="color:red">已完成</span>'; 
 			
@@ -439,8 +443,8 @@
 		$(function() {
 			
 			
-			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
-			pager.pagination(); 
+			//var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
+			//pager.pagination(); 
 			
 		});
 		
@@ -480,7 +484,7 @@
 			    onSubmit: function(){
 			        // do some check
 			        // return false to prevent submit;
-			    	return $(this).form('validate');;
+			    	//return $(this).form('validate');;
 			    },
 			    success:function(msg){
 			    	
@@ -591,7 +595,7 @@
 				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){
 					
 					 $('#bussiness_id').val(row.trial_id);
-					 $("#doflow_id").val(trialflow_identifier_num);
+					 $("#flow_id").val(trialflow_identifier_num);
 					 //填充基本信息
 					  $('#base_form_flowcheck').form('load', row);
 					 var dgflow = $('#dgflow').datagrid().datagrid('getPager'); 

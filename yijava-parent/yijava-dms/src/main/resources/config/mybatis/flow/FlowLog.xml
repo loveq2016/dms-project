@@ -16,12 +16,13 @@
 		     <if test="user_id != null">
 		        AND user_id = #{user_id}
 		    </if>		    	    		    
-		</where>	
+		</where>
+		order by create_date desc	
 	</select>
 	
     <insert id="insert" parameterType="dms.yijava.entity.flow.FlowLog">  		
     	  insert into dms.tb_flow_log(flow_record_id,flow_id,user_id,user_name,bussiness_id,action_name,check_user_id,check_user_name,check_reason,sign,create_date)
-    	  values(#{flow_record_id},#{flow_id},#{user_id},#{user_name},#{bussiness_id},#{action_name},#{check_user_id},#{check_user_name},#{check_reason},,#{sign},#{create_date})
+    	  values(#{flow_record_id},#{flow_id},#{user_id},#{user_name},#{bussiness_id},#{action_name},#{check_user_id},#{check_user_name},#{check_reason},#{sign},#{create_date})
     </insert>
     
     

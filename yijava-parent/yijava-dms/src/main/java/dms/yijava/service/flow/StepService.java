@@ -95,4 +95,20 @@ public class StepService {
 		}
 		return newstep;
 	}
+	
+	public Step getSetp(Integer flow_id,Integer step_order_no)
+	{
+		Step step=new Step();
+		step.setFlow_id(flow_id);
+		step.setStep_order_no(step_order_no);
+		
+		Step newstep=null;
+		try {
+			newstep = stepDao.getObject(".selectStepByFlowAndOrder",step);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("error"+e.toString());
+		}
+		return newstep;
+	}
 }

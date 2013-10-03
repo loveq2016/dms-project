@@ -21,11 +21,14 @@ import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
+import dms.yijava.entity.department.Department;
 import dms.yijava.entity.flow.FlowLog;
 import dms.yijava.entity.flow.Step;
 import dms.yijava.entity.flow.StepDepartment;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.trial.Trial;
+import dms.yijava.entity.user.UserDealer;
+import dms.yijava.service.department.DepartmentService;
 import dms.yijava.service.flow.FlowBussService;
 import dms.yijava.service.flow.FlowLogService;
 import dms.yijava.service.trial.TrialService;
@@ -50,6 +53,8 @@ public class TrialController {
 	@Autowired
 	private FlowLogService flowLogService;
 	
+	@Autowired
+	private DepartmentService departmentService;
 	
 
 	@ResponseBody
@@ -57,6 +62,28 @@ public class TrialController {
 	public JsonPage<Trial> paging(PageRequest pageRequest,
 			HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
+		//找到当前登录用户所拥有的所有销售
+		//如果是销售，只查询自己的试用
+		//如果是其他用户，根据关系找到所有的销售
+		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+		String currentUserId=sysUser.getId();
+		List<Department> deparments=departmentService.getChildDeparmentById(sysUser.getFk_department_id());
+		if(deparments==null || deparments.size()<=0)
+		{
+			//是销售
+			filters.add(PropertyFilters.build("ANDS_sales_user_ids", currentUserId));
+		}else
+		{
+			//不是销售，需要找到他对应的所有销售
+			filters.add(PropertyFilters.build("ANDS_sales_user_ids", this.listString(sysUser.getUserDealerList())));
+			
+			filters.add(PropertyFilters.build("ANDS_statuses","1,2,3,4"));
+			filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
+			
+		}
+		
+		
+		
 		return trialService.paging(pageRequest, filters);
 	}
 
@@ -65,6 +92,9 @@ public class TrialController {
 	public Result<Integer> save(@ModelAttribute("entity") Trial entity,HttpServletRequest request) {
 		Result<Integer> result=new Result<Integer>(0, 0);
 		try {
+			SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+			String currentUserId=sysUser.getId();
+			entity.setSales_user_id(currentUserId);
 			if(entity.getStatus()==null)
 				entity.setStatus(0);
 			trialService.saveEntity(entity);
@@ -123,7 +153,8 @@ public class TrialController {
 		}
 		return result;
 	}
-	
+
+	/*!---------------------以下的方法，提供流程处理第一步骤-----------------------*/
 	/**
 	 * 修改状态 提交审核
 	 * @param trial_id
@@ -175,13 +206,30 @@ public class TrialController {
 		flowLog.setUser_name(realname);
 		flowLog.setBussiness_id(trial_id.toString());
 		flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-		flowLog.setAction_name("提交");
+		flowLog.setAction_name("提交"+"-"+step.getAction_name());
+		flowLog.setSign("0");
 		flowLogService.saveEntity(flowLog);
 		
 		//记录流程
 		flowBussService.insertStep(flowIdentifierNumber, currentUserId,  
-				"提交", trial_id.toString(), check_id, "提交","0","0");
+				"提交", trial_id.toString(), check_id, "提交"+"-"+step.getAction_name(),"0","1");
 	}
 	
+	public String listString(List<UserDealer> list) {
+		String listString = "";
+		for (int i = 0; i < list.size(); i++) {
+			try {
+				if (i == list.size() - 1) {
+					UserDealer ud=list.get(i);
+					listString += ud.getUser_id();
+				} else {
+					UserDealer ud=list.get(i);
+					listString += ud.getUser_id() + ",";
+				}
+			} catch (Exception e) {
+			}
+		}
+		return listString;
+	}
 	
 }

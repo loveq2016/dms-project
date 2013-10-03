@@ -68,6 +68,11 @@ public class FlowBussService {
 	    }
 		return step;		
 	}
+	
+	public Step getStep(Integer flow_id,Integer step_order_no) {
+		//找到流程的第一步
+		return stepService.getSetp(flow_id,step_order_no);
+	}
 	/**
 	 * 根据流程及步骤序号找到下一步
 	 * 
@@ -75,22 +80,25 @@ public class FlowBussService {
 	 * @param step_order_no 当前步骤号，如果返回为空，表示到达流程结尾
 	 * @return
 	 */
-	public Step getNextStep(String flow_id,String step_order_no) {		
-		Step step=stepService.getNextSetp(new Integer(flow_id),new Integer(step_order_no+1));
-		//找这一步的负责部门
-	    List<StepDepartment> stepDepartments=stepDepartmentService.getStepDepartmentByStep(step.getStep_id().toString());
-	    step.setStepDepartments(stepDepartments);
-	    for(StepDepartment dep :stepDepartments)
-	    {
-	    	if (null!=dep.getDepartment_id())
-	    	{
-	    		List<SysUser> users=sysUserService.getListByDepartmentId(dep.getDepartment_id());
-	    		if(users!=null)
-	    		{
-	    			dep.setUsers(users);
-	    		}
-	    	}
-	    }
+	public Step getNextStep(Integer flow_id,Integer step_order_no) {		
+		Step step=stepService.getNextSetp(flow_id,step_order_no+1);
+		if(step!=null)
+		{
+			//找这一步的负责部门
+		    List<StepDepartment> stepDepartments=stepDepartmentService.getStepDepartmentByStep(step.getStep_id().toString());
+		    step.setStepDepartments(stepDepartments);
+		    for(StepDepartment dep :stepDepartments)
+		    {
+		    	if (null!=dep.getDepartment_id())
+		    	{
+		    		List<SysUser> users=sysUserService.getListByDepartmentId(dep.getDepartment_id());
+		    		if(users!=null)
+		    		{
+		    			dep.setUsers(users);
+		    		}
+		    	}
+		    }
+		}		
 		return step;		
 	}
 	

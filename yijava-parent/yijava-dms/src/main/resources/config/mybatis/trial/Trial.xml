@@ -5,21 +5,35 @@
 <mapper namespace="Trial">
 	<sql id="adsWhere">
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-
+			<if test="sales_user_ids != null and sales_user_ids != '' ">
+				sales_user_id in (${sales_user_ids})
+			</if>
+			<if test="statuses != null and statuses != '' ">
+				AND tb_trial.status  in (${statuses})
+			</if>
+			<!-- 增加是否提交给当前用户审核的过滤 start -->
+			<if test="check_id != null and check_id != '' ">
+				AND trial_id in (select bussiness_id from tb_flow_record  where check_id= #{check_id})
+			</if>
+			<!-- 增加是否提交给当前用户审核的过滤 end -->
 			<if test="dealer_user_id != null and dealer_user_id != '' ">
-				dealer_user_id = #{dealer_user_id}
+				AND dealer_user_id = #{dealer_user_id}
+			</if>
+			<if test="dealer_user_id != null and dealer_user_id != '' ">
+				AND dealer_user_id = #{dealer_user_id}
 			</if>
 			<if test="hospital_id != null and hospital_id != '' ">
-				hospital_id = #{hospital_id}
+				AND hospital_id = #{hospital_id}
 			</if>
+			
 			<if test="(q_start_time != null and q_start_time != '')  and (q_end_time != null and q_end_time != '') ">
-				create_time between  #{q_start_time} and #{q_end_time}
+				AND create_time between  #{q_start_time} and #{q_end_time}
 			</if>
 			<if test="(q_start_time != null and q_start_time != '')  and (q_end_time == null and q_end_time == '') ">				
-				<![CDATA[ create_time >= #q_start_time# ]]>
+				AND <![CDATA[ create_time >= #q_start_time# ]]>
 			</if>
 			<if test="(q_start_time == null and q_start_time == '')  and (q_end_time != null and q_end_time != '') ">				
-				<![CDATA[ create_time <= #(q_end_time# ]]>
+				AND <![CDATA[ create_time <= #(q_end_time# ]]>
 			</if>
 		</trim>
 	</sql>
@@ -35,13 +49,14 @@
 
 <!-- 查询试用记录 -->
 	<select id="selectByObject" resultType="dms.yijava.entity.trial.Trial">
-		select tb_trial.trial_id,tb_trial.dealer_user_id,tb_dealer.dealer_name,
+		select tb_trial.trial_id,tb_trial.dealer_user_id,tb_trial.sales_user_id,tb_dealer.dealer_name,
 		tb_trial.region_user_id,tb_trial.company_user_id,tb_trial.hospital_id,
 		tb_hospital.hospital_name,tb_trial.reason,tb_trial.trial_num_sum,tb_trial.create_time,
 		tb_trial.status,tb_trial.last_update
 		 from tb_trial 
 		left join tb_dealer on tb_trial.dealer_user_id=tb_dealer.dealer_id
 		left join tb_hospital on tb_trial.hospital_id=tb_hospital.id
+		<!--  inner join tb_flow_record on tb_trial.trial_id = tb_flow_record.bussiness_id  -->
 		<include refid="adsWhere" />
 		<include refid="adsOrder" />
 		limit #{offset},#{pagesize}
@@ -55,14 +70,15 @@
 
 	<insert id="insert" parameterType="dms.yijava.entity.trial.Trial" useGeneratedKeys="true" keyProperty="trial_id">
 		insert into
-		tb_trial(dealer_user_id,region_user_id,company_user_id,hospital_id,reason,trial_num_sum,create_time,status,last_update)
-		values(#{dealer_user_id},#{region_user_id},#{company_user_id},#{hospital_id},#{reason},#{trial_num_sum},#{create_time},#{status},#{last_update})
+		tb_trial(dealer_user_id,sales_user_id,region_user_id,company_user_id,hospital_id,reason,trial_num_sum,create_time,status,last_update)
+		values(#{dealer_user_id},#{sales_user_id},#{region_user_id},#{company_user_id},#{hospital_id},#{reason},#{trial_num_sum},#{create_time},#{status},#{last_update})
 	</insert>
 
 	<insert id="update" parameterType="dms.yijava.entity.trial.Trial">
 		update tb_trial
 		<set>
 			<if test="dealer_user_id != null">dealer_user_id=#{dealer_user_id},</if>
+			<if test="sales_user_id != null">sales_user_id=#{sales_user_id},</if>
 			<if test="region_user_id != null">region_user_id=#{region_user_id},</if>
 			<if test="company_user_id != null">company_user_id=#{company_user_id},</if>
 			<if test="hospital_id != null">hospital_id=#{hospital_id},</if>
