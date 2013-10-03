@@ -19,8 +19,12 @@ import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.storage.StorageDetailDao;
 import dms.yijava.dao.storage.StorageProDetailDao;
+import dms.yijava.entity.dealer.DealerStorage;
+import dms.yijava.entity.deliver.DeliverExpressDetail;
+import dms.yijava.entity.deliver.DeliverExpressSn;
 import dms.yijava.entity.storage.StorageDetail;
 import dms.yijava.entity.storage.StorageProDetail;
+import dms.yijava.service.dealer.DealerStorageService;
 
 @Service
 @Transactional
@@ -30,6 +34,9 @@ public class StorageDetailService {
 	private StorageDetailDao  storageDetailDao ;
 	@Autowired
 	private StorageProDetailDao  storageProDetailDao ;
+	@Autowired
+	private DealerStorageService  dealerStorageService ;
+
 	
 	public JsonPage<StorageDetail> paging(PageRequest pageRequest,List<PropertyFilter> filters) {
 		Map<String,String> parameters = new HashMap<String,String>();
@@ -43,9 +50,45 @@ public class StorageDetailService {
 	}
 	
 	
-	// 销售入库
-	public void orderStorage() {
-		
+	/**
+	 * 销售入库
+	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
+	public synchronized boolean orderStorage(String dealer_id,
+			List<DeliverExpressDetail> deliverExpressDetails,
+			List<DeliverExpressSn> deliverExpressSns) {
+		//查询默认仓库
+		DealerStorage dealerStorage = dealerStorageService.getDefaultStorage(dealer_id);
+		if (dealerStorage == null) {
+			return false;
+		}
+		//更新库存
+		for (DeliverExpressDetail deliverExpressDetail : deliverExpressDetails) {
+			StorageDetail storageDetail = new StorageDetail();
+			storageDetail.setFk_dealer_id(dealerStorage.getDealer_id());
+			storageDetail.setFk_storage_id(dealerStorage.getStorage_id());
+			storageDetail.setProduct_item_number(deliverExpressDetail.getProduct_item_number());
+			storageDetail.setInventory_number(deliverExpressDetail.getExpress_num());
+			storageDetail.setBatch_no(deliverExpressDetail.getExpress_sn());
+			storageDetail.setValid_date(deliverExpressDetail.getValidity_date());
+			StorageDetail  tempStorageDetail = storageDetailDao.getObject(".queryStorageDetail",storageDetail);
+			if (tempStorageDetail == null) {
+				storageDetailDao.insertObject(".saveStorageDetail",storageDetail);
+			}else{
+				storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
+			}
+			for (DeliverExpressSn deliverExpressSn : deliverExpressSns) {
+				if(deliverExpressDetail.getId().equals(deliverExpressSn.getDeliver_express_detail_id())){
+					StorageProDetail storageProDetail = new StorageProDetail();
+					storageProDetail.setFk_dealer_id(dealerStorage.getDealer_id());
+					storageProDetail.setFk_storage_id(dealerStorage.getStorage_id());
+					storageProDetail.setBatch_no(deliverExpressDetail.getExpress_sn());
+					storageProDetail.setProduct_sn(deliverExpressSn.getProduct_sn());
+					storageProDetailDao.insertObject(".saveSnSub", storageProDetail);
+				}
+			}
+		}
+		return true ; 
 	}
 	
 	

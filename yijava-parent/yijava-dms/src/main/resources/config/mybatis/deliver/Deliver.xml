@@ -38,8 +38,7 @@
 	<select id="queryDeliverNo" resultType="dms.yijava.entity.deliver.Deliver">
 		select LPAD(max(deliver_no)+1,3,0) as deliver_no from dms.tb_deliver WHERE create_date between CURDATE() AND CONCAT(CURDATE(),' 23:59:59')
 	</select>
-		
-		
+	
 	<insert id="insert" parameterType="dms.yijava.entity.deliver.Deliver" useGeneratedKeys="true" keyProperty="deliver_id">     
 		insert into dms.tb_deliver(deliver_code,deliver_no,order_id,order_code,order_date,create_date,remark,deliver_status,user_id,dealer_id,dealer_address_id) 
 		values(#{deliver_code},#{deliver_no},#{order_id},#{order_code},#{order_date},NOW(),#{remark},#{deliver_status},#{user_id},#{dealer_id},#{dealer_address_id});

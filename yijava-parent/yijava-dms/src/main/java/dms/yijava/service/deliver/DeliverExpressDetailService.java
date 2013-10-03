@@ -38,7 +38,13 @@ public class DeliverExpressDetailService {
 				pageRequest.getPageSize(), pageRequest.getOrderBy(),
 				pageRequest.getOrderDir());
 	}
-
+	
+	
+	public List<DeliverExpressDetail> getList(String deliver_code) {
+		return deliverExpressDetailDao.findObject(".selectDeliverExpressMap", deliver_code);
+	}
+	
+	
 	public DeliverExpressDetail selectSumById(String delivery_detail_id) {
 		return deliverExpressDetailDao.getObject(".selectSumById", delivery_detail_id);
 	}

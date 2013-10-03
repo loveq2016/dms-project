@@ -31,10 +31,15 @@
 	    limit #{offset},#{pagesize}
 	</select>
 	
+	<select id="selectDeliverExpressSnMap" resultType="dms.yijava.entity.deliver.DeliverExpressSn">
+		select * from dms.tb_deliver_express_detail_sn where deliver_code = #{deliver_code}
+	</select>
+	
+	
 
 	<insert id="insert" parameterType="dms.yijava.entity.deliver.DeliverExpressSn" useGeneratedKeys="true" keyProperty="id">     
-		insert into dms.tb_deliver_express_detail_sn(deliver_express_detail_id,product_sn) 
-		values(#{deliver_express_detail_id},#{product_sn})
+		insert into dms.tb_deliver_express_detail_sn(deliver_express_detail_id,product_sn,deliver_code) 
+		values(#{deliver_express_detail_id},#{product_sn},#{deliver_code})
 	</insert>
 
 	<update id="update" parameterType="dms.yijava.entity.deliver.DeliverExpressSn">

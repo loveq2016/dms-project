@@ -34,6 +34,12 @@ public class DeliverExpressSnService {
 				pageRequest.getOrderDir());
 	}
 
+	
+	public List<DeliverExpressSn> getList(String deliver_code) {
+		return deliverExpressSnDao.findObject(".selectDeliverExpressSnMap", deliver_code);
+	}
+	
+	
 
 	public void saveEntity(DeliverExpressSn entity) {
 		deliverExpressSnDao.insert(entity);

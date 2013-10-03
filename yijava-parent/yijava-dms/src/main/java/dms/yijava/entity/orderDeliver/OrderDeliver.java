@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 public class OrderDeliver {
 
 	private String deliver_id;
+	private String dealer_id;
 	private String dealer_name;
 	private String deliver_code;
 	private String order_code;
