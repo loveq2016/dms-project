@@ -34,11 +34,10 @@
 			t1.deliver_id,t1.deliver_code,t1.express_code,t1.express_date,t1.consignee_user_id,t1.consignee_date,t1.consignee_status,
 			t2.order_code,
 			t3.dealer_id,t3.dealer_name,
-			sum(t4.express_num * t4.order_price * t4.discount) as totalMoney
+			(select sum(t4.express_num * t4.order_price * t4.discount) from dms.tb_deliver_express_detail t4 where t1.deliver_id = t4.deliver_id) as totalMoney
 			from dms.tb_deliver t1 
 			inner join dms.tb_order t2 on t1.order_id = t2.id
 			inner join dms.tb_dealer t3 on t1.dealer_id = t3.dealer_id
-			left join dms.tb_deliver_express_detail t4  on t1.deliver_id = t4.deliver_id
 			where t1.consignee_status is not null
 		)t	
 		<include refid="adsWhere"/>
