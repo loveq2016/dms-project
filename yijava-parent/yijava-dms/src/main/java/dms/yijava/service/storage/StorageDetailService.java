@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -50,8 +53,10 @@ public class StorageDetailService {
 	 * 更新库存、锁定Sn记录
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
-	public List<StorageProDetail> updateStorageLockSn(List<StorageDetail> StorageDetailList) {
+	public synchronized PullStorageOpt updateStorageLockSn(List<StorageDetail> StorageDetailList) {
 		List<StorageProDetail> lockSnList = new ArrayList<StorageProDetail>();
+		PullStorageOpt opt = new PullStorageOpt();
+		opt.setStatus("faild");
 		try {
 			//减少库存
 			for (StorageDetail storageDetail : StorageDetailList) {
@@ -72,10 +77,13 @@ public class StorageDetailService {
 					lockSnList.add(storageProDetail);
 				}		
 			}
+			opt.setStatus("success");
 		} catch (Exception e) {
+			lockSnList.clear();
 			e.printStackTrace();
 		}
-		return lockSnList;
+		opt.setList(lockSnList);
+		return opt;
 	}
 	
 	
@@ -83,7 +91,7 @@ public class StorageDetailService {
 	 * 库存回滚、取消锁定Sn记录
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
-	public boolean rollBackStorageUnLockSn(List<StorageDetail> StorageDetailList,List<StorageProDetail> StorageProDetailList) {
+	public synchronized boolean rollBackStorageUnLockSn(List<StorageDetail> StorageDetailList,List<StorageProDetail> StorageProDetailList) {
 		try {
 			//库存回滚
 			for (StorageDetail storageDetail : StorageDetailList) {
@@ -107,7 +115,7 @@ public class StorageDetailService {
 	 * 入库：更新库存、更新Sn记录
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
-	public boolean updateStorageAndSnSub(List<StorageDetail> StorageDetailList,List<StorageProDetail> StorageProDetailList){
+	public synchronized boolean updateStorageAndSnSub(List<StorageDetail> StorageDetailList,List<StorageProDetail> StorageProDetailList){
 		try {
 			for (StorageDetail storageDetail : StorageDetailList) {
 				StorageDetail  tempStorageDetail = storageDetailDao.getObject(".queryStorageDetail",storageDetail);
@@ -130,8 +138,12 @@ public class StorageDetailService {
 	}
 	
 	
-	
-	
+	@Data
+	@NoArgsConstructor
+	class PullStorageOpt {
+		private String status;
+		private List<StorageProDetail> list;
+	}
 	
 
 	
