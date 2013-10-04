@@ -111,40 +111,42 @@ public class PullStorageController {
 		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
 		List<PropertyFilter> filters = PropertyFilters.build(request);
 		List<PullStorageDetail> listPullStorageDetail = pullStorageDetailService.getList(filters);
-		List<StorageDetail> storageDetailList  = new ArrayList<StorageDetail>();
-		for(int i=0;i<listPullStorageDetail.size();i++){
-			PullStorageDetail psd=listPullStorageDetail.get(i);
-			StorageDetail sd = new StorageDetail();
-			sd.setFk_dealer_id(sysUser.getFk_dealer_id());
-			sd.setFk_storage_id(psd.getFk_storage_id());
-			sd.setProduct_item_number(psd.getProduct_item_number());
-			sd.setBatch_no(psd.getBatch_no());
-			sd.setInventory_number("-"+psd.getSales_number());
-			storageDetailList.add(sd);
-		}
-		PullStorageOpt pullStorageOpt=storageDetailService.updateStorageLockSn(storageDetailList); //获取sn（根据 批次，仓库，数量），更新仓库
-		List<PullStorageProDetail> listPullStorageProDetail=new ArrayList<PullStorageProDetail>();
-		if(pullStorageOpt.getStatus().equals("success")){
-			for(int i=0;i<pullStorageOpt.getList().size();i++){
-				PullStorageProDetail pspd=new PullStorageProDetail();
-				StorageProDetail spd=pullStorageOpt.getList().get(i);
-				pspd.setBatch_no(spd.getBatch_no());
-				pspd.setFk_storage_id(spd.getFk_storage_id());
-				pspd.setProduct_sn(spd.getProduct_sn());
-				pspd.setPull_storage_code(entity.getPull_storage_code());
-				pspd.setPut_storage_code(entity.getPut_storage_code());
-				listPullStorageProDetail.add(pspd);
+		if(null!=listPullStorageDetail){
+			List<StorageDetail> storageDetailList  = new ArrayList<StorageDetail>();
+			for(int i=0;i<listPullStorageDetail.size();i++){
+				PullStorageDetail psd=listPullStorageDetail.get(i);
+				StorageDetail sd = new StorageDetail();
+				sd.setFk_dealer_id(sysUser.getFk_dealer_id());
+				sd.setFk_storage_id(psd.getFk_storage_id());
+				sd.setProduct_item_number(psd.getProduct_item_number());
+				sd.setBatch_no(psd.getBatch_no());
+				sd.setInventory_number("-"+psd.getSales_number());
+				storageDetailList.add(sd);
 			}
-			//同一个仓库下的，同一个批次，同一个序号   不能重复添加
-			pullStorageProDetailService.saveEntity(listPullStorageProDetail);
-			
-			/**
-			 * 处理订单状态
-			 */
-			SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
-			entity.setStatus("1");//在途中
-			entity.setPull_storage_date(time.format(new Date()));
-			pullStorageService.updateEntity(entity);
+			PullStorageOpt pullStorageOpt=storageDetailService.updateStorageLockSn(storageDetailList); //获取sn（根据 批次，仓库，数量），更新仓库
+			List<PullStorageProDetail> listPullStorageProDetail=new ArrayList<PullStorageProDetail>();
+			if(pullStorageOpt.getStatus().equals("success")){
+				for(int i=0;i<pullStorageOpt.getList().size();i++){
+					PullStorageProDetail pspd=new PullStorageProDetail();
+					StorageProDetail spd=pullStorageOpt.getList().get(i);
+					pspd.setBatch_no(spd.getBatch_no());
+					pspd.setFk_storage_id(spd.getFk_storage_id());
+					pspd.setProduct_sn(spd.getProduct_sn());
+					pspd.setPull_storage_code(entity.getPull_storage_code());
+					pspd.setPut_storage_code(entity.getPut_storage_code());
+					listPullStorageProDetail.add(pspd);
+				}
+				//同一个仓库下的，同一个批次，同一个序号   不能重复添加
+				pullStorageProDetailService.saveEntity(listPullStorageProDetail);
+				
+				/**
+				 * 处理订单状态
+				 */
+				SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+				entity.setStatus("1");//在途中
+				entity.setPull_storage_date(time.format(new Date()));
+				pullStorageService.updateEntity(entity);
+			}
 		}
 		return new Result<Integer>(1, 1);
 	}

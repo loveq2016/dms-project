@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MoveStorageProDetail">
+	<sql id="adsWhere">
+	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(move_storage_code)">
+			  and move_storage_code=#{move_storage_code}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(batch_no)">
+			  and batch_no=#{batch_no}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(product_sn)">
+			  and product_sn=#{product_sn}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_move_to_storage_id)">
+			  and fk_move_to_storage_id=#{fk_move_to_storage_id}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_move_storage_id)">
+			  and fk_move_storage_id=#{fk_move_storage_id}
+		</if>
+	</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>
+	        <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+	            order by ${orderSql}
+	        </when>
+	    </choose>
+	</sql>
+    <select id="selectByObjectcount" resultType="long"> 
+		SELECT COUNT(*) FROM dms.tb_move_storage_pro_detail
+		<include refid="adsWhere"/>
+	</select>
+ 	<select id="selectByObject" resultType="dms.yijava.entity.movestorage.MoveStorageProDetail">
+		SELECT * FROM dms.tb_move_storage_pro_detail
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}
+	</select>
+	<select id="selectByMap" resultType="dms.yijava.entity.movestorage.MoveStorageProDetail">
+		SELECT * FROM dms.tb_move_storage_pro_detail
+		<include refid="adsWhere"/>
+	</select>
+	<select id="selectMoveStorageProDetail" resultType="dms.yijava.entity.movestorage.MoveStorageProDetail">
+        SELECT * FROM dms.tb_move_storage_pro_detail 
+        <include refid="adsWhere"/>
+    </select>
+	<insert id="insert" parameterType="java.util.List"> 
+		insert into dms.tb_move_storage_pro_detail(fk_move_storage_id,fk_move_to_storage_id,move_storage_code,product_sn,batch_no,last_time)values
+    	<foreach collection="list" item="item" index="index" separator=",">   
+	        (#{item.fk_move_storage_id},#{item.fk_move_to_storage_id},#{item.move_storage_code},#{item.product_sn},#{item.batch_no},NOW())
+	    </foreach>
+    </insert>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+    	delete from dms.tb_move_storage_pro_detail where id = #{id}
+    </delete>
+    <delete id="deleteByMoveStorageCode" parameterType="String">
+   		 delete from dms.tb_move_storage_pro_detail where move_storage_code=#{move_storage_code}
+    </delete>
+    <delete id="deleteByStorageOrBatchNo" parameterType="dms.yijava.entity.movestorage.MoveStorageProDetail">
+   		 delete from dms.tb_move_storage_pro_detail where fk_move_storage_id=#{fk_move_storage_id} and 
+   		 move_storage_code=#{move_storage_code} and fk_move_to_storage_id=#{fk_move_to_storage_id} and batch_no=#{batch_no}
+    </delete>
+</mapper>
