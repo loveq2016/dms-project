@@ -129,7 +129,7 @@
 				</form>			
 				<div style="text-align: right; padding: 5px">
 						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveEntity()">确定</a>
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="clearForm()">取消</a>					   
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="javascript:$('#dlgadd').dialog('close')">取消</a>					   
 				</div>
 			</div>
 			
@@ -330,7 +330,7 @@
 							<input type="hidden" name="flow_id" id="flow_id" value="">
 							<div style="text-align: right; padding: 5px">
 									<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveFlowCheck()">提交</a>
-									<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="clearForm()">取消</a>					   
+									<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="javascript:$('#dlgflowcheck').dialog('close')">取消</a>					   
 							</div>				
 							</td>
 							</tr>					

@@ -44,16 +44,16 @@
 				url : basePath+"api/sys/login",
 				data : $('#ffadd').serialize(),
 				error : function(request) {
-					alert("登录失败，请稍后再试！");
+					$.messager.alert('提示',error,'error');
 				},
 				success:function(msg){
 					var jsonobj= eval('('+msg+')'); 
-				   	if(jsonobj.data=='succeess'){
-				   		location.href ="main.jsp";
-				   	}else{
-				   		alert("用户名或密码错误,请重新输入!");
-				   	}
+					if(jsonobj.state=='0'){
+				   		$.messager.alert('提示',jsonobj.error.msg,'warning');				   		
 				   		
+				   	}else{
+				   		location.href ="main.jsp";
+				   	}			   		
 				}	
 			});
 		}

@@ -1,5 +1,6 @@
 package dms.yijava.api.web.storage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import com.yijava.orm.core.PropertyFilters;
 
 import dms.yijava.entity.storage.StorageDetail;
 import dms.yijava.service.storage.StorageDetailService;
+import dms.yijava.service.storage.StorageDetailService.PullStorageOpt;
 
 @Controller
 @RequestMapping("/api/storageDetail")
@@ -36,18 +38,23 @@ public class StorageDetailController {
 	@ResponseBody
 	@RequestMapping("test")
 	public String test() {
-		/**
-		 * 出库 ： 更新库存、返回锁定SnList
+
+		
+		 	//出库 ： 更新库存、返回锁定SnList
 			List<StorageDetail> StorageDetailList  = new ArrayList<StorageDetail>();
 			StorageDetail sd1 = new StorageDetail();
-			sd1.setFk_dealer_id("3");
-			sd1.setFk_storage_id("7");
+			sd1.setFk_dealer_id("1");
+			sd1.setFk_storage_id("1");
 			sd1.setProduct_item_number("34");
-			sd1.setBatch_no("aaa");
-			sd1.setInventory_number("-3");
-			storageDetailService.updateStorageLockSn(StorageDetailList);
-		**/	
-		
+			sd1.setBatch_no("AAA");
+			sd1.setInventory_number("-1");
+			StorageDetailList.add(sd1);
+			PullStorageOpt test = storageDetailService.updateStorageLockSn(StorageDetailList);
+			
+			
+			
+			System.out.println(test);
+	
 		
 		/**
 		 * 出库 ： 库存回滚、取消锁定SnList,返回boolean

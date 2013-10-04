@@ -30,7 +30,7 @@
 </c:forEach>
 <a href="${basePath}api/sys/logout">退出</a>
 -->
-<div style="padding: 5px; width: 1200px;">
+<div style="padding: 5px; width: 1300px;">
 	<a href="javascript:void(0)" id="mb1" class="easyui-menubutton"
 		data-options="menu:'#mm1',iconCls:'icon-filep'">系统管理</a>
 	<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
@@ -53,6 +53,8 @@
 		data-options="menu:'#mm10',iconCls:'icon-filep'">销售管理</a>
 	<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
 		data-options="menu:'#mm11',iconCls:'icon-filep'">库存管理</a>
+		<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
+		data-options="menu:'#mm12',iconCls:'icon-filep'">个人信息管理</a>
 </div>
 <div id="mm1" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
@@ -184,6 +186,14 @@
 <div id="mm11" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="库存管理" url="storage/inventory/view.jsp">库存管理</a>
+	</div>
+</div>
+<div id="mm12" style="width: 150px;">
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="库存管理" url="storage/inventory/view.jsp">个人信息</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="密码修改" url="system/user/updatePwd.jsp">密码修改</a>
 	</div>
 </div>
 </div>
