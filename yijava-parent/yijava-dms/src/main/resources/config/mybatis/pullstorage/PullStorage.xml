@@ -106,8 +106,8 @@
 		#{put_storage_no},#{fk_put_storage_party_id},#{type},NOW(),NOW())
 	</insert>
 	<update id="update" parameterType="dms.yijava.entity.pullstorage.PullStorage">
-		update dms.tb_pull_storage set
-		<trim prefix="SET" suffixOverrides=",">  
+		update dms.tb_pull_storage
+		<trim prefix="SET" suffixOverrides=",">
             <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">status=#{status},</if> 
             <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(total_number)">total_number=#{total_number},</if>  
             <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(pull_storage_date)">pull_storage_date=#{pull_storage_date},</if>  
@@ -118,5 +118,8 @@
 	</update>
 	<delete id="deleteByPrimaryKey" parameterType="int">
 		delete from dms.tb_pull_storage where id = #{id}
+	</delete>
+	<delete id="deleteByPullStorageCode" parameterType="String">
+		delete from dms.tb_pull_storage where pull_storage_code=#{pull_storage_code}
 	</delete>
 </mapper>

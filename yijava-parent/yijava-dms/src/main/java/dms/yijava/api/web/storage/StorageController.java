@@ -32,8 +32,9 @@ public class StorageController {
 	
 	@ResponseBody
 	@RequestMapping("list")
-	public List<Storage> list() {
-		return storageService.getList();
+	public List<Storage> list(HttpServletRequest request,
+			@RequestParam(value = "dealer_id", required = false) String id) {
+		return storageService.getList(id);
 	}
 	
 	@ResponseBody

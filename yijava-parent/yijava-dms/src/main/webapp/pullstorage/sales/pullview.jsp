@@ -96,8 +96,8 @@
 							<th data-options="field:'id',width:10,align:'center'" hidden="true">id</th>
 							<th data-options="field:'pull_storage_party_name',width:200,align:'center'" sortable="true">经销商</th>
 							<th data-options="field:'pull_storage_code',width:100,align:'center'" sortable="true">分销出库单号</th>
-							<th data-options="field:'put_storage_code',width:100,align:'center'" sortable="true">入库出库单号</th>
 							<th data-options="field:'put_storage_party_name',width:200,align:'center'" sortable="true">收货经销商</th>
+							<th data-options="field:'put_storage_code',width:100,align:'center'" hidden="true">分销入库单号</th>
 							<th data-options="field:'total_number',width:80,align:'center'" sortable="true">总数量</th>
 							<th data-options="field:'pull_storage_date',width:100,align:'center'" sortable="true">出库时间</th>
 							<th data-options="field:'pull_storage_user_name',width:150,align:'center'" sortable="true">出库人</th>
@@ -157,7 +157,7 @@
 			</div>
 		</div>
 		</div>
-		<div id="dlgPullStorageDetail" class="easyui-dialog" title="订单明细" style="width:950px;height:auto;padding:5px 5px 5px 5px;"
+		<div id="dlgPullStorageDetail" class="easyui-dialog" title="明细" style="width:950px;height:auto;padding:5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlg-buttons">
             <div class="easyui-panel" style="width:925px;" style="margin: 10px 0;">
 					<form id="ffPullStorageDetail" method="post">
@@ -202,7 +202,7 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div >
-				<table id="dgDetail" class="easyui-datagrid" title="明细信息" style="height:370px" method="get"
+				<table id="dgDetail" class="easyui-datagrid" title="查询结果" style="height:370px" method="get"
 					 rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbPullStorageDetail">
 					<thead>
 						<tr>
@@ -225,18 +225,28 @@
 		</div>
 		<div id="dlg-buttons">
 			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="javascript:$('#dlgPullStorageDetail').dialog('close')">保存草稿</a>
-	        <a id="saveEntityBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="alert('提交后将不能在修改，确定提交吗？')">提交</a>
+	        <a id="saveEntityBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="submitPullStorage()">提交</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgPullStorageDetail').dialog('close')">取消</a>
 	    </div>
-		<div id="dlgProduct" class="easyui-dialog" style="width:800px;height:495px;padding:5px 5px 5px 5px;"
+		<div id="dlgProduct" class="easyui-dialog" title="库存列表" style="width:800px;height:495px;padding:5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlgProduct-buttons">
 				<div class="easyui-panel" title="查询条件" style="width:775px;">
 						<div style="padding: 10px 0 0 30px">
 							<form id="ffdetail" method="post">
 								<table>
 									<tr>
-										<td>仓库:</td>	
-										<td width="100px"><input class="easyui-validatebox" type="text" name="storage_name" id="storage_name" ></input></td>
+										<input type="hidden" name="fk_dealer_id" id="fk_dealer_id" value="${user.fk_dealer_id}"></input>
+										<td>仓库:</td>
+										<td width="100px">
+											<input class="easyui-combobox" name="fk_storage_id" id="fk_storage_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+						             			data-options="
+							             			url:'${basePath}api/storage/list?dealer_id=${user.fk_dealer_id}',
+								                    method:'get',
+								                    valueField:'id',
+													textField:'storage_name',
+								                    panelHeight:'auto'
+						            			"/>
+										</td>
 										<td>产品编号:</td>	
 										<td width="100px"><input class="easyui-validatebox" type="text" name="product_item_number" id="product_item_number" ></input></td>
 										<td>产品批次:</td>	
@@ -251,29 +261,30 @@
 					</div>
 				<div style="margin: 10px 0;"></div>
 					<table id="dgProduct" class="easyui-datagrid" title="查询结果" style="height:300px" method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="desc" toolbar="#tbProduct">
+					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbProduct">
 						<thead>
 							<tr>
-								<th data-options="field:'storage_name',width:100,align:'center'" sortable="true">仓库</th>
-								<th data-options="field:'product_item_number',width:100,align:'center'" sortable="true">产品编号</th>
-								<th data-options="field:'product_name',width:150,align:'center'" sortable="true">产品名称</th>
-								<th data-options="field:'batch_no',width:150,align:'center'" sortable="true">批次</th>
-								<th data-options="field:'inventory_number',width:80,align:'center'" sortable="true">库存量</th>
-								<th data-options="field:'valid_date',width:80,align:'center'" sortable="true">有效日期</th>
+								<th field="dealer_name" width="100" align="center" hidden="true">经销商</th>
+								<th field="fk_storage_id" width="120" align="center" hidden="true"></th>
+								<th field="storage_name" width="120" align="center" sortable="true">仓库</th>
+								<th field="product_item_number" width="120" align="center" sortable="true">产品编号</th>
+								<th field="product_cname" width="120" align="center" sortable="true">产品中文名称</th>
+								<th field="batch_no" width="100" align="center" sortable="true">批号/序列号</th>
+								<th field="valid_date" width="100" align="center" sortable="true">有效期</th>
+								<th field="inventory_number" width="100" align="center" sortable="true">产品数量（EA）</th>
 							</tr>
 						</thead>
 					</table>
 		</div>
 		<div style="margin: 10px 0;"></div>
 	    <div id="dlgProduct-buttons">
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductNumEntity()">添加产品</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductSnEntity()">添加</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
 	    </div>
-		<div id="dlgProductSum" class="easyui-dialog" style="width:300px;height:300px;padding:5px 5px 5px 5px;"
-	            modal="true" closed="true" buttons="#dlgProductSum-buttons">
+		<div id="dlgProductSn" class="easyui-dialog" style="width:300px;height:320px;padding:5px 5px 5px 5px;"
+	            modal="true" closed="true" buttons="#dlgProductSn-buttons">
 		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
-					      <table> 
-					      	     
+					      <table>
 					      	     <tr>
 					             	<td>仓库:</td>
 					             	<input name="fk_storage_id" hidden="true" class="easyui-validatebox" style="width:150px;">
@@ -281,7 +292,10 @@
 					            </tr>
 					    		<tr>
 					             	<td>出库单号:</td>
-					             	<td><input name="pull_storage_code" readonly="true" class="easyui-validatebox" style="width:150px;"></td>
+					             	<td>
+					             		<input name="pull_storage_code" readonly="true" class="easyui-validatebox" style="width:150px;">
+					             		<input name="put_storage_code" hidden="true" class="easyui-validatebox" style="width:150px;">
+					             	</td>
 					            </tr>
 					            <tr>
 					             	<td>产品编码:</td>
@@ -289,15 +303,15 @@
 					            </tr>
 					            <tr>
 					             	<td>产品名称</td>
-					             	<td><input name="product_name" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					             	<td><input name="product_cname" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
 					            <tr>
 					             	<td>批次</td>
 					             	<td><input name="batch_no" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
 					            <tr>
-					             	<td>单价</td>
-					             	<td><input name="money" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					             	<td>有效期</td>
+					             	<td><input name="valid_date" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
 					            <tr>
 					             	<td>库存量:</td>
@@ -305,20 +319,20 @@
 					             </tr>
 						        <tr>
 					             	<td>数量:</td>
-					             	<td><input name="sales_numberr" id="sales_numberr" class="easyui-numberbox" style="width:150px" 
+					             	<td><input name="sales_number" id="sales_number" class="easyui-numberbox" style="width:150px" 
 									data-options="required:true"></td>
 					             </tr>
 					      </table>    	
 		        </form>
 	    </div>
-	    <div id="dlgProductSum-buttons">
+	    <div id="dlgProductSn-buttons">
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="savePullStorageDetailEntity();">保存</a>
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProductSum').dialog('close')">取消</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProductSn').dialog('close')">取消</a>
 	    </div>
 	<script type="text/javascript">
 		var status;
 		var pull_storage_code;
-		var fk_pull_storage_party_id=${user.fk_dealer_id};
+		var put_storage_code;
 		$(function() {
 			var pager = $('#dg').datagrid().datagrid('getPager'); 
 			pager.pagination();
@@ -382,7 +396,8 @@
 				if(row.status=='0'){
 				    $.ajax({
 						type : "POST",
-						url :basePath+'api/pullstorage/remove?id='+row.id,
+						url :basePath+'api/pullstorage/remove',
+						data:{pull_storage_code:pull_storage_code,filter_ANDS_pull_storage_code:pull_storage_code},
 						error : function(request) {
 							$.messager.alert('提示','抱歉,删除错误!','error');	
 						},
@@ -390,6 +405,7 @@
 						    var jsonobj = $.parseJSON(msg);
         					if (jsonobj.state == 1) {
         						 pull_storage_code=undefined;
+        						 put_storage_code=undefined;
         	                     $('#dg').datagrid('reload');
         	                     $('#dgDetail').datagrid('loadData', {total: 0, rows: [] });
         	                     $('#dgDetail').datagrid({
@@ -398,14 +414,14 @@
         					}else{
         						$.messager.alert('提示','抱歉,删除错误!','error');	
         					}
-						}	
+						}
 					});
 				}else{
-					$.messager.alert('提示','无法删除已提交的订单!','error');
+					$.messager.alert('提示','无法删除已提交的分销!','error');
 				}
 			}else
 			{
-				$.messager.alert('提示','请选中某个订单!','warning');
+				$.messager.alert('提示','请选中某个分销!','warning');
 			}
 		}
 		function clearForm(){
@@ -422,6 +438,7 @@
 			$('#dlgPullStorageDetail').dialog('open');
             $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
             pull_storage_code = row.pull_storage_code;
+            put_storage_code = row.put_storage_code;
 			status=row.status;
 			$('#dgDetail').datagrid({
 				url : basePath + "api/pullstoragedetail/detailpaging",
@@ -437,7 +454,7 @@
 				$('#delPullStorageDetail').linkbutton('enable');
 			}
 		}
-		//订单项
+		//明细
 		function removePullStorageDetailEntity()
 		{
 			var row = $('#dgDetail').datagrid('getSelected');
@@ -445,7 +462,9 @@
 				if(status=='0'){
 				    $.ajax({
 						type : "POST",
-						url :basePath+'api/pullstoragedetail/remove?oc='+row.pull_storage_code+'&id='+row.id,
+						url :basePath+'api/pullstoragedetail/remove',
+						data:{pull_storage_code:pull_storage_code,batch_no:row.batch_no,fk_storage_id:row.fk_storage_id,
+							product_item_number:row.product_item_number,sales_number:row.sales_number},
 						error : function(request) {
 							$.messager.alert('提示','抱歉,删除错误!','error');	
 						},
@@ -460,7 +479,7 @@
 						}
 					});
 				}else{
-					$.messager.alert('提示','无法删除已提交的单据!','error');
+					$.messager.alert('提示','无法删除已提交的分销!','error');
 				}
 			}else
 			{
@@ -470,31 +489,32 @@
 		function newPullStorageDetailEntity()
 		{
 			if(typeof(pull_storage_code) != "undefined"){
-				$('#dlgProduct').dialog('open').dialog('setTitle','['+pull_storage_code+']产品列表');
+				$('#dlgProduct').dialog('open');
 				$('#dgProduct').datagrid({
-					 url:basePath+'api/product/paging',
+					 url:basePath+'api/storageDetail/paging',
 					 queryParams: {
-						filter_ANDS_dealer_id : dealer_id
+						filter_ANDS_fk_dealer_id : $('#fk_dealer_id').val()
 					 }
 				});
 			}else
 			{
-				$.messager.alert('提示','请选中某个订单!','warning');
+				$.messager.alert('提示','请选中某个分销!','warning');
 			}
 		}
-		function newProductNumEntity() {
+		function newProductSnEntity() {
 			clearPullStorageDetailForm();
 			var row = $('#dgProduct').datagrid('getSelected');
 			if(row){
 				$("#fm3 input[name=pull_storage_code]").val(pull_storage_code);
+				$("#fm3 input[name=put_storage_code]").val(put_storage_code);
 				$("#fm3 input[name=product_item_number]").val(row.product_item_number);
-				$("#fm3 input[name=product_name]").val(row.product_name);
+				$("#fm3 input[name=product_cname]").val(row.product_cname);
 				$("#fm3 input[name=batch_no]").val(row.batch_no);	
-				$("#fm3 input[name=money]").val(row.money);	
 				$("#fm3 input[name=inventory_number]").val(row.inventory_number);	
 				$("#fm3 input[name=fk_storage_id]").val(row.fk_storage_id);	
 				$("#fm3 input[name=storage_name]").val(row.storage_name);
-				$('#dlgProductSum').dialog('open').dialog('setTitle','添加产品');
+				$("#fm3 input[name=valid_date]").val(row.valid_date);
+				$('#dlgProductSn').dialog('open').dialog('setTitle','添加产品');
 			}else
 			{
 				$.messager.alert('提示','请选中某个产品!','warning');
@@ -512,7 +532,7 @@
 				    success:function(msg){
 				    	var jsonobj = $.parseJSON(msg);
 				    	if(jsonobj.state==1){
-							 $('#dlgProductSum').dialog('close');     
+							 $('#dlgProductSn').dialog('close');     
 		                     $('#dgDetail').datagrid('reload');
 		                     $('#dg').datagrid('reload');
 				    	}else if(jsonobj.state==2){
@@ -527,10 +547,36 @@
 				$.messager.alert('提示','请选中某个产品!','warning');
 			}
 		}
+		function submitPullStorage(){
+			var row = $('#dg').datagrid('getSelected');
+			if(row.status=='0'){
+			 $.ajax({
+					type : "POST",
+					url :basePath+'api/pullstorage/submit',
+					data:{filter_ANDS_pull_storage_code:pull_storage_code,filter_ANDS_put_storage_code:put_storage_code,
+						pull_storage_code:pull_storage_code,put_storage_code:put_storage_code},
+					error : function(request) {
+						$.messager.alert('提示','抱歉,提交错误!','error');	
+					},
+					success:function(msg){
+					    var jsonobj = $.parseJSON(msg);
+	 					if (jsonobj.state == 1) {
+	 	                   $('#dg').datagrid('reload');
+	 	                   $('#dlgPullStorageDetail').dialog('close')
+	 					}else{
+	 						$.messager.alert('提示','抱歉,提交错误!','error');	
+	 					}
+					}
+				});
+			}else{
+				$.messager.alert('提示','已经处于提交状态！','error');	
+			}
+		}
 		function doSearchProduct(){
 		    $('#dgProduct').datagrid('load',{
-		    	filter_ANDS_storage_name: $("#ffdetail input[name=storage_name]").val(),
-		    	filter_ANDS_product_item_number: product_item_number,
+		    	filter_ANDS_fk_storage_id: $("#ffdetail input[name=fk_storage_id]").val(),
+				filter_ANDS_fk_dealer_id : $('#ffdetail input[name=fk_dealer_id]').val(),
+		    	filter_ANDS_product_item_number:$("#ffdetail input[name=product_item_number]").val(),
 		    	filter_ANDS_batch_no: $("#ffdetail input[name=batch_no]").val()
 		    });
 		}
