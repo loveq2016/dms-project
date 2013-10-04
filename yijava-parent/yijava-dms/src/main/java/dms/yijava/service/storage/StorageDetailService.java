@@ -103,22 +103,31 @@ public class StorageDetailService {
 		try {
 			//减少库存
 			for (StorageDetail storageDetail : StorageDetailList) {
-				int upIdex = storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
-				//System.out.println(upIdex);
-				Map<String,Object> parameters = new HashMap<String, Object>();
-				parameters.put("fk_storage_id", storageDetail.getFk_storage_id());
-				parameters.put("fk_dealer_id", storageDetail.getFk_dealer_id());
-				parameters.put("batch_no", storageDetail.getBatch_no());
-				parameters.put("status", "1");
-				parameters.put("size", Math.abs(Integer.parseInt(storageDetail.getInventory_number())));
-				List<StorageProDetail> StorageProDetailList=   storageProDetailDao.findObject(".selectStorageProDetailByStatus",parameters);
-				for (StorageProDetail storageProDetail : StorageProDetailList) {
-					//锁定Sn记录
-					int lockIdex = storageProDetailDao.updateObject(".lockSn", storageProDetail);
-					//System.out.println(lockIdex);
-					//返回锁定Sn记录List
-					lockSnList.add(storageProDetail);
-				}		
+				
+				//查询库存
+				StorageDetail  tempStorageDetail = storageDetailDao.getObject(".queryStorageDetail",storageDetail);
+				if(tempStorageDetail ==null || 
+						 (Math.abs(Integer.parseInt(storageDetail.getInventory_number())) > Integer.parseInt(tempStorageDetail.getInventory_number()))){
+					//库存量不够修改的
+					throw new Exception("更新库存错误！库存量不足");
+				}else{
+					int upIdex = storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
+					//System.out.println(upIdex);
+					Map<String,Object> parameters = new HashMap<String, Object>();
+					parameters.put("fk_storage_id", storageDetail.getFk_storage_id());
+					parameters.put("fk_dealer_id", storageDetail.getFk_dealer_id());
+					parameters.put("batch_no", storageDetail.getBatch_no());
+					parameters.put("status", "1");
+					parameters.put("size", Math.abs(Integer.parseInt(storageDetail.getInventory_number())));
+					List<StorageProDetail> StorageProDetailList=   storageProDetailDao.findObject(".selectStorageProDetailByStatus",parameters);
+					for (StorageProDetail storageProDetail : StorageProDetailList) {
+						//锁定Sn记录
+						int lockIdex = storageProDetailDao.updateObject(".lockSn", storageProDetail);
+						//System.out.println(lockIdex);
+						//返回锁定Sn记录List
+						lockSnList.add(storageProDetail);
+					}	
+				}
 			}
 			opt.setStatus("success");
 		} catch (Exception e) {
@@ -135,22 +144,17 @@ public class StorageDetailService {
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
 	public synchronized boolean rollBackStorageUnLockSn(List<StorageDetail> StorageDetailList,List<StorageProDetail> StorageProDetailList) {
-		try {
-			//库存回滚
-			for (StorageDetail storageDetail : StorageDetailList) {
-				int upIdex = storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
-				//System.out.println(upIdex);
-			}
-			for (StorageProDetail storageProDetail : StorageProDetailList) {
-				//取消锁定Sn记录
-				int lockIdex = storageProDetailDao.updateObject(".unlockSn", storageProDetail);
-				//System.out.println(lockIdex);
-			}	
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
+		//库存回滚
+		for (StorageDetail storageDetail : StorageDetailList) {
+			int upIdex = storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
+			//System.out.println(upIdex);
 		}
-		return false;
+		for (StorageProDetail storageProDetail : StorageProDetailList) {
+			//取消锁定Sn记录
+			int lockIdex = storageProDetailDao.updateObject(".unlockSn", storageProDetail);
+			//System.out.println(lockIdex);
+		}	
+		return true;
 	}
 	
 	
@@ -158,26 +162,30 @@ public class StorageDetailService {
 	 * 入库：更新库存、更新Sn记录
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
-	public synchronized boolean updateStorageAndSnSub(List<StorageDetail> StorageDetailList,List<StorageProDetail> StorageProDetailList){
-		try {
-			for (StorageDetail storageDetail : StorageDetailList) {
-				StorageDetail  tempStorageDetail = storageDetailDao.getObject(".queryStorageDetail",storageDetail);
-				if (tempStorageDetail == null) {
-					storageDetailDao.insertObject(".saveStorageDetail",storageDetail);
-				}else{
-					storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
-				}
-			}
-			for (StorageProDetail storageProDetail : StorageProDetailList) {
-				//更新Sn记录
-				int lockIdex = storageProDetailDao.updateObject(".updateSnSub", storageProDetail);
-				//System.out.println(lockIdex);
-			}	
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
+	public synchronized boolean updateStorageAndSnSub(String dealer_id,
+			List<StorageDetail> StorageDetailList,
+			List<StorageProDetail> StorageProDetailList) {
+		//查询默认仓库
+		DealerStorage dealerStorage = dealerStorageService.getDefaultStorage(dealer_id);
+		if (dealerStorage == null) {
+			return false;
 		}
-		return false;
+		for (StorageDetail storageDetail : StorageDetailList) {
+			storageDetail.setFk_storage_id(dealerStorage.getStorage_id());
+			StorageDetail  tempStorageDetail = storageDetailDao.getObject(".queryStorageDetail",storageDetail);
+			if (tempStorageDetail == null) {
+				storageDetailDao.insertObject(".saveStorageDetail",storageDetail);
+			}else{
+				storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
+			}
+		}
+		for (StorageProDetail storageProDetail : StorageProDetailList) {
+			storageProDetail.setFk_storage_id(dealerStorage.getStorage_id());
+			//更新Sn记录
+			int lockIdex = storageProDetailDao.updateObject(".updateSnSub", storageProDetail);
+			//System.out.println(lockIdex);
+		}	
+		return true;
 	}
 	
 	
