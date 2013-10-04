@@ -165,7 +165,7 @@
 			<div style="margin: 10px 0;"></div>
 		</div>
 		<div id="dlg-buttons">
-	        <a id="saveEntityBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="submitPutStorage()">确认收货</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" id="submitPutStorage" onclick="submitPutStorage()">确认收货</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgPullStorageDetail').dialog('close')">取消</a>
 	    </div>
 	<script type="text/javascript">
@@ -219,33 +219,32 @@
 					filter_ANDS_pull_storage_code : pull_storage_code
 				}
 			});
+			if(status=='1'){
+				$('#submitPutStorage').linkbutton('enable');
+			}else{
+				$('#submitPutStorage').linkbutton('disable');
+			}
 		}
 		function submitPutStorage(){
-			var row = $('#dg').datagrid('getSelected');
-			if (row){
-				if(row.status=='1'){
-					 $.ajax({
-							type : "POST",
-							url :basePath+'api/putstorage/submit',
-							data:{filter_ANDS_pull_storage_code:pull_storage_code,filter_ANDS_put_storage_code:put_storage_code,
-								pull_storage_code:pull_storage_code,put_storage_code:put_storage_code},
-							error : function(request) {
-								$.messager.alert('提示','抱歉,提交错误!','error');	
-							},
-							success:function(msg){
-							    var jsonobj = $.parseJSON(msg);
-			 					if (jsonobj.state == 1) {
-			 	                   $('#dg').datagrid('reload');
-			 	                   $('#dlgPullStorageDetail').dialog('close')
-			 					}else{
-			 						$.messager.alert('提示','抱歉,提交错误!','error');	
-			 					}
-							}
-					});
-				}else{
-					$.messager.alert('提示','已经处于确认状态！','error');	
-				}
-			}
+			if(typeof(pull_storage_code) != "undefined")
+				$.ajax({
+					type : "POST",
+					url :basePath+'api/putstorage/submit',
+					data:{filter_ANDS_pull_storage_code:pull_storage_code,filter_ANDS_put_storage_code:put_storage_code,
+						pull_storage_code:pull_storage_code,put_storage_code:put_storage_code},
+					error : function(request) {
+						$.messager.alert('提示','抱歉,提交错误!','error');	
+					},
+					success:function(msg){
+					    var jsonobj = $.parseJSON(msg);
+			 			if (jsonobj.state == 1) {
+			 	              $('#dg').datagrid('reload');
+			 	              $('#dlgPullStorageDetail').dialog('close')
+			 			}else{
+			 				$.messager.alert('提示','抱歉,提交错误!','error');	
+			 			}
+					}
+				});
 		}
 		function formatterIs_pullstorage (value, row, index) { 
 			return value==1?"<span style='color:green'>是</span>":"<span style='color:red'>否</span>";

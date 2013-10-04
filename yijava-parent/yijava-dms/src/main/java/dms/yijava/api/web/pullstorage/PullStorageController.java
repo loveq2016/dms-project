@@ -76,17 +76,21 @@ public class PullStorageController {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");
 		//必须是经销商才可以添加出货单
 		if(StringUtils.isNotEmpty(sysUser.getFk_dealer_id())){
-			PullStorage pullObj=pullStorageService.getPullStorageCode(sysUser.getFk_dealer_id());
-			PullStorage putObj=pullStorageService.getPutStorageCode(entity.getFk_put_storage_party_id());
-			//出货单
-			entity.setPull_storage_code(sysUser.getDealer_code()+"RN"+formatter.format(new Date())+pullObj.getPull_storage_no());
-			entity.setPull_storage_no(String.valueOf((Integer.parseInt(pullObj.getPull_storage_no()))));
-			entity.setFk_pull_storage_party_id(sysUser.getFk_dealer_id());
-			//收货单
-			entity.setPut_storage_code(entity.getPut_storage_code()+"PR"+formatter.format(new Date())+putObj.getPut_storage_no());
-			entity.setPut_storage_no(String.valueOf((Integer.parseInt(putObj.getPut_storage_no()))));
-			pullStorageService.saveEntity(entity);
-			return new Result<Integer>(1, 1);
+			if(!sysUser.getFk_dealer_id().endsWith(entity.getFk_put_storage_party_id())){
+				PullStorage pullObj=pullStorageService.getPullStorageCode(sysUser.getFk_dealer_id());
+				PullStorage putObj=pullStorageService.getPutStorageCode(entity.getFk_put_storage_party_id());
+				//出货单
+				entity.setPull_storage_code(sysUser.getDealer_code()+"RN"+formatter.format(new Date())+pullObj.getPull_storage_no());
+				entity.setPull_storage_no(String.valueOf((Integer.parseInt(pullObj.getPull_storage_no()))));
+				entity.setFk_pull_storage_party_id(sysUser.getFk_dealer_id());
+				//收货单
+				entity.setPut_storage_code(entity.getPut_storage_code()+"PR"+formatter.format(new Date())+putObj.getPut_storage_no());
+				entity.setPut_storage_no(String.valueOf((Integer.parseInt(putObj.getPut_storage_no()))));
+				pullStorageService.saveEntity(entity);
+				return new Result<Integer>(1, 1);
+			}else{
+				return new Result<Integer>(1, 2);
+			}
 		}else{
 			return new Result<Integer>(1, 0);
 		}

@@ -224,8 +224,8 @@
 			<div style="margin: 10px 0;"></div>
 		</div>
 		<div id="dlg-buttons">
-			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="javascript:$('#dlgPullStorageDetail').dialog('close')">保存草稿</a>
-	        <a id="saveEntityBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="submitPullStorage()">提交</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" id="saveDraft" onclick="javascript:$('#dlgPullStorageDetail').dialog('close')">保存草稿</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" id="submitPullStorage" iconCls="icon-ok" onclick="submitPullStorage()">提交</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgPullStorageDetail').dialog('close')">取消</a>
 	    </div>
 		<div id="dlgProduct" class="easyui-dialog" title="库存列表" style="width:800px;height:495px;padding:5px 5px 5px 5px;"
@@ -387,6 +387,8 @@
 				    	$('#w').window('close');
 				    	var pager = $('#dg').datagrid().datagrid('getPager');
 				    	pager.pagination('select');	
+			    	}else if(jsonobj.state==2){
+			    		$.messager.alert('提示','禁止添加自己为收货经销商!','error');
 			    	}else{
 			    		$.messager.alert('提示','Error!','error');	
 			    	}
@@ -453,9 +455,13 @@
 			if(status!='0'){
 				$('#savePullStorageDetail').linkbutton('disable');
 				$('#delPullStorageDetail').linkbutton('disable');
+				$('#saveDraft').linkbutton('disable');
+				$('#submitPullStorage').linkbutton('disable');
 			}else{
 				$('#savePullStorageDetail').linkbutton('enable');
 				$('#delPullStorageDetail').linkbutton('enable');
+				$('#saveDraft').linkbutton('enable');
+				$('#submitPullStorage').linkbutton('enable');
 			}
 		}
 		//明细
@@ -552,31 +558,25 @@
 			}
 		}
 		function submitPullStorage(){
-			var row = $('#dg').datagrid('getSelected');
-			if (row){
-				if(row.status=='0'){
-					 $.ajax({
-							type : "POST",
-							url :basePath+'api/pullstorage/submit',
-							data:{filter_ANDS_pull_storage_code:pull_storage_code,filter_ANDS_put_storage_code:put_storage_code,
-								pull_storage_code:pull_storage_code,put_storage_code:put_storage_code},
-							error : function(request) {
-								$.messager.alert('提示','抱歉,提交错误!','error');	
-							},
-							success:function(msg){
-							    var jsonobj = $.parseJSON(msg);
-			 					if (jsonobj.state == 1) {
-			 	                   $('#dg').datagrid('reload');
-			 	                   $('#dlgPullStorageDetail').dialog('close')
-			 					}else{
-			 						$.messager.alert('提示','抱歉,提交错误!','error');	
-			 					}
-							}
-					});
-				}else{
-					$.messager.alert('提示','已经处于提交状态！','error');	
-				}
-			}
+			if(typeof(pull_storage_code) != "undefined")
+		 		$.ajax({
+					type : "POST",
+					url :basePath+'api/pullstorage/submit',
+					data:{filter_ANDS_pull_storage_code:pull_storage_code,filter_ANDS_put_storage_code:put_storage_code,
+						pull_storage_code:pull_storage_code,put_storage_code:put_storage_code},
+					error : function(request) {
+						$.messager.alert('提示','抱歉,提交错误!','error');	
+					},
+					success:function(msg){
+						var jsonobj = $.parseJSON(msg);
+			 			if (jsonobj.state == 1) {
+			 	            $('#dg').datagrid('reload');
+			 	            $('#dlgPullStorageDetail').dialog('close')
+			 			}else{
+			 				$.messager.alert('提示','抱歉,提交错误!','error');	
+			 			}
+					}
+				});
 		}
 		function doSearchProduct(){
 		    $('#dgProduct').datagrid('load',{

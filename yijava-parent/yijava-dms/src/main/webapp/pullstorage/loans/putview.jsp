@@ -165,7 +165,7 @@
 			<div style="margin: 10px 0;"></div>
 		</div>
 		<div id="dlg-buttons">
-	        <a id="saveEntityBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="submitPutStorage()">确认收货</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" id="submitPutStorage" onclick="submitPutStorage()">确认收货</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgPullStorageDetail').dialog('close')">取消</a>
 	    </div>
 	<script type="text/javascript">
@@ -219,6 +219,11 @@
 					filter_ANDS_pull_storage_code : pull_storage_code
 				}
 			});
+			if(status=='1'){
+				$('#submitPutStorage').linkbutton('enable');
+			}else{
+				$('#submitPutStorage').linkbutton('disable');
+			}
 		}
 		function submitPutStorage(){
 			var row = $('#dg').datagrid('getSelected');
