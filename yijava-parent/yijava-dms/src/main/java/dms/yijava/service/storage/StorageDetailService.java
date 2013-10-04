@@ -99,27 +99,39 @@ public class StorageDetailService {
 	public synchronized PullStorageOpt updateStorageLockSn(List<StorageDetail> StorageDetailList) {
 		List<StorageProDetail> lockSnList = new ArrayList<StorageProDetail>();
 		PullStorageOpt opt = new PullStorageOpt();
-		opt.setStatus("faild");
-		try {
-			//减少库存
-			for (StorageDetail storageDetail : StorageDetailList) {
-				
-				//查询库存
-				StorageDetail  tempStorageDetail = storageDetailDao.getObject(".queryStorageDetail",storageDetail);
-				if(tempStorageDetail ==null || 
-						 (Math.abs(Integer.parseInt(storageDetail.getInventory_number())) > Integer.parseInt(tempStorageDetail.getInventory_number()))){
-					//库存量不够修改的
+		boolean isError = false ; 
+		//减少库存
+		for (StorageDetail storageDetail : StorageDetailList) {
+			//查询库存
+			StorageDetail  tempStorageDetail = storageDetailDao.getObject(".queryStorageDetail",storageDetail);
+			if(tempStorageDetail ==null || 
+					 (Math.abs(Integer.parseInt(storageDetail.getInventory_number())) > Integer.parseInt(tempStorageDetail.getInventory_number()))){
+				//库存量不够修改的
+				try {
+					isError = true ;
 					throw new Exception("更新库存错误！库存量不足");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}else{
+				//查询sn List
+				Map<String,Object> parameters = new HashMap<String, Object>();
+				parameters.put("fk_storage_id", storageDetail.getFk_storage_id());
+				parameters.put("fk_dealer_id", storageDetail.getFk_dealer_id());
+				parameters.put("batch_no", storageDetail.getBatch_no());
+				parameters.put("status", "1");
+				parameters.put("size", Math.abs(Integer.parseInt(storageDetail.getInventory_number())));
+				List<StorageProDetail> StorageProDetailList=   storageProDetailDao.findObject(".selectStorageProDetailByStatus",parameters);
+				if(StorageProDetailList.size()!= Math.abs(Integer.parseInt(storageDetail.getInventory_number()))){
+					//获取sn数量 与 更新不一致
+					try {
+						isError = true ;
+						throw new Exception("更新库存错误！Sn库存量不足");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}else{
 					int upIdex = storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
-					//System.out.println(upIdex);
-					Map<String,Object> parameters = new HashMap<String, Object>();
-					parameters.put("fk_storage_id", storageDetail.getFk_storage_id());
-					parameters.put("fk_dealer_id", storageDetail.getFk_dealer_id());
-					parameters.put("batch_no", storageDetail.getBatch_no());
-					parameters.put("status", "1");
-					parameters.put("size", Math.abs(Integer.parseInt(storageDetail.getInventory_number())));
-					List<StorageProDetail> StorageProDetailList=   storageProDetailDao.findObject(".selectStorageProDetailByStatus",parameters);
 					for (StorageProDetail storageProDetail : StorageProDetailList) {
 						//锁定Sn记录
 						int lockIdex = storageProDetailDao.updateObject(".lockSn", storageProDetail);
@@ -127,12 +139,16 @@ public class StorageDetailService {
 						//返回锁定Sn记录List
 						lockSnList.add(storageProDetail);
 					}	
+					//System.out.println(upIdex);
 				}
 			}
+		}
+		
+		if (isError) {
+			opt.setStatus("faild");
+			lockSnList = null;
+		}else{
 			opt.setStatus("success");
-		} catch (Exception e) {
-			lockSnList.clear();
-			e.printStackTrace();
 		}
 		opt.setList(lockSnList);
 		return opt;
@@ -165,13 +181,17 @@ public class StorageDetailService {
 	public synchronized boolean updateStorageAndSnSub(String dealer_id,
 			List<StorageDetail> StorageDetailList,
 			List<StorageProDetail> StorageProDetailList) {
-		//查询默认仓库
-		DealerStorage dealerStorage = dealerStorageService.getDefaultStorage(dealer_id);
-		if (dealerStorage == null) {
-			return false;
+		DealerStorage dealerStorage = null ; 
+		if (dealer_id != null) {
+			//查询默认仓库
+			dealerStorage = dealerStorageService.getDefaultStorage(dealer_id);
+			if (dealerStorage == null) {
+				return false;
+			}
 		}
+
 		for (StorageDetail storageDetail : StorageDetailList) {
-			storageDetail.setFk_storage_id(dealerStorage.getStorage_id());
+			if(dealerStorage!=null)storageDetail.setFk_storage_id(dealerStorage.getStorage_id());
 			StorageDetail  tempStorageDetail = storageDetailDao.getObject(".queryStorageDetail",storageDetail);
 			if (tempStorageDetail == null) {
 				storageDetailDao.insertObject(".saveStorageDetail",storageDetail);
@@ -180,7 +200,7 @@ public class StorageDetailService {
 			}
 		}
 		for (StorageProDetail storageProDetail : StorageProDetailList) {
-			storageProDetail.setFk_storage_id(dealerStorage.getStorage_id());
+			if(dealerStorage!=null)storageProDetail.setFk_storage_id(dealerStorage.getStorage_id());
 			//更新Sn记录
 			int lockIdex = storageProDetailDao.updateObject(".updateSnSub", storageProDetail);
 			//System.out.println(lockIdex);
