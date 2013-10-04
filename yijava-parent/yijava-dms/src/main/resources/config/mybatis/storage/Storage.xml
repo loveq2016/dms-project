@@ -4,7 +4,8 @@
 
 <mapper namespace="Storage">
 	<select id="selectByMap" resultType="dms.yijava.entity.storage.Storage">
-		select * from tb_storage
+		select ts.* from tb_storage ts LEFT JOIN tb_dealer_storage tds ON ts.id=tds.storage_id 
+		<include refid="adsWhere"/>
 	</select>
 	<sql id="adsWhere">
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
@@ -13,6 +14,9 @@
 			</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(address)">
 				and address like CONCAT('%','${address}','%' ) 
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
+				and dealer_id =#{dealer_id}
 			</if>
 		</trim>
 	</sql>

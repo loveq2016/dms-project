@@ -172,7 +172,13 @@
 		<a href="javascript:void(0)" title="发货单管理" url="pullstorage/sales/pullview.jsp">分销出库管理</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="发货管理" url="pullstorage/loansview.jsp">借贷出库管理</a>
+		<a href="javascript:void(0)" title="发货单管理" url="pullstorage/sales/putview.jsp">分销入库管理</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="发货管理" url="pullstorage/loans/pullview.jsp">借贷出库管理</a>
+	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="发货单管理" url="pullstorage/loans/putview.jsp">借贷入库管理</a>
 	</div>
 </div>
 <div id="mm11" style="width: 150px;">
