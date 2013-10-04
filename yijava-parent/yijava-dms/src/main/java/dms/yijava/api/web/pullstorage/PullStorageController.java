@@ -101,7 +101,6 @@ public class PullStorageController {
 	@ResponseBody
 	@RequestMapping("submit")
 	public Result<Integer> submitPullStorage(@ModelAttribute("entity") PullStorage entity,HttpServletRequest request) {
-	
 		/**
 		 * 添加产品SN明细
 		 */
@@ -138,7 +137,9 @@ public class PullStorageController {
 			/**
 			 * 处理订单状态
 			 */
-			entity.setStatus("1");
+			SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+			entity.setStatus("1");//在途中
+			entity.setPull_storage_date(time.format(new Date()));
 			pullStorageService.updateEntity(entity);
 		}
 		return new Result<Integer>(1, 1);

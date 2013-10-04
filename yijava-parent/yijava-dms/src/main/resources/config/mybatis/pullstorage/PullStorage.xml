@@ -63,7 +63,7 @@
 	</sql>
 	<select id="selectByObjectcount" resultType="long">
 		SELECT COUNT(*)  FROM(
-		select tps.*,d1.dealer_name as pull_storage_party_name,d1.dealer_name as pull_storage_user_name,d2.dealer_name as put_storage_party_name from dms.tb_pull_storage tps
+		select tps.*,d1.dealer_name as pull_storage_party_name,d1.dealer_name as pull_storage_user_name,d2.dealer_name as put_storage_party_name,d2.dealer_name as put_storage_user_name from dms.tb_pull_storage tps
 		    LEFT JOIN tb_dealer d1 ON tps.fk_pull_storage_party_id=d1.dealer_id 
 		    LEFT JOIN tb_dealer d2 ON tps.fk_put_storage_party_id=d2.dealer_id 
 		) t
@@ -71,7 +71,7 @@
 	</select>
 	<select id="selectByObject" resultType="dms.yijava.entity.pullstorage.PullStorage">
 		SELECT * FROM(
-		select tps.*,d1.dealer_name as pull_storage_party_name,d1.dealer_name as pull_storage_user_name,d2.dealer_name as put_storage_party_name from dms.tb_pull_storage tps
+		select tps.*,d1.dealer_name as pull_storage_party_name,d1.dealer_name as pull_storage_user_name,d2.dealer_name as put_storage_party_name,d2.dealer_name as put_storage_user_name from dms.tb_pull_storage tps
 		    LEFT JOIN tb_dealer d1 ON tps.fk_pull_storage_party_id=d1.dealer_id 
 		    LEFT JOIN tb_dealer d2 ON tps.fk_put_storage_party_id=d2.dealer_id 
 		) t
@@ -81,7 +81,7 @@
 	</select>
 	<select id="selectByMap" resultType="dms.yijava.entity.pullstorage.PullStorage">
 		SELECT * FROM(
-		select tps.*,d1.dealer_name as pull_storage_party_name,d1.dealer_name as pull_storage_user_name,d2.dealer_name as put_storage_party_name from dms.tb_pull_storage tps
+		select tps.*,d1.dealer_name as pull_storage_party_name,d1.dealer_name as pull_storage_user_name,d2.dealer_name as put_storage_party_name,d2.dealer_name as put_storage_user_name from dms.tb_pull_storage tps
 		    LEFT JOIN tb_dealer d1 ON tps.fk_pull_storage_party_id=d1.dealer_id 
 		    LEFT JOIN tb_dealer d2 ON tps.fk_put_storage_party_id=d2.dealer_id 
 		) t

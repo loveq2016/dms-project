@@ -17,7 +17,8 @@
 						<form id="ff" method="post">
 							<table>
 								<tr>
-									<td width="150">分销出库号:</td>	
+									<input class="easyui-validatebox" hidden="true" name="type" id="type" value="1"/>
+									<td width="200">分销出库单号:</td>	
 									<td><input class="easyui-validatebox" type="text" name="pull_storage_code"></input></td>
 									<td width="150">经销商:</td>
 									<td>
@@ -88,7 +89,7 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" title="查询结果" style="height:370px" url="${basePath}api/pullstorage/paging" method="get"
+				<table id="dg" title="查询结果" style="height:370px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" pagination="true" 
 					iconCls="icon-search" sortOrder="asc" toolbar="#tbPullStorage">
 					<thead>
@@ -100,7 +101,6 @@
 							<th data-options="field:'put_storage_code',width:100,align:'center'" hidden="true">分销入库单号</th>
 							<th data-options="field:'total_number',width:80,align:'center'" sortable="true">总数量</th>
 							<th data-options="field:'pull_storage_date',width:100,align:'center'" sortable="true">出库时间</th>
-							<th data-options="field:'pull_storage_user_name',width:150,align:'center'" sortable="true">出库人</th>
 							<th data-options="field:'status',width:80,align:'center'" formatter="formatterStatus" sortable="true">单据状态</th>
 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
 						</tr>
@@ -167,7 +167,7 @@
 									<td>
 						            	<input class="easyui-validatebox" readonly="readonly" type="text" name="pull_storage_party_name"></input>
 									</td>
-									<td width="100">出货单号:</td>	
+									<td width="100">分销出货单号:</td>	
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="pull_storage_code"></input></td>
 									<td>出货时间:</td>	
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="pull_storage_date"></input></td>
@@ -212,7 +212,7 @@
 							<th data-options="field:'batch_no',width:200,align:'center'" sortable="true">产品批次</th>
 							<th data-options="field:'valid_date',width:100,align:'center'" sortable="true">有效日期</th>
 							<th data-options="field:'inventory_number',width:80,align:'center'" sortable="true">库存量</th>
-							<th data-options="field:'sales_number',width:80,align:'center'" sortable="true">销售数量</th>
+							<th data-options="field:'sales_number',width:80,align:'center'" sortable="true">销售数量(EA)</th>
 						</tr>
 					</thead>
 				</table>
@@ -291,7 +291,7 @@
 					             	<td><input name="storage_name" readonly="true" class="easyui-validatebox" style="width:150px;"></td>
 					            </tr>
 					    		<tr>
-					             	<td>出库单号:</td>
+					             	<td>分销出库单号:</td>
 					             	<td>
 					             		<input name="pull_storage_code" readonly="true" class="easyui-validatebox" style="width:150px;">
 					             		<input name="put_storage_code" hidden="true" class="easyui-validatebox" style="width:150px;">
@@ -334,8 +334,12 @@
 		var pull_storage_code;
 		var put_storage_code;
 		$(function() {
-			var pager = $('#dg').datagrid().datagrid('getPager'); 
-			pager.pagination();
+			$('#dg').datagrid({
+				  url : basePath +"api/pullstorage/paging" ,
+					queryParams: {
+						filter_ANDS_type : $('#ff input[name=type]').val()
+					}
+			});
 		})
 		function formatterDetail(value, row, index){
 			return '<span style="color:red;cursor:pointer" onclick="openPullStorageDetail(\''+index+'\')">明细</span>'; 
@@ -345,8 +349,8 @@
 		    	filter_ANDS_pull_storage_code:$('#ff input[name=pull_storage_code]').val(),
 		    	filter_ANDS_fk_pull_storage_party_id: $('#ff input[name=fk_pull_storage_party_id]').val(),
 		    	filter_ANDS_fk_put_storage_party_id: $('#ff input[name=fk_put_storage_party_id]').val(),
-		    	
 		    	filter_ANDS_status: $('#ff input[name=status]').val(),
+		    	filter_ANDS_type: $('#ff input[name=type]').val(),
 		    	filter_ANDS_pull_start_date: $('#ff input[name=pull_start_date]').val(),
 		    	filter_ANDS_pull_end_date: $('#ff input[name=pull_end_date]').val(),
 		    });
@@ -364,7 +368,7 @@
 		function newEntity()
 		{
 			clearForm();
-			$("#type").val(1);
+			$('#ffadd input[name=type]').val(1);
 			$('#w').dialog('open').dialog('setTitle','添加信息');
 			url =basePath+'api/pullstorage/save';
 			$('#w').window('open');
@@ -397,7 +401,7 @@
 				    $.ajax({
 						type : "POST",
 						url :basePath+'api/pullstorage/remove',
-						data:{pull_storage_code:pull_storage_code,filter_ANDS_pull_storage_code:pull_storage_code},
+						data:{pull_storage_code:row.pull_storage_code,filter_ANDS_pull_storage_code:row.pull_storage_code},
 						error : function(request) {
 							$.messager.alert('提示','抱歉,删除错误!','error');	
 						},
@@ -417,11 +421,11 @@
 						}
 					});
 				}else{
-					$.messager.alert('提示','无法删除已提交的分销!','error');
+					$.messager.alert('提示','无法删除已提交的单据!','error');
 				}
 			}else
 			{
-				$.messager.alert('提示','请选中某个分销!','warning');
+				$.messager.alert('提示','请选中某个单据!','warning');
 			}
 		}
 		function clearForm(){
@@ -479,7 +483,7 @@
 						}
 					});
 				}else{
-					$.messager.alert('提示','无法删除已提交的分销!','error');
+					$.messager.alert('提示','无法删除已提交的单据!','error');
 				}
 			}else
 			{
@@ -498,7 +502,7 @@
 				});
 			}else
 			{
-				$.messager.alert('提示','请选中某个分销!','warning');
+				$.messager.alert('提示','请选中某个单据!','warning');
 			}
 		}
 		function newProductSnEntity() {
@@ -549,27 +553,29 @@
 		}
 		function submitPullStorage(){
 			var row = $('#dg').datagrid('getSelected');
-			if(row.status=='0'){
-			 $.ajax({
-					type : "POST",
-					url :basePath+'api/pullstorage/submit',
-					data:{filter_ANDS_pull_storage_code:pull_storage_code,filter_ANDS_put_storage_code:put_storage_code,
-						pull_storage_code:pull_storage_code,put_storage_code:put_storage_code},
-					error : function(request) {
-						$.messager.alert('提示','抱歉,提交错误!','error');	
-					},
-					success:function(msg){
-					    var jsonobj = $.parseJSON(msg);
-	 					if (jsonobj.state == 1) {
-	 	                   $('#dg').datagrid('reload');
-	 	                   $('#dlgPullStorageDetail').dialog('close')
-	 					}else{
-	 						$.messager.alert('提示','抱歉,提交错误!','error');	
-	 					}
-					}
-				});
-			}else{
-				$.messager.alert('提示','已经处于提交状态！','error');	
+			if (row){
+				if(row.status=='0'){
+					 $.ajax({
+							type : "POST",
+							url :basePath+'api/pullstorage/submit',
+							data:{filter_ANDS_pull_storage_code:pull_storage_code,filter_ANDS_put_storage_code:put_storage_code,
+								pull_storage_code:pull_storage_code,put_storage_code:put_storage_code},
+							error : function(request) {
+								$.messager.alert('提示','抱歉,提交错误!','error');	
+							},
+							success:function(msg){
+							    var jsonobj = $.parseJSON(msg);
+			 					if (jsonobj.state == 1) {
+			 	                   $('#dg').datagrid('reload');
+			 	                   $('#dlgPullStorageDetail').dialog('close')
+			 					}else{
+			 						$.messager.alert('提示','抱歉,提交错误!','error');	
+			 					}
+							}
+					});
+				}else{
+					$.messager.alert('提示','已经处于提交状态！','error');	
+				}
 			}
 		}
 		function doSearchProduct(){
