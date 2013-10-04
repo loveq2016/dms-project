@@ -3,6 +3,8 @@ package com.yijava.common.utils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
@@ -23,8 +25,31 @@ public class EncodeUtils {
 	private static final String DEFAULT_URL_ENCODING = "UTF-8";
 
 	private EncodeUtils() {
+		
+		
+	}
+	
+	public static void main(String[] args)
+	{
+		try {
+			System.out.println(encoderByMd5("111111"));
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
+	public static String encoderByMd5(String str) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+		MessageDigest md5=MessageDigest.getInstance("MD5");
+		byte[] digest=md5.digest(str.getBytes("utf-8"));
+		String newstr=encodeHex(digest);
+		return newstr;
+	} 
+	
+	
 	/**
 	 * Hex编码, byte[]->String.
 	 */

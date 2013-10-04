@@ -93,4 +93,12 @@ public class SysUserService {
 		parameters.put("fk_department_id", id);
 		return sysUserDao.find(parameters);
 	}
+	
+	/**
+	 * 修改密码
+	 */
+	public void updateUserPassword(SysUser entity)
+	{
+		sysUserDao.update(entity);
+	}
 }
