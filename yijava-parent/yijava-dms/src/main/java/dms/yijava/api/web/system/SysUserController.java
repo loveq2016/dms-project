@@ -185,22 +185,17 @@ public class SysUserController {
 	 */
 	@ResponseBody
 	@RequestMapping("updateinfo")
-	public Result<Integer> updateinfo(@RequestParam(value = "currentpwd", required = true) String currentpwd,
-			@RequestParam(value = "newpwd", required = true) String newpwd,
-			@RequestParam(value = "confirmpwd", required = true) String confirmpwd,HttpServletRequest request) {
-		Result<Integer> result=new Result<Integer>(0, 0);
-		
-		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
-		
-		if(!StringUtils.equals(newpwd, confirmpwd)){
-			//sysUserService.updateEntity(entity);
-			result.setError(new ErrorCode("两次密码不相同"));
-		}else
-		{
-			logger.info("修改用户信息");
+	public Result<Integer> updateinfo(@ModelAttribute("entity") SysUser entity,HttpServletRequest request) {
+		Result<Integer> result=new Result<Integer>(0, 0);				
+		try {
+			SysUser sessionUser=(SysUser)request.getSession().getAttribute("user");
+			entity.setId(sessionUser.getId());
+			sysUserService.updateUserInfo(entity);
+			result.setState(1);
+			result.setData(1);
+		} catch (Exception e) {
+			result.setError(new ErrorCode(e.toString()));
 		}
-		
-		
 		return result;
 	}
 }

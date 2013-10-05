@@ -9,8 +9,38 @@
 <%@include file="/common/head.jsp"%>
 </head>
 <body class="easyui-layout">
+	
 	<div data-options="region:'north',border:false"
-		style="height: 60px; background: #ddd; padding: 10px">
+		style=" background: #ddd; ">
+		<div id="settingsWrapper">
+			    <table width="100%">
+			        <tbody>
+			            <tr>
+			                <td>
+			                    <div id="logon">
+			                        <ul>
+			                            <!--<li>巴德销售追踪系统</li>-->
+			                        </ul>
+			                    </div>
+			                </td>
+			                <td align="right">
+			                    <div id="settings">
+			                        <ul>
+			                            <li>ddd</li>
+			                            <li id="itemAddContent"><a href='/'>主页</a></li>
+			                           	<li id="itemLogout">
+			                                <div id="TopControl1_ctl00_Container" style="display:inline;">
+			
+											</div>
+			                            </li>
+			                        </ul>
+			                    </div>
+			                </td>
+			            </tr>
+			        </tbody>
+			    </table>
+			</div>
+
 		<div id="menu">
 			<jsp:include page="menu.jsp"></jsp:include>
 		</div>
