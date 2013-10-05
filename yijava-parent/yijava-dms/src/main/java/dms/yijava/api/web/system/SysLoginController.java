@@ -82,10 +82,7 @@ public class SysLoginController {
 					List<UserDealer> userDealerList=userDealerFunService.getUserDealerList(sysUser.getId(),teams);//节点用户
 					sysUser.setUserDealerList(userDealerList);
 					sysUser.setTeams(teams);
-				}catch(Exception e){
-					result.setError(new ErrorCode(e.toString()));
-					return result;
-				}
+				}catch(Exception e){}
 				List<SysMenuFunction> sysMenuFunctionList=sysMenuFunctionService.getAllList();
 				request.getSession().setAttribute("roleFunctionList", sysLoginList);
 				request.getSession().setAttribute("allFunctionList", sysMenuFunctionList);
