@@ -17,7 +17,6 @@
 						<form id="ff" method="post">
 							<table>
 								<tr>
-									<input class="easyui-validatebox" hidden="true" name="type" id="type" value="1"/>
 									<td width="200">移库单号:</td>	
 									<td><input class="easyui-validatebox" type="text" name="move_storage_code"></input></td>
 									<td width="150">经销商:</td>
@@ -37,8 +36,6 @@
 						            			"/>
 						            </c:if>
 									</td>
-								</tr>
-								<tr>
 									<td width="50">状态:</td>
 									<td width="270">										
 										<input name="status" class="easyui-combobox" data-options="
@@ -52,6 +49,8 @@
 												value: '成功'
 											},]" />
 									</td>
+								</tr>
+								<tr>
 									<td width="100">开始时间:</td>
 									<td width="270">
 										<input name="move_start_date" id="move_start_date" class="easyui-datebox"></input>
@@ -71,16 +70,16 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" title="查询结果" style="height:370px" method="get"
+				<table id="dg" title="查询结果" style="height:370px" method="get" url="${basePath}api/movestorage/paging"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" pagination="true" 
 					iconCls="icon-search" sortOrder="asc" toolbar="#tbMoveStorage">
 					<thead>
 						<tr>
 							<th data-options="field:'id',width:10,align:'center'" hidden="true">id</th>
 							<th data-options="field:'move_storage_party_name',width:200,align:'center'" sortable="true">经销商</th>
-							<th data-options="field:'move_storage_code',width:100,align:'center'" sortable="true">移库单号</th>
-							<th data-options="field:'move_storage_date',width:100,align:'center'" sortable="true">移库时间</th>
-							<th data-options="field:'total_number',width:80,align:'center'" sortable="true">总数量</th>
+							<th data-options="field:'move_storage_code',width:150,align:'center'" sortable="true">移库单号</th>
+							<th data-options="field:'move_storage_date',width:150,align:'center'" sortable="true">移库时间</th>
+							<th data-options="field:'total_number',width:100,align:'center'" sortable="true">总数量</th>
 							<th data-options="field:'status',width:80,align:'center'" formatter="formatterStatus" sortable="true">单据状态</th>
 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
 						</tr>
@@ -92,10 +91,24 @@
         		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
 			</div>
 			<div style="margin: 10px 0;"></div>
-			<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:300px;height:200px;padding:10px;">
+			<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:300px;height:150px;padding:10px;">
 			<form id="ffadd" action="" method="post" enctype="multipart/form-data">
 				<table>
-					生成单据
+					<tr>
+						<td>移库类型:</td>
+						<td>
+							<input name="type" id="type" class="easyui-combobox"  readonly="readonly" data-options="
+											valueField: 'id',
+											textField: 'value',
+											data: [{
+												id: '1',
+												value: '内部移库'
+											},{
+												id: '2',
+												value: '外部移库'
+											},]" />
+						</td>
+					</tr>
 				</table>
 			</form>
 			<div style="margin: 10px 0;"></div>
@@ -111,18 +124,18 @@
 					<form id="ffMoveStorageDetail" method="post">
 							<table>
 								<tr>
-									<td width="100">经销商:</td>
+									<td width="80">经销商:</td>
 									<td>
 						            	<input class="easyui-validatebox" readonly="readonly" type="text" name="move_storage_party_name"></input>
 									</td>
-									<td width="100">移库单号:</td>	
+									<td width="80">移库单号:</td>	
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="move_storage_code"></input></td>
 									<td>移库时间:</td>	
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="move_storage_date"></input></td>
 								</tr>
 								<tr>
 									<td width="50">状态:</td>
-									<td width="270">				
+									<td>				
 										<input name="status" readonly="readonly" class="easyui-combobox" data-options="
 											valueField: 'id',
 											textField: 'value',
@@ -139,7 +152,7 @@
 					</form>
 			</div>
 			<div style="margin: 10px 0;"></div>
-			<div >
+			<div>
 				<table id="dgDetail" class="easyui-datagrid" title="查询结果" style="height:370px" method="get"
 					 rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbMoveStorageDetail">
 					<thead>
@@ -221,13 +234,13 @@
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductSnEntity()">添加</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
 	    </div>
-		<div id="dlgProductSn" class="easyui-dialog" style="width:300px;height:320px;padding:5px 5px 5px 5px;"
+		<div id="dlgProductSn" class="easyui-dialog" style="width:300px;height:350px;padding:5px 5px 5px 5px;"
 	            modal="true" closed="true" buttons="#dlgProductSn-buttons">
 		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
 					      <table>
 					      	    <tr>
 					             	<td>移出仓库:</td>
-					             	<input name="fk_move_storage_id" hidden="true" class="easyui-validatebox" style="width:150px;">
+					             	<input name="fk_move_storage_id" id="fk_move_storage_id" hidden="true" class="easyui-validatebox" style="width:150px;">
 					             	<td><input name="move_storage_name" readonly="true" class="easyui-validatebox" style="width:150px;"></td>
 					            </tr>
 					             <tr>
@@ -235,11 +248,17 @@
 					             	<td>
 					             		<input class="easyui-combobox" name="fk_move_to_storage_id" id="fk_move_to_storage_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 						             			data-options="
+						             				required:true,
 							             			url:'${basePath}api/storage/list?dealer_id=${user.fk_dealer_id}',
 								                    method:'get',
 								                    valueField:'id',
 													textField:'storage_name',
-								                    panelHeight:'auto'
+								                    panelHeight:'auto',
+								                    onSelect:function(record){
+								                    	if(record.id==$('#fk_move_storage_id').val()){
+								                    		$('#fk_move_to_storage_id').combobox('unselect',record.id);
+								                 		}
+								                    }
 						            			"/>
 									</td>
 					            </tr>
@@ -287,6 +306,7 @@
 		$(function() {
 			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
 			pager.pagination();
+			$('#type').combobox('setValue','1');
 		})
 		function formatterDetail(value, row, index){
 			return '<span style="color:red;cursor:pointer" onclick="openMoveStorageDetail(\''+index+'\')">明细</span>'; 
@@ -312,9 +332,9 @@
 			$('#w').dialog('open').dialog('setTitle','添加信息');
 			url =basePath+'api/movestorage/save';
 			$('#w').window('open');
-		}		
+		}
 		function saveEntity() {
-			/* $('#ffadd').form('submit', {
+			 $('#ffadd').form('submit', {
 			    url:url,
 			    method:"post",
 			    onSubmit: function(){
@@ -327,11 +347,11 @@
 				    	$('#w').window('close');
 				    	var pager = $('#dg').datagrid().datagrid('getPager');
 				    	pager.pagination('select');	
-			    	}else
+			    	}else{
 			    		$.messager.alert('提示','Error!','error');	
 			    	}
 			    }
-			}); */
+			});
 		}
 		function destroyEntity()
 		{
@@ -360,7 +380,7 @@
 						}
 					});
 				}else{
-					$.messager.alert('提示','无法删除已提交的单据!','error');
+					$.messager.alert('提示','无法删除已成功的单据!','error');
 				}
 			}else
 			{
@@ -368,7 +388,7 @@
 			}
 		}
 		function clearForm(){
-			$('#ffadd').form('clear');
+			//$('#ffadd').form('clear');
 		}
 		function clearMoveStorageDetailForm(){
 			$('#fm3').form('clear');
@@ -425,7 +445,7 @@
 						}
 					});
 				}else{
-					$.messager.alert('提示','无法删除已提交的单据!','error');
+					$.messager.alert('提示','无法删除已成功的单据!','error');
 				}
 			}else
 			{
@@ -481,7 +501,7 @@
 		                     $('#dgDetail').datagrid('reload');
 		                     $('#dg').datagrid('reload');
 				    	}else if(jsonobj.state==2){
-				    		$.messager.alert('提示','不可重复添加一个批次!','error');	
+				    		$.messager.alert('提示','同一仓库相同产品相批次不可用重复移出!','error');	
 				    	}else{
 				    		$.messager.alert('提示','Error!','error');	
 				    	}
