@@ -36,3 +36,66 @@ h2 {
 	_background: none; 
 	
 }
+
+ #settingsWrapper
+{
+    
+    background-color: #3B3B3B;
+    padding-left: 4px;
+    background-image:url(../images/index_01.gif);
+    height:35px;
+}
+        
+ #logon
+{
+    float: left;
+    padding: 2px;
+    
+    padding-left: 4px;
+    text-align: left;
+    clear: both;
+}
+#logon ul li
+{
+    color: #fff;
+    margin-right: 8px;
+    line-height: 24px;
+    padding: 2px;
+    padding-left: 10px;
+}
+#settings
+{
+    padding: 2px;    
+    padding-right: 4px;
+    text-align: right;
+}
+#settings ul li
+{
+    display: inline;
+    color: #fff;
+    margin-right: 8px;
+    line-height: 24px;
+    padding: 2px;
+    padding-left: 19px;
+}
+#settings ul li a, #settings ul li a:link
+{
+    color: #fff;
+    text-decoration: none;
+}
+#settings ul li a:hover
+{
+    text-decoration: underline;
+}
+#settings ul li logon
+{
+    text-align: left;
+    padding-left: 10px;
+}
+#settings ul li welcome
+{
+    font-family: Verdana;
+    font-style: italic;
+    font-size: 13px;
+}
+        

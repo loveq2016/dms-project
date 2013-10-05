@@ -56,7 +56,7 @@
 		<a href="javascript:void(0)" id="mb2" class="easyui-menubutton"
 		data-options="menu:'#mm12',iconCls:'icon-filep'">个人信息管理</a>
 </div>
-<div id="mm1" style="width: 150px;">
+<div id="mm1" style="width: 80px;">
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="用户管理" url="system/user/view.jsp">用户管理</a>
 	</div>
@@ -193,7 +193,7 @@
 </div>
 <div id="mm12" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
-		<a href="javascript:void(0)" title="库存管理" url="storage/inventory/view.jsp">个人信息</a>
+		<a href="javascript:void(0)" title="库存管理" url="${basePath}/web/user/setting">个人信息</a>
 	</div>
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="密码修改" url="system/user/updatePwd.jsp">密码修改</a>
