@@ -23,6 +23,8 @@ import com.yijava.web.vo.Result;
 import dms.yijava.entity.movestorage.MoveStorage;
 import dms.yijava.entity.movestorage.MoveStorageDetail;
 import dms.yijava.entity.movestorage.MoveStorageProDetail;
+import dms.yijava.entity.pullstorage.PullStorageDetail;
+import dms.yijava.entity.pullstorage.PullStorageProDetail;
 import dms.yijava.entity.storage.StorageDetail;
 import dms.yijava.entity.storage.StorageProDetail;
 import dms.yijava.entity.system.SysUser;
@@ -90,10 +92,10 @@ public class MoveStorageController {
 	@ResponseBody
 	@RequestMapping("submit")
 	public Result<Integer> submitMoveStorage(@ModelAttribute("entity") MoveStorage entity,HttpServletRequest request) {
+		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
 		/**
 		 * 添加产品SN明细
 		 */
-		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
 		List<PropertyFilter> filters = PropertyFilters.build(request);
 		List<MoveStorageDetail> listMoveStorageDetail = moveStorageDetailService.getList(filters);
 		if(null!=listMoveStorageDetail){
@@ -114,6 +116,14 @@ public class MoveStorageController {
 				for(int i=0;i<moveStorageOpt.getList().size();i++){
 					MoveStorageProDetail pspd=new MoveStorageProDetail();
 					StorageProDetail spd=moveStorageOpt.getList().get(i);
+					
+					for(int j=0;j<listMoveStorageDetail.size();j++){
+						MoveStorageDetail psd=listMoveStorageDetail.get(j);
+						if(psd.getFk_move_storage_id().equals(spd.getFk_storage_id())&&
+								psd.getBatch_no().equals(spd.getBatch_no())){
+							///问题
+						}
+					}
 					pspd.setBatch_no(spd.getBatch_no());
 					pspd.setFk_move_storage_id(spd.getFk_storage_id());
 					pspd.setProduct_sn(spd.getProduct_sn());
@@ -122,21 +132,54 @@ public class MoveStorageController {
 				}
 				//同一个仓库下的，同一个批次，同一个序号   不能重复添加
 				moveStorageProDetailService.saveEntity(listMoveStorageProDetail);
-				
-				
-				
-				//此处需要添加更新库存接口
-				
-				
-				/**
-				 * 处理订单状态
-				 */
-				SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
-				entity.setStatus("1");//成功
-				entity.setMove_storage_date(time.format(new Date()));
-				moveStorageService.updateEntity(entity);
 			}
 		}
+		
+//			/**
+//			 * 出库明细
+//			 */
+//			List<PropertyFilter> filters = PropertyFilters.build(request);
+//			List<MoveStorageDetail> listMoveStorageDetail = moveStorageDetailService.getList(filters);
+//			List<StorageDetail> storageDetailList  = new ArrayList<StorageDetail>();
+//			for(int i=0;i<listMoveStorageDetail.size();i++){
+//				MoveStorageDetail psd=listMoveStorageDetail.get(i);
+//				StorageDetail sd = new StorageDetail();
+//				sd.setFk_dealer_id(sysUser.getFk_dealer_id());
+//				sd.setFk_storage_id(psd.getFk_move_to_storage_id());
+//				sd.setProduct_item_number(psd.getProduct_item_number());
+//				sd.setBatch_no(psd.getBatch_no());
+//				sd.setInventory_number(psd.getMove_number());
+//				sd.setValid_date(psd.getValid_date());
+//				storageDetailList.add(sd);
+//			}
+//			/**
+//			 * 出库产品SN明细
+//			 */
+//			List<PropertyFilter> filters2 = PropertyFilters.build(request);
+//			List<MoveStorageProDetail>  listMoveStorageProDetail = moveStorageProDetailService.getList(filters2); //sn list 需要回滚库存
+//			List<StorageProDetail> storageProDetailList = new ArrayList<StorageProDetail>(); 
+//			if(null!=listMoveStorageProDetail){
+//				for(int i=0;i<listMoveStorageProDetail.size();i++){
+//					MoveStorageProDetail pspd=(MoveStorageProDetail)listMoveStorageProDetail.get(i);
+//					StorageProDetail spd = new StorageProDetail();
+//					spd.setFk_dealer_id(sysUser.getFk_dealer_id());
+//					spd.setFk_storage_id(pspd.getFk_move_to_storage_id());
+//					spd.setBatch_no(pspd.getBatch_no());
+//					spd.setProduct_sn(pspd.getProduct_sn());
+//					storageProDetailList.add(spd);
+//				}
+//			}
+//			boolean s =storageDetailService.updateStorageAndSnSub(null,storageDetailList,storageProDetailList);
+//			if(s){
+//				/**
+//				 * 处理订单状态
+//				 */
+//				SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+//				entity.setStatus("1");//成功
+//				entity.setMove_storage_date(time.format(new Date()));
+//				moveStorageService.updateEntity(entity);
+//				return new Result<Integer>(1, 1);
+//			}
 		return new Result<Integer>(1, 1);
 	}
 

@@ -68,8 +68,8 @@
 	</select>
 	<insert id="insert" parameterType="dms.yijava.entity.movestorage.MoveStorage">
 		insert into dms.tb_move_storage
-		(move_storage_code,move_storage_no,fk_move_storage_party_id,
-		create_date,last_time)values(#{move_storage_code},#{move_storage_no},#{fk_move_storage_party_id},NOW(),NOW());
+		(move_storage_code,move_storage_no,fk_move_storage_party_id,type,
+		create_date,last_time)values(#{move_storage_code},#{move_storage_no},#{fk_move_storage_party_id},#{type},NOW(),NOW());
 	</insert>
 	<update id="update" parameterType="dms.yijava.entity.movestorage.MoveStorage">
 		update dms.tb_move_storage

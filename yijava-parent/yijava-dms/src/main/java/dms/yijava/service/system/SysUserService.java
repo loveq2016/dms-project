@@ -101,4 +101,9 @@ public class SysUserService {
 	{
 		sysUserDao.update(entity);
 	}
+	
+	public void updateUserInfo(SysUser entity)
+	{
+		sysUserDao.update(entity);
+	}
 }

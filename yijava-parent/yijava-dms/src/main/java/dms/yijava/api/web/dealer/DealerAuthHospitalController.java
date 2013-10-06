@@ -18,6 +18,8 @@ import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.dealer.DealerAuthHospital;
+import dms.yijava.entity.pullstorage.PullStorage;
+import dms.yijava.entity.system.SysUser;
 import dms.yijava.service.dealer.DealerAuthHospitalService;
 
 @Controller
@@ -66,10 +68,12 @@ public class DealerAuthHospitalController {
 		dealerAuthHospitalService.deleteAllEntity(entity);
 		return new Result<String>("1", 1);
 	}
-	
-	
-	
-	
-	
-	
+	@ResponseBody
+	@RequestMapping("list")
+	public List<DealerAuthHospital> getList(HttpServletRequest request){
+		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+		List<PropertyFilter> filters = PropertyFilters.build(request);
+		filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
+		return dealerAuthHospitalService.getList(filters);
+	}
 }

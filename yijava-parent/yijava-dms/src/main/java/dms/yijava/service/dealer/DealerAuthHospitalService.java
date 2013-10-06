@@ -14,6 +14,7 @@ import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.dealer.DealerAuthHospitalDao;
 import dms.yijava.entity.dealer.DealerAuthHospital;
+import dms.yijava.entity.pullstorage.PullStorageDetail;
 
 @Service
 @Transactional
@@ -34,6 +35,14 @@ public class DealerAuthHospitalService {
 				pageRequest.getOrderDir());
 	}
 	
+	public List<DealerAuthHospital> getList(List<PropertyFilter> filters){
+		Map<String,String> parameters = new HashMap<String,String>();
+		for (PropertyFilter propertyFilter : filters) {
+			String propertyKey = propertyFilter.getPropertyNames()[0];
+			parameters.put(propertyKey, propertyFilter.getMatchValue());
+		}
+		return dealerAuthHospitalDao.find(parameters);
+	}
 	
 	public DealerAuthHospital getEntity(String id) {
 		return dealerAuthHospitalDao.get(id);
@@ -55,14 +64,6 @@ public class DealerAuthHospitalService {
 	public void deleteAllEntity(DealerAuthHospital entity) {
 		dealerAuthHospitalDao.removeObject(".deleteAll", entity);
 	}
-	
-	
-	
-	
-	
-	
-		
-
 	
 	
 }

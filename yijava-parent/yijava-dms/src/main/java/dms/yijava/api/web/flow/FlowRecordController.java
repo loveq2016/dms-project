@@ -116,7 +116,7 @@ public class FlowRecordController {
 			}
 			
 			//先找到待处理的步骤
-			List<FlowRecord> flowRecords=flowRecordService.getRequetCheck(entity.getBussiness_id(), entity.getFlow_id(), entity.getUser_id(), "0");
+			List<FlowRecord> flowRecords=flowRecordService.getRequetCheck(entity.getBussiness_id(), entity.getFlow_id(),currentUserId, "0");
 			FlowRecord flowRecord=null;
 			if(flowRecords!=null && flowRecords.size()>0)
 			{
@@ -150,7 +150,8 @@ public class FlowRecordController {
 						flowLog.setBussiness_id(entity.getBussiness_id());
 						flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 						flowLog.setAction_name(curentStep.getAction_name());
-						flowLog.setSign("1");
+						flowLog.setCheck_reason(entity.getCheck_reason());
+						flowLog.setSign(sysUser.getSign_img());
 						flowLogService.saveEntity(flowLog);
 						
 						entity.setUser_id(currentUserId);
@@ -173,7 +174,7 @@ public class FlowRecordController {
 						flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 						flowLog.setAction_name(curentStep.getAction_name());
 						flowLog.setCheck_reason(entity.getCheck_reason());
-						flowLog.setSign("1");
+						flowLog.setSign(sysUser.getSign_img());
 						flowLogService.saveEntity(flowLog);
 						//先更新本条记录的状态
 						entity.setUser_id(currentUserId);
@@ -186,7 +187,9 @@ public class FlowRecordController {
 						
 						//step = flowBussService.getNextStep(new Integer(flow_id),currentStepNo);
 						String check_id ;
-						StepDepartment stepDepartment=step.getStepDepartments().get(0);						
+						StepDepartment stepDepartment=step.getStepDepartments().get(0);	
+						//找到这个部门下的所有人，但还得确定谁是他们具体的上级
+						//stepDepartment.getUsers();
 						check_id=stepDepartment.getUsers().get(0).getId();
 						
 						flowBussService.insertStep(flow_id, currentUserId,  
@@ -210,19 +213,28 @@ public class FlowRecordController {
 	 */
 	public boolean backFlow(ProcFlowModel entity,SysUser sysUser)
 	{
-		List<FlowRecord> flowRecords=flowRecordService.getRequetCheck(entity.getBussiness_id(), entity.getFlow_id(), entity.getUser_id(), "0");
+		List<FlowRecord> flowRecords=flowRecordService.getRequetCheck(entity.getBussiness_id(), entity.getFlow_id(), sysUser.getId(), "0");
 		FlowRecord flowRecord=null;
 		if(flowRecords!=null && flowRecords.size()>0)
 		{
 			flowRecord=flowRecords.get(0);			
 			if(flowRecord!=null)
 			{
-				String currentUserId=sysUser.getId();
 				int currentStepNo= Integer.parseInt(flowRecord.getStep_order_no());
+				//得到步骤名称，记录日志
 				Step curentStep = flowBussService.getStep(new Integer(flow_id),currentStepNo);
-				if(flowRecord.getStep_order_no().equals("1"))
+				String currentUserId=sysUser.getId();
+				if(currentStepNo>1)
 				{
-					
+					//删除本次的待处理事项
+					flowRecordService.removeEntity(new Integer(flowRecord.getRecord_id()));
+					//找到上一步骤，变更状态
+					List<FlowRecord> flowRecordsBack=flowRecordService.getRequetCheck(entity.getBussiness_id(), 
+							entity.getFlow_id(), flowRecord.getSend_id(), "1");
+					FlowRecord flowRecordBack=flowRecordsBack.get(0);			
+					flowRecordBack.setStatus("0");
+					flowRecordService.updateEntity(flowRecordBack);
+					//记录驳回日志
 					FlowLog flowLog=new FlowLog();
 					flowLog.setFlow_id(flow_id);
 					flowLog.setUser_id(currentUserId);
@@ -230,13 +242,26 @@ public class FlowRecordController {
 					flowLog.setBussiness_id(entity.getBussiness_id());
 					flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 					flowLog.setAction_name(curentStep.getAction_name() + "驳回");
-					flowLog.setSign("1");
+					flowLog.setCheck_reason(entity.getCheck_reason());
+					flowLog.setSign(sysUser.getSign_img());
 					flowLogService.saveEntity(flowLog);
-					
+				}else{
+					//删除本次的待处理事项
+					flowRecordService.removeEntity(new Integer(flowRecord.getRecord_id()));
+					//记录驳回日志
+					FlowLog flowLog=new FlowLog();
+					flowLog.setFlow_id(flow_id);
+					flowLog.setUser_id(currentUserId);
+					flowLog.setUser_name(sysUser.getRealname());
+					flowLog.setBussiness_id(entity.getBussiness_id());
+					flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+					flowLog.setAction_name(curentStep.getAction_name() + "驳回");
+					flowLog.setCheck_reason(entity.getCheck_reason());
+					flowLog.setSign(sysUser.getSign_img());
+					flowLogService.saveEntity(flowLog);
 					eventBus.post(new UserBackFlowEvent(sysUser.getId(),sysUser.getRealname(),flow_id,entity.getBussiness_id(),
 							entity.getCheck_reason(),entity.getStatus()));
-				}
-				
+				}				
 			}
 		}
 		return true;

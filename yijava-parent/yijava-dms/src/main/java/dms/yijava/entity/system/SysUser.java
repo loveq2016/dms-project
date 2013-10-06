@@ -32,6 +32,7 @@ public class SysUser {
 	public String create_time;
 	public String last_time;
 	public String remark;
+	public String sign_img;
 	public String customfield1;
 	public String customfield2;
 	public String customfield3;

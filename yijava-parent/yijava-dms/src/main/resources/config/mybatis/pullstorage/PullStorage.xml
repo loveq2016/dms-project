@@ -100,10 +100,8 @@
 	</select>
 	<insert id="insert" parameterType="dms.yijava.entity.pullstorage.PullStorage">
 		insert into dms.tb_pull_storage
-		(pull_storage_code,pull_storage_no,fk_pull_storage_party_id,put_storage_code,
-		put_storage_no,fk_put_storage_party_id,type,create_date,last_time)
-		values(#{pull_storage_code},#{pull_storage_no},#{fk_pull_storage_party_id},#{put_storage_code},
-		#{put_storage_no},#{fk_put_storage_party_id},#{type},NOW(),NOW())
+		(pull_storage_code,pull_storage_no,fk_pull_storage_party_id,put_storage_code,put_storage_no,fk_put_storage_party_id,type,create_date,last_time)
+		values(#{pull_storage_code},#{pull_storage_no},#{fk_pull_storage_party_id},#{put_storage_code},#{put_storage_no},#{fk_put_storage_party_id},#{type},NOW(),NOW())
 	</insert>
 	<update id="update" parameterType="dms.yijava.entity.pullstorage.PullStorage">
 		update dms.tb_pull_storage
