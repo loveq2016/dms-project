@@ -30,7 +30,7 @@
 									<td>
 									<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 						             			data-options="
-							             			url:'${basePath}/api/dealer/list',
+							             			url:'${basePath}api/userDealerFun/list?d_id=${user.fk_department_id}&u_id=${user.id}',
 								                    method:'get',
 								                    valueField:'dealer_id',
 								                    textField:'dealer_name',
@@ -42,7 +42,7 @@
 									<td>
 										<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 						             			data-options="
-							             			url:'${basePath}/api/dealer/list',
+							             			url:'${basePath}api/userDealerFun/list?d_id=${user.fk_department_id}&u_id=${user.id}',
 								                    method:'get',
 								                    valueField:'dealer_id',
 								                    textField:'dealer_name',
@@ -395,8 +395,8 @@
 		} 
 		 function formattersign(value, row, index)
 		 {
-			 if(row.sign && row.sign==1)
-			 	return '<span><img src="'+basePath+'resource/signimg/10049_qz.jpg" width="50" height="50"></span>'; 
+			 if(row.sign && row.sign!="")
+			 	return '<span><img src="'+basePath+'resource/signimg/'+value+'" width="50" height="50"></span>'; 
 		 }
 		 
 		 function formatterdesc (value, row, index) { 

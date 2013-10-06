@@ -207,7 +207,7 @@ public class TrialController {
 		flowLog.setBussiness_id(trial_id.toString());
 		flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		flowLog.setAction_name("提交"+"-"+step.getAction_name());
-		flowLog.setSign("0");
+		//flowLog.setSign("0");
 		flowLogService.saveEntity(flowLog);
 		
 		//记录流程

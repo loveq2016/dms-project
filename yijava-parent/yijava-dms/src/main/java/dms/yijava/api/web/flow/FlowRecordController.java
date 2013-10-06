@@ -116,7 +116,7 @@ public class FlowRecordController {
 			}
 			
 			//先找到待处理的步骤
-			List<FlowRecord> flowRecords=flowRecordService.getRequetCheck(entity.getBussiness_id(), entity.getFlow_id(), entity.getUser_id(), "0");
+			List<FlowRecord> flowRecords=flowRecordService.getRequetCheck(entity.getBussiness_id(), entity.getFlow_id(),currentUserId, "0");
 			FlowRecord flowRecord=null;
 			if(flowRecords!=null && flowRecords.size()>0)
 			{
@@ -151,7 +151,7 @@ public class FlowRecordController {
 						flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 						flowLog.setAction_name(curentStep.getAction_name());
 						flowLog.setCheck_reason(entity.getCheck_reason());
-						flowLog.setSign("1");
+						flowLog.setSign(sysUser.getSign_img());
 						flowLogService.saveEntity(flowLog);
 						
 						entity.setUser_id(currentUserId);
@@ -174,7 +174,7 @@ public class FlowRecordController {
 						flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 						flowLog.setAction_name(curentStep.getAction_name());
 						flowLog.setCheck_reason(entity.getCheck_reason());
-						flowLog.setSign("1");
+						flowLog.setSign(sysUser.getSign_img());
 						flowLogService.saveEntity(flowLog);
 						//先更新本条记录的状态
 						entity.setUser_id(currentUserId);
@@ -243,7 +243,7 @@ public class FlowRecordController {
 					flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 					flowLog.setAction_name(curentStep.getAction_name() + "驳回");
 					flowLog.setCheck_reason(entity.getCheck_reason());
-					flowLog.setSign("1");
+					flowLog.setSign(sysUser.getSign_img());
 					flowLogService.saveEntity(flowLog);
 				}else{
 					//删除本次的待处理事项
@@ -257,7 +257,7 @@ public class FlowRecordController {
 					flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 					flowLog.setAction_name(curentStep.getAction_name() + "驳回");
 					flowLog.setCheck_reason(entity.getCheck_reason());
-					flowLog.setSign("1");
+					flowLog.setSign(sysUser.getSign_img());
 					flowLogService.saveEntity(flowLog);
 					eventBus.post(new UserBackFlowEvent(sysUser.getId(),sysUser.getRealname(),flow_id,entity.getBussiness_id(),
 							entity.getCheck_reason(),entity.getStatus()));

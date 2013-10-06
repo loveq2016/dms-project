@@ -40,6 +40,15 @@
 							<td width="270"><input class="easyui-validatebox" type="text" name="address" id="address" value="${sysUser.address}"></input>
 							</td>									
 						</tr>
+						<tr>								
+							<td width="100">签名:</td>
+							<td width="270">
+							<c:if test="${sysUser.sign_img!=null}">
+								<img src="${basePath}resource/signimg/${sysUser.sign_img}" width="50" height="50">
+							</c:if>
+							<input type="file" name="file"/>  </input>
+							</td>									
+						</tr>
 						
 					</table>
 				</form>
@@ -60,7 +69,8 @@
 			    success:function(msg){
 			    	var jsonobj = $.parseJSON(msg);
 			    	if(jsonobj.state==1){
-			    		$.messager.alert('提示','Error!','error');	
+			    		$.messager.alert('提示','保存成功，重新登录后生效','info');	
+			    		
 			    	}else{
 			    		$.messager.alert('提示','Error!','error');	
 			    	}
