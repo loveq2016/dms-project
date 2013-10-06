@@ -187,6 +187,9 @@
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="库存管理" url="storage/inventory/view.jsp">库存管理</a>
 	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="移库管理" url="movestorage/view.jsp">移库管理</a>
+	</div>
 </div>
 <div id="mm12" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">

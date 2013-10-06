@@ -22,5 +22,4 @@ public class MoveStorageDetail {
 	public String move_storage_name;
 	public String move_to_storage_name;
 	public String inventory_number;
-
 }
