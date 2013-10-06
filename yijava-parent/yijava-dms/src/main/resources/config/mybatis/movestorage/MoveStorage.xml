@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MoveStorage">
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(type)">
+				and type=#{type}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">
+				and status=#{status}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(move_storage_code)">
+				and move_storage_code=#{move_storage_code}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_move_storage_party_id)">
+				and fk_move_storage_party_id=#{fk_move_storage_party_id}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_move_storage_party_ids)">
+				  and fk_move_storage_party_id in (${fk_move_storage_party_ids})
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(move_start_date)">
+				 <![CDATA[ and move_storage_date > #{move_start_date} ]]>
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(move_end_date)">
+				  <![CDATA[ and move_storage_date < #{move_end_date}]]>
+			</if>
+		</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>
+			<when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">
+				order by ${orderSql}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</sql>
+	<select id="selectByObjectcount" resultType="long">
+		SELECT COUNT(*) FROM(
+		select tms.*,d1.dealer_name as move_storage_party_name from dms.tb_move_storage tms
+		    LEFT JOIN tb_dealer d1 ON tms.fk_move_storage_party_id=d1.dealer_id 
+		) t
+		<include refid="adsWhere" />
+	</select>
+	<select id="selectByObject" resultType="dms.yijava.entity.movestorage.MoveStorage">
+		SELECT * FROM(
+		select tms.*,d1.dealer_name as move_storage_party_name from dms.tb_move_storage tms
+		    LEFT JOIN tb_dealer d1 ON tms.fk_move_storage_party_id=d1.dealer_id 
+		) t
+		<include refid="adsWhere" />
+		<include refid="adsOrder" />
+		limit #{offset},#{pagesize}
+	</select>
+	<select id="selectByMap" resultType="dms.yijava.entity.movestorage.MoveStorage">
+		SELECT * FROM(
+		select tms.*,d1.dealer_name as move_storage_party_name from dms.tb_move_storage tms
+		    LEFT JOIN tb_dealer d1 ON tms.fk_move_storage_party_id=d1.dealer_id 
+		) t
+		<include refid="adsWhere" />
+	</select>
+	<select id="selectMoveStorageCode" resultType="dms.yijava.entity.movestorage.MoveStorage">
+		select LPAD(max(move_storage_no)+1,3,0) as move_storage_no from dms.tb_move_storage WHERE 
+		create_date between CURDATE() AND CONCAT(CURDATE(),' 23:59:59') AND fk_move_storage_party_id=#{fk_move_storage_party_id}
+	</select>
+	<select id="selectStorageDetailTotalNumber" resultType="dms.yijava.entity.movestorage.MoveStorage">
+		SELECT move_storage_code,SUM(move_number) as total_number FROM tb_move_storage_detail WHERE move_storage_code=#{move_storage_code}
+	</select>
+	<insert id="insert" parameterType="dms.yijava.entity.movestorage.MoveStorage">
+		insert into dms.tb_move_storage
+		(move_storage_code,move_storage_no,fk_move_storage_party_id,
+		create_date,last_time)values(#{move_storage_code},#{move_storage_no},#{fk_move_storage_party_id},NOW(),NOW());
+	</insert>
+	<update id="update" parameterType="dms.yijava.entity.movestorage.MoveStorage">
+		update dms.tb_move_storage
+		<trim prefix="SET" suffixOverrides=",">
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">status=#{status},</if> 
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(total_number)">total_number=#{total_number},</if>  
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(move_storage_date)">move_storage_date=#{move_storage_date},</if>  
+            last_time=NOW()
+        </trim>
+		WHERE move_storage_code=#{move_storage_code}
+	</update>
+	<delete id="deleteByPrimaryKey" parameterType="int">
+		delete from dms.tb_move_storage where id = #{id}
+	</delete>
+	<delete id="deleteByMoveStorageCode" parameterType="String">
+		delete from dms.tb_move_storage where move_storage_code=#{move_storage_code}
+	</delete>
+</mapper>

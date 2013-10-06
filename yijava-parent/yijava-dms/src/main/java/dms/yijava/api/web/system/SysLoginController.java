@@ -1,5 +1,7 @@
 package dms.yijava.api.web.system;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yijava.common.utils.EncodeUtils;
+import com.yijava.web.vo.ErrorCode;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.system.SysLogin;
@@ -53,7 +57,8 @@ public class SysLoginController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/login")
-	public Result<String> index(HttpServletRequest request,HttpServletResponse response,ModelMap map) {
+	public Result<Integer> index(HttpServletRequest request,HttpServletResponse response,ModelMap map) {
+		Result<Integer> result=new Result<Integer>(0, 0);
 		String account = request.getParameter("account");
 		String password = request.getParameter("password");
 		if(StringUtils.isNotEmpty(account) && 
@@ -61,6 +66,15 @@ public class SysLoginController {
 			SysUser sysUser=new SysUser();
 			sysUser.setAccount(account);
 			sysUser = sysUserService.getEntityByAccount(sysUser);
+			try {
+				password=EncodeUtils.encoderByMd5(password);
+			} catch (NoSuchAlgorithmException e1) {
+				result.setError(new ErrorCode(e1.toString()));
+				return result;
+			} catch (UnsupportedEncodingException e1) {
+				result.setError(new ErrorCode(e1.toString()));
+				return result;
+			}
 			if(isExsitUser(sysUser,password)){
 				List<SysLogin> sysLoginList= sysLoginService.getRoleMenuFunList(sysUser.getFk_role_id());
 				try{
@@ -73,11 +87,20 @@ public class SysLoginController {
 				request.getSession().setAttribute("roleFunctionList", sysLoginList);
 				request.getSession().setAttribute("allFunctionList", sysMenuFunctionList);
 				request.getSession().setAttribute("user", sysUser);
-				return new Result<String>("succeess", 1);
+				result.setState(1);
+				result.setData(1);
+				logger.info("登录用户");
+				return result;
+			}else
+			{
+				result.setError(new ErrorCode("用户名或密码错误"));
 			}
+		}else
+		{
+			result.setError(new ErrorCode("用户名或密码错误"));
 		}
-		logger.info("登录用户");
-		return new Result<String>("failed", 1);
+		
+		return result;
 	}
 	
 	@RequestMapping(value = "/logout")

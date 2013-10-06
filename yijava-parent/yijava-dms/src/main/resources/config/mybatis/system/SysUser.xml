@@ -132,6 +132,6 @@
     </update>
     <update id="deleteByPrimaryKey" parameterType="int">
 		delete from dms.tb_manager_user where id = #{id}
-	</update>
+	</update>	
 <!-- 用户管理  end -->
 </mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MoveStorageDetail">
+	<sql id="adsWhere">
+	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(move_storage_code)">
+			  and move_storage_code=#{move_storage_code}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(batch_no)">
+			  and batch_no=#{batch_no}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(product_item_number)">
+			  and product_item_number=#{product_item_number}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_move_storage_id)">
+			  and fk_move_storage_id=#{fk_move_storage_id}
+		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_move_to_storage_id)">
+			  and fk_move_to_storage_id=#{fk_move_to_storage_id}
+		</if>
+	</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>  
+	       <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+	            order by ${orderSql}
+	       </when>
+	   </choose>
+	</sql>
+    <select id="selectByObjectcount" resultType="long"> 
+		SELECT COUNT(*) FROM(
+			SELECT tmsd.*,ts.storage_name as  move_storage_name,ts1.storage_name as move_to_storage_name,tsd.inventory_number FROM dms.tb_move_storage_detail tmsd
+			LEFT JOIN dms.tb_storage ts ON ts.id=tmsd.fk_move_storage_id
+			LEFT JOIN dms.tb_storage ts1 ON ts1.id=tmsd.fk_move_to_storage_id
+			LEFT JOIN dms.tb_storage_detail tsd ON ts.id=tsd.fk_storage_id
+			WHERE tmsd.batch_no=tsd.batch_no AND tmsd.product_item_number=tsd.product_item_number
+		) t
+		<include refid="adsWhere"/>
+	</select>
+ 	<select id="selectByObject" resultType="dms.yijava.entity.movestorage.MoveStorageDetail">
+		SELECT * FROM(
+			SELECT tmsd.*,ts.storage_name as  move_storage_name,ts1.storage_name as move_to_storage_name,tsd.inventory_number FROM dms.tb_move_storage_detail tmsd
+			LEFT JOIN dms.tb_storage ts ON ts.id=tmsd.fk_move_storage_id
+			LEFT JOIN dms.tb_storage ts1 ON ts1.id=tmsd.fk_move_to_storage_id
+			LEFT JOIN dms.tb_storage_detail tsd ON ts.id=tsd.fk_storage_id
+			WHERE tmsd.batch_no=tsd.batch_no AND tmsd.product_item_number=tsd.product_item_number
+		) t
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}
+	</select>
+	<select id="selectByMap" resultType="dms.yijava.entity.movestorage.MoveStorageDetail">
+		SELECT * FROM(
+			SELECT tmsd.*,ts.storage_name as move_storage_name,ts1.storage_name as move_to_storage_name,tsd.inventory_number FROM dms.tb_move_storage_detail tmsd
+			LEFT JOIN dms.tb_storage ts ON ts.id=tmsd.fk_move_storage_id
+			LEFT JOIN dms.tb_storage ts1 ON ts1.id=tmsd.fk_move_to_storage_id
+			LEFT JOIN dms.tb_storage_detail tsd ON ts.id=tsd.fk_storage_id
+			WHERE tmsd.batch_no=tsd.batch_no AND tmsd.product_item_number=tsd.product_item_number
+		) t
+		<include refid="adsWhere" />
+	</select>
+	<select id="selectMoveStorageDetail" resultType="dms.yijava.entity.movestorage.MoveStorageDetail">
+		select * from dms.tb_move_storage_detail 
+		<include refid="adsWhere"/>
+	</select>
+	<insert id="insert" parameterType="dms.yijava.entity.movestorage.MoveStorageDetail">
+		insert into dms.tb_move_storage_detail(fk_move_storage_id,fk_move_to_storage_id,move_storage_code,product_item_number,money,models,batch_no,move_number,valid_date) 
+    	values(#{fk_move_storage_id},#{fk_move_to_storage_id},#{move_storage_code},#{product_item_number},#{money},#{models},#{batch_no},#{move_number},#{valid_date})
+    </insert>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+    	delete from dms.tb_move_storage_detail where id = #{id}
+    </delete>
+    <delete id="deleteByMoveStorageCode" parameterType="String">
+   		 delete from dms.tb_move_storage_detail where move_storage_code=#{move_storage_code}
+    </delete>
+    <delete id="deleteByStorageOrBatchNo" parameterType="dms.yijava.entity.movestorage.MoveStorageDetail">
+   		 delete from dms.tb_move_storage_detail where fk_move_storage_id=#{fk_move_storage_id} and fk_move_to_storage_id=#{fk_move_to_storage_id} and product_item_number = #{product_item_number} and batch_no=#{batch_no}
+    </delete>
+</mapper>
