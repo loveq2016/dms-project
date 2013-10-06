@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SalesStorage">
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(type)">
+				and type=#{type}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">
+				and status=#{status}
+			</if>
+			<!-- 出售单据 -->
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(pull_storage_code)">
+				and pull_storage_code=#{pull_storage_code}
+			</if>
+			<!-- 出售方id-->
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_pull_storage_party_id)">
+				and fk_pull_storage_party_id=#{fk_pull_storage_party_id}
+			</if>
+			<!-- 出售方ids-->
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_pull_storage_party_ids)">
+				  and fk_pull_storage_party_id in (${fk_pull_storage_party_ids})
+			</if>
+			<!-- 提交时间 -->
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(pull_start_date)">
+				 <![CDATA[ and pull_storage_date > #{pull_start_date} ]]>
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(pull_end_date)">
+				  <![CDATA[ and pull_storage_date < #{pull_end_date}]]>
+			</if>
+			<!-- 销售时间 -->
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(sales_start_date)">
+				 <![CDATA[ and sales_date > #{sales_start_date} ]]>
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(sales_end_date)">
+				  <![CDATA[ and sales_date < #{sales_end_date}]]>
+			</if>
+			<!-- 销售医院 -->
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(put_storage_party_name)">
+				 and put_storage_party_name like CONCAT('%','${put_storage_party_name}','%' )
+			</if>
+		</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>
+			<when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">
+				order by ${orderSql}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</sql>
+	<select id="selectByObjectcount" resultType="long">
+		SELECT COUNT(*) FROM(
+		select tps.*,d1.dealer_name as pull_storage_party_name,d1.dealer_name as pull_storage_user_name,th.hospital_name as put_storage_party_name from dms.tb_pull_storage tps
+		    LEFT JOIN tb_dealer d1 ON tps.fk_pull_storage_party_id=d1.dealer_id 
+		    LEFT JOIN tb_hospital th ON tps.fk_put_storage_party_id=th.id
+		) t
+		<include refid="adsWhere" />
+	</select>
+	<select id="selectByObject" resultType="dms.yijava.entity.pullstorage.SalesStorage">
+		SELECT * FROM(
+		select tps.*,d1.dealer_name as pull_storage_party_name,d1.dealer_name as pull_storage_user_name,th.hospital_name as put_storage_party_name from dms.tb_pull_storage tps
+		    LEFT JOIN tb_dealer d1 ON tps.fk_pull_storage_party_id=d1.dealer_id 
+		    LEFT JOIN tb_hospital th ON tps.fk_put_storage_party_id=th.id
+		) t
+		<include refid="adsWhere" />
+		<include refid="adsOrder" />
+		limit #{offset},#{pagesize}
+	</select>
+	<select id="selectByMap" resultType="dms.yijava.entity.pullstorage.SalesStorage">
+		SELECT * FROM(
+		select tps.*,d1.dealer_name as pull_storage_party_name,d1.dealer_name as pull_storage_user_name,th.hospital_name as put_storage_party_name from dms.tb_pull_storage tps
+		    LEFT JOIN tb_dealer d1 ON tps.fk_pull_storage_party_id=d1.dealer_id 
+		    LEFT JOIN tb_hospital th ON tps.fk_put_storage_party_id=th.id
+		) t
+		<include refid="adsWhere" />
+	</select>
+	<select id="selectPullStorageCode" resultType="dms.yijava.entity.pullstorage.SalesStorage">
+		select LPAD(max(pull_storage_no)+1,3,0) as pull_storage_no from dms.tb_pull_storage WHERE
+		 create_date between CURDATE() AND CONCAT(CURDATE(),' 23:59:59') AND fk_pull_storage_party_id =#{fk_pull_storage_party_id} AND type=#{type}
+	</select>
+	<select id="selectStorageDetailTotalNumber" resultType="dms.yijava.entity.pullstorage.SalesStorage">
+		SELECT pull_storage_code,SUM(sales_number) as total_number FROM tb_pull_storage_detail WHERE pull_storage_code=#{pull_storage_code}
+	</select>
+	<insert id="insert" parameterType="dms.yijava.entity.pullstorage.SalesStorage">
+		insert into dms.tb_pull_storage
+		(pull_storage_code,pull_storage_no,fk_pull_storage_party_id,fk_put_storage_party_id,type,sales_date,create_date,last_time)
+		values(#{pull_storage_code},#{pull_storage_no},#{fk_pull_storage_party_id},#{fk_put_storage_party_id},#{type},#{sales_date},NOW(),NOW())
+	</insert>
+	<update id="update" parameterType="dms.yijava.entity.pullstorage.SalesStorage">
+		update dms.tb_pull_storage
+		<trim prefix="SET" suffixOverrides=",">
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">status=#{status},</if> 
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(total_number)">total_number=#{total_number},</if>  
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(pull_storage_date)">pull_storage_date=#{pull_storage_date},</if>  
+            last_time=NOW()
+        </trim>
+		WHERE pull_storage_code=#{pull_storage_code}
+	</update>
+	<delete id="deleteByPrimaryKey" parameterType="int">
+		delete from dms.tb_pull_storage where id = #{id}
+	</delete>
+	<delete id="deleteByPullStorageCode" parameterType="String">
+		delete from dms.tb_pull_storage where pull_storage_code=#{pull_storage_code}
+	</delete>
+</mapper>

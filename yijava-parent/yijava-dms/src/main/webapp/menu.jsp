@@ -182,6 +182,9 @@
 	<div data-options="iconCls:'icon-file'">
 		<a href="javascript:void(0)" title="发货单管理" url="pullstorage/loans/putview.jsp">借贷入库管理</a>
 	</div>
+	<div data-options="iconCls:'icon-file'">
+		<a href="javascript:void(0)" title="发货单管理" url="pullstorage/sales/salesview.jsp">销售出库管理</a>
+	</div>
 </div>
 <div id="mm11" style="width: 150px;">
 	<div data-options="iconCls:'icon-file'">
