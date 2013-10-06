@@ -561,7 +561,7 @@
 		*/
 		function ToCheckEntity(){
 			var row = $('#dg').datagrid('getSelected');
-			if (row && row.status ==0){			
+			if (row && (row.status ==0 || row.status ==2) ){			
 				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
 					 if (r){
 	                        $.post(basePath+'api/protrial/updatetocheck',{trial_id:row.trial_id},function(result){
