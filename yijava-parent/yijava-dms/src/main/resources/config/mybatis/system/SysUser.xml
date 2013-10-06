@@ -105,6 +105,9 @@
 		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_dealer_id)">
 		,#{fk_dealer_id}
 		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(sign_img)">
+		,#{sign_img}
+		</if>
 		,#{isdeleted},NOW(),NOW(),#{remark},#{customfield1},#{customfield2},#{customfield3})
 	</insert>
     <update id="update" parameterType="dms.yijava.entity.system.SysUser">
@@ -124,6 +127,8 @@
             <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_dealer_id)">fk_dealer_id=#{fk_dealer_id},</if>
             <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(isdeleted)">isdeleted=#{isdeleted},</if>
             last_time=NOW(),
+            
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(sign_img)">sign_img=#{sign_img},</if> 
             <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(customfield1)">customfield1=#{customfield1},</if> 
             <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(customfield2)">customfield2=#{customfield2},</if> 
             <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(customfield3)">customfield3=#{customfield3}</if>

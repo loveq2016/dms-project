@@ -274,4 +274,9 @@ public class FlowBussService {
 		//flowRecordDao.find(parameters)
 	}
 	
+	public void deleteByRecordId(Integer record_id)
+	{
+		flowRecordService.removeEntity(record_id);
+	}
+	
 }

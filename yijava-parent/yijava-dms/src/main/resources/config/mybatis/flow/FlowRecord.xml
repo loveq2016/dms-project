@@ -62,8 +62,9 @@
     	check_time=#{check_time},check_department_id=#{check_department_id},status=#{status},check_reason=#{check_reason},create_time=#{create_time},
     	ext1=#{ext1},ext2=#{ext2},ext3=#{ext3} where flow_id=#{flow_id},bussiness_id=#{bussiness_id}
     </update> -->
-    <update id="delete" parameterType="dms.yijava.entity.flow.FlowRecord">
-   	 	update dms.tb_flow_record set is_delete=1 where flow_id=#{flow_id},bussiness_id=#{bussiness_id}  		
+    <update id="delete" parameterType="int">
+    	delete from dms.tb_flow_record where record_id=#{record_id}
+   	 	<!-- update dms.tb_flow_record set is_delete=1 where flow_id=#{flow_id},bussiness_id=#{bussiness_id}  		 -->
 	</update>
 	<!-- 用户待处理事项 -->
 	<select id="selectToCheckByUser" resultType="dms.yijava.web.model.UserToCheck">
