@@ -24,6 +24,7 @@ import com.yijava.web.vo.Result;
 import dms.yijava.entity.system.SysLogin;
 import dms.yijava.entity.system.SysMenuFunction;
 import dms.yijava.entity.system.SysUser;
+import dms.yijava.entity.teamlayou.UserLayou;
 import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.system.SysLoginService;
 import dms.yijava.service.system.SysMenuFunctionService;
@@ -79,6 +80,19 @@ public class SysLoginController {
 				List<SysLogin> sysLoginList= sysLoginService.getRoleMenuFunList(sysUser.getFk_role_id());
 				try{
 					String[] teams=userLayouService.getTeamIdsByUserId(sysUser.getId()).getFk_team_id().split(",");//用户节点
+					
+					/**根据用户的所有节点找到所有的上级用户 */
+					String parentIds="";
+					for(String team:teams)
+					{
+						List<UserLayou> userLayouts=userLayouService.getParentByUserId(team);
+						for(UserLayou userLayou:userLayouts)
+						{
+							parentIds+=userLayou.getFk_user_id()+",";
+						}
+					}
+					sysUser.setParentIds(parentIds);
+					/**/
 					List<UserDealer> userDealerList=userDealerFunService.getUserDealerList(sysUser.getId(),teams);//节点用户
 					sysUser.setUserDealerList(userDealerList);
 					sysUser.setTeams(teams);
