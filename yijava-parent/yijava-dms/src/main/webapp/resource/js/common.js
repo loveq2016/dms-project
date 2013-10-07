@@ -14,8 +14,8 @@ function addTab(subtitle,url){
 			title:subtitle,
 			content:createFrame(url),
 			closable:true,
-			width:$('#mainPanle').width()-10,
-			height:$('#mainPanle').height()-26
+			width:$('#mainPanle').width()-1,
+			height:$('#mainPanle').height()-10
 		});
 	}else{
 		$('#tabs').tabs('select',subtitle);
@@ -23,10 +23,12 @@ function addTab(subtitle,url){
 	tabClose();
 }
 
-
 function createFrame(url)
 {
-	var s = '<iframe name="mainFrame" scrolling="no" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
+	//var s='<div title="首页" data-options="iconCls:\'icon-help\',closable:false" style="padding:5px;overflow:hidden;">';
+	 //s += '<div id="reload" class="easyui-panel" title=" " style="height:0px" data-options="tools:\'#treetool\'"></div><div style="height:2px"></div>';
+	 var s= '<iframe name="mainFrame" scrolling="no" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
+	 //s += '<div>'
 	return s;
 }
 
