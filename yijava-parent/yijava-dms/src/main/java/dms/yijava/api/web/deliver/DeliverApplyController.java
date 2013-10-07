@@ -98,6 +98,19 @@ public class DeliverApplyController {
 	}
 	
 	
+	@ResponseBody
+	@RequestMapping("submit")
+	public Result<String> submit(@RequestParam(value = "deliver_code", required = true) String deliver_code) {
+		try {
+			//deliverService.deleteEntity(id);
+			deliverService.submitDeliver(deliver_code);
+			return new Result<String>(deliver_code, 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(deliver_code, 0);
+	}
+	
 
 	
 }

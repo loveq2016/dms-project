@@ -57,6 +57,8 @@
     	where deliver_code =#{deliver_code}
     </update>
 	
-	
+	<update id="submitDeliver" parameterType="dms.yijava.entity.deliver.Deliver">
+    	update dms.tb_deliver set check_status = 1 where deliver_code =#{deliver_code}
+    </update>
     
 </mapper>
