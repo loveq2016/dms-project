@@ -19,14 +19,14 @@
 									<td><input class="easyui-validatebox" type="text" name="dealer_name" id="dealer_name" data-options="required:false"></input></td>
 									<td></td>
 									<td>仓库:</td>
-									<td><input class="easyui-validatebox" type="text" name="dealer_name" id="dealer_name" data-options="required:false"></input></td>
+									<td><input class="easyui-validatebox" type="text" name="storage_name" id="storage_name" data-options="required:false"></input></td>
 								</tr>
 								<tr>
 									<td>Item Number:</td>
-									<td><input class="easyui-validatebox" type="text" name="dealer_name" id="dealer_name" data-options="required:false"></input></td>
+									<td><input class="easyui-validatebox" type="text" name="product_item_number" id="product_item_number" data-options="required:false"></input></td>
 									<td></td>
 									<td>批号/序列号:</td>
-									<td><input class="easyui-validatebox" type="text" name="dealer_name" id="dealer_name" data-options="required:false"></input></td>
+									<td><input class="easyui-validatebox" type="text" name="batch_no" id="batch_no" data-options="required:false"></input></td>
 								</tr>
 							</table>
 						</form>
@@ -76,7 +76,9 @@
 		function doSearch(){
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_dealer_name: $('#dealer_name').val(),
-		    	filter_ANDS_dealer_code: $('#dealer_code').val()
+		    	filter_ANDS_storage_name: $('#storage_name').val(),
+		    	filter_ANDS_product_item_number: $('#product_item_number').val(),
+		    	filter_ANDS_batch_no: $('#batch_no').val()
 		    });
 		}
 		

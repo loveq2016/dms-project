@@ -9,6 +9,8 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_dealer_id)">and fk_dealer_id = #{fk_dealer_id}</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(product_item_number)">and product_item_number = #{product_item_number}</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(batch_no)">and batch_no like CONCAT('%','${batch_no}','%' ) </if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">and dealer_name like CONCAT('%','${dealer_name}','%' ) </if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(storage_name)">and storage_name like CONCAT('%','${storage_name}','%' ) </if>
 		</trim>
 	</sql>
 	<sql id="adsOrder">
