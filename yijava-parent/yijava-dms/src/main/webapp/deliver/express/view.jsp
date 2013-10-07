@@ -36,7 +36,9 @@
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">查询</a>   
+					<restrict:function funId="146">
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">查询</a> 
+					</restrict:function>  
 					</div>
 				</div>
 			</div>
@@ -64,8 +66,12 @@
 				</table>
 			</div>
 			<div id="tb">
-				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">发货</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="newEntity()">编辑</a>
+				<restrict:function funId="147">
+					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">发货</a>
+				</restrict:function>
+				<restrict:function funId="148">
+					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="newEntity()">编辑</a>
+				</restrict:function>
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
@@ -148,7 +154,9 @@
 						</thead>
 					</table>
 					<div id="tb1">
-						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newExpress()">物流添加</a>
+						<restrict:function funId="149">
+							<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newExpress()">物流添加</a>
+						</restrict:function>
 					</div>
 				</div>
 				<div title="物流明细行" style="padding: 5px 5px 5px 5px;" >
@@ -162,18 +170,24 @@
 							<th data-options="field:'express_sn',width:100,align:'center'">规格、批号</th>
 							<th data-options="field:'validity_date',width:100,align:'center'">有效期</th>
 							<th data-options="field:'remark',width:100,align:'center'">备注</th>
-							<th data-options="field:'product_sn',width:100,align:'center'" formatter="formatterProductSn">序列号</th>
+							<restrict:function funId="151">
+								<th data-options="field:'product_sn',width:100,align:'center'" formatter="formatterProductSn">序列号</th>
+							</restrict:function>
 							</tr>
 						</thead>
 					</table>
 					<div id="tb2">
-						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteExpress()">删除</a>
+						<restrict:function funId="150">
+							<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteExpress()">删除</a>
+						</restrict:function>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div id="dlg-buttons">
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="submitExpress();">提交</a>
+			<restrict:function funId="155">
+	        	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="submitExpress();">提交</a>
+	        </restrict:function>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgDeliverDetail').dialog('close')">取消</a>
 	    </div>
 	    
@@ -236,9 +250,15 @@
 					</thead>
 				</table>
 				<div id="tb3">
-					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addExpressSn()">添加</a>
-					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editExpressSn()">编辑</a>
-					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteExpressSn()">删除</a>
+					<restrict:function funId="152">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addExpressSn()">添加</a>
+					</restrict:function>
+					<restrict:function funId="153">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editExpressSn()">编辑</a>
+					</restrict:function>
+					<restrict:function funId="154">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteExpressSn()">删除</a>
+					</restrict:function>
 				</div>
     </div>
    	<div id="dlgProductSn2" class="easyui-dialog" style="width:300px;height:300px;padding:5px 5px 5px 5px;"
@@ -273,7 +293,8 @@
 		function doSearch(){
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_order_code: $('input[name=order_code]').val(),
-		    	filter_ANDS_deliver_code: $('input[name=deliver_code]').val()
+		    	filter_ANDS_deliver_code: $('input[name=deliver_code]').val(),
+		    	filter_ANDS_check_status : 3
 		    });
 		}
 		
