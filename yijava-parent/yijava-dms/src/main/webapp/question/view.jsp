@@ -21,10 +21,12 @@
 										<input class="easyui-validatebox" type="text" name="q_text" id="q_text" data-options="required:false"></input>
 									</td>
 									<td></td>
-									<td>经销商名称:</td>
-									<td>
-										<input class="easyui-validatebox" type="text" name="dealer_name" id="dealer_name" data-options="required:false"></input>
-									</td>
+									<c:if test="${user.fk_dealer_id=='0'}">
+										<td>经销商名称:</td>
+										<td>
+											<input class="easyui-validatebox" type="text" name="dealer_name" id="dealer_name" data-options="required:false"></input>
+										</td>
+									</c:if>
 								</tr>
 							</table>
 						</form>
