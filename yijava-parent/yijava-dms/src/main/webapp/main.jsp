@@ -45,27 +45,18 @@
 			<jsp:include page="menu.jsp"></jsp:include>
 		</div>
 	</div>
-	<div data-options="region:'west',split:true,title:'公司信息'"
-		style="width: 150px; padding: 10px;">west content
-	</div>
-	<div
-		data-options="region:'east',split:true,collapsed:false,title:'待处理事项',tools:'#treetool'"
-		style="width: 200px; padding: 10px;">
-			<ul id="tochecktree" class="easyui-tree" data-options="url:'${basePath}api/flowrecord/tocheck',method:'get',animate:true"></ul>
-		</div>
+	
 	<div data-options="region:'south',border:false"
 		style="height: 20px; background: #ddd; padding: 10px;"></div>
 	<div id="mainPanle" data-options="region:'center',title:''">
 		<div id="tabs" class="easyui-tabs"  fit="true" border="false" >
 		<div title="首页" data-options="iconCls:'icon-help',closable:false" style="padding:20px;overflow:hidden;" id="home">
-			<h1>Welcome to jQuery UI!</h1>
+			<iframe name="mainFrame" scrolling="no" frameborder="0"  src="home.jsp" style="width:100%;height:100%;"></iframe>
+			
 			</div>
 		</div>
 	</div>
-	<div id="treetool">
-		<a href="javascript:void(0)" class="icon-reload" onclick="javascript:checkReload();"></a>
-		
-	</div>
+	
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#mm1').menu();  
