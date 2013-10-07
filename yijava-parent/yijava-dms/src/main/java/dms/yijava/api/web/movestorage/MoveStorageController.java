@@ -55,7 +55,7 @@ public class MoveStorageController {
 			//经销商
 			if(!StringUtils.equals("0",sysUser.getFk_dealer_id())){
 				filters.add(PropertyFilters.build("ANDS_fk_move_storage_party_id",sysUser.getFk_dealer_id()));
-			}else if(!StringUtils.equals("0",sysUser.getFk_department_id())){
+			}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
 				filters.add(PropertyFilters.build("ANDS_fk_move_storage_party_ids", this.listString(sysUser.getUserDealerList())));
 			}
 			return moveStorageService.paging(pageRequest,filters);
@@ -76,7 +76,7 @@ public class MoveStorageController {
 		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
 		SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");
 		//必须是经销商才可以添加移库单
-		if(StringUtils.isNotEmpty(sysUser.getFk_dealer_id())){
+		if(!StringUtils.equals("0",sysUser.getFk_dealer_id())){
 			MoveStorage moveObj=moveStorageService.getMoveStorageCode(sysUser.getFk_dealer_id());
 			//移库货单
 			entity.setMove_storage_code(sysUser.getDealer_code()+"RN"+formatter.format(new Date())+moveObj.getMove_storage_no());

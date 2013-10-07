@@ -1,6 +1,10 @@
 package dms.yijava.api.web.user;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,7 +21,6 @@ import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
-import dms.yijava.entity.dealer.Dealer;
 import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.user.UserDealerFunService;
 
@@ -60,7 +63,9 @@ public class UserDealerFunController {
 	@RequestMapping("list")
 	public List<UserDealer> list(@RequestParam(value = "u_id", required = true) String u_id,
 			@RequestParam(value = "t_id", required = true) String t_id) {
-		return userDealerFunService.getUserDealerList(u_id,t_id.split(","));
+		List<UserDealer> list=userDealerFunService.getUserDealerList(u_id,t_id.split(","));
+		removeDuplicate(list);
+		return list;
 	}
 
 	@ResponseBody
@@ -70,5 +75,17 @@ public class UserDealerFunController {
 		userDealerFunService.deleteEntity(id);
 		return new Result<String>(id, 1);
 	}
+	
+	public static void removeDuplicate(List list) {
+		   for ( int i = 0 ; i < list.size() - 1 ; i ++ ) {
+		     for ( int j = list.size() - 1 ; j > i; j -- ) {
+		    	 UserDealer u=(UserDealer)list.get(i);
+		    	 UserDealer u2=(UserDealer)list.get(j);
+		       if (u.getDealer_id().equals(u2.getDealer_id())) {
+		         list.remove(j);
+		       }
+		      }
+		    }
+		}
 
 }
