@@ -49,8 +49,6 @@ h2 {
  #logon
 {
     float: left;
-    padding: 2px;
-    
     padding-left: 4px;
     text-align: left;
     clear: both;
@@ -58,9 +56,7 @@ h2 {
 #logon ul li
 {
     color: #fff;
-    margin-right: 8px;
-    line-height: 24px;
-    padding: 2px;
+    margin-right: 8px;    
     padding-left: 10px;
 }
 #settings
@@ -68,15 +64,21 @@ h2 {
     padding: 2px;    
     padding-right: 4px;
     text-align: right;
+    height:25px;
+}
+#settingsWrapper table
+{
+    height: 30px;
 }
 #settings ul li
 {
     display: inline;
     color: #fff;
     margin-right: 8px;
-    line-height: 24px;
+    line-height: 10px;
     padding: 2px;
     padding-left: 19px;
+    padding-top: -5px;
 }
 #settings ul li a, #settings ul li a:link
 {
@@ -92,10 +94,11 @@ h2 {
     text-align: left;
     padding-left: 10px;
 }
-#settings ul li welcome
+#itemLogout
 {
-    font-family: Verdana;
-    font-style: italic;
-    font-size: 13px;
+   background: url(../themes/icons/logout.png) no-repeat 0 2px;
 }
-        
+#itemAddContent
+{
+   background: url(../themes/icons/home.png) no-repeat 0 2px;
+}        

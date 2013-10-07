@@ -13,7 +13,7 @@
 	<div data-options="region:'north',border:false"
 		style=" background: #ddd; ">
 		<div id="settingsWrapper">
-			    <table width="100%">
+			   <table width="100%" >
 			        <tbody>
 			            <tr>
 			                <td>
@@ -26,13 +26,9 @@
 			                <td align="right">
 			                    <div id="settings">
 			                        <ul>
-			                            <li>ddd</li>
-			                            <li id="itemAddContent"><a href='/'>主页</a></li>
-			                           	<li id="itemLogout">
-			                                <div id="TopControl1_ctl00_Container" style="display:inline;">
-			
-											</div>
-			                            </li>
+			                            <li>欢迎您,${user.realname}</li>
+			                            <li id="itemAddContent"><a href='${basePath}main.jsp'>首页</a></li>
+			                           	<li id="itemLogout"><a href='${basePath}api/sys/logout'>退出</a> </li>
 			                        </ul>
 			                    </div>
 			                </td>
@@ -41,7 +37,7 @@
 			    </table>
 			</div>
 
-		<div id="menu">
+		 <div id="menu">
 			<jsp:include page="menu.jsp"></jsp:include>
 		</div>
 	</div>
@@ -58,9 +54,7 @@
 		</div>
 	</div>
 	
-	<!-- <div id="treetool">
-		<a href="javascript:void(0)" class="icon-reload" onclick="javascript:checkReload();"></a>		
-	</div> -->
+	
 	
 	<div id="tab-tools">
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:ReloadTab();" plain="true" iconCls="icon-reload"></a>	
