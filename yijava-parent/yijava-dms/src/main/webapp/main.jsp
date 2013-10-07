@@ -51,20 +51,28 @@
 	<div id="mainPanle" data-options="region:'center',title:''">
 		<div id="tabs" class="easyui-tabs"  fit="true" border="false" >
 			<div title="首页" data-options="iconCls:'icon-help',closable:false" style="padding:5px;overflow:hidden;" id="home">
-				<div id="reload" class="easyui-panel" title=" " style="height:0px" data-options="tools:'#treetool'"></div>
-				<div style="height:2px"></div>
+				<!-- <div id="reload" class="easyui-panel" title=" " style="height:0px" data-options="tools:'#treetool'"></div>
+				<div style="height:2px"></div> -->
 				<iframe name="mainFrame" scrolling="no" frameborder="0"  src="home.jsp" style="width:100%;height:100%;"></iframe>			
 			</div>
 		</div>
 	</div>
 	
-	<div id="treetool">
+	<!-- <div id="treetool">
 		<a href="javascript:void(0)" class="icon-reload" onclick="javascript:checkReload();"></a>		
+	</div> -->
+	
+	<div id="tab-tools">
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:ReloadTab();" plain="true" iconCls="icon-reload"></a>	
 	</div>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#mm1').menu();  
 });
+$('#tabs').tabs({
+	tools:'#tab-tools'
+});
+
 $('#tochecktree').tree({
 	onClick: function(node){
 		if(node.id==trialflow_identifier_num)
@@ -74,9 +82,16 @@ $('#tochecktree').tree({
 			
 	}
 });
-function checkReload()
-{  
-	$('#tochecktree').tree('reload');
+function ReloadTab()
+{   
+	
+	var currTab =$('#tabs').tabs('getSelected');	
+    var iframe = $(currTab.panel('options').content);
+    var src = iframe.attr('src');
+    if(src)
+    	$('#tabs').tabs('update', { tab: currTab, options: { content: createFrame(src)} });
+    else
+    	$('#tabs').tabs('update', { tab: currTab, options: { content: createFrame("home.jsp")} });
 	
 }
 </script>
