@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="AdjustStorage">
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(type)">
+				and type=#{type}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">
+				and status=#{status}
+			</if>
+			<!-- 单据 -->
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(adjust_storage_code)">
+				and adjust_storage_code=#{adjust_storage_code}
+			</if>
+		</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>
+			<when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">
+				order by ${orderSql}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</sql>
+	<select id="selectByObjectcount" resultType="long">
+		SELECT COUNT(*)  FROM(
+		select tps.*,d1.dealer_name as pull_storage_party_name,d1.dealer_name as pull_storage_user_name,d2.dealer_name as put_storage_party_name,d2.dealer_name as put_storage_user_name from dms.tb_pull_storage tps
+		    LEFT JOIN tb_dealer d1 ON tps.fk_pull_storage_party_id=d1.dealer_id 
+		    LEFT JOIN tb_dealer d2 ON tps.fk_put_storage_party_id=d2.dealer_id 
+		) t
+		<include refid="adsWhere" />
+	</select>
+	<select id="selectByObject" resultType="dms.yijava.entity.adjuststorage.AdjustStorage">
+		SELECT * FROM(
+			select t1.*,t2.dealer_name from dms.tb_adjust_storage t1 
+			left join dms.tb_dealer t2 on t1.dealer_id  = t2.dealer_id
+		) t
+		<include refid="adsWhere" />
+		<include refid="adsOrder" />
+		limit #{offset},#{pagesize}
+	</select>
+
+	<select id="selectAdjustStorageCode" resultType="dms.yijava.entity.adjuststorage.AdjustStorage">
+		select LPAD(max(adjust_storage_no)+1,3,0) as adjust_storage_no from dms.tb_adjust_storage WHERE 
+		create_date between CURDATE() AND CONCAT(CURDATE(),' 23:59:59') AND dealer_id =#{dealer_id}
+	</select>
+	
+	<select id="selectAdjustStorageDetailTotalNumber" resultType="dms.yijava.entity.adjuststorage.AdjustStorage">
+		SELECT adjust_storage_code,SUM(abs(adjust_number)) as total_number 
+		FROM tb_adjust_storage_detail WHERE adjust_storage_code= #{adjust_storage_code}
+	</select>
+	
+	<insert id="insert" parameterType="dms.yijava.entity.adjuststorage.AdjustStorage" useGeneratedKeys="true" keyProperty="id">
+		insert into dms.tb_adjust_storage
+		(adjust_storage_code,adjust_storage_no,adjust_storage_date,dealer_id,type,total_number,status,create_date)
+		values(#{adjust_storage_code},#{adjust_storage_no},#{adjust_storage_date},#{dealer_id},0,0,0,NOW())
+	</insert>
+	
+	<update id="submitAdjustStorage" parameterType="dms.yijava.entity.adjuststorage.AdjustStorage">
+		update dms.tb_adjust_storage set type=#{type},status=4,remark=#{remark} WHERE adjust_storage_code=#{adjust_storage_code}
+	</update>
+	
+	<update id="updateTotalNumber" parameterType="dms.yijava.entity.adjuststorage.AdjustStorage">
+		update dms.tb_adjust_storage set total_number=#{total_number} WHERE adjust_storage_code=#{adjust_storage_code}
+	</update>
+	
+	<delete id="deleteByPrimaryKey" parameterType="int">
+		delete from dms.tb_adjust_storage where id = #{id}
+	</delete>
+	
+</mapper>

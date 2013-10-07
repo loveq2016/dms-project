@@ -186,10 +186,28 @@ public class FlowRecordController {
 						//currentStepNo++;
 						
 						//step = flowBussService.getNextStep(new Integer(flow_id),currentStepNo);
-						String check_id ;
+						String check_id =null;
 						StepDepartment stepDepartment=step.getStepDepartments().get(0);	
 						//找到这个部门下的所有人，但还得确定谁是他们具体的上级
 						//stepDepartment.getUsers();
+						//这里找到了这个部门下的几个用户，应该查找哪个是他的上级
+						List<SysUser> sysUsers= stepDepartment.getUsers();
+						for(SysUser tmpsysUser: sysUsers)
+						{
+							if(sysUser.getParentIds()!=null && !sysUser.getParentIds().equals(""))
+							{
+								if(sysUser.getParentIds().indexOf(tmpsysUser.getId())>-1)
+								{
+									check_id=tmpsysUser.getId();
+								}
+							}
+							
+						}
+						
+						if(check_id==null)
+						{
+							return result;
+						}
 						check_id=stepDepartment.getUsers().get(0).getId();
 						
 						flowBussService.insertStep(flow_id, currentUserId,  

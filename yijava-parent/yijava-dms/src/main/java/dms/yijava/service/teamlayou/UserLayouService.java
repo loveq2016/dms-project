@@ -43,4 +43,15 @@ public class UserLayouService {
 	public void deleteByTeamId(String id) {
 		userLayouDao.removeObject(".deleteByTeamId",id);
 	}
+	
+	/**
+	 * 根据用户所在的节点，找到用户的所有上级用户id
+	 * 
+	 * @param team
+	 * @return
+	 */
+	public List<UserLayou> getParentByUserId(String team)
+	{
+		return userLayouDao.find(".selectParentIdsByUserId", team);
+	}
 }

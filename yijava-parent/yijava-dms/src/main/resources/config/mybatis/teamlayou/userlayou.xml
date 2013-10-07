@@ -21,6 +21,12 @@
 	<select id="selectTeamIdsByUserId" resultType="dms.yijava.entity.teamlayou.UserLayou">
 		select cast(group_concat(fk_team_id separator ',') as char(100000)) as fk_team_id FROM tb_user_layou WHERE fk_user_id = #{user_id}
 	</select>
+	<!-- zhjt 2013-10-7日修改,根据用户查找他的所有上级用户 start-->
+	<select id="selectParentIdsByUserId" resultType="dms.yijava.entity.teamlayou.UserLayou">
+		SELECT * FROM tb_user_layou WHERE fk_team_id in (
+		select id from tb_team_layou where FIND_IN_SET(id,getParentLst(#{item})))
+	</select>
+	<!-- zhjt 2013-10-7日修改,根据用户查找他的所有上级用户 end-->
 	<insert id="insert" parameterType="dms.yijava.entity.teamlayou.UserLayou">
 		insert into dms.tb_user_layou(fk_team_id,fk_team_name,fk_user_id,fk_user_name,fk_role_id,remark,ext1,ext2,ext3) 
 		values(#{fk_team_id},#{fk_team_name},#{fk_user_id},#{fk_user_name},#{fk_role_id},#{remark},#{ext1},#{ext2},#{ext3})

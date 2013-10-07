@@ -2,7 +2,6 @@ package dms.yijava.entity.pullstorage;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import dms.yijava.entity.product.Product;
 
 @Data
 @NoArgsConstructor

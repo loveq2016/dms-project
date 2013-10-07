@@ -19,6 +19,7 @@ import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
+import com.yijava.web.vo.ErrorCode;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.department.Department;
@@ -169,15 +170,23 @@ public class TrialController {
 						
 			///以下开始走流程处理
 			SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
-			processFlow(trial_id,sysUser.getId(),sysUser.getRealname());	
+			
+			if(processFlow(trial_id,sysUser))
+			{
+				
+				//更新状态
+				trialService.updateEntityStatus(trial_id,1);
+				result.setData(1);
+				result.setState(1);;
+			}else
+			{
+				result.setError(new ErrorCode("出现系统错误，处理流程节点"));
+			}
+			
+		
 			
 			
-			//更新状态
-			trialService.updateEntityStatus(trial_id,1);
 			
-			
-			result.setData(1);
-			result.setState(1);;
 		} catch (Exception e) {
 			logger.error("error" + e);
 		}
@@ -189,21 +198,40 @@ public class TrialController {
 	 * @param trial_id
 	 * @param currentUserId
 	 */
-	public void processFlow(Integer trial_id,String currentUserId,String realname)
+	public boolean processFlow(Integer trial_id,SysUser currentUser)
 	{
 		Step step=flowBussService.getFirstStep(flowIdentifierNumber);
 		//此处需要根据当前用户从所属的部门里找到用户id
-		String check_id ;
+		String check_id =null;
 		
 		StepDepartment stepDepartment=step.getStepDepartments().get(0);
-		check_id=stepDepartment.getUsers().get(0).getId();
+		//这里找到了这个部门下的几个用户，应该查找哪个是他的上级
+		List<SysUser> sysUsers= stepDepartment.getUsers();
+		for(SysUser sysUser: sysUsers)
+		{
+			if(currentUser.getParentIds()!=null && !currentUser.getParentIds().equals(""))
+			{
+				if(currentUser.getParentIds().indexOf(sysUser.getId())>-1)
+				{
+					check_id=sysUser.getId();
+				}
+			}
+			
+		}
+		
+		if(check_id==null)
+		{
+			return false;
+		}
+		
+		//check_id=stepDepartment.getUsers().get(0).getId();
 		
 		//先记录处理日志
 		//写处理日志
 		FlowLog flowLog=new FlowLog();
 		flowLog.setFlow_id(flowIdentifierNumber);
-		flowLog.setUser_id(currentUserId);
-		flowLog.setUser_name(realname);
+		flowLog.setUser_id(currentUser.getId());
+		flowLog.setUser_name(currentUser.getRealname());
 		flowLog.setBussiness_id(trial_id.toString());
 		flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		flowLog.setAction_name("提交"+"-"+step.getAction_name());
@@ -211,8 +239,9 @@ public class TrialController {
 		flowLogService.saveEntity(flowLog);
 		
 		//记录流程
-		flowBussService.insertStep(flowIdentifierNumber, currentUserId,  
+		flowBussService.insertStep(flowIdentifierNumber, currentUser.getId(),  
 				"提交", trial_id.toString(), check_id, "提交"+"-"+step.getAction_name(),"0","1");
+		return true;
 	}
 	
 	public String listString(List<UserDealer> list) {
