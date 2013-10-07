@@ -50,13 +50,17 @@
 		style="height: 20px; background: #ddd; padding: 10px;"></div>
 	<div id="mainPanle" data-options="region:'center',title:''">
 		<div id="tabs" class="easyui-tabs"  fit="true" border="false" >
-		<div title="首页" data-options="iconCls:'icon-help',closable:false" style="padding:20px;overflow:hidden;" id="home">
-			<iframe name="mainFrame" scrolling="no" frameborder="0"  src="home.jsp" style="width:100%;height:100%;"></iframe>
-			
+			<div title="首页" data-options="iconCls:'icon-help',closable:false" style="padding:5px;overflow:hidden;" id="home">
+				<div id="reload" class="easyui-panel" title=" " style="height:0px" data-options="tools:'#treetool'"></div>
+				<div style="height:2px"></div>
+				<iframe name="mainFrame" scrolling="no" frameborder="0"  src="home.jsp" style="width:100%;height:100%;"></iframe>			
 			</div>
 		</div>
 	</div>
 	
+	<div id="treetool">
+		<a href="javascript:void(0)" class="icon-reload" onclick="javascript:checkReload();"></a>		
+	</div>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#mm1').menu();  
