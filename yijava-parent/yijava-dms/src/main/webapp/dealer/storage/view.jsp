@@ -34,7 +34,9 @@
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>			   
+						<restrict:function funId="98">
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>
+						</restrict:function>			   
 					</div>
 				</div>
 			</div>
@@ -42,7 +44,7 @@
 			<div style="margin: 10px 0;"></div>
 
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" class="easyui-datagrid" title="查询结果" style="height: 430px"  method="get"
+				<table id="dg" class="easyui-datagrid" title="查询结果" style="height: 330px"  method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="dealer_id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
@@ -60,9 +62,12 @@
 					</thead>
 				</table>
 				<div id="tb">    
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity();">添加</a>    
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save"  plain="true" onclick="updateEntity();">编辑</a>     
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity();">删除</a>    
+					<restrict:function funId="99">
+				    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity();">添加</a></restrict:function>    
+				   <restrict:function funId="100">
+				    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save"  plain="true" onclick="updateEntity();">编辑</a></restrict:function> 
+				    <restrict:function funId="101">
+				    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity();">删除</a></restrict:function>    
 				</div> 
 			</div>
 			<div style="margin: 10px 0;"></div>
@@ -71,8 +76,8 @@
 
 
    <div id="dlg" class="easyui-dialog" style="width:360px;height:260px;padding:5px 5px 5px 5px;"
-            modal="true" closed="true" buttons="#dlg-buttons">
-	        <form id="fm" method="post" novalidate>
+            modal="true" closed="true" buttons="#dlg-buttons" enctype="multipart/form-data">
+	        <form id="fm" method="post" novalidate enctype="multipart/form-data">
 	        	<input type="hidden" name="id">
 				         	  <table>
 				             	<tr>
