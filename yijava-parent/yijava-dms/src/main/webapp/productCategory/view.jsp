@@ -18,6 +18,10 @@
 							method: 'get',
 							lines: true,
 							onContextMenu: function(e,node){
+								if(node.id==1)
+                    	 			$('#deleteEntity').hide();
+                   				 else
+                    	 			$('#deleteEntity').show();
 				                e.preventDefault();
 				                $(this).tree('select',node.target);
 				                $('#treeRightMenu').menu('show',{
@@ -63,9 +67,9 @@
 </div> 
 		<%-- 右键菜单--%>
 		 <div id="treeRightMenu" class="easyui-menu" style="width:120px;">
-			<div onclick="append()"   data-options="iconCls:'icon-add'">添加</div>
-			<div onclick="edit()"   data-options="iconCls:'icon-edit'">编辑</div>
-			<div onclick="removeIt()" data-options="iconCls:'icon-remove'">删除</div>
+		 	<restrict:function funId="113"><div onclick="append()"   data-options="iconCls:'icon-add'">添加</div></restrict:function>
+			<restrict:function funId="114"><div onclick="edit()"   data-options="iconCls:'icon-edit'">编辑</div></restrict:function>
+			<restrict:function funId="115"><div id="deleteEntity" onclick="removeIt()" data-options="iconCls:'icon-remove'">删除</div></restrict:function>
 		</div>
 		<%-- 右键菜单--%>
 		<div id="treeEdit" class="easyui-window" title="产品分类详细信息" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
