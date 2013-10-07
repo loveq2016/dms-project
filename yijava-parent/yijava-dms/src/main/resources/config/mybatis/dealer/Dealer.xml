@@ -6,15 +6,9 @@
 
 <sql id="adsWhere">
 	<trim prefix="WHERE" prefixOverrides="AND|OR">
-		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_code)">
-			and dealer_code=#{dealer_code}
-		</if>
-		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">
-			and dealer_name=#{dealer_name}
-		</if>
-		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(not_category_id)">
-			and category_id != #{not_category_id}
-		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_code)">and dealer_code like CONCAT('%','${dealer_code}','%' ) </if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">and dealer_name like CONCAT('%','${dealer_name}','%' ) </if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(not_category_id)">and category_id != #{not_category_id}</if>
 	</trim>
 </sql>
 
