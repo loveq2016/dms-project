@@ -10,7 +10,7 @@
 				<table id="treegrid"></table>
 				 <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0;">  
 				 <restrict:function funId="135">
-	                <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="saveAuthorze()">Ok</a>
+	                <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" href="javascript:void(0)" onclick="saveAuthorze()">Ok</a>
 	             </restrict:function>  
 	                <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="clearForm()">Cancel</a>  
 	            </div>  
@@ -32,7 +32,7 @@
                 {title:'名称',field:'menu_name',width:200} 
             ]],  
             columns:[[
-                {field:'list',title:'功能',width:250,rowspan:2,
+                {field:'list',title:'功能',width:400,rowspan:2,
                 	formatter:function(value){
                 		var str="";
                 		if (typeof(value) != "undefined")
