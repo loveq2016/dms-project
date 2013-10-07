@@ -35,7 +35,9 @@
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>			   
+						<restrict:function funId="137">
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>	
+						</restrict:function>		   
 					</div>
 				</div>
 			</div>
@@ -56,7 +58,9 @@
 							<th field="consignee_date" width="100" align="center" sortable="true">收货日期</th>
 							<th field="totalMoney" width="100" align="center" sortable="true" >金额</th>
 							<th field="consignee_status" width="100" align="center" sortable="true" formatter="formatterConsigneeStatus">单据状态</th>
-							<th field="info" width="100" align="center" sortable="true" formatter="formatterInfo">明细</th>
+							<restrict:function funId="138">
+								<th field="info" width="100" align="center" sortable="true" formatter="formatterInfo">明细</th>
+							</restrict:function>
 						</tr>
 					</thead>
 				</table>
@@ -135,7 +139,9 @@
 			</div>
 		</div>
 		<div id="dlg-buttons">
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" id="submitConsignee" onclick="submitConsignee();">确认收货</a>
+			<restrict:function funId="138">	
+	       		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" id="submitConsignee" onclick="submitConsignee();">确认收货</a>
+	       	</restrict:function>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgDeliverDetail').dialog('close')">取消</a>
 	    </div>
 	
