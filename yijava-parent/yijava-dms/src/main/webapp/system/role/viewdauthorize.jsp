@@ -2,6 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
         <a href="#" onclick="collapseAll()">收起</a>  
         <a href="#" onclick="expandAll()">展开</a>
+        <a href="#" onclick="reload()">刷新</a>
 		<div id="p" class="easyui-panel">
 			<form id="ffauthorze" action="" method="post" enctype="multipart/form-data">
 				<input type="hidden" value="${roleid}" id="roleid" name="roleid"/>
@@ -39,10 +40,16 @@
                     }
                 },
                 {field:'remark',title:'备注',width:200,rowspan:2}
-            ]]
+            ]],
+            onLoadSuccess:function(row,data){
+                $('#treegrid').treegrid('expandAll');
+            }
         });
 	});
-	function collapseAll(){  
+	function reload(){  
+		$('#treegrid').treegrid('reload'); 
+	}
+	function collapseAll(){
         var node = $('#treegrid').treegrid('getSelected');  
         if (node){  
             $('#treegrid').treegrid('collapseAll', node.code);  

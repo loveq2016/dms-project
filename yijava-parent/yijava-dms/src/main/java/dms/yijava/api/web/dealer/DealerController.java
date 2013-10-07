@@ -83,8 +83,13 @@ public class DealerController {
 	@ResponseBody
 	@RequestMapping("delete")
 	public Result<String> delete(@RequestParam(value = "id", required = true) String id) {
-		dealerService.deleteEntity(id);
-		return new Result<String>(id, 1);
+		try {
+			dealerService.deleteEntity(id);
+			return new Result<String>(id, 1);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return new Result<String>(id, 0);
 	}
 	
 	

@@ -38,8 +38,13 @@ public class DealerCategoryFunController {
 	@ResponseBody
 	@RequestMapping("update")
 	public Result<String> update(@ModelAttribute("entity") DealerCategoryFun entity) {
-		dealerCategoryFunService.updateEntity(entity);
-		return new Result<String>(entity.getDealer_id(), 1);
+		try {
+			dealerCategoryFunService.updateEntity(entity);
+			return new Result<String>(entity.getDealer_id(), 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(entity.getDealer_id(), 0);
 	}
 	
 	

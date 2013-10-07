@@ -9,7 +9,7 @@
 		<div id="p" class="easyui-panel" title="">
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dgProduct" class="easyui-datagrid" title="查询结果" style="height: 400px" method="get"
+				<table id="dgProduct" class="easyui-datagrid" title="查询结果" style="height:230px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc"  toolbar="#tbProduct"
 						data-options="onClickRow:onClickProductRow">
 					<thead>
@@ -27,19 +27,27 @@
 									formatter: function(value,row,index){
 										return value==1? '<span style=\'color:green\'>有效</span>':'<span style=\'color:red\'>无效</span>';
 									}">是否有效</th>
-							<th field="discountList" width="200" align="center" sortable="true" formatter="formatterDiscount">产品价格折扣授权列表</th>
+							<restrict:function funId="40">
+								<th field="discountList" width="200" align="center" sortable="true" formatter="formatterDiscount">产品价格折扣授权列表</th>
+							</restrict:function>
 						</tr>
 					</thead>
 				</table>
 				<div id="tbProduct">    
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newProductEntity();">新增授权</a>    
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save"  plain="true" onclick="updateProductEntity();">编辑</a>     
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeProductEntity();">删除</a>    
+					<restrict:function funId="34">
+				   	 	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newProductEntity();">新增授权</a> 
+				   	</restrict:function>  
+				   <restrict:function funId="35">
+				   	 	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save"  plain="true" onclick="updateProductEntity();">编辑</a>     
+				   </restrict:function>
+				   <restrict:function funId="36">
+				    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeProductEntity();">删除</a>   
+				    </restrict:function>
 				</div> 	
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dgHospital" class="easyui-datagrid" title="包含医院" style="height: 400px" method="get"
+				<table id="dgHospital" class="easyui-datagrid" title="包含医院" style="height: 230px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbHospital">
 					<thead>
 						<tr>
@@ -53,21 +61,27 @@
 					</thead>
 				</table>
 				<div id="tbHospital">    
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newHospitalEntity();">选择医院</a>    
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeHospitalEntity();">删除医院</a>    
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeAllHospitalEntity();">全部删除</a>   
+					<restrict:function funId="34">
+					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newHospitalEntity();">选择医院</a>   
+					</restrict:function> 
+					<restrict:function funId="34">
+					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeHospitalEntity();">删除医院</a>  
+					</restrict:function>
+					<restrict:function funId="34">  
+					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeAllHospitalEntity();">全部删除</a>  
+					 </restrict:function> 
 				</div> 	
 			</div>			
 		</div>
 
        <div id="dlgProducr" class="easyui-dialog" style="width:360px;height:260px;padding:5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlgProducr-buttons">
-	        <form id="fm" method="post" novalidate>
+	        <form id="fm" method="post" novalidate enctype="multipart/form-data">
 	        	<input type="hidden" name="id">
 	        	<input type="hidden" name="dealer_id" id="product_dealer_id">
 				       <table>
 				              	<tr>
-				             		<td>${dealer}产品分类:</td>
+				             		<td>产品分类:</td>
 				             		<td>
 					                <input id="cc" name="product_category_id" class="easyui-combotree"  value=""  required="true" editable="false" style="width:200px;"
 					                	data-options="
@@ -111,7 +125,7 @@
     
      <div id="dlgHospital" class="easyui-dialog" style="width:360px;height:260px;padding:5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlgProducr-buttons">
-	        <form id="fm2" method="post" novalidate>
+	        <form id="fm2" method="post" novalidate enctype="multipart/form-data">
 	        	<input type="hidden" name="id">
 	        	<input type="hidden" name="dealer_id" id="hospital_dealer_id">
 	        	<input type="hidden" name="category_id" id="hospital_category_id">
@@ -151,13 +165,17 @@
 					</thead>
 				</table>
 				<div id="tbDiscount">    
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newDiscountEntity();">新增产品</a>      
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeDiscountEntity();">删除</a>    
+				<restrict:function funId="41">
+				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newDiscountEntity();">新增产品</a>    
+				 </restrict:function>  
+				 <restrict:function funId="42">
+				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeDiscountEntity();">删除</a> 
+				 </restrict:function>   
 				</div> 
     </div>
      <div id="dlgDiscountForm" class="easyui-dialog" style="width:360px;height:260px;padding:5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlgDiscount-buttons">
-	        <form id="fm3" method="post" novalidate>
+	        <form id="fm3" method="post" novalidate enctype="multipart/form-data">
 	        	<input type="hidden" name="id">
 	        	<input type="hidden" name="dealer_id" id="discount_dealer_id">
 				       <table>
@@ -308,7 +326,7 @@
 	          if (row){
 	            $('#dlgProducr').dialog('open').dialog('setTitle','授权属性更新');
 	            $('#fm').form('load',row);
-			    $('#cc').combotree('setValue',row.category_id);
+			    $('#cc').combotree('setValue',row.product_category_id);
 		        $('#cc').combotree('setText',row.category_name);
 	            url = basePath + 'api/dealerAuthProduct/update';
 	          }else{
@@ -321,7 +339,7 @@
 				    url:url,
 				    method:"post",
 				    onSubmit: function(){
-				        return $(this).form('validate');;
+				        return $(this).form('validate');
 				    },
 				    success:function(msg){
 				    	var jsonobj = $.parseJSON(msg);

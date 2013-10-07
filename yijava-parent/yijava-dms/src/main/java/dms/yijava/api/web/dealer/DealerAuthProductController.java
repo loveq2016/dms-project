@@ -18,7 +18,6 @@ import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.dealer.DealerAuthProduct;
-import dms.yijava.entity.dealer.DealerCategory;
 import dms.yijava.service.dealer.DealerAuthProductService;
 
 @Controller
@@ -48,24 +47,40 @@ public class DealerAuthProductController {
 	@ResponseBody
 	@RequestMapping("save")
 	public Result<String> save(@ModelAttribute("entity") DealerAuthProduct entity) {
-		dealerAuthProductService.saveEntity(entity);
-		return new Result<String>(entity.getDealer_id(), 1);
+		try {
+			dealerAuthProductService.saveEntity(entity);
+			return new Result<String>(entity.getDealer_id(), 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(entity.getDealer_id(), 0);
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping("update")
 	public Result<String> update(@ModelAttribute("entity") DealerAuthProduct entity) {
-		dealerAuthProductService.updateEntity(entity);
-		return new Result<String>(entity.getDealer_id(), 1);
+		try {
+			dealerAuthProductService.updateEntity(entity);
+			return new Result<String>(entity.getDealer_id(), 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(entity.getDealer_id(), 0);
+		
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping("delete")
 	public Result<String> delete(@RequestParam(value = "id", required = true) String id) {
-		dealerAuthProductService.deleteEntity(id);
-		return new Result<String>(id, 1);
+		try {
+			dealerAuthProductService.deleteEntity(id);
+			return new Result<String>(id, 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(id, 0);
 	}
 	
 	
