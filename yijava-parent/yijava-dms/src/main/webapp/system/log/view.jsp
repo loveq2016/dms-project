@@ -29,13 +29,15 @@
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">查询</a>   
+						<restrict:function funId="15">
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">查询</a>
+						</restrict:function>   
 					</div>
 				</div>
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" title="查询结果" style="height:330px" url="${basePath}api/syslog/paging" method="get"
+				<table id="dg" title="查询结果" style="height:330px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="timestmp" pagination="true" iconCls="icon-search" sortOrder="asc" toolbar="#tb">
 					<thead>
 						<tr>
@@ -57,6 +59,7 @@
 			pager.pagination();
 		});
 		function doSearch(){
+			$('#dg').datagrid({url : basePath +"api/syslog/paging"});
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_start_date: $('input[name=start_date]').val(),
 		    	filter_ANDS_end_date: $('input[name=end_date]').val()

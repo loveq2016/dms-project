@@ -79,11 +79,11 @@ public class SysLoginController {
 			if(isExsitUser(sysUser,password)){
 				List<SysLogin> sysLoginList= sysLoginService.getRoleMenuFunList(sysUser.getFk_role_id());
 				try{
-					String[] teams=userLayouService.getTeamIdsByUserId(sysUser.getId()).getFk_team_id().split(",");//用户节点
+					String teams=userLayouService.getTeamIdsByUserId(sysUser.getId()).getFk_team_id();//用户节点
 					
 					/**根据用户的所有节点找到所有的上级用户 */
 					String parentIds="";
-					for(String team:teams)
+					for(String team:teams.split(","))
 					{
 						List<UserLayou> userLayouts=userLayouService.getParentByUserId(team);
 						for(UserLayou userLayou:userLayouts)
@@ -93,7 +93,7 @@ public class SysLoginController {
 					}
 					sysUser.setParentIds(parentIds);
 					/**/
-					List<UserDealer> userDealerList=userDealerFunService.getUserDealerList(sysUser.getId(),teams);//节点用户
+					List<UserDealer> userDealerList=userDealerFunService.getUserDealerList(sysUser.getId(),teams.split(","));//节点用户
 					sysUser.setUserDealerList(userDealerList);
 					sysUser.setTeams(teams);
 				}catch(Exception e){}

@@ -16,16 +16,12 @@ import dms.yijava.entity.system.SysUser;
 
 public class Interseptor extends HandlerInterceptorAdapter {
 
-	static Logger logger = LoggerFactory.getLogger(Interseptor.class);
-	
-	
-	
+	static Logger logger = LoggerFactory.getLogger(Interseptor.class);	
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
 		String url =  request.getRequestURI().toString();
 		logger.debug("url:"+url);
-        //if(url.indexOf("/api/sys/login")>-1 || url.indexOf("/api/sys/logout")>-1)
 		if(url.indexOf("tologin")>-1 || url.indexOf("logout")>-1 || url.indexOf("login")>-1)
         	return true;
         try{
@@ -65,10 +61,7 @@ public class Interseptor extends HandlerInterceptorAdapter {
 				//}else{  
 				     response.sendError(403);  
 				    
-				//}  
-				
-				
-				
+				//}
     			return false;
 			}
         }catch(Exception e){}

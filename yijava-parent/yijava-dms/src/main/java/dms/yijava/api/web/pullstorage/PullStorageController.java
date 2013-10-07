@@ -54,7 +54,7 @@ public class PullStorageController {
 			//经销商
 			if(!StringUtils.equals("0",sysUser.getFk_dealer_id())){
 				filters.add(PropertyFilters.build("ANDS_fk_pull_storage_party_id",sysUser.getFk_dealer_id()));
-			}else if(!StringUtils.equals("0",sysUser.getFk_department_id())){
+			}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
 				filters.add(PropertyFilters.build("ANDS_fk_pull_storage_party_ids", this.listString(sysUser.getUserDealerList())));
 			}
 			return pullStorageService.paging(pageRequest,filters);
@@ -75,8 +75,8 @@ public class PullStorageController {
 		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
 		SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");
 		//必须是经销商才可以添加出货单
-		if(StringUtils.isNotEmpty(sysUser.getFk_dealer_id())){
-			if(!sysUser.getFk_dealer_id().endsWith(entity.getFk_put_storage_party_id())){
+		if(!StringUtils.equals("0",sysUser.getFk_dealer_id())){
+			if(!sysUser.getFk_dealer_id().equals(entity.getFk_put_storage_party_id())){
 				PullStorage pullObj=pullStorageService.getPullStorageCode(sysUser.getFk_dealer_id());
 				PullStorage putObj=pullStorageService.getPutStorageCode(entity.getFk_put_storage_party_id());
 				//出货单

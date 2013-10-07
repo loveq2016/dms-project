@@ -27,9 +27,9 @@
 	<c:if test="${roleFunctionList[status.index+1].menu_parent_id!=fun.menu_parent_id}">
 		</div>
 	</c:if>
-</c:forEach>
+</c:forEach> 
 <!-- a href="${basePath}api/sys/logout">退出</a> -->
-<%-- 
+ <%-- 
 <div style="padding: 5px; width: 1300px;">
 	<a href="javascript:void(0)" id="mb1" class="easyui-menubutton"
 		data-options="menu:'#mm1',iconCls:'icon-filep'">系统管理</a>
@@ -205,5 +205,4 @@
 		<a href="javascript:void(0)" title="密码修改" url="system/user/updatePwd.jsp">密码修改</a>
 	</div>
 </div>
-</div>
- --%>
+</div> --%>

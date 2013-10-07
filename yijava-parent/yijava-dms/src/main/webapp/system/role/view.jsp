@@ -24,13 +24,15 @@
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">查询</a>   
+					<restrict:function funId="1">
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">查询</a>
+					</restrict:function>   
 					</div>
 				</div>
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" title="查询结果" style="height:330px" url="${basePath}api/sysrole/paging" method="get"
+				<table id="dg" title="查询结果" style="height:330px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" pagination="true" iconCls="icon-search" sortOrder="asc" toolbar="#tb">
 					<thead>
 						<tr>
@@ -42,9 +44,15 @@
 					</thead>
 				</table>
 				<div id="tb">
+				<restrict:function funId="2">
 				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
+				</restrict:function>
+				<restrict:function funId="4">
         			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntity()">编辑</a>
+        		</restrict:function>
+        		<restrict:function funId="3">
         			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
+        		</restrict:function>
 				</div>
 			</div>
 			<div style="margin: 10px 0;"></div>
@@ -78,6 +86,7 @@
 			pager.pagination();
 		})
 		function doSearch(){
+			$('#dg').datagrid({url : basePath +"api/sysrole/paging"});
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_role_name: $('#role_name').val(),
 		    });

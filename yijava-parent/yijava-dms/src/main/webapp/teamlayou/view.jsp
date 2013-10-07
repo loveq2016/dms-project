@@ -13,14 +13,24 @@
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
 			    <table id="treegrid"></table>
-			    <div id="mm" class="easyui-menu" style="width:120px;">  
-			        <div onclick="appendTeam()">添加组织</div>  
+			    <div id="mm" class="easyui-menu" style="width:120px;">
+			    	<restrict:function funId="103">  
+			        <div onclick="appendTeam()">添加组织</div>
+			        </restrict:function>  
+			        <restrict:function funId="106">  
 			        <div onclick="appendUserDetail()">添加用户</div>  
+			        </restrict:function>  
+			        <restrict:function funId="104">  
 			        <div onclick="updateTeam()">修改组织</div>
+			        </restrict:function>  
+			        <restrict:function funId="105">  
 			        <div onclick="deleteTeam()" id="deleteTeam">删除组织</div>  
+			        </restrict:function>  
 			    </div>
 			     <div id="mmDelUser" class="easyui-menu" style="width:120px;">
+			     	<restrict:function funId="107">  
 			        <div onclick="deleteUser()" id="deleteUser">删除用户</div>  
+			        </restrict:function>
 			    </div>
 			</div>
 			<div style="margin: 10px 0;"></div>

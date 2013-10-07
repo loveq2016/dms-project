@@ -13,9 +13,13 @@
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
 			    <table id="treegrid"></table>
-			    <div id="mm" class="easyui-menu" style="width:120px;">  
-			        <div onclick="append()">添加</div>  
-			        <div onclick="updateEntity()">修改</div>  
+			    <div id="mm" class="easyui-menu" style="width:120px;">
+			    	<restrict:function funId="13">
+			       	 <div onclick="append()">添加</div>
+			        </restrict:function>
+			        <restrict:function funId="14">
+			       	 <div onclick="updateEntity()">修改</div>
+			        </restrict:function>  
 			    </div>
 			</div>
 			<div style="margin: 10px 0;"></div>

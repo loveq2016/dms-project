@@ -26,17 +26,8 @@
 											<input class="easyui-validatebox" disabled="disabled" id="pull_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
 											<input class="easyui-validatebox" hidden="true" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">
 										</c:if>
-										<c:if test="${user.fk_department_id!='0'}">
-											<input class="easyui-combobox" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
-							             			data-options="
-								             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
-									                    method:'get',
-									                    valueField:'dealer_id',
-									                    textField:'dealer_name',
-									                    panelHeight:'auto'
-							            			"/>
-							            </c:if>
-										<input class="easyui-combobox" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+										<c:if test="${user.teams!=null or user.teams!=''}">
+										<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 						             			data-options="
 							             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
 								                    method:'get',
@@ -44,6 +35,7 @@
 								                    textField:'dealer_name',
 								                    panelHeight:'auto'
 						            			"/>
+						            	</c:if>
 									</td>
 									<td width="150">销售医院:</td>
 									<td><input class="easyui-validatebox" type="text" name="put_storage_party_name"></input></td>
@@ -85,7 +77,9 @@
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">查询</a>   
+					<restrict:function funId="73">
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">查询</a>
+					</restrict:function>   
 					</div>
 				</div>
 			</div>
@@ -110,8 +104,12 @@
 				</table>
 			</div>
 			<div id="tbPullStorage">
+			<restrict:function funId="74">
 				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
+			</restrict:function>
+			<restrict:function funId="75">
         		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
+        	</restrict:function>
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:300px;height:250px;padding:10px;">
@@ -128,7 +126,7 @@
 							<input type="hidden" id="type" name="type" value="3"/>
 						    <input class="easyui-combobox" name="fk_put_storage_party_id" id="fk_put_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 						             			data-options="
-							             			url:'${basePath}/api/dealerAuthHospital/list',
+							             			url:'${basePath}api/dealerAuthHospital/list',
 								                    method:'get',
 								                    valueField:'hospital_id',
 								                    textField:'hospital_name',
@@ -224,16 +222,21 @@
 						</tr>
 					</thead>
 				</table>
-				<div id="tbPullStorageDetail">    
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="savePullStorageDetail" onclick="newPullStorageDetailEntity();">添加产品</a>    
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="delPullStorageDetail" onclick="removePullStorageDetailEntity();">删除产品</a>    
+				<div id="tbPullStorageDetail">  
+					<restrict:function funId="77">  
+				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="savePullStorageDetail" onclick="newPullStorageDetailEntity();">添加产品</a>
+				   	</restrict:function>
+				   	<restrict:function funId="78">    
+				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="delPullStorageDetail" onclick="removePullStorageDetailEntity();">删除产品</a>
+				    </restrict:function>    
 				</div>
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
 		<div id="dlg-buttons">
-			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" id="saveDraft" onclick="javascript:$('#dlgPullStorageDetail').dialog('close')">保存草稿</a>
+	        <restrict:function funId="79">
 	        <a href="javascript:void(0)" class="easyui-linkbutton" id="submitPullStorage" iconCls="icon-ok" onclick="submitPullStorage()">提交</a>
+	        </restrict:function>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgPullStorageDetail').dialog('close')">取消</a>
 	    </div>
 		<div id="dlgProduct" class="easyui-dialog" title="库存列表" style="width:800px;height:495px;padding:5px 5px 5px 5px;"
@@ -345,28 +348,27 @@
 		var status;
 		var pull_storage_code;
 		$(function() {
-			$('#dg').datagrid({
-				  url : basePath +"api/salesstorage/paging" ,
-					queryParams: {
-						filter_ANDS_type : $('#ff input[name=type]').val()
-					}
-			});
+			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
+			pager.pagination();  
 		})
 		function formatterDetail(value, row, index){
 			return '<span style="color:red;cursor:pointer" onclick="openPullStorageDetail(\''+index+'\')">明细</span>'; 
 		}
 		function doSearch(){
-		    $('#dg').datagrid('load',{
-		    	filter_ANDS_pull_storage_code:$('#ff input[name=pull_storage_code]').val(),
-		    	filter_ANDS_fk_pull_storage_party_id: $('#ff input[name=fk_pull_storage_party_id]').val(),
-		    	filter_ANDS_put_storage_party_name: $('#ff input[name=put_storage_party_name]').val(),
-		    	filter_ANDS_status: $('#ff input[name=status]').val(),
-		    	filter_ANDS_type: $('#ff input[name=type]').val(),
-		    	filter_ANDS_pull_start_date: $('#ff input[name=pull_start_date]').val(),
-		    	filter_ANDS_pull_end_date: $('#ff input[name=pull_end_date]').val(),
-		    	filter_ANDS_sales_start_date: $('#ff input[name=sales_start_date]').val(),
-		    	filter_ANDS_sales_end_date: $('#ff input[name=sales_end_date]').val(),
-		    });
+			$('#dg').datagrid({
+				  url : basePath +"api/salesstorage/paging",
+				  queryParams: {
+					  filter_ANDS_pull_storage_code:$('#ff input[name=pull_storage_code]').val(),
+				    	filter_ANDS_fk_pull_storage_party_id: $('#ff input[name=fk_pull_storage_party_id]').val(),
+				    	filter_ANDS_put_storage_party_name: $('#ff input[name=put_storage_party_name]').val(),
+				    	filter_ANDS_status: $('#ff input[name=status]').val(),
+				    	filter_ANDS_type: $('#ff input[name=type]').val(),
+				    	filter_ANDS_pull_start_date: $('#ff input[name=pull_start_date]').val(),
+				    	filter_ANDS_pull_end_date: $('#ff input[name=pull_end_date]').val(),
+				    	filter_ANDS_sales_start_date: $('#ff input[name=sales_start_date]').val(),
+				    	filter_ANDS_sales_end_date: $('#ff input[name=sales_end_date]').val(),
+				  }
+			});
 		}
 		function formatterStatus(value, row, index){
 			if(value=='0')

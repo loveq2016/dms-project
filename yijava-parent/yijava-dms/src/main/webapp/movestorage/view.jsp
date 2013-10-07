@@ -64,13 +64,15 @@
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">查询</a>   
+						<restrict:function funId="80">
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">查询</a>
+						</restrict:function>   
 					</div>
 				</div>
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" title="查询结果" style="height:370px" method="get" url="${basePath}api/movestorage/paging"
+				<table id="dg" title="查询结果" style="height:370px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" pagination="true" 
 					iconCls="icon-search" sortOrder="asc" toolbar="#tbMoveStorage">
 					<thead>
@@ -87,8 +89,12 @@
 				</table>
 			</div>
 			<div id="tbMoveStorage">
+				<restrict:function funId="81">
 				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
+				</restrict:function>
+				<restrict:function funId="82">
         		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
+        		</restrict:function>
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:300px;height:150px;padding:10px;">
@@ -113,8 +119,12 @@
 			</form>
 			<div style="margin: 10px 0;"></div>
 			<div style="text-align: right; padding: 5px">
+			<restrict:function funId="84">
 				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveEntity()">确定</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="$('#w').window('close')">取消</a>					   
+			</restrict:function>
+			<restrict:function funId="85">
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="$('#w').window('close')">取消</a>
+			</restrict:function>					   
 			</div>
 		</div>
 		</div>
@@ -177,8 +187,9 @@
 			<div style="margin: 10px 0;"></div>
 		</div>
 		<div id="dlg-buttons">
-			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" id="saveDraft" onclick="javascript:$('#dlgMoveStorageDetail').dialog('close')">保存草稿</a>
+			<restrict:function funId="86">
 	        <a href="javascript:void(0)" class="easyui-linkbutton" id="submitMoveStorage" iconCls="icon-ok" onclick="submitMoveStorage()">提交</a>
+	        </restrict:function>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgMoveStorageDetail').dialog('close')">取消</a>
 	    </div>
 		<div id="dlgProduct" class="easyui-dialog" title="库存列表" style="width:800px;height:495px;padding:5px 5px 5px 5px;"
@@ -312,13 +323,16 @@
 			return '<span style="color:red;cursor:pointer" onclick="openMoveStorageDetail(\''+index+'\')">明细</span>'; 
 		}
 		function doSearch(){
-		    $('#dg').datagrid('load',{
-		    	filter_ANDS_move_storage_code:$('#ff input[name=move_storage_code]').val(),
-		    	filter_ANDS_fk_move_storage_party_id: $('#ff input[name=fk_move_storage_party_id]').val(),
-		    	filter_ANDS_status: $('#ff input[name=status]').val(),
-		    	filter_ANDS_move_start_date: $('#ff input[name=move_start_date]').val(),
-		    	filter_ANDS_move_end_date: $('#ff input[name=move_end_date]').val(),
-		    });
+			$('#dg').datagrid({
+				  url : basePath +"api/movestorage/paging",
+				  queryParams: {
+					    filter_ANDS_move_storage_code:$('#ff input[name=move_storage_code]').val(),
+				    	filter_ANDS_fk_move_storage_party_id: $('#ff input[name=fk_move_storage_party_id]').val(),
+				    	filter_ANDS_status: $('#ff input[name=status]').val(),
+				    	filter_ANDS_move_start_date: $('#ff input[name=move_start_date]').val(),
+				    	filter_ANDS_move_end_date: $('#ff input[name=move_end_date]').val(),
+				  }
+			});
 		}
 		function formatterStatus(value, row, index){
 			if(value=='0')

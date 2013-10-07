@@ -55,7 +55,7 @@ public class SalesStorageController {
 			//经销商
 			if(!StringUtils.equals("0",sysUser.getFk_dealer_id())){
 				filters.add(PropertyFilters.build("ANDS_fk_pull_storage_party_id",sysUser.getFk_dealer_id()));
-			}else if(!StringUtils.equals("0",sysUser.getFk_department_id())){
+			}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
 				filters.add(PropertyFilters.build("ANDS_fk_pull_storage_party_ids", this.listString(sysUser.getUserDealerList())));
 			}
 			return salesStorageService.paging(pageRequest,filters);
@@ -68,8 +68,8 @@ public class SalesStorageController {
 	public Result<Integer> save(@ModelAttribute("entity") SalesStorage entity,HttpServletRequest request) {
 		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
 		SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");
-		//必须是经销商才可以添加出货单
-		if(StringUtils.isNotEmpty(sysUser.getFk_dealer_id())){
+		//必须是经销商才可以添加销售单
+		if(!StringUtils.equals("0",sysUser.getFk_dealer_id())){
 			//销售出库
 			entity.setFk_pull_storage_party_id(sysUser.getFk_dealer_id());
 			SalesStorage pullObj=salesStorageService.getPullStorageCode(entity);
