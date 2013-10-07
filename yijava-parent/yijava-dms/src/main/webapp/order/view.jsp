@@ -79,14 +79,16 @@
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">查询</a>   
+					 <restrict:function funId="20">
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">查询</a>
+					</restrict:function>   
 					</div>
 				</div>
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" title="查询结果" style="height:370px" url="${basePath}api/order/paging" method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="id" pagination="true" 
+				<table id="dg" title="查询结果" style="height:370px" method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="id"
 					iconCls="icon-search" sortOrder="asc" toolbar="#tbOrder">
 					<thead>
 						<tr>
@@ -110,9 +112,15 @@
 				</table>
 			</div>
 			<div id="tbOrder">
-				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntity()">编辑</a>
-        		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
+				<restrict:function funId="21">
+					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
+				</restrict:function>
+				<restrict:function funId="26">
+					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntity()">编辑</a>
+				</restrict:function>
+				<restrict:function funId="27">
+        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
+        		</restrict:function>
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:300px;height:200px;padding:10px;">
@@ -234,7 +242,7 @@
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="business_contacts"></input></td>
 									<td>收货地址:</td>	
 									<td>
-										<input class="easyui-combobox" readonly="readonly" name="dealer_address_id" style="width:150px" maxLength="100" class="easyui-validatebox" required="true"
+										<input class="easyui-combobox" readonly="readonly" name="dealer_address_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 							             			data-options="
 								             			url:'${basePath}api/dealerAddress/list?id=${user.fk_dealer_id}',
 									                    method:'get',
@@ -300,8 +308,12 @@
 						</thead>
 					</table>
 					<div id="tbOrderDetail">    
-					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="saveOrderDetail" onclick="newOrderDetailEntity();">添加产品</a>    
-					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="delOrderDetail" onclick="removeOrderDetailEntity();">删除产品</a>    
+						<restrict:function funId="28">
+					    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="saveOrderDetail" onclick="newOrderDetailEntity();">添加产品</a>
+					    </restrict:function>    
+					    <restrict:function funId="29">
+					   		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="delOrderDetail" onclick="removeOrderDetailEntity();">删除产品</a>
+					    </restrict:function>    
 					</div>
 				</div>
 				<div title="修改记录" style="padding: 5px 5px 5px 5px;" >
@@ -317,7 +329,9 @@
 			</div>
 		</div>
 		<div id="dlg-buttons">
-	        <a id="saveEntityBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="alert('提交订单后将不能在修改，确定提交吗？')">提交订单</a>
+		    <restrict:function funId="30">
+	        	<a id="saveEntityBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="alert('提交订单后将不能在修改，确定提交吗？')">提交订单</a>
+	        </restrict:function>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgOrderDetail').dialog('close')">取消</a>
 	    </div>
 		<div id="dlgProduct" class="easyui-dialog" style="width:800px;height:495px;padding:5px 5px 5px 5px;"
@@ -415,7 +429,7 @@
 		var dealer_id=${user.fk_dealer_id};
 		$(function() {
 			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
-			pager.pagination();
+			pager.pagination();                    
 			//计算订单项小计
 			$("#order_number_sum").keyup(function(){
 		    	var order_price= $('input[name=order_price]').val();
@@ -431,6 +445,7 @@
 			return '<span style="color:red;cursor:pointer" onclick="openOrderDetail(\''+index+'\')">明细</span>'; 
 		}
 		function doSearch(){
+			$('#dg').datagrid({url : basePath +"api/order/paging"});
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_order_code:$('#ff input[name=order_code]').val(),
 		    	filter_ANDS_dealer_id: $('#ff input[name=dealer_id]').val(),
