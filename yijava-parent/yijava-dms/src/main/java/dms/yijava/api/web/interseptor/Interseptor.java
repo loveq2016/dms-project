@@ -22,6 +22,7 @@ public class Interseptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
 		String url =  request.getRequestURI().toString();
+		System.out.println(url+"==============================");
         if(url.indexOf("/api/sys/login")>-1 || url.indexOf("/api/sys/logout")>-1)
         	return true;
         try{

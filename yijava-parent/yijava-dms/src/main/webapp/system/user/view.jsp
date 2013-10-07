@@ -78,13 +78,15 @@
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">查询</a>   
+						<restrict:function funId="5">
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">查询</a>
+						</restrict:function>   
 					</div>
 				</div>
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" title="查询结果" style="height:330px" url="${basePath}api/sysuser/paging" method="get"
+				<table id="dg" title="查询结果" style="height:330px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" pagination="true" iconCls="icon-search" sortOrder="asc" toolbar="#tb">
 					<thead>
 						<tr>
@@ -109,9 +111,15 @@
 					</thead>
 				</table>
 				<div id="tb">
-						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
-						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntity()">编辑</a>
-        				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
+				<restrict:function funId="6">
+					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
+				</restrict:function>
+				<restrict:function funId="8">
+					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntity()">编辑</a>
+				</restrict:function>
+				<restrict:function funId="7">
+        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
+        		</restrict:function>
 				</div>
 			</div>
 			<div style="margin: 10px 0;"></div>
@@ -274,14 +282,17 @@
 				return '<span>女</span>'; 
 		}
 		function doSearch(){
-		    $('#dg').datagrid('load',{
-		    	filter_ANDS_account: $('#account').val(),
-		    	filter_ANDS_realname: $('#realname').val(),
-		    	filter_ANDS_fk_role_id: $("input[name=fk_role_id]").val(),
-		    	filter_ANDS_fk_department_id: $('input[name=fk_department_id]').val(),
-		    	filter_ANDS_fk_dealer_id: $('input[name=fk_dealer_id]').val(),
-		    	filter_ANDS_isdeleted: $('input[name=isdeleted]').val()
-		    });
+			$('#dg').datagrid({
+				  url : basePath +"api/sysuser/paging",
+				  queryParams: {
+					    filter_ANDS_account: $('#account').val(),
+				    	filter_ANDS_realname: $('#realname').val(),
+				    	filter_ANDS_fk_role_id: $("input[name=fk_role_id]").val(),
+				    	filter_ANDS_fk_department_id: $('input[name=fk_department_id]').val(),
+				    	filter_ANDS_fk_dealer_id: $('input[name=fk_dealer_id]').val(),
+				    	filter_ANDS_isdeleted: $('input[name=isdeleted]').val()
+				  }
+			});
 		}
 		function newEntity()
 		{

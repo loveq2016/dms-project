@@ -71,7 +71,9 @@
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">查询</a>   
+						<restrict:function funId="53">
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">查询</a>
+						</restrict:function>   
 					</div>
 				</div>
 			</div>
@@ -165,7 +167,9 @@
 			<div style="margin: 10px 0;"></div>
 		</div>
 		<div id="dlg-buttons">
+			<restrict:function funId="54">
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" id="submitPutStorage" onclick="submitPutStorage()">确认收货</a>
+	        </restrict:function>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgPullStorageDetail').dialog('close')">取消</a>
 	    </div>
 	<script type="text/javascript">
@@ -173,25 +177,24 @@
 		var pull_storage_code;
 		var put_storage_code;
 		$(function() {
-			$('#dg').datagrid({
-				  url : basePath +"api/putstorage/paging" ,
-					queryParams: {
-						filter_ANDS_type : $('#ff input[name=type]').val()
-					}
-			});
+			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
+			pager.pagination();
 		})
 		function formatterDetail(value, row, index){
 			return '<span style="color:red;cursor:pointer" onclick="openPullStorageDetail(\''+index+'\')">明细</span>'; 
 		}
 		function doSearch(){
-		    $('#dg').datagrid('load',{
-		    	filter_ANDS_pull_storage_code:$('#ff input[name=pull_storage_code]').val(),
-		    	filter_ANDS_fk_put_storage_party_id: $('#ff input[name=fk_put_storage_party_id]').val(),
-		    	filter_ANDS_status: $('#ff input[name=status]').val(),
-		    	filter_ANDS_type: $('#ff input[name=type]').val(),
-		    	filter_ANDS_put_start_date: $('#ff input[name=put_start_date]').val(),
-		    	filter_ANDS_put_end_date: $('#ff input[name=put_end_date]').val(),
-		    });
+		    $('#dg').datagrid({
+				  url : basePath +"api/pullstorage/paging",
+				  queryParams: {
+					    filter_ANDS_pull_storage_code:$('#ff input[name=pull_storage_code]').val(),
+				    	filter_ANDS_fk_put_storage_party_id: $('#ff input[name=fk_put_storage_party_id]').val(),
+				    	filter_ANDS_status: $('#ff input[name=status]').val(),
+				    	filter_ANDS_type: $('#ff input[name=type]').val(),
+				    	filter_ANDS_put_start_date: $('#ff input[name=put_start_date]').val(),
+				    	filter_ANDS_put_end_date: $('#ff input[name=put_end_date]').val(),
+				  }
+			});
 		}
 		function formatterStatus(value, row, index){
 			if(value=='0')

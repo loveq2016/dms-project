@@ -28,8 +28,10 @@
 							</table>
 						</form>
 					</div>
-					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>			   
+					<div style="text-align: right; padding:5px">
+						<restrict:function funId="87">
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>
+						</restrict:function>
 					</div>
 				</div>
 			</div>
@@ -58,9 +60,15 @@
 					</thead>
 				</table>
 				<div id="tb">    
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity();">添加</a>    
+					<restrict:function funId="88">
+				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity();">添加</a>
+				    </restrict:function>    
+				    <restrict:function funId="90">
 				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit"  plain="true" onclick="updateEntity();">编辑</a>     
+				    </restrict:function>
+				    <restrict:function funId="89">
 				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity();">删除</a>    
+				    </restrict:function>
 				</div> 
 			</div>
 			<div style="margin: 10px 0;"></div>
@@ -224,6 +232,9 @@
 	        }
 		  
 		function doSearch(){
+			$('#dg').datagrid({
+				  url : basePath +"api/storage/paging" 
+			});
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_storage_name: $('#storage_name').val(),
 		    	filter_ANDS_address: $('#address').val()
@@ -273,9 +284,8 @@
 				$('copy_hospital').attr("checked",false);
 		}
 		$(function() {
-			$('#dg').datagrid({
-				  url : basePath +"api/storage/paging" 
-			});
+			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
+			pager.pagination();
 		});
 	</script>
 </body>
