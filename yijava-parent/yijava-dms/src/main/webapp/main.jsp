@@ -83,18 +83,7 @@ $('#tabs').tabs({
 	tools:'#tab-tools'
 });
 
-$('#tochecktree').tree({
-	onClick: function(node){
-		if(node.id==trialflow_identifier_num)
-		{
-			alert("跳转到试用处理1");
-			var tabTitle = "流程管理";
-			var url = "flow/view.jsp";
-			addTab(tabTitle,url);
-		}
-			
-	}
-});
+
 function ReloadTab()
 {   
 	

@@ -22,8 +22,8 @@
 		</div>
 	<div data-options="region:'south',border:false"
 		style="height: 20px; background: #ddd; padding: 10px;"></div>
-	<div id="mainPanle" data-options="region:'center',title:''">
-		<div id="tabs" class="easyui-tabs"  fit="true" border="false" >
+	<div id="mainPanle11" data-options="region:'center',title:''">
+		<div id="tabs111" class="easyui-tabs"  fit="true" border="false" >
 		<div title="公告及通知" data-options="iconCls:'icon-help',closable:false" style="padding:20px;overflow:hidden;" id="home">
 			<h1>Welcome to jQuery UI!</h1>
 			</div>
@@ -42,7 +42,9 @@ $('#tochecktree').tree({
 	onClick: function(node){
 		if(node.id==trialflow_identifier_num)
 		{
-			alert("跳转到试用处理1");
+			var tabTitle = "试用管理";
+			var url = "trial/view.jsp";
+			addTabByChild(tabTitle,url);
 		}
 			
 	}

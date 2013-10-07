@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.yijava.common.utils.DateUtils;
 
 import dms.yijava.api.web.flow.FlowRecordController;
+import dms.yijava.entity.flow.FlowLog;
 import dms.yijava.entity.flow.FlowRecord;
 import dms.yijava.entity.flow.Step;
 import dms.yijava.entity.flow.StepDepartment;
@@ -34,6 +35,9 @@ public class FlowBussService {
 	
 	@Autowired
 	private StepService stepService;
+	
+	@Autowired
+	private FlowLogService flowLogService;
 	
 	@Autowired
 	private StepDepartmentService stepDepartmentService;
@@ -277,6 +281,59 @@ public class FlowBussService {
 	public void deleteByRecordId(Integer record_id)
 	{
 		flowRecordService.removeEntity(record_id);
+	}
+	
+	
+	
+	/**
+	 * 开始流程
+	 * @param trial_id
+	 * @param currentUserId
+	 */
+	public boolean processFlow(Integer trial_id,SysUser currentUser,String flowIdentifierNumber)
+	{
+		Step step=this.getFirstStep(flowIdentifierNumber);
+		//此处需要根据当前用户从所属的部门里找到用户id
+		String check_id =null;
+		
+		StepDepartment stepDepartment=step.getStepDepartments().get(0);
+		//这里找到了这个部门下的几个用户，应该查找哪个是他的上级
+		List<SysUser> sysUsers= stepDepartment.getUsers();
+		for(SysUser sysUser: sysUsers)
+		{
+			if(currentUser.getParentIds()!=null && !currentUser.getParentIds().equals(""))
+			{
+				if(currentUser.getParentIds().indexOf(sysUser.getId())>-1)
+				{
+					check_id=sysUser.getId();
+				}
+			}
+			
+		}
+		
+		if(check_id==null)
+		{
+			return false;
+		}
+		
+		//check_id=stepDepartment.getUsers().get(0).getId();
+		
+		//先记录处理日志
+		//写处理日志
+		FlowLog flowLog=new FlowLog();
+		flowLog.setFlow_id(flowIdentifierNumber);
+		flowLog.setUser_id(currentUser.getId());
+		flowLog.setUser_name(currentUser.getRealname());
+		flowLog.setBussiness_id(trial_id.toString());
+		flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+		flowLog.setAction_name("提交"+"-"+step.getAction_name());
+		//flowLog.setSign("0");
+		flowLogService.saveEntity(flowLog);
+		
+		//记录流程
+		this.insertStep(flowIdentifierNumber, currentUser.getId(),  
+				"提交", trial_id.toString(), check_id, "提交"+"-"+step.getAction_name(),"0","1");
+		return true;
 	}
 	
 }

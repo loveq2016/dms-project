@@ -27,6 +27,24 @@ function addTab(subtitle,url){
 	tabClose();
 }
 
+function addTabByChild(subtitle,url){
+	
+	if(!$('#tabs',window.parent.document).tabs('exists',subtitle)){
+		$('#tabs',window.parent.document).tabs('add',{
+			title:subtitle,
+			content:createFrame(url),
+			closable:true,
+			width:$('#mainPanle').width()-1,
+			height:$('#mainPanle').height()-10
+		});
+	}else{
+		$('#tabs',window.parent.document).tabs('select',subtitle);
+	}
+	tabClose();
+}
+
+
+
 function createFrame(url)
 {
 	//var s='<div title="首页" data-options="iconCls:\'icon-help\',closable:false" style="padding:5px;overflow:hidden;">';
