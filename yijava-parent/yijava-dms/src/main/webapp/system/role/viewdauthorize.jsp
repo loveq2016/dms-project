@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@include file="/common/base.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
         <a href="#" onclick="collapseAll()">收起</a>  
         <a href="#" onclick="expandAll()">展开</a>
@@ -8,7 +9,9 @@
 				<input type="hidden" value="${roleid}" id="roleid" name="roleid"/>
 				<table id="treegrid"></table>
 				 <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0;">  
-	                <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="saveAuthorze()">Ok</a>  
+				 <restrict:function funId="135">
+	                <a class="easyui-linkbutton" data-options="iconCls:'icon-save'" href="javascript:void(0)" onclick="saveAuthorze()">Ok</a>
+	             </restrict:function>  
 	                <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="clearForm()">Cancel</a>  
 	            </div>  
 			</form>
@@ -29,7 +32,7 @@
                 {title:'名称',field:'menu_name',width:200} 
             ]],  
             columns:[[
-                {field:'list',title:'功能',width:250,rowspan:2,
+                {field:'list',title:'功能',width:400,rowspan:2,
                 	formatter:function(value){
                 		var str="";
                 		if (typeof(value) != "undefined")
