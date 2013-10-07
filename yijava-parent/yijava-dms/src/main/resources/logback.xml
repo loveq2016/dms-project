@@ -41,7 +41,7 @@
 	</root>
 	
 	<logger name="org.springframework.jdbc" level="DEBUG"/>
-	<logger name="org.springframework" level="INFO"/>
+	<logger name="org.springframework" level="DEBUG"/>
 	<logger name="org.hibernate" level="DEBUG"/>
 	<logger name="org.mybatis" level="DEBUG"/>
 	<logger name="com.sql" level="DEBUG"/>

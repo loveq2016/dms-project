@@ -61,7 +61,15 @@
 	</div>
 <script type="text/javascript">
 $(document).ready(function(){
-	$('#mm1').menu();  
+	$('#mm1').menu(); 
+	
+	$.ajaxSetup({
+	    statusCode: {
+	        403: function(error, callback){
+	            alert("err");
+	        }
+	    }
+	});
 });
 $('#tabs').tabs({
 	tools:'#tab-tools'
