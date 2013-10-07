@@ -18,7 +18,7 @@
 								<tr>
 									<td width="50">账户:</td>
 									<td>
-										<input class="easyui-validatebox" type="text" name="account" data-options="required:true" value="gaoyong"></input>
+										<input class="easyui-validatebox" type="text" name="account" data-options="required:true" value="admin"></input>
 									</td>
 								</tr>
 								<tr>
