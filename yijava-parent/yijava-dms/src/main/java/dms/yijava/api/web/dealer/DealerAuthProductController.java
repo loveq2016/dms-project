@@ -18,7 +18,6 @@ import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.dealer.DealerAuthProduct;
-import dms.yijava.entity.dealer.DealerCategory;
 import dms.yijava.service.dealer.DealerAuthProductService;
 
 @Controller
@@ -56,8 +55,14 @@ public class DealerAuthProductController {
 	@ResponseBody
 	@RequestMapping("update")
 	public Result<String> update(@ModelAttribute("entity") DealerAuthProduct entity) {
-		dealerAuthProductService.updateEntity(entity);
-		return new Result<String>(entity.getDealer_id(), 1);
+		try {
+			dealerAuthProductService.updateEntity(entity);
+			return new Result<String>(entity.getDealer_id(), 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(entity.getDealer_id(), 0);
+		
 	}
 	
 	
