@@ -43,9 +43,13 @@
 		            </tr>
 		        </thead>
 		    </table>
-		    <div id="tb">    
-				   <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity();">添加</a>         
-				   <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity();">删除</a>    
+		    <div id="tb">   
+		    	<restrict:function funId="117">
+				   <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity();">添加</a>
+				</restrict:function>
+				<restrict:function funId="118">       
+				   <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity();">删除</a>  
+				</restrict:function> 
 			</div> 
         </div>
    </div>    
@@ -57,7 +61,7 @@
 
        <div id="dlg" class="easyui-dialog" style="width:360px;height:260px;padding:5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlgProducr-buttons">
-	        <form id="fm" method="post" novalidate>
+	        <form id="fm" method="post" novalidate enctype="multipart/form-data">
 	        	<input type="hidden" name="user_id" id="dealer_user_id">
 				       <table>
 				             	<tr>
