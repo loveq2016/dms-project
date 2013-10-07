@@ -33,7 +33,9 @@
 				</form>
 			</div>
 			<div style="text-align: center; padding: 5px">
-				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="updatepwd()">保存</a>   
+				<restrict:function funId="131">
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="updatepwd()">保存</a>
+				</restrict:function>   
 			</div>
 		</div>
 	</div>

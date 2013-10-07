@@ -18,6 +18,7 @@ import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.notice.Notice;
+import dms.yijava.entity.system.SysUser;
 import dms.yijava.service.notice.NoticeService;
 
 @Controller
@@ -44,18 +45,30 @@ public class NoticeController {
 	
 	@ResponseBody
 	@RequestMapping("save")
-	public Result<String> save(@ModelAttribute("entity") Notice entity) {
-		entity.setUser_id("13");
-		noticeService.saveEntity(entity);
-		return new Result<String>(entity.getNotice_id(), 1);
+	public Result<String> save(@ModelAttribute("entity") Notice entity,HttpServletRequest request) {
+		try {
+			SysUser sysUser = (SysUser) request.getSession().getAttribute("user"); // 当前用户信息
+			entity.setUser_id(sysUser.getId());
+			noticeService.saveEntity(entity);
+			return new Result<String>(entity.getNotice_id(), 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(entity.getNotice_id(), 0);
 	}
 	
 	@ResponseBody
 	@RequestMapping("update")
-	public Result<String> update(@ModelAttribute("entity") Notice entity) {
-		entity.setUser_id("13");
-		noticeService.updateEntity(entity);
-		return new Result<String>(entity.getNotice_id(), 1);
+	public Result<String> update(@ModelAttribute("entity") Notice entity,HttpServletRequest request) {
+		try {
+			SysUser sysUser = (SysUser) request.getSession().getAttribute("user"); // 当前用户信息
+			entity.setUser_id(sysUser.getId());
+			noticeService.updateEntity(entity);
+			return new Result<String>(entity.getNotice_id(), 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(entity.getNotice_id(), 0);
 	}
 	
 }
