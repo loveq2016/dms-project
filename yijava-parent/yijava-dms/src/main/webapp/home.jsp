@@ -10,6 +10,8 @@
 </head>
 <body class="easyui-layout">
 	
+	
+	
 	<div data-options="region:'west',split:true,title:'公司信息'"
 		style="width: 150px; padding: 10px;">west content
 	</div>
@@ -31,6 +33,7 @@
 		<a href="javascript:void(0)" class="icon-reload" onclick="javascript:checkReload();"></a>
 		
 	</div>
+	
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#mm1').menu();  
