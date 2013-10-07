@@ -63,14 +63,22 @@
 $(document).ready(function(){
 	$('#mm1').menu(); 
 	
-	$.ajaxSetup({
-	    statusCode: {
-	        403: function(error, callback){
-	            alert("err");
-	        }
-	    }
-	});
+	
 });
+
+function illegal(XMLHttpRequest, textStatus, errorThrown)  
+{  
+    if(XMLHttpRequest.status==403){  
+    	window.location = "common/nopermit.html";  
+    }else if(XMLHttpRequest.status==500){  
+    	window.location = "common/error.html";  
+    }else if(XMLHttpRequest.status==408){  
+    	window.location = "login.html";  
+    }  
+}  
+
+$.ajaxSetup({"error":illegal});
+
 $('#tabs').tabs({
 	tools:'#tab-tools'
 });

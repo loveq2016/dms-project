@@ -4,16 +4,6 @@ var resPath = "/yijava-dms/";
 
 var trialflow_identifier_num="300000";
 
-function illegal(XMLHttpRequest, textStatus, errorThrown)  
-{  
-    if(XMLHttpRequest.status==403){  
-    	window.location = "common/nopermit.html";  
-    }else if(XMLHttpRequest.status==500){  
-    	window.location = "common/error.html";  
-    }else if(XMLHttpRequest.status==408){  
-    	window.location = "login.html";  
-    }  
-}  
 
 $(function(){
 	InitLeftMenu();
