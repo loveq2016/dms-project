@@ -129,6 +129,7 @@
 					<tr>
 						<td>收货地址:</td>
 						<td>
+							<input hidden="true" name="id"></input>
 							<input hidden="true" name="order_code"></input>
 							<input class="easyui-combobox" name="dealer_address_id" style="width:150px" maxLength="100" class="easyui-validatebox" required="true"
 						             			data-options="
