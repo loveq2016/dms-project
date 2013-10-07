@@ -30,7 +30,9 @@
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>			   
+						<restrict:function funId="9">
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>	
+						</restrict:function>		   
 					</div>
 				</div>
 			</div>
@@ -38,8 +40,8 @@
 			<div style="margin: 10px 0;"></div>
 
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" title="查询结果" style="height: 430px"  method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc">
+				<table id="dg" title="查询结果" style="height: 330px"  method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
 							<th field="id" width="150" align="center" sortable="true">序号</th>
@@ -50,6 +52,17 @@
 						</tr>
 					</thead>
 				</table>
+				<div id="tb">   
+				<restrict:function funId="10"> 
+				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity();">添加</a>  
+				</restrict:function>
+				<restrict:function funId="11">  
+				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit"  plain="true" onclick="updateEntity();">编辑</a> 
+				</restrict:function>
+				<restrict:function funId="12"> 
+				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit"  plain="true" onclick="backEntity();">回复</a>
+				</restrict:function>
+				</div> 
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
@@ -63,9 +76,9 @@
              <table>
 				<tr>
 					<td>问题:</td>
-                    <td><textarea name="q_text"  rows="10" cols="60" style="height:100px;"></textarea></td>
+                    <td><textarea  name="q_text"  rows="10" cols="60" style="height:100px;"></textarea></td>
 				</tr>
-				<tr>
+				<tr id="digcolumn">
 					<td>回答:</td>
                     <td><textarea name="a_text" rows="10" cols="60" style="height:100px;"></textarea></td>
 				</tr>          	
@@ -109,10 +122,12 @@
 				$('#dg').datagrid('selectRow',index);
 				var row = $('#dg').datagrid('getSelected');
 				if (row) {
+					 $("#digcolumn").show();
+					$("#saveEntityBtn").hide();
 					if(row.a_text==null || row.a_text==''){
-						$("#saveEntityBtn").linkbutton("enable");
+						//$("#saveEntityBtn").linkbutton("enable");
 					}else{
-						$("#saveEntityBtn").linkbutton("disable");
+						//$("#saveEntityBtn").linkbutton("disable");
 					}
 					$('#fm').form('clear');
 					$('#dlg').dialog('open').dialog('setTitle', '问题查看');
@@ -120,6 +135,52 @@
 					url = basePath + 'api/question/updateQuestion';
 				}
 		 }
+		 
+		 function newEntity(){
+		        $('#dlg').dialog('open').dialog('setTitle','问题添加');
+		        $('#fm').form('clear');
+		        url = basePath + '/api/question/save';
+		        $("#saveEntityBtn").show();
+		        $("#digcolumn").hide();
+		        $("#saveEntityBtn").linkbutton("enable");
+		} 
+		 
+	     function updateEntity(){
+	          var row = $('#dg').datagrid('getSelected');
+	          if (row){
+	        	  if(row.a_text==null || row.a_text==''){
+	        		    $("#saveEntityBtn").linkbutton("enable");
+		  	            $('#dlg').dialog('open').dialog('setTitle','问题更新');
+			            $('#fm').form('load',row);
+			            $("#saveEntityBtn").show();
+			            $("#digcolumn").hide();
+			            url = basePath + 'api/question/update';
+	        	  }else{
+	        		  $.messager.alert('提示','问题已经被回答不能修改!','warning');		
+	        	  }
+	          }else{
+					$.messager.alert('提示','请选中数据!','warning');				
+			 }	
+	     }
+	     
+	     function backEntity(){
+	          var row = $('#dg').datagrid('getSelected');
+	          if (row){
+	        	  if(row.a_text==null || row.a_text==''){
+	        		    $("#saveEntityBtn").linkbutton("enable");
+		  	            $('#dlg').dialog('open').dialog('setTitle','问题更新');
+			            $('#fm').form('load',row);
+			            $("#saveEntityBtn").show();
+			            $("#digcolumn").show();
+			            url = basePath + 'api/question/updateQuestion';
+	        	  }else{
+	        		  $.messager.alert('提示','问题已经被回答不能修改!','warning');		
+	        	  }
+	          }else{
+					$.messager.alert('提示','请选中数据!','warning');				
+			 }	
+	     }
+	     
 		 
 		 
 		function saveEntity() {
