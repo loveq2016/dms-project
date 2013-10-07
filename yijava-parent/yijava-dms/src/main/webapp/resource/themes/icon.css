@@ -74,4 +74,6 @@
 .icon-manage{
 	background:url('icons/edit.png') no-repeat center center;
 }
-
+.icon-home{
+	background:url('icons/home.png') no-repeat center center;
+}

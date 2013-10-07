@@ -50,7 +50,7 @@
 		style="height: 20px; background: #ddd; padding: 10px;"></div>
 	<div id="mainPanle" data-options="region:'center',title:''">
 		<div id="tabs" class="easyui-tabs"  fit="true" border="false" >
-			<div title="首页" data-options="iconCls:'icon-help',closable:false" style="padding:5px;overflow:hidden;" id="home">
+			<div title="首页" data-options="iconCls:'icon-home',closable:false" style="padding:5px;overflow:hidden;" id="home">
 				<!-- <div id="reload" class="easyui-panel" title=" " style="height:0px" data-options="tools:'#treetool'"></div>
 				<div style="height:2px"></div> -->
 				<iframe name="mainFrame" scrolling="no" frameborder="0"  src="home.jsp" style="width:100%;height:100%;"></iframe>			
