@@ -47,8 +47,13 @@ public class DealerAuthProductController {
 	@ResponseBody
 	@RequestMapping("save")
 	public Result<String> save(@ModelAttribute("entity") DealerAuthProduct entity) {
-		dealerAuthProductService.saveEntity(entity);
-		return new Result<String>(entity.getDealer_id(), 1);
+		try {
+			dealerAuthProductService.saveEntity(entity);
+			return new Result<String>(entity.getDealer_id(), 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(entity.getDealer_id(), 0);
 	}
 	
 	
@@ -69,8 +74,13 @@ public class DealerAuthProductController {
 	@ResponseBody
 	@RequestMapping("delete")
 	public Result<String> delete(@RequestParam(value = "id", required = true) String id) {
-		dealerAuthProductService.deleteEntity(id);
-		return new Result<String>(id, 1);
+		try {
+			dealerAuthProductService.deleteEntity(id);
+			return new Result<String>(id, 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(id, 0);
 	}
 	
 	

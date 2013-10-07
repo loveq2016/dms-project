@@ -18,7 +18,6 @@ import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.dealer.DealerAuthHospital;
-import dms.yijava.entity.pullstorage.PullStorage;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.service.dealer.DealerAuthHospitalService;
 
@@ -42,31 +41,51 @@ public class DealerAuthHospitalController {
 	@ResponseBody
 	@RequestMapping("save")
 	public Result<String> save(@ModelAttribute("entity") DealerAuthHospital entity) {
-		dealerAuthHospitalService.saveEntity(entity);
-		return new Result<String>(entity.getDealer_id(), 1);
+		try {
+			dealerAuthHospitalService.saveEntity(entity);
+			return new Result<String>(entity.getDealer_id(), 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(entity.getDealer_id(), 0);
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping("update")
 	public Result<String> update(@ModelAttribute("entity") DealerAuthHospital entity) {
-		dealerAuthHospitalService.updateEntity(entity);
-		return new Result<String>(entity.getDealer_id(), 1);
+		try {
+			dealerAuthHospitalService.updateEntity(entity);
+			return new Result<String>(entity.getDealer_id(), 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(entity.getDealer_id(), 0);
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping("delete")
 	public Result<String> delete(@RequestParam(value = "id", required = true) String id) {
-		dealerAuthHospitalService.deleteEntity(id);
-		return new Result<String>(id, 1);
+		try {
+			dealerAuthHospitalService.deleteEntity(id);
+			return new Result<String>(id, 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(id, 0);
 	}
 	
 	@ResponseBody
 	@RequestMapping("deleteAll")
 	public Result<String> deleteAll(@ModelAttribute("entity") DealerAuthHospital entity) {
-		dealerAuthHospitalService.deleteAllEntity(entity);
-		return new Result<String>("1", 1);
+		try {
+			dealerAuthHospitalService.deleteAllEntity(entity);
+			return new Result<String>("1", 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>("1", 0);
 	}
 	@ResponseBody
 	@RequestMapping("list")
