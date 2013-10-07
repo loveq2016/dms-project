@@ -22,9 +22,23 @@
 									<td><input class="easyui-validatebox" type="text" name="pull_storage_code"></input></td>
 									<td width="150">经销商:</td>
 									<td>
+										<c:if test="${user.fk_dealer_id!='0'}">
+											<input class="easyui-validatebox" disabled="disabled" id="pull_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
+											<input class="easyui-validatebox" hidden="true" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">
+										</c:if>
+										<c:if test="${user.fk_department_id!='0'}">
+											<input class="easyui-combobox" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+							             			data-options="
+								             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
+									                    method:'get',
+									                    valueField:'dealer_id',
+									                    textField:'dealer_name',
+									                    panelHeight:'auto'
+							            			"/>
+							            </c:if>
 										<input class="easyui-combobox" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 						             			data-options="
-							             			url:'${basePath}api/userDealerFun/list?d_id=${user.fk_department_id}&u_id=${user.id}',
+							             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
 								                    method:'get',
 								                    valueField:'dealer_id',
 								                    textField:'dealer_name',
