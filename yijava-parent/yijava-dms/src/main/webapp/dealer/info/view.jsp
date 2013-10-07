@@ -29,7 +29,9 @@
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>			   
+						<restrict:function funId="22">
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>		
+						</restrict:function>	   
 					</div>
 				</div>
 				
@@ -40,7 +42,7 @@
 
 			<div style="padding-left: 10px; padding-right: 10px">
 
-				<table id="dg" title="查询结果" style="height: 430px"  method="get"
+				<table id="dg" title="查询结果" style="height: 330px"  method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="dealer_id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
@@ -56,9 +58,15 @@
 					</thead>
 				</table>
 				<div id="tb">    
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity();">添加</a>    
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save"  plain="true" onclick="updateEntity();">编辑</a>     
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity();">删除</a>    
+					<restrict:function funId="23">
+					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity();">添加</a> 
+					</restrict:function>   
+					<restrict:function funId="24">
+					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save"  plain="true" onclick="updateEntity();">编辑</a>  
+					</restrict:function>
+					<restrict:function funId="25">   
+					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity();">删除</a>   
+					 </restrict:function> 
 				</div> 
 			</div>
 			<div style="margin: 10px 0;"></div>
@@ -68,7 +76,7 @@
 
    <div id="dlg" class="easyui-dialog" style="width:703px;height:450px;padding: 5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlg-buttons">
-        <form id="fm" method="post" novalidate>
+        <form id="fm" method="post" novalidate enctype="multipart/form-data">
         <input type="hidden" name="dealer_id">
          <div class="easyui-tabs" style="width:680px;height: auto;">
          	 <div title="基本信息" >

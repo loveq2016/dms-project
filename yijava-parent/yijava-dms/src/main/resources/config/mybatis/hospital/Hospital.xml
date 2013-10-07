@@ -6,21 +6,11 @@
 
 <sql id="adsWhere">
 <trim prefix="WHERE" prefixOverrides="AND|OR">
-	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(hospital_name)">
-		  and hospital_name=#{hospital_name}
-	</if>
-	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(level_id)">
-		  and level_id=#{level_id}
-	</if>
-	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(provinces)">
-		  and provinces=#{provinces}
-	</if>
-	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(area)">
-		  and area=#{area}
-	</if>
-	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(city)">
-		  and city=#{city}
-	</if>	
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(hospital_name)">and hospital_name like CONCAT('%','${hospital_name}','%' ) </if>
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(level_id)">and level_id=#{level_id}</if>
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(provinces)">and provinces like CONCAT('%','${provinces}','%' ) </if>
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(area)">and area like CONCAT('%','${area}','%' ) </if>
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(city)">and city like CONCAT('%','${city}','%' ) </if>	
 </trim>
 </sql>
 
