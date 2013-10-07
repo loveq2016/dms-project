@@ -54,7 +54,9 @@
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>			   
+						<restrict:function funId="123">
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>
+						</restrict:function>			   
 					</div>
 				</div>
 				
@@ -66,7 +68,7 @@
 			<div style="padding-left: 10px; padding-right: 10px">
 
 				<table id="dg" title="查询结果" style="height: 330px" url="${basePath}api/protrial/paging" method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="asc">
+					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="asc" toolbar="#tbOrder">
 					<thead>
 						<tr>
 							<th data-options="field:'trial_id',width:100"  sortable="true" hidden="true">trial_id</th>
@@ -80,6 +82,23 @@
 					</thead>
 				</table>
 
+			</div>
+			<div id="tbOrder">
+				<restrict:function funId="124">
+					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
+				</restrict:function>
+				<restrict:function funId="125">
+					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="viewEntity()">编辑</a>
+				</restrict:function>
+				<restrict:function funId="126">
+        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity()">删除</a>
+        		</restrict:function>
+        		<restrict:function funId="127">
+        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="ToCheckEntity()">提交审核</a>
+        		</restrict:function>
+        		<restrict:function funId="128">
+        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="CheckEntity()">审核</a>
+        		</restrict:function>
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
@@ -351,41 +370,7 @@
 				{
 					onLoadSuccess:function(data){ 
 					  $(".questionBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
-				 },
-		    toolbar : [{
-		        text:'添加',
-		        iconCls:'icon-add',
-		        handler:function(){
-		        	newEntity();
-		        	//$('#w').window('open');
-				}
-		    },{
-		        text:'编辑',
-		        iconCls:'icon-edit',
-		        handler:function(){
-		        	viewEntity();
-				}
-		    }
-		    ,'-',{
-		        text:'删除',
-		        iconCls:'icon-remove',
-		        handler:function(){
-		        	deleteEntity();
-		        }
-		    },{
-		        text:'提交审核',
-		        iconCls:'icon-ok',
-		        handler:function(){
-		        	ToCheckEntity();
-				}
-		    },{
-		        text:'审核',
-		        iconCls:'icon-check',
-		        handler:function(){
-		        	CheckEntity();
-				}
-		    }
-		    ]
+				 }
 		});
 		
 
