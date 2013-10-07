@@ -24,5 +24,6 @@ public class DealerPlan {
 	
 	private String dealer_id;//经销商id
 	private String dealer_name;
+	private String dealer_code;
 
 }

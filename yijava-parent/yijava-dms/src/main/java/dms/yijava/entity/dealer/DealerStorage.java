@@ -12,6 +12,7 @@ public class DealerStorage {
 	
 	private String dealer_id;//经销商id
 	private String dealer_name;
+	private String dealer_code;
 	
 	private String storage_id;
 	private String storage_name;
