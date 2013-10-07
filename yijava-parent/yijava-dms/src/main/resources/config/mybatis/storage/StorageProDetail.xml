@@ -10,6 +10,15 @@
 		limit #{size}
 	</select>
 	
+	 <select id="selectStorageProDetail" resultType="dms.yijava.entity.storage.StorageProDetail">
+		select * from  dms.tb_storage_pro_detail 
+		where fk_storage_id=#{fk_storage_id} and fk_dealer_id=#{fk_dealer_id} and batch_no = #{batch_no} 
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">and status = #{status}</if>
+	</select>
+	
+	
+	
+	
 	<update id="lockSn" parameterType="dms.yijava.entity.storage.StorageProDetail">
 		update dms.tb_storage_pro_detail  set status = 0 where id = #{id}
 	</update>

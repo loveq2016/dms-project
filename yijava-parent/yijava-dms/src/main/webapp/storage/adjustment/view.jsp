@@ -30,9 +30,8 @@
 													panelHeight:'auto',
 													data: [
 														{id: '1',value: '其他出库'},
-														{id: '2',value: '退货'},
-														{id: '3',value: '异常入库'},
-														{id: '4',value: '报废'}
+														{id: '2',value: '异常入库'},
+														{id: '3',value: '报废'}
 														]" />
 									</td>
 									<td></td>
@@ -113,11 +112,9 @@
 													textField: 'value',
 													panelHeight:'auto',
 													data: [
-													    
 														{id: '1',value: '其他出库'},
-														{id: '2',value: '退货'},
-														{id: '3',value: '异常入库'},
-														{id: '4',value: '报废'}
+														{id: '2',value: '异常入库'},
+														{id: '3',value: '报废'}
 														]" />
 									  </td>
 									 <td></td> 
@@ -239,7 +236,7 @@
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
 	    </div>
 	    
-		<div id="dlgProductSn" class="easyui-dialog" style="width:300px;height:360px;padding:5px 5px 5px 5px;"
+		<div id="dlgProductSn" class="easyui-dialog" style="width:400px;height:460px;padding:5px 5px 5px 5px;"
 	            modal="true" closed="true" buttons="#dlgProductSn-buttons">
 		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
 		        
@@ -277,7 +274,7 @@
 					             <tr>
 						             <td colspan="2">
 						             	<font color="red">注：
-						             		<p>减少填写负数：如：-3 </p>
+						             		<p>减少填写负数：如：-3、 </p>
 						             		<p>增加填写正数：如：3</p>
 						             	</font>
 						             </td>
@@ -464,9 +461,11 @@
 			if(row){
 				$('#dlgProductSn').dialog('open').dialog('setTitle','添加产品');
 				$('#fm3').form('load',row);
+				
+				
+				
 				$("#fm3 input[name=adjust_storage_code]").val(adjust_storage_code);
-			}else
-			{
+			}else{
 				$.messager.alert('提示','请选中某个产品!','warning');
 			}
 		}
