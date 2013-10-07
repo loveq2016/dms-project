@@ -8310,6 +8310,9 @@ if ( jQuery.support.ajax ) {
 									// IE - #1450: sometimes returns 1223 when it should be 204
 									} else if ( status === 1223 ) {
 										status = 204;
+									}else if ( status === 403 ) {
+										window.parent.location=basePath+"login.jsp"
+										//alert("requre login");
 									}
 								}
 							}

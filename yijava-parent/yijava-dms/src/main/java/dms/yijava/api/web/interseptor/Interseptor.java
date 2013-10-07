@@ -16,14 +16,13 @@ import dms.yijava.entity.system.SysUser;
 
 public class Interseptor extends HandlerInterceptorAdapter {
 
-	static Logger logger = LoggerFactory.getLogger(Interseptor.class);
-	
+	static Logger logger = LoggerFactory.getLogger(Interseptor.class);	
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
 		String url =  request.getRequestURI().toString();
-		System.out.println(url+"==============================");
-        if(url.indexOf("/api/sys/login")>-1 || url.indexOf("/api/sys/logout")>-1)
+		logger.debug("url:"+url);
+		if(url.indexOf("tologin")>-1 || url.indexOf("logout")>-1 || url.indexOf("login")>-1)
         	return true;
         try{
         	// 权限认证机制细节
@@ -56,7 +55,13 @@ public class Interseptor extends HandlerInterceptorAdapter {
 				//不属于权限连接放行
 				return true;
 			}else{
-				response.sendRedirect(request.getContextPath()+"/login.jsp");
+				
+				//if(isAjaxRequest(request)) {//如果不是异步调用  
+					//response.sendRedirect(request.getContextPath()+"/api/sys/tologin");
+				//}else{  
+				     response.sendError(403);  
+				    
+				//}
     			return false;
 			}
         }catch(Exception e){}
@@ -77,5 +82,11 @@ public class Interseptor extends HandlerInterceptorAdapter {
 	    }  
 	    return ip;  
 	}  
-	
+	private boolean isAjaxRequest(HttpServletRequest request) {   
+	    String header = request.getHeader("X-Requested-With");   
+	    if (header != null && "XMLHttpRequest".equals(header))   
+	        return true;   
+	    else   
+	        return false;   
+	}    
 }

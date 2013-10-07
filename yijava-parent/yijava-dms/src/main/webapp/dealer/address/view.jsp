@@ -21,14 +21,16 @@
 									<td></td>
 									<td>经销商代码:</td>
 									<td>
-										<input class="easyui-validatebox" type="text" name="dealer_name" id="dealer_code" data-options="required:false"></input>
+										<input class="easyui-validatebox" type="text" name="dealer_code" id="dealer_code" data-options="required:false"></input>
 									</td>
 								</tr>
 							</table>
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>			   
+						<restrict:function funId="70">
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>			   
+						</restrict:function>
 					</div>
 				</div>
 			</div>
@@ -40,7 +42,9 @@
 						<tr>
 							<th field="dealer_name" width="150" align="center" sortable="true">经销商名称</th>
 							<th field="dealer_code" width="200" align="center" sortable="true">经销商代码</th>
-							<th field="address" width="200" align="center" sortable="true" formatter="formatterInfo">维护地址明细</th>
+							<restrict:function funId="71">
+								<th field="address" width="200" align="center" sortable="true" formatter="formatterInfo">维护地址明细</th>
+							</restrict:function>
 						</tr>
 					</thead>
 				</table>
@@ -49,8 +53,6 @@
 		</div>
 		
 
-
-     
         <div id="dlgAddress" class="easyui-dialog" style="width:800px;height:450px;padding: 5px 5px 5px 5px;"
             modal="true" closed="true">
             <div id="p1" class="easyui-panel" title="基础信息"  height="200px">
@@ -66,7 +68,7 @@
             </div>
             <div style="margin: 5px 0;"></div>
              <div id="p2" class="easyui-panel" title="编辑信息"  height="200px">
-		        <form id="fm" method="post" novalidate>
+		        <form id="fm" method="post" novalidate enctype="multipart/form-data">
 		        <input type="hidden" name="id">
 		        <input type="hidden" name="dealer_id">
 		         	  <table>
@@ -87,8 +89,12 @@
 			            </table>
 		        </form>       
 		           <div style="padding:5px;padding-right:20px;width:150px;float:right;">  
-			        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'" onclick="newEntity();">新增</a>  
-			        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'" onclick="updateEntity();">修改</a>  
+		           	<restrict:function funId="72">
+			        	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'" onclick="newEntity();">新增</a>
+			        </restrict:function>  
+			       	 <restrict:function funId="91">
+			       	 	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'" onclick="updateEntity();">修改</a>  
+			       	 </restrict:function>
 			    </div>  
             </div>          
             <div style="margin: 5px 0;"></div>
@@ -100,7 +106,9 @@
 							<th field="postcode" width="150" align="center" sortable="true">收货地址邮编</th>
 							<th field="linkman" width="150" align="center" sortable="true">收货中文名称</th>
 							<th field="linkphone" width="150" align="center" sortable="true">收货人电话</th>
-							<th field="del" width="100" align="center" sortable="true" formatter="formatterDel">删除</th>
+							<restrict:function funId="92">
+								<th field="del" width="100" align="center" sortable="true" formatter="formatterDel">删除</th>
+							</restrict:function>
 						</tr>
 					</thead>
 				</table>
@@ -144,7 +152,7 @@
 		$('#dg').datagrid({
 			 url : basePath + "api/dealer/paging", 
 			  onLoadSuccess:function(data){ 
-				  $(".addressEditBtn").linkbutton({ plain:true, iconCls:'icon-edit' });
+				  $(".addressEditBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
 			  }
 		});
 

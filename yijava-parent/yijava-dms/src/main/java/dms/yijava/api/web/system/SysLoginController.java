@@ -125,6 +125,11 @@ public class SysLoginController {
 		return "redirect:/login.jsp";  //重定向
 	}
 	
+	@RequestMapping(value = "/tologin")
+	public String tologin(HttpServletRequest request,HttpServletResponse response,ModelMap map) {		
+		return "redirect:/login.jsp";  //重定向
+	}
+	
 	private boolean isExsitUser(SysUser user,String password) {
 		if (user != null && !"".equals(user)) {
 			if (user.getPassword().equals(password)) {

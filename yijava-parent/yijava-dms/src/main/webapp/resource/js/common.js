@@ -1,9 +1,13 @@
 var basePath = "/yijava-dms/";
 var resPath = "/yijava-dms/";
 
+
 var trialflow_identifier_num="300000";
+
+
 $(function(){
 	InitLeftMenu();
+	
 	//tabClose();
 	//tabCloseEven();
 });

@@ -40,32 +40,46 @@ public class DealerPlanController {
 	@ResponseBody
 	@RequestMapping("save")
 	public Result<String> save(@ModelAttribute("entity") DealerPlan entity) {
-		
 		int c = 0;
-		DealerPlan checkDealerYear = dealerPlanService.checkEntity(entity);
-		if (null == checkDealerYear) {
-			dealerPlanService.saveEntity(entity);
-			c = 1;
-		}else{
-			c = 2;
+		try {
+			DealerPlan checkDealerYear = dealerPlanService.checkEntity(entity);
+			if (null == checkDealerYear) {
+				dealerPlanService.saveEntity(entity);
+				c = 1;
+			}else{
+				c = 2;
+			}
+			return new Result<String>(entity.getDealer_id(), c);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return new Result<String>(entity.getDealer_id(), c);
+		return new Result<String>(entity.getDealer_id(), 0);
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping("update")
 	public Result<String> update(@ModelAttribute("entity") DealerPlan entity) {
-		dealerPlanService.updateEntity(entity);
-		return new Result<String>(entity.getDealer_id(), 1);
+		try {
+			dealerPlanService.updateEntity(entity);
+			return new Result<String>(entity.getDealer_id(), 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(entity.getDealer_id(), 0);
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping("delete")
 	public Result<String> delete(@RequestParam(value = "id", required = true) String id) {
-		dealerPlanService.deleteEntity(id);
-		return new Result<String>(id, 1);
+		try {
+			dealerPlanService.deleteEntity(id);
+			return new Result<String>(id, 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(id, 0);
 	}
 	
 	

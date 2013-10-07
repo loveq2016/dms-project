@@ -46,24 +46,39 @@ public class HospitalController {
 	@ResponseBody
 	@RequestMapping("save")
 	public Result<String> save(@ModelAttribute("entity") Hospital entity) {
-		hospitalService.saveEntity(entity);
-		return new Result<String>(entity.getId(), 1);
+		try {
+			hospitalService.saveEntity(entity);
+			return new Result<String>(entity.getId(), 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(entity.getId(), 0);
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping("update")
 	public Result<String> update(@ModelAttribute("entity") Hospital entity) {
-		hospitalService.updateEntity(entity);
-		return new Result<String>(entity.getId(), 1);
+		try {
+			hospitalService.updateEntity(entity);
+			return new Result<String>(entity.getId(), 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(entity.getId(), 0);
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping("delete")
 	public Result<String> delete(@RequestParam(value = "id", required = true) String id) {
-		hospitalService.deleteEntity(id);
-		return new Result<String>(id, 1);
+		try {
+			hospitalService.deleteEntity(id);
+			return new Result<String>(id, 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(id, 0);
 	}
 
 	@ResponseBody
