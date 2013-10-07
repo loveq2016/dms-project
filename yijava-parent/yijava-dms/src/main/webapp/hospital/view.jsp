@@ -39,24 +39,26 @@
 									</td>
 									<td>地区:</td>
 									<td>
-										<input class="easyui-validatebox" type="text" name="area" id="dealer_code" data-options="required:false"></input>
+										<input class="easyui-validatebox" type="text" name="area" id="area" data-options="required:false"></input>
 									</td>
 									<td>县市(区):</td>
 									<td>
-										<input class="easyui-validatebox" type="text" name="city" id="dealer_code" data-options="required:false"></input>
+										<input class="easyui-validatebox" type="text" name="city" id="city" data-options="required:false"></input>
 									</td>
 								</tr>								
 							</table>
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>			   
+						<restrict:function funId="16">
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>			
+						</restrict:function>   
 					</div>
 				</div>
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" title="查询结果" style="height: 430px" method="get"
+				<table id="dg" title="查询结果" style="height: 330px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
@@ -74,9 +76,15 @@
 					</thead>
 				</table>
 				<div id="tb">    
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity();">添加</a>    
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save"  plain="true" onclick="updateEntity();">编辑</a>     
-				    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity();">删除</a>    
+					<restrict:function funId="17">
+					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity();">添加</a>   
+					</restrict:function> 
+					<restrict:function funId="18">
+				    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save"  plain="true" onclick="updateEntity();">编辑</a>  
+				    </restrict:function>   
+				    <restrict:function funId="19">
+				    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity();">删除</a>    
+				    </restrict:function>
 				</div> 
 			</div>
 			<div style="margin: 10px 0;"></div>
@@ -84,7 +92,7 @@
 		
 	   <div id="dlg" class="easyui-dialog" style="width:460px;height:460px;padding:5px 5px 5px 5px;"
 	            modal="true" closed="true" buttons="#dlg-buttons">
-		        <form id="fm" method="post" novalidate>
+		        <form id="fm" method="post" novalidate enctype="multipart/form-data">
 		        	<input type="hidden" name="id">
 					         	  <table>
 					             	<tr>
