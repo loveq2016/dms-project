@@ -27,7 +27,7 @@
 		<div title="公告及通知" data-options="iconCls:'icon-help',closable:false" style="padding:20px;overflow:hidden;" id="home">
 <!-- 			<h1>Welcome to jQuery UI!</h1> -->
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" class="easyui-datagrid" title="查询结果" style="height: 330px"  method="get"
+				<table id="dg"  title="查询结果" style="height: 330px"  method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="publish_date" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
@@ -104,7 +104,7 @@ function checkReload()
 	
 }
 var dealer_id = ${user.fk_dealer_id};
-$(function() {
+
 	$('#dg').datagrid({
 		  url : basePath +"api/notice/paging" ,
 		  queryParams: {
@@ -112,17 +112,9 @@ $(function() {
 				filter_ANDS_dealer_id : dealer_id
 		  },
 		  onLoadSuccess:function(data){ 
-			  //var rowData = data.rows;  
 			  $(".infoBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
-			  
-// 			  if(!rowData[0].dealer_id){
-// 				  $('#dg').datagrid('hideColumn',"dealer_id");  
-// 			  }else{
-				  
-// 			  }
 		  }
 	});
-});
 function formatterInfo(value, row, index){
 	v = "'"+ row.notice_id + "','" + index+"'";
 	return '<a class="infoBtn" href="javascript:void(0)"  onclick="showEntity(' + v + ')" ></a>';
