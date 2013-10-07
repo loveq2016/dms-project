@@ -118,12 +118,15 @@
 				$('#w').window('open');
 			}else
 			{
-				alert("请选中数据 ");	
+				$.messager.alert('提示','请选中数据!','warning');
 			}
 		}
 		function destroyEntity()
 		{
 			var row = $('#dg').datagrid('getSelected');
+			if(row.id==1){
+				$.messager.alert('提示','禁止删除管理员角色!','warning');return;
+			}
 			if (row){
 			    $.ajax({
 					type : "POST",
@@ -144,7 +147,7 @@
 				});
 			}else
 			{
-				alert("请选中数据 ");	
+				$.messager.alert('提示','请选中数据!','warning');
 			}			
 		}
 		function formatterAuthoriz(value, row, index){
