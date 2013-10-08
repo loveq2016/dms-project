@@ -499,7 +499,7 @@
 		    });
 		})
 		function formatterDetail(value, row, index){
-			return '<span style="color:red;cursor:pointer" onclick="openOrderDetail(\''+row+'\')">明细</span>'; 
+			return '<span style="color:red;cursor:pointer" onclick="openOrderDetail(\''+index+'\')">明细</span>'; 
 		}
 		function doSearch(){
 			$('#dg').datagrid({url : basePath +"api/order/paging"});
@@ -607,9 +607,9 @@
 			$('#fm3').form('clear');
 		}
 		//open订单项
-		function openOrderDetail(row,type){
-			//$('#dg').datagrid('selectRow',index);
-			//var row = $('#dg').datagrid('getSelected');
+		function openOrderDetail(index,type){
+			$('#dg').datagrid('selectRow',index);
+			var row = $('#dg').datagrid('getSelected');
 			$('#ffOrderDetail').form('load',row);
 			$('#ffOrderInfo').form('load',row);
 			$('#dlgOrderDetail').dialog('open');
@@ -773,7 +773,7 @@
 				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){
 					 $('#bussiness_id').val(row.id);
 					 $("#flow_id").val(orderflow_identifier_num);
-					 openOrderDetail(row,1);
+					 openOrderDetail(row.index,1);
 				 });
 			}else
 			{
