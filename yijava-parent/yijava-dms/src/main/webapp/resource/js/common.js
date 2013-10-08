@@ -27,20 +27,19 @@ function addTab(subtitle,url){
 	tabClose();
 }
 
-function addTabByChild(subtitle,url){
-	//$(window.parent.document).find("div#tabs");
-	 var aaa =$(parent.document.getElementById("tabs"));
-	//var aaa=$(window.parent.document).find("div#tabs");
-	if(!aaa.tabs('exists',subtitle)){
-		aaa.tabs('add',{
+function addTabByChild(subtitle,url){	
+	var jq = top.jQuery;    
+	
+	if(!jq("#tabs").tabs('exists',subtitle)){
+		jq("#tabs").tabs('add',{
 			title:subtitle,
 			content:createFrame(url),
 			closable:true,
-			width:$('#mainPanle').width()-1,
-			height:$('#mainPanle').height()-10
+			width:$('#mainPanle',window.parent).width()-1,
+			height:$('#mainPanle',window.parent).height()-10
 		});
 	}else{
-		aaa.tabs('select',subtitle);
+		jq("#tabs").tabs('select',subtitle);
 	}
 	tabClose();
 }

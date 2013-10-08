@@ -8,23 +8,17 @@
 <title>Insert title here</title>
 <%@include file="/common/head.jsp"%>
 </head>
-<body class="easyui-layout">
-	
-	
-	
+<body class="easyui-layout">	
 	<div data-options="region:'west',split:true,title:'公司信息'"
-		style="width: 150px; padding: 10px;">west content
+		style="width: 150px; padding: 10px;">海利欧斯经销商管理系统
 	</div>
 	<div
 		data-options="region:'east',split:true,collapsed:false,title:'待处理事项',tools:'#treetool'"
 		style="width: 200px; padding: 10px;">
 			<ul id="tochecktree" class="easyui-tree" data-options="url:'${basePath}api/flowrecord/tocheck',method:'get',animate:true"></ul>
-	</div>
-	
-	<div id="mainPanle11" data-options="iconCls:'icon-info',region:'center',title:'公告及通知'">
-		
+	</div>	
+	<div id="mainPanle11" data-options="iconCls:'icon-info',region:'center',title:'公告及通知'">		
 		<div title="公告及通知" data-options="iconCls:'icon-info',closable:false" style="padding:2px;overflow:hidden;" id="home">
-
 			<div style="">
 				<table id="dg"  title="查询结果" style="height: 630px"  method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="publish_date" sortOrder="desc" toolbar="#tb">
@@ -36,8 +30,7 @@
 							<th field="publish_date" width="150" align="center" sortable="true">发布时间</th>
 							<th field="validity_date" width="150" align="center" sortable="true">有效期</th>
 							<th field="level_name" width="100" align="center"  sortable="true">紧急程度</th>
-							<th field="dealer_id" width="100" align="center"  sortable="true" formatter="formatterInfo">详细</th>
-							
+							<th field="dealer_id" width="100" align="center"  sortable="true" formatter="formatterInfo">详细</th>							
 						</tr>
 					</thead>
 				</table>
@@ -72,9 +65,7 @@
 		 		</form>
 		   </div>
 		</div>
-	</div>
-		
-	
+	</div>	
 	<div id="treetool">
 		<a href="javascript:void(0)" class="icon-reload" onclick="javascript:checkReload();"></a>		
 	</div>
@@ -89,9 +80,11 @@ $('#tochecktree').tree({
 		{
 			var tabTitle = "试用管理";
 			var url = "trial/view.jsp";
-			addTabByChild(tabTitle,url);
-		}
 			
+			
+			
+			addTabByChild(tabTitle,url);
+		}			
 	}
 });
 function checkReload()
