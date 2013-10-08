@@ -51,7 +51,9 @@
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">查询</a>   
+						<restrict:function funId="140">
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearch()">查询</a>  
+						</restrict:function>
 					</div>
 				</div>
 			</div>
@@ -71,15 +73,23 @@
 <!-- 							<th data-options="field:'express_number',width:150,align:'center'" sortable="true">快递号</th> -->
 							<th data-options="field:'deliver_status',width:80,align:'center'" formatter="formatterDeliverStatus" sortable="true">发货类型</th>
 							<th data-options="field:'check_status',width:80,align:'center'"  formatter="formatterCheckStatus">审核状态</th>
-							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
+							<restrict:function funId="145">
+								<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
+							</restrict:function>
 						</tr>
 					</thead>
 				</table>
 			</div>
 			<div id="tb">
-				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntity()">编辑</a>
-        		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity()">删除</a>
+				<restrict:function funId="141">
+					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
+				</restrict:function>
+				<restrict:function funId="142">
+					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntity()">编辑</a>
+				</restrict:function>
+				<restrict:function funId="143">
+        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity()">删除</a>
+        		</restrict:function>
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
@@ -232,7 +242,7 @@
 			<div style="margin: 10px 0;"></div>
 			<div class="easyui-tabs" style="width:925px;height:auto;">
 				<div title="明细行" style="padding: 5px 5px 5px 5px;" >
-					<table id="dgDetail" class="easyui-datagrid" title="订单明细信息" style="height:370px" method="get"
+					<table id="dgDetail" class="easyui-datagrid" title="订单明细信息" style="height:330px" method="get"
 						 rownumbers="true" singleSelect="true" pagination="true" sortName="delivery_detail_id" sortOrder="desc">
 						<thead>
 							<tr>
@@ -248,7 +258,7 @@
 					</table>
 				</div>
 				<div title="修改记录" style="padding: 5px 5px 5px 5px;" >
-					<table id="dgUpdateLog" class="easyui-datagrid" title="修改记录" style="height:370px" method="get"
+					<table id="dgUpdateLog" class="easyui-datagrid" title="修改记录" style="height:330px" method="get"
 						rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc">
 						<thead>
 							<tr>
@@ -260,7 +270,9 @@
 			</div>
 		</div>
 		<div id="dlg-buttons">
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="alert('提交后将不能在修改，确定提交吗？')">提交</a>
+			<restrict:function funId="144">
+	        	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" id="submitDeliver" onclick="submitDeliver();">提交</a>
+	        </restrict:function>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgDeliverDetail').dialog('close')">取消</a>
 	    </div>
 		
@@ -271,7 +283,10 @@
 				  url : basePath +"api/deliverApply/paging" ,
 					queryParams: {
 						filter_ANDS_order_status : $('#deliver_status_s').combobox('getValue')
-					}
+					},
+					onLoadSuccess:function(data){ 
+						  $(".infoBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
+					 }
 			});
 		});
 		
@@ -297,7 +312,8 @@
 		}
 		
 		function formatterDetail(value, row, index){
-			return '<span style="color:red;cursor:pointer" onclick="openDeliverDetail(\''+index+'\')">明细</span>'; 
+			return '<a class="infoBtn" href="javascript:void(0)"  onclick="openDeliverDetail('+index+')" ></a>';
+			//return '<span style="color:red;cursor:pointer" onclick="openDeliverDetail(\''+index+'\')">明细</span>'; 
 		}
 		
 		function formatterStatus(value, row, index){
@@ -633,6 +649,11 @@
 			$('#deliver_status_ss').combobox('disable');
 			$('#dlgDeliverDetail').dialog('open');
 			deliver_code = row.deliver_code;
+			if(row.check_status == 0){
+				$("#submitDeliver").linkbutton("enable");
+			}else{
+				$("#submitDeliver").linkbutton("disable");
+			}
             $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
 			$('#dgDetail').datagrid({
 				url : basePath + "api/deliverApply/detailPaging",
@@ -641,6 +662,30 @@
 				}
 			});
 
+		}
+		
+		
+		function submitDeliver(){
+            $.messager.confirm('Confirm','提交后将不能在修改，确定提交吗?',function(r){
+                if (r){
+        			$.ajax({
+        				type : "POST",
+        				url : basePath + 'api/deliverApply/submit',
+        				data : {deliver_code : deliver_code},
+        				error : function(request) {
+        					$.messager.alert('提示','Error!','error');	
+        				},
+        				success : function(data) {
+        					var jsonobj = $.parseJSON(data);
+        					if (jsonobj.state == 1) {  
+        	                     $('#dg').datagrid('reload');
+        					}else{
+        						$.messager.alert('提示','Error!','error');	
+        					}
+        				}
+        			});                    	
+                }
+            });	
 		}
 		
 	</script>

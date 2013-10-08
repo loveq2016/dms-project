@@ -17,6 +17,7 @@ import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.notice.NoticeDealer;
+import dms.yijava.entity.system.SysUser;
 import dms.yijava.service.notice.NoticeDealerService;
 
 @Controller
@@ -36,12 +37,18 @@ public class NoticeDealerController {
 	
 	@ResponseBody
 	@RequestMapping("update")
-	public Result<String> update(@RequestParam(value = "id", required = true) String id) {
-		NoticeDealer entity = new NoticeDealer();
-		entity.setDealer_id("3");
-		entity.setNotice_id(id);
-		noticeDealerService.updateEntity(entity);
-		return new Result<String>(entity.getNotice_id(), 1);
+	public Result<String> update(@RequestParam(value = "id", required = true) String id,HttpServletRequest request) {
+		try {
+				SysUser sysUser = (SysUser) request.getSession().getAttribute("user"); // 当前用户信息
+				NoticeDealer entity = new NoticeDealer();
+				entity.setDealer_id(sysUser.getId());
+				entity.setNotice_id(id);
+				noticeDealerService.updateEntity(entity);
+				return new Result<String>(id, 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(id, 0);
 	}
 	
 }

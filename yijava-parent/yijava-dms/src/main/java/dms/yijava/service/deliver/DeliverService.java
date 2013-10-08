@@ -152,6 +152,9 @@ public class DeliverService {
 		deliverDao.updateObject(".submitExpress", entity);
 	}
 	
+	public void submitDeliver(String deliver_code){
+		deliverDao.updateObject(".submitDeliver", deliver_code);
+	}
 	
 		
 }
