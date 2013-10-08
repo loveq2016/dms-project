@@ -60,6 +60,10 @@ public class FlowRecordController {
 	private String flow_id;
 	@Value("#{properties['trialflow_identifier_num']}")   	
 	private String trialflow_identifier_num;
+	
+	@Value("#{properties['orderflow_identifier_num']}")   	
+	private String orderflow_identifier_num;
+	
 	/**
 	 * 查询流程处理记录
 	 * @param bussiness_id
@@ -421,6 +425,9 @@ public class FlowRecordController {
 		if(flow_id.equals(trialflow_identifier_num))
 		{
 			flowDescibe="试用审核"+"(<font color='red'>"+item_number+"</font>)";
+		}else if(flow_id.equals(orderflow_identifier_num))
+		{
+			flowDescibe="订单审核"+"(<font color='red'>"+item_number+"</font>)";
 		}
 		return flowDescibe;
 	}
