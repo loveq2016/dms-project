@@ -702,7 +702,7 @@
 			    	if(result.state==1){
 			    		alert(result.data);
 			    		var tabTitle = "试用管理单据 ";
-						var url = result.data;						
+						var url = "generate/"+result.data;						
 						addTabByChild(tabTitle,url);
 			    		//var pager = $('#dg').datagrid().datagrid('getPager');
 		    			//pager.pagination('select');	

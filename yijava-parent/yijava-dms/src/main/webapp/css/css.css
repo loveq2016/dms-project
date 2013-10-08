@@ -1,0 +1,63 @@
+html,body,body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, figure, footer, header, hgroup, menu, nav, section, time, mark, audio, video { margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; font-style: normal; vertical-align: baseline; background: transparent; }
+article, aside, figure, footer, header, hgroup, nav, section { display: block; }
+img, object, embed { max-width: 100%; }
+html { overflow-y: scroll; }
+ul { list-style: none; }
+blockquote, q { quotes: none; }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+a { margin: 0; padding: 0; font-size: 100%; vertical-align: baseline; background: transparent; text-decoration: none; color: #333; }
+del { text-decoration: line-through; }
+abbr[title], dfn[title] { border-bottom: 1px dotted #000; cursor: help; }
+table { border-collapse: collapse; border-spacing: 0; }
+th { font-weight: bold; vertical-align: bottom; }
+td { font-weight: normal; vertical-align: top; }
+hr { display: block; height: 1px; border: 0; border-top: 1px solid #ccc; padding: 0; }
+input, select { vertical-align: middle; }
+pre { white-space: pre; white-space: pre-wrap; white-space: pre-line; word-wrap: break-word; }
+input[type="radio"] { vertical-align: text-bottom; }
+input[type="checkbox"] { vertical-align: bottom; *vertical-align:baseline;}
+.ie6 input { vertical-align: text-bottom; }
+select, input, textarea { font: 99% sans-serif; }
+table { font-size: inherit; font: 100%; }
+:focus { outline: none; }
+a:hover, a:active { outline: none; text-decoration: underline; }
+a:focus { text-decoration: none; }
+small { font-size: 85%; }
+strong, th { font-weight: bold; }
+td, td img { vertical-align: top; }
+sub, sup { font-size: 75%; line-height: 0; position: relative; }
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+pre, code, kbd, samp { font-family: monospace, sans-serif; }
+button, input, select, textarea { margin: 0; }
+button { width: auto; overflow: visible; }
+.ie7 img { -ms-interpolation-mode: bicubic; }
+.ie6 html { filter:expression(document.execCommand("BackgroundImageCache", false, true));}
+.clearfix:before, .clearfix:after { content: "\0020"; display: block; height: 0; overflow: hidden; }
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; }
+html { _background: url(about:blank) no-repeat fixed; }
+body{ font-family:"宋体"; font-size:12px; background:url(../images/bg-x.jpg) repeat-x;}
+a{ text-decoration:none;}
+a:hover{text-decoration: underline;}
+.top{height:56px; overflow:hidden; padding:11px 0 7px; overflow:hidden; text-align:center;}
+.top img{vertical-align:top;}
+.page{background:url(../images/bg.jpg) no-repeat center top; height:503px;}
+.main{width:830px; margin:0 auto; padding-top:22px;}
+.title{font-family:"Microsoft YaHei","微软雅黑","黑体"; font-size:24px; font-weight:bold; color:#FFF;  height:40px; line-height:40px; overflow:hidden;}
+.left{float:left; display:inline; margin:30px 0 0 30px; width:288px; overflow:hidden;}
+.formline{height:76px; overflow:hidden;}
+.formline label{display:block; line-height:22px; color:#FFF;font-family:"Microsoft YaHei","微软雅黑","黑体"; font-size:14px;}
+.ipt{border:#747474 solid; border-width:2px 0 0 2px; background:#FFF; width:218px; height:24px; padding:4px 5px 3px; vertical-align:middle;}
+.code{ width:123px;}
+.formline img{vertical-align:middle;}
+.btn{height:33px; border:0; padding:0 18px; font-size:14px;font-family:"Microsoft YaHei","微软雅黑","黑体"; color:#FFF; background:#319de1; cursor:pointer;}
+.left p{line-height:18px; color:#FFF;}
+
+#focus,.focus{width:509px; height:388px;position:relative; overflow:hidden;}
+#focus{float:right; display:inline; margin:15px 0 0;}
+.focus_btn{position:absolute; z-index:20; bottom:0; right:0; color:#FFF; padding:5px; padding:5px; background:#000;}
+.focus_btn span{display:inline-block; width:16px; height:16px; overflow:hidden; text-align:center; line-height:16px; color:#FFF; vertical-align:top; margin:0 5px; cursor:pointer;}
+.focus_btn span.active{background:#309a1b;}
+.footer{width:830px; text-align:center; margin:0 auto; padding:20px 0 50px; text-align:center; color:#585858;}
+.footer a{color:#585858;}
