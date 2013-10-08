@@ -27,7 +27,7 @@
 			                    <div id="settings">
 			                        <ul>
 			                            <li>欢迎您,${user.realname}</li>
-			                            <li id="itemAddContent"><a href='${basePath}main.jsp'>首页</a></li>
+			                            <li id="itemAddContent"><a href='javascript:void(0)' onclick="javascript:toHome();">首页</a></li>
 			                           	<li id="itemLogout"><a href='${basePath}api/sys/logout'>退出</a> </li>
 			                        </ul>
 			                    </div>
@@ -60,10 +60,13 @@
 	
 <script type="text/javascript">
 $(document).ready(function(){
-	$('#mm1').menu(); 
-	
-	
+	$('#mm1').menu(); 	
 });
+
+function toHome()
+{
+	$('#tabs').tabs('select',"首页");
+}
 
 function illegal(XMLHttpRequest, textStatus, errorThrown)  
 {  

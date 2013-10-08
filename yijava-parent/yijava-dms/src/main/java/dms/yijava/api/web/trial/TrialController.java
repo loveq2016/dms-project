@@ -1,9 +1,15 @@
 package dms.yijava.api.web.trial;
 
-import java.util.Date;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +20,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yijava.common.utils.DateUtils;
 import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
@@ -22,10 +27,8 @@ import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.ErrorCode;
 import com.yijava.web.vo.Result;
 
+import dms.yijava.api.web.word.util.TheFreemarker;
 import dms.yijava.entity.department.Department;
-import dms.yijava.entity.flow.FlowLog;
-import dms.yijava.entity.flow.Step;
-import dms.yijava.entity.flow.StepDepartment;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.trial.Trial;
 import dms.yijava.entity.user.UserDealer;
@@ -44,6 +47,12 @@ public class TrialController {
 	
 	@Value("#{properties['trialflow_identifier_num']}")   	
 	private String flowIdentifierNumber;
+	
+	
+	@Value("#{properties['document_filepath']}")   	
+	private String document_filepath;
+	
+	
 	
 	@Autowired
 	private TrialService trialService;
@@ -193,7 +202,26 @@ public class TrialController {
 		return result;
 	}
 	
-	
+	@ResponseBody
+	@RequestMapping("viewdocument")
+	public Result<String> viewdocument (Integer trial_id,HttpServletRequest request,HttpServletResponse response) {
+		Result<String> result=new Result<String>("0", 0);
+		
+		try {
+			String filePath=document_filepath;
+			String fileName="trial"+File.separator+"试用-"+trial_id+".doc";
+			File outFile = new File(filePath+fileName);			
+			TheFreemarker freemarker = new TheFreemarker();
+			freemarker.createTrialWord(new FileOutputStream(outFile));	
+			result.setData(fileName);
+			result.setState(1);
+		} catch (IOException e) {
+			logger.error("生成单据文件错误"+e.toString());
+			result.setError(new ErrorCode(e.toString()));
+		}  
+	    
+		return result;
+	}
 	
 	public String listString(List<UserDealer> list) {
 		String listString = "";
@@ -211,5 +239,8 @@ public class TrialController {
 		}
 		return listString;
 	}
+	
+	
+	
 	
 }
