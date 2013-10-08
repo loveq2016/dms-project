@@ -21,20 +21,22 @@
 									<td><input class="easyui-validatebox" type="text" name="order_code"></input></td>
 									<td width="100">经销商:</td>
 									<td>
-									<c:if test="${user.fk_dealer_id!='0'}">
-										<input class="easyui-validatebox" disabled="disabled" id="dealer_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
-										<input class="easyui-validatebox" type="hidden" name="dealer_id" id="dealer_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">
-									</c:if>
-									<c:if test="${user.teams!=null and user.teams!=''}">
-										<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
-						             			data-options="
-							             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
-								                    method:'get',
-								                    valueField:'dealer_id',
-								                    textField:'dealer_name',
-								                    panelHeight:'auto'
-						            			"/>
-						            </c:if>
+										<c:choose>
+										       <c:when test="${user.fk_dealer_id!='0'}">
+													<input class="easyui-validatebox" disabled="disabled" id="dealer_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
+													<input class="easyui-validatebox" type="hidden" name="dealer_id" id="dealer_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">					       	
+										       </c:when>
+										       <c:otherwise>
+										       		<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+							             			data-options="
+								             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
+									                    method:'get',
+									                    valueField:'dealer_id',
+									                    textField:'dealer_name',
+									                    panelHeight:'auto'
+							            			"/>
+										       </c:otherwise>
+										</c:choose>
 									</td>
 									<td width="50">状态:</td>
 									<td width="270">										
@@ -628,12 +630,12 @@
 			$('#dgUpdateLog').datagrid({
 			    url:basePath+'api/flowlog/list?bussiness_id='+row.id+"&flow_id="+orderflow_identifier_num
 			}); 
-			if(order_status!='0'){
-				$('#saveOrderDetail').linkbutton('disable');
-				$('#delOrderDetail').linkbutton('disable');
-			}else{
+			if(order_status=='0'|| order_status=='2'){
 				$('#saveOrderDetail').linkbutton('enable');
 				$('#delOrderDetail').linkbutton('enable');
+			}else{
+				$('#saveOrderDetail').linkbutton('disable');
+				$('#delOrderDetail').linkbutton('disable');
 			}
 			if(typeof(type) != "undefined"){
 				$('#dlgOrderDetailtabs').tabs('enableTab', '审核'); 
