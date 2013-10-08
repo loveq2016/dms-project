@@ -123,10 +123,7 @@ public class OrderController {
 			if(flowBussService.processFlow(order_id,sysUser,flowIdentifierNumber))
 			{
 				//更新状态
-				Order entity =new Order();
-				entity.setOrder_status("1");
-				entity.setId(order_id.toString());
-				orderService.updateStatus(entity);
+				orderService.updateStatus(order_id.toString(),"1");
 				result.setData(1);
 				result.setState(1);;
 			}else

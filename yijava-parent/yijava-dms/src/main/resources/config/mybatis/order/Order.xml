@@ -13,7 +13,7 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(statuses)">
 				  and order_status in (${statuses})
 			</if>
-			<if test="check_id != null and check_id != ''">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(check_id)">
 				  and id in (select bussiness_id from tb_flow_record where check_id= #{check_id})
 			</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(order_code)">

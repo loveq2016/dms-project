@@ -27,8 +27,8 @@ public class Interseptor extends HandlerInterceptorAdapter {
         try{
         	// 权限认证机制细节
         	// 1，需要认证的权限URL，必须和功能按钮的URL对应(sysmenufun表有记录)，否则权限无效。
-        	// 2，未登录的用户无法访问action. 但可以放jsp
-        	// 3，已登录用户访问的权限URL必须是经过授权的，否则跳转错误页面(防止已登录用户，记住连接地址)，jsp、非权限URL除外。
+        	// 2，未登录的用户无法访问action 
+        	// 3，已登录用户访问授权URL必须是经过授权的，否则跳转错误页面(防止已登录用户，记住连接地址)，jsp、非权限URL除外。
         	 
         	List<SysMenuFunction> allFunList=(List<SysMenuFunction>) request.getSession().getAttribute("allFunctionList"); //所有的权限
 			List<SysLogin> roleFunList = (List<SysLogin>) request.getSession().getAttribute("roleFunctionList");//角色拥有的权限

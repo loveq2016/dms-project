@@ -121,6 +121,9 @@
 				<restrict:function funId="27">
         			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
         		</restrict:function>
+        		<restrict:function funId="157">
+        		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="CheckEntity()">审核</a>
+        		</restrict:function>
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:300px;height:200px;padding:10px;">
@@ -215,7 +218,7 @@
 					</form>
 			</div>
 			<div style="margin: 10px 0;"></div>
-			<div class="easyui-tabs" style="width:925px;height:auto;">
+			<div id="dlgOrderDetailtabs" class="easyui-tabs" style="width:925px;height:auto;">
          		<div title="表头信息" style="padding: 5px 5px 5px 5px;">
          			<div class="easyui-layout" style="height:370px;">  
 	         			<form id="ffOrderInfo" method="post">
@@ -319,19 +322,68 @@
 				</div>
 				<div title="修改记录" style="padding: 5px 5px 5px 5px;" >
 					<table id="dgUpdateLog" class="easyui-datagrid" title="修改记录" style="height:370px" method="get"
-						rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc">
+						rownumbers="true" singleSelect="true" pagination="true" sortName="user_id" sortOrder="desc">
 						<thead>
 							<tr>
-								
+								<th data-options="field:'user_id',width:80"  sortable="true" hidden="true">修改人id</th>	
+								<th data-options="field:'user_name',width:80"  sortable="true">修改人</th>							
+								<th data-options="field:'create_date',width:120" sortable="true">日期</th>
+								<th data-options="field:'action_name',width:120"  sortable="true">动作</th>
+								<th data-options="field:'content',width:220"  sortable="true" formatter="FormatFlowlog" >内容</th>
+								<th data-options="field:'check_user_id',width:10"  sortable="true" hidden="true">修改人id</th>	
+								<th data-options="field:'check_user_name',width:10"  sortable="true" hidden="true">修改人</th>						
+								<th data-options="field:'check_reason',width:150">处理意见</th>	
+								<th data-options="field:'sign',width:100" formatter="formattersign">签名</th>		
 							</tr>
 						</thead>
 					</table>
 				</div>
+				<div id="checktab" title="审核" style="padding: 5px 5px 5px 5px;" >
+					<form id="base_form_check" action="" method="post" enctype="multipart/form-data">
+							<table height="370px">
+								<tr height="20"><td colspan="2"></td></tr>
+								<tr height="40">
+									<td>处理选项:</td>
+									<td>
+									<select class="easyui-combobox" name="status" style="width:200px;">
+										<option value="1">同意</option>
+										<option value="2">驳回</option>
+									</select>
+									</td>								
+								</tr>
+								<tr height="80">
+									<td>处理意见:</td>
+									<td>
+									<textarea name="check_reason" style="height:60px;width:260px;"></textarea>
+									</td>								
+								</tr>
+								<tr height="60">
+								<td colspan="2">
+									<input type="hidden" name="bussiness_id" id="bussiness_id">
+									<input type="hidden" name="flow_id" id="flow_id" value="">
+									<div style="text-align: right; padding: 5px">
+											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveFlowCheck()">提交</a>
+									</div>
+								</td>
+								</tr>	
+								<tr height="60">
+								<td colspan="2">
+									
+								</td>
+								</tr>
+								<tr height="60">
+								<td colspan="2">
+									
+								</td>
+								</tr>			
+							</table>
+					</form>	
+				</div>
 			</div>
 		</div>
 		<div id="dlg-buttons">
-		    <restrict:function funId="30">
-	        	<a id="saveEntityBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="alert('提交订单后将不能在修改，确定提交吗？')">提交订单</a>
+		    <restrict:function funId="158">
+	        	<a id="saveEntityBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="ToCheckEntity()">提交订单</a>
 	        </restrict:function>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgOrderDetail').dialog('close')">取消</a>
 	    </div>
@@ -381,7 +433,9 @@
 		</div>
 		<div style="margin: 10px 0;"></div>
 	    <div id="dlgProduct-buttons">
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductNumEntity()">添加产品</a>
+	    	<restrict:function funId="28">
+	       		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductNumEntity()">添加</a>
+	        </restrict:function>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
 	    </div>
 		<div id="dlgProductSum" class="easyui-dialog" style="width:300px;height:300px;padding:5px 5px 5px 5px;"
@@ -421,7 +475,9 @@
 		        </form>
 	    </div>
 	    <div id="dlgProductSum-buttons">
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveOrderDetailEntity();">保存</a>
+		    <restrict:function funId="28">
+		        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveOrderDetailEntity();">保存</a>
+		    </restrict:function>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProductSum').dialog('close')">取消</a>
 	    </div>
 	<script type="text/javascript">
@@ -443,7 +499,7 @@
 		    });
 		})
 		function formatterDetail(value, row, index){
-			return '<span style="color:red;cursor:pointer" onclick="openOrderDetail(\''+index+'\')">明细</span>'; 
+			return '<span style="color:red;cursor:pointer" onclick="onClickOrderDetail('+index+')">明细</span>'; 
 		}
 		function doSearch(){
 			$('#dg').datagrid({url : basePath +"api/order/paging"});
@@ -457,19 +513,19 @@
 		}
 		function formatterStatus(value, row, index){
 			if(value=='0')
-				return '<span>未提交</span>'; 
+				return '<span style="color:red">未提交</span>'; 
 			else if(value=='1')
-				return '<span>已提交</span>'; 
+				return '<span style="color:red">已提交</span>'; 
 			else if(value=='2')
-				return '<span>驳回</span>'; 
+				return '<span style="color:red">驳回</span>'; 
 			else if(value=='3')
-				return '<span>已审核</span>'; 
+				return '<span style="color:red">已审核</span>'; 
 			else if(value=='4')
-				return '<span>已发货</span>'; 
+				return '<span style="color:red">已发货</span>'; 
 			else if(value=='5')
-				return '<span>部分发货</span>'; 
+				return '<span style="color:red">部分发货</span>'; 
 			else if(value=='6')
-				return '<span>已完成</span>'; 
+				return '<span style="color:red">已完成</span>'; 
 		}
 		function newEntity()
 		{
@@ -550,9 +606,12 @@
 		function clearOrderDetailForm(){
 			$('#fm3').form('clear');
 		}
-		//open订单项
-		function openOrderDetail(index){
+		function onClickOrderDetail(index){
 			$('#dg').datagrid('selectRow',index);
+			openOrderDetail($('#dg').datagrid('getSelected'));
+		}
+		//open订单项
+		function openOrderDetail(row,type){
 			var row = $('#dg').datagrid('getSelected');
 			$('#ffOrderDetail').form('load',row);
 			$('#ffOrderInfo').form('load',row);
@@ -566,12 +625,22 @@
 					filter_ANDS_order_code : order_code
 				}
 			});
+			$('#dgUpdateLog').datagrid({
+			    url:basePath+'api/flowlog/list?bussiness_id='+row.id+"&flow_id="+orderflow_identifier_num
+			}); 
 			if(order_status!='0'){
 				$('#saveOrderDetail').linkbutton('disable');
 				$('#delOrderDetail').linkbutton('disable');
 			}else{
 				$('#saveOrderDetail').linkbutton('enable');
 				$('#delOrderDetail').linkbutton('enable');
+			}
+			if(typeof(type) != "undefined"){
+				$('#dlgOrderDetailtabs').tabs('enableTab', '审核'); 
+				$('#dlgOrderDetailtabs').tabs('select', '审核');
+			}else{
+				$('#dlgOrderDetailtabs').tabs('select', '表头信息');
+				$('#dlgOrderDetailtabs').tabs('disableTab', '审核');
 			}
 		}
 		//订单项
@@ -671,7 +740,86 @@
 		}
 		function formatterIs_order (value, row, index) { 
 			return value==1?"<span style='color:green'>是</span>":"<span style='color:red'>否</span>";
-		} 
+		}
+		
+		/**
+		提交订单
+		*/
+		function ToCheckEntity(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row && (row.order_status ==0 || row.order_status ==2) ){			
+				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
+					 if (r){
+	                        $.post(basePath+'api/order/updatetocheck',{order_id:row.id},function(result){
+	        			    	if(result.state==1){
+	        			    		var pager = $('#dg').datagrid().datagrid('getPager');
+	    			    			pager.pagination('select');	
+	                            } else {
+	                                $.messager.show({
+	                                    title: 'Error',
+	                                    msg: result.errorMsg
+	                                });
+	                            }
+	                        },'json');
+	                    }
+				 });
+			}else
+			{
+	    		$.messager.alert('提示','无法提交已处理订单!','error');
+			}
+		}
+		/**
+		审核
+		*/
+		function CheckEntity(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row && row.order_status==1){
+				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){
+					 $('#bussiness_id').val(row.id);
+					 $("#flow_id").val(orderflow_identifier_num);
+					 openOrderDetail(row,1);
+				 });
+			}else
+			{
+				$.messager.alert('提示','请选中数据!','warning');
+			}
+		}
+		/*保存审核*/
+		function saveFlowCheck()
+		{
+			$('#base_form_check').form('submit', {
+				url:basePath+'/api/flowrecord/do_flow',
+				method:"post",	
+				onSubmit: function(){
+				   return $(this).form('validate');;
+				},
+				success:function(msg){
+				   var jsonobj= eval('('+msg+')');  
+				   if(jsonobj.state==1)
+				   {
+					    clearForm();
+					    $('#dlgOrderDetail').dialog('close');
+					    var pager = $('#dg').datagrid().datagrid('getPager');
+					    pager.pagination('select');				
+				   }
+				}
+			});
+		}
+		function FormatFlowlog (value, row, index) 
+		{
+			if(row.user_name  && row.action_name)
+			{
+				return row.user_name +" 进行"+row.action_name ;
+			}else
+			{
+				return row.user_name ;
+			}
+		}
+		function formattersign(value, row, index)
+		 {
+			 if(row.sign && row.sign!="")
+			 	return '<span><img src="'+basePath+'resource/signimg/'+value+'" width="50" height="50"></span>'; 
+		 }
 	</script>
 </body>
 </html>
