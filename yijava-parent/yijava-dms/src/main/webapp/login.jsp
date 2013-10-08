@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>无标题文档111</title>
+<title>海利欧斯经销商管理系统</title>
 <link rel="stylesheet" type="text/css" href="${resPath}css/css.css">
 <script type="text/javascript" src="${resPath}resource/js/jquery-1.7.2.js"></script>
 <script type="text/javascript" src="${resPath}resource/js/jquery.easyui.min.js"></script>
