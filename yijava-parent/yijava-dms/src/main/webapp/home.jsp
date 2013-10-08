@@ -19,15 +19,14 @@
 		data-options="region:'east',split:true,collapsed:false,title:'待处理事项',tools:'#treetool'"
 		style="width: 200px; padding: 10px;">
 			<ul id="tochecktree" class="easyui-tree" data-options="url:'${basePath}api/flowrecord/tocheck',method:'get',animate:true"></ul>
-		</div>
-	<div data-options="region:'south',border:false"
-		style="height: 20px; background: #ddd; padding: 10px;"></div>
-	<div id="mainPanle11" data-options="region:'center',title:''">
-		<div id="tabs111" class="easyui-tabs"  fit="true" border="false" >
-		<div title="公告及通知" data-options="iconCls:'icon-help',closable:false" style="padding:20px;overflow:hidden;" id="home">
-<!-- 			<h1>Welcome to jQuery UI!</h1> -->
-			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg"  title="查询结果" style="height: 330px"  method="get"
+	</div>
+	
+	<div id="mainPanle11" data-options="iconCls:'icon-info',region:'center',title:'公告及通知'">
+		
+		<div title="公告及通知" data-options="iconCls:'icon-info',closable:false" style="padding:2px;overflow:hidden;" id="home">
+
+			<div style="">
+				<table id="dg"  title="查询结果" style="height: 630px"  method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="publish_date" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
@@ -71,16 +70,13 @@
 				    </div> 
 		 		</div>
 		 		</form>
-		    </div>
-			
-			
-			
-			</div>
+		   </div>
 		</div>
 	</div>
-	<div id="treetool">
-		<a href="javascript:void(0)" class="icon-reload" onclick="javascript:checkReload();"></a>
 		
+	
+	<div id="treetool">
+		<a href="javascript:void(0)" class="icon-reload" onclick="javascript:checkReload();"></a>		
 	</div>
 	
 <script type="text/javascript">
