@@ -66,10 +66,10 @@
 	background:url('icons/mini_refresh.png') no-repeat center center;
 }
 .icon-filep{
-	background:url('icons/filep.png') no-repeat center center;
+	background:url('icons/file.png') no-repeat center center;
 }
 .icon-file{
-	background:url('icons/file.png') no-repeat center center;
+	background:url('icons/filep.png') no-repeat center center;
 }
 .icon-manage{
 	background:url('icons/edit.png') no-repeat center center;
