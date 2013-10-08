@@ -59,8 +59,8 @@ public class OrderController {
 				filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
 			}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
 				filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
-				//filters.add(PropertyFilters.build("ANDS_statuses","1,2,3,4,5,6"));
-				//filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
+				filters.add(PropertyFilters.build("ANDS_statuses","1,2,3,4,5,6"));
+				filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
 			}
 			return orderService.paging(pageRequest,filters);
 		}
