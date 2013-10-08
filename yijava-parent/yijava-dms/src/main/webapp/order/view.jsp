@@ -499,7 +499,7 @@
 		    });
 		})
 		function formatterDetail(value, row, index){
-			return '<span style="color:red;cursor:pointer" onclick="openOrderDetail(\''+index+'\')">明细</span>'; 
+			return '<span style="color:red;cursor:pointer" onclick="onClickOrderDetail('+index+')">明细</span>'; 
 		}
 		function doSearch(){
 			$('#dg').datagrid({url : basePath +"api/order/paging"});
@@ -513,19 +513,19 @@
 		}
 		function formatterStatus(value, row, index){
 			if(value=='0')
-				return '<span>未提交</span>'; 
+				return '<span style="color:red">未提交</span>'; 
 			else if(value=='1')
-				return '<span>已提交</span>'; 
+				return '<span style="color:red">已提交</span>'; 
 			else if(value=='2')
-				return '<span>驳回</span>'; 
+				return '<span style="color:red">驳回</span>'; 
 			else if(value=='3')
-				return '<span>已审核</span>'; 
+				return '<span style="color:red">已审核</span>'; 
 			else if(value=='4')
-				return '<span>已发货</span>'; 
+				return '<span style="color:red">已发货</span>'; 
 			else if(value=='5')
-				return '<span>部分发货</span>'; 
+				return '<span style="color:red">部分发货</span>'; 
 			else if(value=='6')
-				return '<span>已完成</span>'; 
+				return '<span style="color:red">已完成</span>'; 
 		}
 		function newEntity()
 		{
@@ -606,9 +606,12 @@
 		function clearOrderDetailForm(){
 			$('#fm3').form('clear');
 		}
-		//open订单项
-		function openOrderDetail(index,type){
+		function onClickOrderDetail(index){
 			$('#dg').datagrid('selectRow',index);
+			openOrderDetail($('#dg').datagrid('getSelected'));
+		}
+		//open订单项
+		function openOrderDetail(row,type){
 			var row = $('#dg').datagrid('getSelected');
 			$('#ffOrderDetail').form('load',row);
 			$('#ffOrderInfo').form('load',row);
@@ -636,6 +639,7 @@
 				$('#dlgOrderDetailtabs').tabs('enableTab', '审核'); 
 				$('#dlgOrderDetailtabs').tabs('select', '审核');
 			}else{
+				$('#dlgOrderDetailtabs').tabs('select', '表头信息');
 				$('#dlgOrderDetailtabs').tabs('disableTab', '审核');
 			}
 		}
@@ -773,7 +777,7 @@
 				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){
 					 $('#bussiness_id').val(row.id);
 					 $("#flow_id").val(orderflow_identifier_num);
-					 openOrderDetail(row.index,1);
+					 openOrderDetail(row,1);
 				 });
 			}else
 			{
