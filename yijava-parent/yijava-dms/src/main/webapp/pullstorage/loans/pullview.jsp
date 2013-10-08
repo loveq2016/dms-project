@@ -23,20 +23,22 @@
 									<td><input class="easyui-validatebox" type="text" name="pull_storage_code"></input></td>
 									<td width="180">借出经销商:</td>
 									<td>
-									<c:if test="${user.fk_dealer_id!='0'}">
-										<input class="easyui-validatebox" disabled="disabled" id="pull_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
-										<input class="easyui-validatebox" hidden="true" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">
-									</c:if>
-									<c:if test="${user.teams!=null or user.teams!=''}">
-										<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
-						             			data-options="
-							             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
-								                    method:'get',
-								                    valueField:'dealer_id',
-								                    textField:'dealer_name',
-								                    panelHeight:'auto'
-						            			"/>
-						            </c:if>
+										<c:choose>
+										       <c:when test="${user.fk_dealer_id!='0'}">
+													<input class="easyui-validatebox" disabled="disabled" id="pull_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
+													<input class="easyui-validatebox" hidden="true" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">					       	
+										       </c:when>
+										       <c:otherwise>
+										       		<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+								             			data-options="
+									             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
+										                    method:'get',
+										                    valueField:'dealer_id',
+										                    textField:'dealer_name',
+										                    panelHeight:'auto'
+								            			"/>
+										       </c:otherwise>
+										</c:choose>
 									</td>
 									<!-- 此处查询需要修改，如果是经销商，必须查询子经销商 -->
 									<td width="160">借入经销商:</td>

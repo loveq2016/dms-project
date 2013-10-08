@@ -63,7 +63,7 @@
 		select LPAD(max(order_no)+1,3,0) as order_no from dms.tb_order WHERE order_date between CURDATE() AND CONCAT(CURDATE(),' 23:59:59') AND dealer_id=#{dear_id}
 	</select>
 	<select id="selectMoneyAndNumber" resultType="dms.yijava.entity.order.Order"> 
-		SELECT order_code,id,SUM(order_money_sum) as order_money_sum,SUM(order_number_sum) as order_number_sum FROM dms.tb_order_detail WHERE order_code=#{order_code}
+		SELECT order_code,SUM(order_money_sum) as order_money_sum,SUM(order_number_sum) as order_number_sum FROM dms.tb_order_detail WHERE order_code=#{order_code}
 	</select>
 	<insert id="insert" parameterType="dms.yijava.entity.order.Order">     
     	  insert into dms.tb_order(dealer_id,order_code,order_no,order_date,dealer_address_id,last_time)
