@@ -59,8 +59,8 @@ public class OrderController {
 				filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
 			}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
 				filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
-				filters.add(PropertyFilters.build("ANDS_statuses","1,2,3,4,5,6"));
-				filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
+				//filters.add(PropertyFilters.build("ANDS_statuses","1,2,3,4,5,6"));
+				//filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
 			}
 			return orderService.paging(pageRequest,filters);
 		}
@@ -123,10 +123,7 @@ public class OrderController {
 			if(flowBussService.processFlow(order_id,sysUser,flowIdentifierNumber))
 			{
 				//更新状态
-				Order entity =new Order();
-				entity.setOrder_status("1");
-				entity.setId(order_id.toString());
-				orderService.updateStatus(entity);
+				orderService.updateStatus(order_id.toString(),"1");
 				result.setData(1);
 				result.setState(1);;
 			}else

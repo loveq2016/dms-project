@@ -9,6 +9,7 @@ import com.google.common.eventbus.Subscribe;
 
 import dms.yijava.event.EventDriven;
 import dms.yijava.event.UserCheckFlowEvent;
+import dms.yijava.service.order.OrderService;
 import dms.yijava.service.trial.TrialService;
 
 @EventDriven
@@ -19,11 +20,15 @@ public class UserCheckFlowEventHandler {
 
 	@Autowired
 	private TrialService trialService;
+	@Autowired
+	private OrderService orderService;
 	
 	@Value("#{properties['trialflow_identifier_num']}")   	
 	private String flowIdentifierNumber;
 	@Value("#{properties['cancelflow_identifier_num']}")   	
 	private String cancelflow_identifier_num;
+	@Value("#{properties['orderflow_identifier_num']}")   	
+	private String orderflow_identifier_num;
 	
 	@Subscribe
 	public void onUserCheckAgree(UserCheckFlowEvent flow_check) {
@@ -36,6 +41,10 @@ public class UserCheckFlowEventHandler {
 		}else if(flow_check.getFlow_id().equals(cancelflow_identifier_num))
 		{
 			//退换货
+		}else if(flow_check.getFlow_id().equals(orderflow_identifier_num)){
+			//订单
+			logger.debug("订单流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());
+			orderService.updateStatus(flow_check.getBussiness_id(),"3");//审核通过
 		}
 		
 	}
