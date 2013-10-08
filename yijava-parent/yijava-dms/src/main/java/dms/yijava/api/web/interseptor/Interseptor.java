@@ -22,6 +22,10 @@ public class Interseptor extends HandlerInterceptorAdapter {
 			HttpServletResponse response, Object handler) throws Exception {
 		String url =  request.getRequestURI().toString();
 		logger.debug("url:"+url);
+		if(url.indexOf("doc")>-1)
+		{
+			return true;
+		}
 		if(url.indexOf("tologin")>-1 || url.indexOf("logout")>-1 || url.indexOf("login")>-1)
         	return true;
         try{

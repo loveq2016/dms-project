@@ -23,6 +23,7 @@
 	<mvc:view-controller path="/" view-name="redirect:/index" />
 	<!-- 使用默认的servlet handler -->
 	<mvc:default-servlet-handler />
+	<mvc:resources mapping="/generate/**" location="/generate/" cache-period="31556926"/>
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
