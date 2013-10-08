@@ -54,11 +54,12 @@
 <select id="check_dealer" resultType="dms.yijava.entity.user.UserDealer">
     select dealer_id,user_id from tb_user_dealer where dealer_id=#{dealer_id} and user_id=#{user_id}
 </select>
-
+<select id="selectUserByDealer" resultType="dms.yijava.entity.user.UserDealer">
+    select dealer_id,user_id from tb_user_dealer where dealer_id=#{value} limit 0,1
+</select>
 <insert id="insert" parameterType="dms.yijava.entity.user.UserDealer">
 	insert into tb_user_dealer (dealer_id,user_id,last_date) values (#{dealer_id},#{user_id},NOW())
 </insert>
-
 <delete id="delete">
 	delete from tb_user_dealer where id = #{id}
 </delete>

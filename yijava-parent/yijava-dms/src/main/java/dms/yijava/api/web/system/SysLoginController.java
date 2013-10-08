@@ -79,8 +79,15 @@ public class SysLoginController {
 			if(isExsitUser(sysUser,password)){
 				List<SysLogin> sysLoginList= sysLoginService.getRoleMenuFunList(sysUser.getFk_role_id());
 				try{
-					String teams=userLayouService.getTeamIdsByUserId(sysUser.getId()).getFk_team_id();//用户节点
-					
+					String teams="";
+					//经销商账号
+					if(!sysUser.getFk_dealer_id().equals("0")){
+						//获取销售ID
+						UserDealer u=(UserDealer)userDealerFunService.getUserByDealer(sysUser.getFk_dealer_id());
+						teams=userLayouService.getTeamIdsByUserId(u.getUser_id()).getFk_team_id();//用户节点
+					}else{
+						teams=userLayouService.getTeamIdsByUserId(sysUser.getId()).getFk_team_id();//用户节点
+					}
 					/**根据用户的所有节点找到所有的上级用户 */
 					String parentIds="";
 					for(String team:teams.split(","))

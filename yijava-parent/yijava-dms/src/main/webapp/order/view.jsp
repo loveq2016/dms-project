@@ -23,9 +23,9 @@
 									<td>
 									<c:if test="${user.fk_dealer_id!='0'}">
 										<input class="easyui-validatebox" disabled="disabled" id="dealer_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
-										<input class="easyui-validatebox" hidden="true" name="dealer_id" id="dealer_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">
+										<input class="easyui-validatebox" type="hidden" name="dealer_id" id="dealer_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">
 									</c:if>
-									<c:if test="${user.teams!=null or user.teams!=''}">
+									<c:if test="${user.teams!=null and user.teams!=''}">
 										<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 						             			data-options="
 							             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
@@ -132,8 +132,8 @@
 					<tr>
 						<td>收货地址:</td>
 						<td>
-							<input hidden="true" name="id"></input>
-							<input hidden="true" name="order_code"></input>
+							<input type="hidden" name="id"></input>
+							<input type="hidden" name="order_code"></input>
 							<input class="easyui-combobox" name="dealer_address_id" style="width:150px" maxLength="100" class="easyui-validatebox" required="true"
 						             			data-options="
 							             			url:'${basePath}api/dealerAddress/list?id=${user.fk_dealer_id}',
@@ -678,7 +678,7 @@
 			if(typeof(order_code) != "undefined"){
 				$('#dlgProduct').dialog('open').dialog('setTitle','['+order_code+']产品列表');
 				$('#dgProduct').datagrid({
-					 url:basePath+'api/product/paging',
+					 url:basePath+'api/product/orderpaging',
 					 queryParams: {
 						filter_ANDS_dealer_id : dealer_id
 					 }
@@ -747,6 +747,7 @@
 		*/
 		function ToCheckEntity(){
 			var row = $('#dg').datagrid('getSelected');
+			alert(row.id)
 			if (row && (row.order_status ==0 || row.order_status ==2) ){			
 				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
 					 if (r){

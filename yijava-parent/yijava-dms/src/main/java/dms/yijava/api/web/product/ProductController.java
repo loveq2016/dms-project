@@ -36,6 +36,13 @@ public class ProductController {
 		//filters.add(PropertyFilters.build("ANDS_dealer_id", "9"));
 		return productService.paging(pageRequest,filters);
 	}
+	
+	@ResponseBody
+	@RequestMapping("orderpaging")
+	public JsonPage<Product> orderpaging(PageRequest pageRequest,HttpServletRequest request) {
+		List<PropertyFilter> filters = PropertyFilters.build(request);
+		return productService.paging(pageRequest,filters);
+	}
 
 	
 	@ResponseBody
