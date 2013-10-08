@@ -7,7 +7,7 @@
 <%@include file="/common/head.jsp"%>
 </head>
 <body LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0>
-		<div id="p" class="easyui-panel" title="">
+		<div id="p" class="easyui-panel" title="" width="1598">
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
 
@@ -67,7 +67,7 @@
 
 			<div style="padding-left: 10px; padding-right: 10px">
 
-				<table id="dg" title="查询结果" style="height: 330px" url="${basePath}api/protrial/paging" method="get"
+				<table id="dg" title="查询结果" style="height: 440px" url="${basePath}api/protrial/paging" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="asc" toolbar="#tbOrder">
 					<thead>
 						<tr>
