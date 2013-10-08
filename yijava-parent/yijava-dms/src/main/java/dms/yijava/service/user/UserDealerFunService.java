@@ -60,7 +60,9 @@ public class UserDealerFunService {
 	public UserDealer checkEntity(UserDealer entity) {
 		return userDealerFunDao.getObject(".check_dealer", entity);
 	}
-	
+	public UserDealer getUserByDealer(String d_id) {
+		return userDealerFunDao.getObject(".selectUserByDealer", d_id);
+	}
 	public void saveEntity(UserDealer entity) {
 		userDealerFunDao.insert(entity);
 	}
