@@ -9,6 +9,18 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(deliver_code)">and deliver_code like CONCAT('%','${deliver_code}','%' ) </if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(deliver_status)">and deliver_status = #{deliver_status}</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(check_status)">and check_status = #{check_status}</if>
+			
+			<if test="dealer_ids != null and dealer_ids != '' ">
+				AND dealer_id in (${dealer_ids})
+			</if>
+			<if test="statuses != null and statuses != '' ">
+				AND check_status  in (${statuses})
+			</if>
+			<if test="check_id != null and check_id != '' ">
+				AND deliver_id in (select bussiness_id from tb_flow_record  where check_id= #{check_id})
+			</if>
+			
+			
 		</trim>
 	</sql>
 	<sql id="adsOrder">
@@ -60,5 +72,11 @@
 	<update id="submitDeliver" parameterType="dms.yijava.entity.deliver.Deliver">
     	update dms.tb_deliver set check_status = 1 where deliver_code =#{deliver_code}
     </update>
+    
+    <update id="updateDeliverStatus" parameterType="dms.yijava.entity.deliver.Deliver">
+    	update dms.tb_deliver set check_status = #{check_status} where deliver_id=#{deliver_id}
+    </update>
+
+    
     
 </mapper>

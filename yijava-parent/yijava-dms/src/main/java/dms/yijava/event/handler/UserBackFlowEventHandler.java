@@ -9,6 +9,7 @@ import com.google.common.eventbus.Subscribe;
 
 import dms.yijava.event.EventDriven;
 import dms.yijava.event.UserBackFlowEvent;
+import dms.yijava.service.deliver.DeliverService;
 import dms.yijava.service.order.OrderService;
 import dms.yijava.service.trial.TrialService;
 
@@ -22,11 +23,13 @@ public class UserBackFlowEventHandler {
 	private TrialService trialService;
 	@Autowired
 	private OrderService orderService;
+	@Autowired
+	private DeliverService deliverService;
 	
 	@Value("#{properties['trialflow_identifier_num']}")   	
 	private String flowIdentifierNumber;
-	@Value("#{properties['cancelflow_identifier_num']}")   	
-	private String cancelflow_identifier_num;
+	@Value("#{properties['deliverflow_identifier_num']}")   	
+	private String deliverflow_identifier_num;
 	@Value("#{properties['orderflow_identifier_num']}")   	
 	private String orderflow_identifier_num;
 	@Subscribe
@@ -37,9 +40,11 @@ public class UserBackFlowEventHandler {
 			//试用
 			logger.debug("试用流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());
 			trialService.updateEntityStatus(new Integer(flow_check.getBussiness_id()),2);//驳回状态
-		}else if(flow_check.getFlow_id().equals(cancelflow_identifier_num))
+		}else if(flow_check.getFlow_id().equals(deliverflow_identifier_num))
 		{
-			//退换货
+			//发货
+			logger.debug("发货流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());
+			deliverService.updateDeliverStatus(flow_check.getBussiness_id(), "2");//驳回状态
 		}else if(flow_check.getFlow_id().equals(orderflow_identifier_num)){
 			//订单
 			logger.debug("订单流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());

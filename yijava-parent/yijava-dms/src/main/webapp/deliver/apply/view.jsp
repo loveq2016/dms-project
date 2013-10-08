@@ -90,6 +90,12 @@
 				<restrict:function funId="143">
         			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity()">删除</a>
         		</restrict:function>
+        		<restrict:function funId="161">
+<!--         			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="ToCheckEntity()">提交审核</a> -->
+        		</restrict:function>
+        		<restrict:function funId="160">
+        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="CheckEntity()">审核</a>
+        		</restrict:function>
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
@@ -240,7 +246,7 @@
 					</form>
 			</div>
 			<div style="margin: 10px 0;"></div>
-			<div class="easyui-tabs" style="width:925px;height:auto;">
+			<div id="tabs" class="easyui-tabs" style="width:925px;height:auto;">
 				<div title="明细行" style="padding: 5px 5px 5px 5px;" >
 					<table id="dgDetail" class="easyui-datagrid" title="订单明细信息" style="height:330px" method="get"
 						 rownumbers="true" singleSelect="true" pagination="true" sortName="delivery_detail_id" sortOrder="desc">
@@ -257,16 +263,53 @@
 						</thead>
 					</table>
 				</div>
-				<div title="修改记录" style="padding: 5px 5px 5px 5px;" >
-					<table id="dgUpdateLog" class="easyui-datagrid" title="修改记录" style="height:330px" method="get"
-						rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc">
+				<div title="流程记录" style="padding: 5px 5px 5px 5px;" >
+					<table id="dgflow_record" class="easyui-datagrid" title="查询结果" style="height: 330px">
 						<thead>
 							<tr>
-								
+								<th data-options="field:'user_id',width:80"  sortable="true" hidden="true">修改人id</th>	
+								<th data-options="field:'user_name',width:80"  sortable="true">修改人</th>							
+								<th data-options="field:'create_date',width:120" sortable="true">日期</th>
+								<th data-options="field:'action_name',width:120"  sortable="true">动作</th>
+								<th data-options="field:'content',width:220"  sortable="true" formatter="FormatFlowlog" >内容</th>
+								<th data-options="field:'check_user_id',width:10"  sortable="true" hidden="true">修改人id</th>	
+								<th data-options="field:'check_user_name',width:10"  sortable="true" hidden="true">修改人</th>						
+								<th data-options="field:'check_reason',width:150">处理意见</th>	
+								<th data-options="field:'sign',width:100" formatter="formattersign">签名</th>														
 							</tr>
 						</thead>
-					</table>
+					</table> 
 				</div>
+				<div title="审核" style="padding: 5px 5px 5px 5px;">
+					<form id="base_form_check" action="" method="post" enctype="multipart/form-data">
+							<table style="height: 330px">
+								<tr height="20" >
+									<td>处理选项:</td>
+									<td>
+									<select class="easyui-combobox" name="status" style="width:200px;">
+										<option value="1">同意</option>
+										<option value="2">驳回</option>
+									</select>
+									</td>								
+								</tr>
+								<tr>
+									<td>处理意见:</td>
+									<td>
+									<textarea name="check_reason" style="height:60px;width:260px;"></textarea>
+									</td>								
+								</tr>
+								<tr height="100"><td colspan="2">
+								<input type="hidden" name="bussiness_id" id="bussiness_id">
+								<input type="hidden" name="flow_id" id="flow_id" value="">
+								<div style="text-align: right; padding: 5px">
+										<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveFlowCheck()">提交</a>
+<!-- 										<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="javascript:$('#dlgflowcheck').dialog('close')">取消</a>					    -->
+								</div>				
+								</td>
+								</tr>					
+							</table>
+					</form>					
+			</div>
 			</div>
 		</div>
 		<div id="dlg-buttons">
@@ -499,7 +542,7 @@
 		function editEntity(){
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
-				if(row.check_status=='0'){
+				if(row.check_status=='0' || row.check_status=='2'){
 					$('#dlgOneSetp').dialog('open').dialog('setTitle', '发货申请更新');
 					$('#fm').form('clear');
 					$('#fm').form('load', row);
@@ -611,7 +654,7 @@
 		function deleteEntity(){
 	           var row = $('#dg').datagrid('getSelected');
 	            if (row){
-	            	if(row.check_status=='0'){
+	            	if(row.check_status=='0' || row.check_status=='2'){
 		                $.messager.confirm('Confirm','是否确定删除?',function(r){
 		                    if (r){
 		            			$.ajax({
@@ -642,6 +685,7 @@
 		
 		
 		var deliver_code ;
+		var deliver_id;
 		function openDeliverDetail(index){
 			$('#dg').datagrid('selectRow',index);
 			var row = $('#dg').datagrid('getSelected');
@@ -649,7 +693,8 @@
 			$('#deliver_status_ss').combobox('disable');
 			$('#dlgDeliverDetail').dialog('open');
 			deliver_code = row.deliver_code;
-			if(row.check_status == 0){
+			deliver_id = row.deliver_id;
+			if(row.check_status == 0 || row.check_status == 2){
 				$("#submitDeliver").linkbutton("enable");
 			}else{
 				$("#submitDeliver").linkbutton("disable");
@@ -661,7 +706,9 @@
 					filter_ANDS_deliver_code : deliver_code
 				}
 			});
-
+			
+			 LoadCheckFlowRecord(row.deliver_id);
+			 $('#tabs').tabs('disableTab', '审核'); 
 		}
 		
 		
@@ -671,7 +718,7 @@
         			$.ajax({
         				type : "POST",
         				url : basePath + 'api/deliverApply/submit',
-        				data : {deliver_code : deliver_code},
+        				data : {deliver_code : deliver_code , deliver_id :deliver_id},
         				error : function(request) {
         					$.messager.alert('提示','Error!','error');	
         				},
@@ -679,6 +726,7 @@
         					var jsonobj = $.parseJSON(data);
         					if (jsonobj.state == 1) {  
         	                     $('#dg').datagrid('reload');
+        	                     $('#dgflow_record').datagrid('reload');
         					}else{
         						$.messager.alert('提示','Error!','error');	
         					}
@@ -687,6 +735,82 @@
                 }
             });	
 		}
+		
+		
+		
+
+		/**
+		审核
+		*/
+		function CheckEntity(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row && row.check_status ==1){				
+				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){
+					 $('#bussiness_id').val(row.deliver_id);
+					 $("#flow_id").val(deliverflow_identifier_num);
+					 //填充基本信息
+					  $('#base_form_flowcheck').form('load', row);
+					 //var dgflow = $('#dgflow').datagrid().datagrid('getPager'); 
+					 //dgflow.pagination(); 
+					 //加载流程记录
+					 //LoadCheckFlowRecord(row.deliver_id);
+					 openDeliverDetail($('#dg').datagrid('getRowIndex'));
+					 $('#tabs').tabs('enableTab', '审核'); 
+					 $('#tabs').tabs('select', '审核');
+					 
+					 
+					 //$('#dlgDeliverDetail').dialog('open').dialog('setTitle', '审核');
+				 });
+			}else{
+				$.messager.alert('提示','请选中数据!','warning');
+			}
+			 
+		}
+		
+		function  LoadCheckFlowRecord(bussinessId){
+			 $('#dgflow_record').datagrid({
+			    url:basePath+'api/flowlog/list?bussiness_id='+bussinessId+"&flow_id="+deliverflow_identifier_num
+			}); 
+		}
+		function FormatFlowlog (value, row, index) {
+			if(row.user_name  && row.action_name){
+				return row.user_name +" 进行"+row.action_name ;
+			}else{
+				return row.user_name ;
+			}
+		}
+		 function formattersign(value, row, index){
+			 if(row.sign && row.sign!="")
+			 	return '<span><img src="'+basePath+'resource/signimg/'+value+'" width="50" height="50"></span>'; 
+		 }
+		 
+		function saveFlowCheck(){
+			
+				
+				$('#base_form_check').form('submit', {
+				    url:basePath+'/api/flowrecord/do_flow',
+				    method:"post",
+				   
+				    onSubmit: function(){
+				        // do some check
+				        // return false to prevent submit;
+				    	return $(this).form('validate');;
+				    },
+				    success:function(msg){
+				    	
+				    	var jsonobj= eval('('+msg+')');  
+				    	if(jsonobj.state==1)
+				    		{
+				    			//clearForm();			    			
+				    			$('#dlgDeliverDetail').dialog('close');
+				    			//var pager = $('#dg').datagrid().datagrid('getPager');
+				    			//pager.pagination('select');	
+				    		$('#dg').datagrid('reload');
+					   			
+				    		}
+				    }		
+				});		
+			}
 		
 	</script>
 </body>

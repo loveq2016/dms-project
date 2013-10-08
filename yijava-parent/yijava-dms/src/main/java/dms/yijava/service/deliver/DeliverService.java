@@ -21,6 +21,7 @@ import dms.yijava.dao.deliver.DeliverDetailDao;
 import dms.yijava.dao.order.OrderDetailDao;
 import dms.yijava.entity.deliver.Deliver;
 import dms.yijava.entity.deliver.DeliverDetail;
+import dms.yijava.entity.order.Order;
 import dms.yijava.entity.order.OrderDetail;
 
 @Service
@@ -156,5 +157,11 @@ public class DeliverService {
 		deliverDao.updateObject(".submitDeliver", deliver_code);
 	}
 	
+	public void updateDeliverStatus(String deliver_id,String check_status){
+		Deliver entity =new Deliver();
+		entity.setDeliver_id(deliver_id);
+		entity.setCheck_status(check_status);
+		deliverDao.updateObject(".updateDeliverStatus", entity);
+	}
 		
 }
