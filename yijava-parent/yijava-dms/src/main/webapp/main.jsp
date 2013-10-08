@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>海利欧斯经销商管理系统</title>
 <%@include file="/common/head.jsp"%>
 </head>
 <body class="easyui-layout">

@@ -28,9 +28,11 @@ function addTab(subtitle,url){
 }
 
 function addTabByChild(subtitle,url){
-	
-	if(!$('#tabs',window.parent.document).tabs('exists',subtitle)){
-		$('#tabs',window.parent.document).tabs('add',{
+	//$(window.parent.document).find("div#tabs");
+	 var aaa =$(parent.document.getElementById("tabs"));
+	//var aaa=$(window.parent.document).find("div#tabs");
+	if(!aaa.tabs('exists',subtitle)){
+		aaa.tabs('add',{
 			title:subtitle,
 			content:createFrame(url),
 			closable:true,
@@ -38,7 +40,7 @@ function addTabByChild(subtitle,url){
 			height:$('#mainPanle').height()-10
 		});
 	}else{
-		$('#tabs',window.parent.document).tabs('select',subtitle);
+		aaa.tabs('select',subtitle);
 	}
 	tabClose();
 }
