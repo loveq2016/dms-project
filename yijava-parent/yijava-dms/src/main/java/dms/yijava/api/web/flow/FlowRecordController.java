@@ -438,10 +438,10 @@ public class FlowRecordController {
 			flowDescibe="订单审核"+"(<font color='red'>"+item_number+"</font>)";
 		}else if(flow_id.equals(pullStorageflow_identifier_num))
 		{
-			flowDescibe="借贷出库"+"(<font color='red'>"+item_number+"</font>)";
+			flowDescibe="借贷出库审核"+"(<font color='red'>"+item_number+"</font>)";
 		}else if(flow_id.equals(salesStorageflow_identifier_num))
 		{
-			flowDescibe="销售出库"+"(<font color='red'>"+item_number+"</font>)";
+			flowDescibe="销售出库审核"+"(<font color='red'>"+item_number+"</font>)";
 		}else if(flow_id.equals(deliverflow_identifier_num))
 		{
 			flowDescibe="发货单审核"+"(<font color='red'>"+item_number+"</font>)";
