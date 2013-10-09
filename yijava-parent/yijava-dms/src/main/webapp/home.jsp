@@ -81,13 +81,15 @@ $('#tochecktree').tree({
 			var tabTitle = "试用管理";
 			var url = "trial/view.jsp";
 			addTabByChild(tabTitle,url);
-			
-			
-			
 		}else if(node.id==orderflow_identifier_num)
 		{
 			var tabTitle = "订单管理";
 			var url = "order/view.jsp";
+			addTabByChild(tabTitle,url);
+		}else if(node.id==deliverflow_identifier_num)
+		{
+			var tabTitle = "发货单管理";
+			var url = "deliver/apply/view.jsp";
 			addTabByChild(tabTitle,url);
 		}
 		

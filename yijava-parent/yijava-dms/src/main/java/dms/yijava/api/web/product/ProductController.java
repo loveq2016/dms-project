@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,6 +19,7 @@ import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.product.Product;
+import dms.yijava.entity.system.SysUser;
 import dms.yijava.service.product.ProductService;
 
 @Controller
@@ -36,6 +38,20 @@ public class ProductController {
 		//filters.add(PropertyFilters.build("ANDS_dealer_id", "9"));
 		return productService.paging(pageRequest,filters);
 	}
+	
+	@ResponseBody
+	@RequestMapping("api_paging")
+	public JsonPage<Product> api_paging(PageRequest pageRequest,HttpServletRequest request) {
+		List<PropertyFilter> filters = PropertyFilters.build(request);
+		SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
+		if (!StringUtils.equals("0", sysUser.getFk_dealer_id())) {
+			filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
+			return productService.paging(pageRequest, filters);
+		}
+		return null;
+	}
+	
+	
 	
 	@ResponseBody
 	@RequestMapping("orderpaging")

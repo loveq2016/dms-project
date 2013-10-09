@@ -84,6 +84,7 @@ public class StorageDetailService {
 					storageProDetail.setFk_storage_id(dealerStorage.getStorage_id());
 					storageProDetail.setBatch_no(deliverExpressDetail.getExpress_sn());
 					storageProDetail.setProduct_sn(deliverExpressSn.getProduct_sn());
+					storageProDetail.setProduct_item_number(deliverExpressDetail.getProduct_item_number());
 					storageProDetailDao.insertObject(".saveSnSub", storageProDetail);
 				}
 			}
@@ -96,7 +97,9 @@ public class StorageDetailService {
 	 * 更新库存、锁定Sn记录
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
-	public synchronized PullStorageOpt updateStorageLockSn(List<StorageDetail> StorageDetailList) {
+	public synchronized PullStorageOpt updateStorageLockSn(
+			List<StorageDetail> StorageDetailList,
+			List<StorageProDetail> StorageProDetailList) {
 		List<StorageProDetail> lockSnList = new ArrayList<StorageProDetail>();
 		PullStorageOpt opt = new PullStorageOpt();
 		boolean isError = false ; 
@@ -114,33 +117,24 @@ public class StorageDetailService {
 					e.printStackTrace();
 				}
 			}else{
-				//查询sn List
-				Map<String,Object> parameters = new HashMap<String, Object>();
-				parameters.put("fk_storage_id", storageDetail.getFk_storage_id());
-				parameters.put("fk_dealer_id", storageDetail.getFk_dealer_id());
-				parameters.put("batch_no", storageDetail.getBatch_no());
-				parameters.put("status", "1");
-				parameters.put("size", Math.abs(Integer.parseInt(storageDetail.getInventory_number())));
-				List<StorageProDetail> StorageProDetailList=   storageProDetailDao.findObject(".selectStorageProDetailByStatus",parameters);
-				if(StorageProDetailList.size()!= Math.abs(Integer.parseInt(storageDetail.getInventory_number()))){
-					//获取sn数量 与 更新不一致
-					try {
-						isError = true ;
-						throw new Exception("更新库存错误！Sn库存量不足");
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}else{
-					int upIdex = storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
-					for (StorageProDetail storageProDetail : StorageProDetailList) {
-						//锁定Sn记录
-						int lockIdex = storageProDetailDao.updateObject(".lockSn", storageProDetail);
-						//System.out.println(lockIdex);
-						//返回锁定Sn记录List
-						lockSnList.add(storageProDetail);
-					}	
-					//System.out.println(upIdex);
+				int upIdex = storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
+			}
+		}
+		//锁定Sn记录
+		for (StorageProDetail storageProDetail : lockSnList) {
+			StorageProDetail  tempStorageProDetail = storageProDetailDao.getObject(".selectStorageProDetailBySn",storageProDetail);
+			if(tempStorageProDetail ==null ){
+				try {
+					isError = true ;
+					throw new Exception("更新库存错误！库存量Sn记录已经被锁定");
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
+			}else{
+				int lockIdex = storageProDetailDao.updateObject(".lockSn", storageProDetail);
+				//返回锁定Sn记录List
+				lockSnList.add(storageProDetail);
+				
 			}
 		}
 		
@@ -152,7 +146,39 @@ public class StorageDetailService {
 		}
 		opt.setList(lockSnList);
 		return opt;
+		/*
+		//查询sn List
+		Map<String,Object> parameters = new HashMap<String, Object>();
+		parameters.put("fk_storage_id", storageDetail.getFk_storage_id());
+		parameters.put("fk_dealer_id", storageDetail.getFk_dealer_id());
+		parameters.put("batch_no", storageDetail.getBatch_no());
+		parameters.put("status", "1");
+		parameters.put("size", Math.abs(Integer.parseInt(storageDetail.getInventory_number())));
+		List<StorageProDetail> StorageProDetailList=   storageProDetailDao.findObject(".selectStorageProDetailBySn",parameters);
+		if(StorageProDetailList.size()!= Math.abs(Integer.parseInt(storageDetail.getInventory_number()))){
+			//获取sn数量 与 更新不一致
+			try {
+				isError = true ;
+				throw new Exception("更新库存错误！Sn库存量不足");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}else{
+			
+			for (StorageProDetail storageProDetail : StorageProDetailList) {
+				//锁定Sn记录
+				int lockIdex = storageProDetailDao.updateObject(".lockSn", storageProDetail);
+				//System.out.println(lockIdex);
+				//返回锁定Sn记录List
+				lockSnList.add(storageProDetail);
+			}	
+			//System.out.println(upIdex);
+		}
+		*/
+
 	}
+	
+	
 	
 	
 	/**

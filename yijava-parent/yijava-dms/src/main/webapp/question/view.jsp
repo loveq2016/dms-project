@@ -138,6 +138,7 @@
 				}
 		 }
 		 
+		 var dealer_id= ${user.fk_dealer_id};
 		 function newEntity(){
 		        $('#dlg').dialog('open').dialog('setTitle','问题添加');
 		        $('#fm').form('clear');
@@ -150,15 +151,19 @@
 	     function updateEntity(){
 	          var row = $('#dg').datagrid('getSelected');
 	          if (row){
-	        	  if(row.a_text==null || row.a_text==''){
-	        		    $("#saveEntityBtn").linkbutton("enable");
-		  	            $('#dlg').dialog('open').dialog('setTitle','问题更新');
-			            $('#fm').form('load',row);
-			            $("#saveEntityBtn").show();
-			            $("#digcolumn").hide();
-			            url = basePath + 'api/question/update';
+	        	  if(row.dealer_id == dealer_id){
+		        	  if(row.a_text==null || row.a_text==''){
+		        		    $("#saveEntityBtn").linkbutton("enable");
+			  	            $('#dlg').dialog('open').dialog('setTitle','问题更新');
+				            $('#fm').form('load',row);
+				            $("#saveEntityBtn").show();
+				            $("#digcolumn").hide();
+				            url = basePath + 'api/question/update';
+		        	  }else{
+		        		  $.messager.alert('提示','问题已经被回答不能修改!','warning');		
+		        	  }
 	        	  }else{
-	        		  $.messager.alert('提示','问题已经被回答不能修改!','warning');		
+	        		  $.messager.alert('提示','不是你提问的问题!','warning');		
 	        	  }
 	          }else{
 					$.messager.alert('提示','请选中数据!','warning');				

@@ -4,10 +4,9 @@
 
 <mapper namespace="StorageProDetail">
 
- 	<select id="selectStorageProDetailByStatus" resultType="dms.yijava.entity.storage.StorageProDetail">
+ 	<select id="selectStorageProDetailBySn" resultType="dms.yijava.entity.storage.StorageProDetail">
 		select * from  dms.tb_storage_pro_detail 
-		where fk_storage_id=#{fk_storage_id} and fk_dealer_id=#{fk_dealer_id} and batch_no = #{batch_no} and status = #{status} 
-		limit #{size}
+		where fk_storage_id=#{fk_storage_id} and fk_dealer_id=#{fk_dealer_id} and batch_no = #{batch_no} and product_sn = #{product_sn} and status = 1
 	</select>
 	
 	 <select id="selectStorageProDetail" resultType="dms.yijava.entity.storage.StorageProDetail">
@@ -15,6 +14,39 @@
 		where fk_storage_id=#{fk_storage_id} and fk_dealer_id=#{fk_dealer_id} and batch_no = #{batch_no} 
 		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">and status = #{status}</if>
 	</select>
+	
+	
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_storage_id)">and fk_storage_id =#{fk_storage_id}</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_dealer_id)">and fk_dealer_id = #{fk_dealer_id}</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(batch_no)">and batch_no =#{batch_no}</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">and status = #{status}</if>
+		</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>
+		    <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+		         ORDER BY ${orderSql}
+		    </when>
+	    </choose>
+	</sql>
+    <select id="selectByObjectcount" resultType="long">
+		select count(1) from (
+			select t1.*,t2.storage_name from dms.tb_storage_pro_detail t1 left join dms.tb_storage t2 on t1.fk_storage_id = t2.id
+		)t
+		<include refid="adsWhere"/>
+	</select>
+ 	<select id="selectByObject" resultType="dms.yijava.entity.storage.StorageProDetail">
+		select * from (
+		select t1.*,t2.storage_name from dms.tb_storage_pro_detail t1 left join dms.tb_storage t2 on t1.fk_storage_id = t2.id
+		)t
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}
+	</select>
+	
+	
 	
 	
 	
@@ -30,8 +62,8 @@
     
     
     <insert id="saveSnSub" parameterType="dms.yijava.entity.storage.StorageProDetail">
-    	insert into dms.tb_storage_pro_detail (fk_storage_id,fk_dealer_id,status,batch_no,product_sn)
-    	values(#{fk_storage_id},#{fk_dealer_id},1,#{batch_no},#{product_sn})
+    	insert into dms.tb_storage_pro_detail (fk_storage_id,fk_dealer_id,product_item_number,status,batch_no,product_sn)
+    	values(#{fk_storage_id},#{fk_dealer_id},#{product_item_number},1,#{batch_no},#{product_sn})
     </insert>
     
     

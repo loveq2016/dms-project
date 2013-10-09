@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
 
 import dms.yijava.entity.storage.StorageDetail;
+import dms.yijava.entity.system.SysUser;
 import dms.yijava.service.storage.StorageDetailService;
 import dms.yijava.service.storage.StorageDetailService.PullStorageOpt;
 
@@ -36,6 +38,21 @@ public class StorageDetailController {
 	
 	
 	@ResponseBody
+	@RequestMapping("api_paging")
+	public JsonPage<StorageDetail> api_paging(PageRequest pageRequest,
+			HttpServletRequest request) {
+		List<PropertyFilter> filters = PropertyFilters.build(request);
+		SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
+		if (!StringUtils.equals("0", sysUser.getFk_dealer_id())) {
+			filters.add(PropertyFilters.build("ANDS_fk_dealer_id",sysUser.getFk_dealer_id()));
+			return storageDetailService.paging(pageRequest, filters);
+		}
+		return null;
+		
+	}
+	
+	
+	@ResponseBody
 	@RequestMapping("test")
 	public String test() {
 
@@ -49,11 +66,11 @@ public class StorageDetailController {
 			sd1.setBatch_no("AAA");
 			sd1.setInventory_number("-1");
 			StorageDetailList.add(sd1);
-			PullStorageOpt test = storageDetailService.updateStorageLockSn(StorageDetailList);
+			//PullStorageOpt test = storageDetailService.updateStorageLockSn(StorageDetailList);
 			
 			
 			
-			System.out.println(test);
+			//System.out.println(test);
 	
 		
 		/**
