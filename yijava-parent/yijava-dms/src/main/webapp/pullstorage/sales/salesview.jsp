@@ -424,6 +424,7 @@
 	<script type="text/javascript">
 		var status;
 		var pull_storage_code;
+		var dealer_id=${user.fk_dealer_id};
 		$(function() {
 			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
 			pager.pagination();  
@@ -601,7 +602,10 @@
 			if(typeof(pull_storage_code) != "undefined"){
 				$('#dlgProduct').dialog('open');
 				$('#dgProduct').datagrid({
-					 url:basePath+'api/storageDetail/api_paging'
+					url:basePath+'api/storageDetail/api_paging',
+					queryParams: {
+						filter_ANDS_dealer_id : dealer_id
+					}
 				});
 			}else
 			{

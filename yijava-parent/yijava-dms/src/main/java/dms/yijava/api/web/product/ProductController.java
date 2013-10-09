@@ -51,7 +51,6 @@ public class ProductController {
 		}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
 			filters.add(PropertyFilters.build("ANDS_dealer_ids",this.listString(sysUser.getUserDealerList())));
 			return productService.paging(pageRequest, filters);
-			
 		}
 		return null;
 	}
