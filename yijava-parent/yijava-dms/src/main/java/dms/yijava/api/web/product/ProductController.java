@@ -20,6 +20,7 @@ import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.product.Product;
 import dms.yijava.entity.system.SysUser;
+import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.product.ProductService;
 
 @Controller
@@ -47,6 +48,10 @@ public class ProductController {
 		if (!StringUtils.equals("0", sysUser.getFk_dealer_id())) {
 			filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
 			return productService.paging(pageRequest, filters);
+		}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
+			filters.add(PropertyFilters.build("ANDS_dealer_ids",this.listString(sysUser.getUserDealerList())));
+			return productService.paging(pageRequest, filters);
+			
 		}
 		return null;
 	}
@@ -91,6 +96,24 @@ public class ProductController {
 		return new Result<String>(id, 1);
 	}
 	
-	
+	/**
+	 * 把一个list转换为String返回过去
+	 */
+	public String listString(List<UserDealer> list) {
+		String listString = "";
+		for (int i = 0; i < list.size(); i++) {
+			try {
+				if (i == list.size() - 1) {
+					UserDealer ud = list.get(i);
+					listString += ud.getDealer_id();
+				} else {
+					UserDealer ud = list.get(i);
+					listString += ud.getDealer_id() + ",";
+				}
+			} catch (Exception e) {
+			}
+		}
+		return listString;
+	}
 	
 }
