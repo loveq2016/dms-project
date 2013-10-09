@@ -50,6 +50,14 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(put_end_date)">
 				  <![CDATA[ and put_storage_date < #{put_end_date}]]>
 			</if>
+			
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(statuses)">
+				  and status in (${statuses})
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(check_id) and
+				@com.yijava.orm.core.OgnlUtils@isNotEmpty(flow_id)">
+				  and id in (select bussiness_id from tb_flow_record where check_id= #{check_id} and flow_id=#{flow_id})
+			</if>
 		</trim>
 	</sql>
 	<sql id="adsOrder">
@@ -113,6 +121,14 @@
             last_time=NOW()
         </trim>
 		WHERE pull_storage_code=#{pull_storage_code}
+	</update>
+	<update id="updateStatus" parameterType="dms.yijava.entity.pullstorage.PullStorage">
+		update dms.tb_pull_storage
+		<trim prefix="SET" suffixOverrides=",">
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">status=#{status},</if>  
+            last_time=NOW()
+        </trim>
+		WHERE id=#{id}
 	</update>
 	<delete id="deleteByPrimaryKey" parameterType="int">
 		delete from dms.tb_pull_storage where id = #{id}

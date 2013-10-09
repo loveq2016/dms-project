@@ -110,7 +110,7 @@ public class MoveStorageController {
 				sd.setInventory_number("-"+psd.getMove_number());
 				storageDetailList.add(sd);
 			}
-			PullStorageOpt moveStorageOpt=storageDetailService.updateStorageLockSn(storageDetailList); //获取sn（根据 批次，仓库，数量），更新仓库
+			PullStorageOpt moveStorageOpt=storageDetailService.updateStorageLockSn(storageDetailList,null); //获取sn（根据 批次，仓库，数量），更新仓库
 			List<MoveStorageProDetail> listMoveStorageProDetail=new ArrayList<MoveStorageProDetail>();
 			if(moveStorageOpt.getStatus().equals("success")){
 				for(int i=0;i<moveStorageOpt.getList().size();i++){

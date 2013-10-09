@@ -67,6 +67,12 @@ public class SalesStorageService{
 	public void updateEntity(SalesStorage entity) {
 		salesStorageDao.update(entity);
 	}
+	public void updateStatus(String id,String status){
+		PullStorage entity=new PullStorage();
+		entity.setId(id);
+		entity.setStatus(status);
+		salesStorageDao.updateObject(".updateStatus", entity);
+	}	
 	public void removeEntity(String id) {
 		salesStorageDao.removeById(id);
 	}

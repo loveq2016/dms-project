@@ -513,10 +513,7 @@
 			if(typeof(pull_storage_code) != "undefined"){
 				$('#dlgProduct').dialog('open');
 				$('#dgProduct').datagrid({
-					 url:basePath+'api/storageDetail/paging',
-					 queryParams: {
-						filter_ANDS_fk_dealer_id : $('#fk_dealer_id').val()
-					 }
+					url:basePath+'api/storageDetail/api_paging'
 				});
 			}else
 			{
