@@ -49,7 +49,7 @@
 
 <!-- 查询试用记录 -->
 	<select id="selectByObject" resultType="dms.yijava.entity.trial.Trial">
-		select tb_trial.trial_id,tb_trial.dealer_user_id,tb_trial.sales_user_id,tb_dealer.dealer_name,
+		select tb_trial.trial_id,tb_trial.trial_code,tb_trial.dealer_user_id,tb_trial.sales_user_id,tb_dealer.dealer_name,
 		tb_trial.region_user_id,tb_trial.company_user_id,tb_trial.hospital_id,
 		tb_hospital.hospital_name,tb_trial.reason,tb_trial.trial_num_sum,tb_trial.create_time,
 		tb_trial.status,tb_trial.last_update
@@ -70,8 +70,8 @@
 
 	<insert id="insert" parameterType="dms.yijava.entity.trial.Trial" useGeneratedKeys="true" keyProperty="trial_id">
 		insert into
-		tb_trial(dealer_user_id,sales_user_id,region_user_id,company_user_id,hospital_id,reason,trial_num_sum,create_time,status,last_update)
-		values(#{dealer_user_id},#{sales_user_id},#{region_user_id},#{company_user_id},#{hospital_id},#{reason},#{trial_num_sum},#{create_time},#{status},#{last_update})
+		tb_trial(trial_code,trial_no,dealer_user_id,sales_user_id,region_user_id,company_user_id,hospital_id,reason,trial_num_sum,create_time,status,last_update)
+		values(#{trial_code},#{trial_no},#{dealer_user_id},#{sales_user_id},#{region_user_id},#{company_user_id},#{hospital_id},#{reason},#{trial_num_sum},NOW(),#{status},NOW())
 	</insert>
 
 	<insert id="update" parameterType="dms.yijava.entity.trial.Trial">
@@ -86,7 +86,7 @@
 			<if test="trial_num_sum != null">trial_num_sum=#{trial_num_sum},</if>
 			<if test="create_time != null">create_time=#{create_time},</if>
 			<if test="status != null">status=#{status},</if>
-			<if test="last_update != null">last_update=#{last_update},</if>
+			 last_update=NOW()			
 		</set>
 		where trial_id=#{trial_id}
 	</insert>
@@ -94,4 +94,10 @@
 	<update id="deleteByPrimaryKey" parameterType="int">
 		delete from tb_trial where trial_id=#{trial_id}
 	</update>
+	
+	<select id="selectTrialCode" resultType="dms.yijava.entity.pullstorage.PullStorage">
+		select LPAD(max(trial_no)+1,3,0) as trial_no from dms.tb_trial WHERE 
+		create_time between CURDATE() AND CONCAT(CURDATE(),' 23:59:59')
+	</select>
+	
 </mapper>

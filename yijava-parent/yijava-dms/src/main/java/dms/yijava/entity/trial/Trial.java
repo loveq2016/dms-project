@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 public class Trial {
 
 	private Integer trial_id;
+	public String trial_code;
+	public String trial_no;
+	
 	private String dealer_user_id;
 	private String dealer_name;
 	private String sales_user_id;//销售id
