@@ -104,7 +104,7 @@ public class PutStorageController {
 			 * 处理订单状态
 			 */
 			SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
-			entity.setStatus("2");//成功
+			entity.setStatus("4");//成功
 			entity.setPut_storage_date(time.format(new Date()));
 			pullStorageService.updateEntity(entity);
 			return new Result<Integer>(1, 1);

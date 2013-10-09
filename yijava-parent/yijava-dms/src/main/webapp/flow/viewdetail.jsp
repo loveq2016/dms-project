@@ -132,7 +132,7 @@
 					    	
 					    	handler:function(){  
 					    		//$('#dg1').datagrid('acceptChanges');
-					    		alert(lastIndex);
+					    		//alert(lastIndex);
 					    		if (lastIndex != undefined) {
 									$('#dg1').datagrid('endEdit', lastIndex);
 									
@@ -188,7 +188,7 @@
 							 if (r){
 			                        $.post(basePath+'api/step/remove',{step_id:row.step_id,action_id:row.action_id},function(result){
 			                        	//var jsonobj= eval('('+result+')');  
-			                        	alert(result);
+			                        	//alert(result);
 			        			    	if(result.state==1){
 			                                //$('#dg1').datagrid('reload');    // reload the user data
 			                                $('#dg1').datagrid('reload');

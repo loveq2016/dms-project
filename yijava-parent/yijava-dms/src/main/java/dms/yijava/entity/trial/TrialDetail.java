@@ -10,7 +10,7 @@ public class TrialDetail {
 	private Integer trial_detail_id;
 	private Integer trial_id;
 	private Integer product_id;
-	private String prouct_name;
+	private String product_name;
 	private Integer trial_num;
 	private String remark;
 }

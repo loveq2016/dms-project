@@ -18,7 +18,7 @@
 							<table>
 								<tr>
 									<!-- 借贷类型-->
-									<input class="easyui-validatebox" hidden="true" name="type" id="type" value="2"/>
+									<input class="easyui-validatebox" type="hidden"="true" name="type" id="type" value="2"/>
 									<td width="200">借贷出库单号:</td>	
 									<td><input class="easyui-validatebox" type="text" name="pull_storage_code"></input></td>
 									<td width="180">借出经销商:</td>
@@ -26,7 +26,7 @@
 										<c:choose>
 										       <c:when test="${user.fk_dealer_id!='0'}">
 													<input class="easyui-validatebox" disabled="disabled" id="pull_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
-													<input class="easyui-validatebox" hidden="true" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">					       	
+													<input class="easyui-validatebox" type="hidden" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">					       	
 										       </c:when>
 										       <c:otherwise>
 										       		<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
@@ -64,14 +64,17 @@
 												value: '未提交'
 											},{
 												id: '1',
-												value: '在途'
+												value: '提交'
 											},{
 												id: '2',
-												value: '成功'
+												value: '驳回'
 											},{
 												id: '3',
-												value: '取消'
-											},]" />
+												value: '在途'
+											},{
+												id: '4',
+												value: '成功'
+											}]" />
 									</td>
 									<td width="100">开始时间:</td>
 									<td width="270">
@@ -200,14 +203,17 @@
 												value: '未提交'
 											},{
 												id: '1',
-												value: '在途'
+												value: '已提交'
 											},{
 												id: '2',
-												value: '成功'
+												value: '驳回'
 											},{
 												id: '3',
-												value: '取消'
-											},]" />
+												value: '在途'
+											},{
+												id: '4',
+												value: '成功'
+											}]" />
 									</td>
 								</tr>
 							</table>
@@ -366,14 +372,14 @@
 					      <table>
 					      	     <tr>
 					             	<td>仓库:</td>
-					             	<input name="fk_storage_id" hidden="true" class="easyui-validatebox" style="width:150px;">
+					             	<input name="fk_storage_id" type="hidden" class="easyui-validatebox" style="width:150px;">
 					             	<td><input name="storage_name" readonly="true" class="easyui-validatebox" style="width:150px;"></td>
 					            </tr>
 					    		<tr>
 					             	<td>借贷出库单号:</td>
 					             	<td>
 					             		<input name="pull_storage_code" readonly="true" class="easyui-validatebox" style="width:150px;">
-					             		<input name="put_storage_code" hidden="true" class="easyui-validatebox" style="width:150px;">
+					             		<input name="put_storage_code" type="hidden" class="easyui-validatebox" style="width:150px;">
 					             	</td>
 					            </tr>
 					            <tr>
@@ -437,11 +443,13 @@
 			if(value=='0')
 				return '<span>未提交</span>'; 
 			else if(value=='1')
-				return '<span>在途</span>'; 
+				return '<span>已提交</span>'; 
 			else if(value=='2')
-				return '<span>成功</span>'; 
+				return '<span>驳回</span>'; 
 			else if(value=='3')
-				return '<span>取消</span>'; 
+				return '<span>在途</span>'; 
+			else if(value=='4')
+				return '<span>成功</span>'; 
 		}
 		function newEntity()
 		{
@@ -535,16 +543,16 @@
 			$('#dgUpdateLog').datagrid({
 			    url:basePath+'api/flowlog/list?bussiness_id='+row.id+"&flow_id="+pullStorageflow_identifier_num
 			}); 
-			if(order_status=='0'|| order_status=='2'){
-				$('#savePullStorageDetail').linkbutton('disable');
-				$('#delPullStorageDetail').linkbutton('disable');
-				$('#saveDraft').linkbutton('disable');
-				$('#submitPullStorage').linkbutton('disable');
-			}else{
+			if(status=='0'|| status=='2'){
 				$('#savePullStorageDetail').linkbutton('enable');
 				$('#delPullStorageDetail').linkbutton('enable');
 				$('#saveDraft').linkbutton('enable');
 				$('#submitPullStorage').linkbutton('enable');
+			}else{
+				$('#savePullStorageDetail').linkbutton('disable');
+				$('#delPullStorageDetail').linkbutton('disable');
+				$('#saveDraft').linkbutton('disable');
+				$('#submitPullStorage').linkbutton('disable');
 			}
 			
 			if(typeof(type) != "undefined"){

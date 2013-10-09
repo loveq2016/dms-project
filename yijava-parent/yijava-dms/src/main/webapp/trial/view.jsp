@@ -72,6 +72,7 @@
 					<thead>
 						<tr>
 							<th data-options="field:'trial_id',width:100"  sortable="true" hidden="true">trial_id</th>
+							<th data-options="field:'trial_code',width:200"  sortable="true">试用申请单号</th>
 							<th data-options="field:'dealer_name',width:200"  sortable="true">经销商名称</th>
 							<th data-options="field:'hospital_name',width:200"  sortable="true">医院名称</th>									
 							<th data-options="field:'reason',width:300" sortable="true">试用理由</th>							
@@ -234,14 +235,14 @@
 						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="saveOrderDetail" onclick="newOrderDetailEntity();">添加产品</a>
 					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="delOrderDetail" onclick="removeOrderDetailEntity();">删除产品</a>
 					</div>
-				<table id="dgdesc" title="查询结果" style="width:650px;height: 340px">
+				<table id="dgDetail" title="查询结果" style="width:650px;height: 320px">
 					<thead>
 						<tr>
 							<th data-options="field:'trial_detail_id',width:10"  sortable="true" hidden="true">trial_detail_id</th>
 							<th data-options="field:'product_name',width:100"  sortable="true">产品名称</th>
 							<th data-options="field:'product_name',width:100" sortable="true">规格型号</th>
 							<th data-options="field:'trial_num',width:50" sortable="true">数量</th>							
-							<th data-options="field:'remark',width:50">备注</th>										
+							<th data-options="field:'remark',width:200">备注</th>										
 						</tr>
 					</thead>
 				</table>
@@ -430,10 +431,50 @@
 			    		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductNumEntity()">添加</a>
 			        	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
 			    </div>	
+			    
+			    
+			    <div id="dlgProductSum" class="easyui-dialog" style="width:300px;height:300px;padding:5px 5px 5px 5px;"
+	            modal="true" closed="true" buttons="#dlgProductSum-buttons">
+		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
+					      <table> 
+					    		<tr>
+					             	<td>试用单号:</td><input name="trial_id" readonly="true" type="input">
+					             	<td><input name="trial_code" readonly="true" class="easyui-validatebox" style="width:150px;"></td>
+					            </tr>
+					            <tr>
+					             	<td>产品编码:</td>
+					             	<td><input name="product_id" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					            </tr>
+					            <tr>
+					             	<td>产品名称</td>
+					             	<td><input name="product_name" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					            </tr>					           
+						        <tr>
+					             	<td>数量:</td>
+					             	<td><input name="trial_num" id="trial_num" class="easyui-numberbox" style="width:150px" 
+									data-options="required:true"></td>
+					             </tr>
+					             <tr>
+					             	<td>备注:</td>
+					             	<td><input name="remark" id="remark" class="easyui-numberbox" style="width:150px" 
+									data-options="required:true"></td>
+					             </tr>
+					      </table>        	
+		        </form>
+	    </div>
+	    <div id="dlgProductSum-buttons">
+		   
+		        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveOrderDetailEntity();">保存</a>
+		    
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProductSum').dialog('close')">取消</a>
+	    </div>
 		
 	<script type="text/javascript">
 	
-	 	var url;	 
+	 	var url;
+	 	var trial_id;
+	 	var trial_code;
+	 	var trial_status;
 		$('#dg').datagrid(
 				{
 					onLoadSuccess:function(data){ 
@@ -668,40 +709,26 @@
 		}
 		
 		//dlgdetail
-		function View_Entity(index){
-			
-			
-				
-			
-			
+		function View_Entity(index){			
 			 //填充基本信息			 
 			 //selectRow
 			 $('#dg').datagrid('selectRow', index);
-			
-
 			 var row = $('#dg').datagrid('getSelected');
 			  $('#base_form_detail').form('load', row);
+			 trial_id=row.trial_id;
+			 trial_code=row.trial_code;
+			 trial_status=row.status;
 			 //加载流程记录
 			 LoadFlowRecord(row.trial_id);
-			 LoadProductDetail(row.trial_id);
-			
-			
-			
-			//var pagerdesc = $('#dgdesc').datagrid().datagrid('getPager'); 
-			//pagerdesc.pagination(); 
-			
-			
-			
-				
-				
-			 $('#dlgdetail').dialog('open').dialog('setTitle', '审核');
+			 LoadProductDetail(row.trial_id);				
+			 $('#dlgdetail').dialog('open').dialog('setTitle', '明细');
 			//var row = $('#dg').datagrid('getSelected');
 			//if (row && row.status ==1){				
 		}
 			
 		function LoadProductDetail(trial_id)
 		{
-			 $('#dgdesc').datagrid({
+			 $('#dgDetail').datagrid({
 				 url:basePath+'api/trialdetail/view?trial_id='+trial_id
 				}); 
 				
@@ -769,6 +796,8 @@
 			
 		}
 		
+		
+		
 		/**
 		查看单据
 		*/
@@ -803,10 +832,91 @@
 			$('#dlgProduct').dialog('open').dialog('setTitle','[产品列表');
 			$('#dgProduct').datagrid({
 					 url:basePath+'api/product/orderpaging'
-			});
+			});				
+		}
+		/**
+		选择产品明细 
+		*/
+		function newProductNumEntity() {
+			$('#fm3').form('clear');
+			var row = $('#dgProduct').datagrid('getSelected');
+			if(row){
 				
+				$("#fm3 input[name=trial_id]").val(trial_id);
+				$("#fm3 input[name=trial_code]").val(trial_code);
+				$("#fm3 input[name=product_id]").val(row.item_number);
+				$("#fm3 input[name=product_name]").val(row.cname);
+				//$("#fm3 input[name=order_price]").val(row.price);
+				//$("#fm3 input[name=discount]").val(row.discount);
 				
-		}	
+				$('#dlgProductSum').dialog('open').dialog('setTitle','添加产品');
+			}else
+			{
+				$.messager.alert('提示','请选中某个产品!','warning');
+			}
+		}
+		
+		/**
+		保存产品明细 
+		*/
+		function saveOrderDetailEntity(){
+			var row = $('#dgProduct').datagrid('getSelected');
+			if(row){
+				$('#fm3').form('submit', {
+					url :basePath+'api/trialdetail/save',
+				    method:"post",
+				    onSubmit: function(){
+				        return $(this).form('validate');
+				    },
+				    success:function(msg){
+				    	var jsonobj = $.parseJSON(msg);
+				    	if(jsonobj.state==1){
+							 $('#dlgProductSum').dialog('close');     
+		                     $('#dgDetail').datagrid('reload');
+		                     //$('#dg').datagrid('reload');
+				    	}else if(jsonobj.state==2){
+				    		$.messager.alert('提示','不可重复添加一个产品!','error');	
+				    	}else{
+				    		$.messager.alert('提示','Error!','error');	
+				    	}
+				    }
+				});					
+			}else
+			{
+				$.messager.alert('提示','请选中某个产品!','warning');
+			}
+		}
+		
+		//订单项
+		function removeOrderDetailEntity()
+		{
+			var row = $('#dgDetail').datagrid('getSelected');
+			if (row){
+				if(trial_status=='0'){
+				    $.ajax({
+						type : "POST",
+						url :basePath+'api/trialdetail/delete?trial_detail_id='+row.trial_detail_id,
+						error : function(request) {
+							$.messager.alert('提示','抱歉,删除错误!','error');	
+						},
+						success:function(msg){
+						    var jsonobj = $.parseJSON(msg);
+        					if (jsonobj.state == 1) {
+        	                     $('#dgDetail').datagrid('reload');
+        	                     
+        					}else{
+        						$.messager.alert('提示','抱歉,删除错误!','error');	
+        					}
+						}
+					});
+				}else{
+					$.messager.alert('提示','无法删除已提交的单据!','error');
+				}
+			}else
+			{
+				$.messager.alert('提示','请选中某个产品!','warning');
+			}
+		}
 	</script>
 
 	<script type="text/javascript"> 

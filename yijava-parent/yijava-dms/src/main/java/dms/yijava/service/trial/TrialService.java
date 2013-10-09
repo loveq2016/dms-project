@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.trial.TrialDao;
+import dms.yijava.entity.pullstorage.PullStorage;
 import dms.yijava.entity.trial.Trial;
 
 @Service
@@ -64,6 +66,18 @@ public class TrialService {
 		trialDao.removeById(trial_id);
 	}
 	
-	
+	/**
+	 * 返回出库单据
+	 * @param pull_storage_party_id
+	 * @return
+	 */
+	public Trial getTrialCode() {
+		Trial trial=trialDao.getObject(".selectTrialCode",null);
+		if(null==trial || StringUtils.isEmpty(trial.getTrial_code())){
+			trial=new Trial();
+			trial.setTrial_code("001");
+		}
+		return trial;
+	}
 	
 }
