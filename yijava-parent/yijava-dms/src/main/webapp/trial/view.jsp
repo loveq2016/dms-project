@@ -233,8 +233,12 @@
 			<div title="产品明细行" >
 			
 					<div id="tbOrderDetail">    
-						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="saveOrderDetail" onclick="newOrderDetailEntity();">添加产品</a>
-					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="delOrderDetail" onclick="removeOrderDetailEntity();">删除产品</a>
+						<restrict:function funId="171">
+							<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="saveOrderDetail" onclick="newOrderDetailEntity();">添加产品</a>
+						</restrict:function>
+						<restrict:function funId="172">
+					   		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="delOrderDetail" onclick="removeOrderDetailEntity();">删除产品</a>
+					    </restrict:function>
 					</div>
 				<table id="dgDetail" title="查询结果" style="width:650px;height: 320px">
 					<thead>
