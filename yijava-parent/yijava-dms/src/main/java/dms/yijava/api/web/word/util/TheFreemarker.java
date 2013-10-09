@@ -28,7 +28,7 @@ public class TheFreemarker {
 
 	}
 	
-	public Writer createTrialWord(OutputStream outputStream) {
+	public Writer createTrialWord(OutputStream outputStream,Map<String ,Object> dataMap) {
 		try {
 			String classPath = new File(getClass().getResource("/").getFile()).getCanonicalPath();
 			classPath += File.separator + "word" + File.separator + "ftl";
@@ -41,24 +41,7 @@ public class TheFreemarker {
 			
 			
 			
-			Map<String,Object> dataMap = new HashMap<String, Object>();
-			dataMap.put("hospital", "北京医院");
-			dataMap.put("requesttime", "2013年10月8日");
-			dataMap.put("reason", "试用理由");
-			dataMap.put("regionsign", "试用理由");
-			dataMap.put("principalsign", "试用理由");
 			
-			List<TrialProduct> list = new ArrayList<TrialProduct>();
-			for (int j = 1; j < 5; j++) {
-				TrialProduct product = new TrialProduct();
-				product.setProductname("测试名称");
-				product.setProductmodel("测试型号 ");
-				product.setSumnumber("10");
-				product.setRemark("测试备注");
-				
-				list.add(product);
-			}
-			dataMap.put("table", list);
 			
 			Writer out = null;
 			out = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));

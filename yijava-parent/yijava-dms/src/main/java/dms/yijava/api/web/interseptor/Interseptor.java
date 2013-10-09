@@ -22,7 +22,7 @@ public class Interseptor extends HandlerInterceptorAdapter {
 			HttpServletResponse response, Object handler) throws Exception {
 		String url =  request.getRequestURI().toString();
 		logger.debug("url:"+url);
-		if(url.indexOf("doc")>-1)
+		if(url.indexOf("doc")>-1 || url.indexOf("word")>-1)
 		{
 			return true;
 		}
