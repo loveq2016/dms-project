@@ -924,6 +924,14 @@
 				$.messager.alert('提示','请选中某个产品!','warning');
 			}
 		}
+		
+		function doSearchProduct(){
+		    $('#dgProduct').datagrid('load',{
+		    	filter_ANDS_item_number: $("#ffdetail input[name=item_number]").val(),
+		    	filter_ANDS_dealer_id: dealer_id,
+		    	filter_ANDS_category_id: $("#ffdetail input[name=category_id]").val()
+		    });
+		}
 	</script>
 
 	<script type="text/javascript"> 
