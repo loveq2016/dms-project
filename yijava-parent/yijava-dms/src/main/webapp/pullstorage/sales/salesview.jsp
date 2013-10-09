@@ -119,7 +119,7 @@
         		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
         	</restrict:function>
         	<restrict:function funId="169">
-        		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="CheckEntity()">审核</a>
+        		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="CheckEntity()">审核</a>
         	</restrict:function>
 			</div>
 			<div style="margin: 10px 0;"></div>
@@ -691,7 +691,7 @@
 		function ToCheckEntity(){
 			var row = $('#dg').datagrid('getSelected');
 			if(typeof(pull_storage_code) != "undefined")
-			if (row && (row.order_status ==0 || row.order_status ==2) ){
+			if (row && (row.status ==0 || row.status ==2) ){
 				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
 					 if (r){
 	                        $.post(basePath+'api/salesstorage/updatetocheck',{id:row.id,
@@ -718,7 +718,7 @@
 		*/
 		function CheckEntity(){
 			var row = $('#dg').datagrid('getSelected');
-			if (row && row.order_status==1){
+			if (row && row.status==1){
 				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){
 					 $('#bussiness_id').val(row.id);
 					 $("#flow_id").val(salesStorageflow_identifier_num);
