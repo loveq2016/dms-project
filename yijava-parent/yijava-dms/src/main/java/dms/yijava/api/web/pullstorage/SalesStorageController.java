@@ -153,7 +153,7 @@ public class SalesStorageController {
 				sd.setInventory_number("-"+psd.getSales_number());
 				storageDetailList.add(sd);
 			}
-			PullStorageOpt pullStorageOpt=storageDetailService.updateStorageLockSn(storageDetailList); //获取sn（根据 批次，仓库，数量），更新仓库
+			PullStorageOpt pullStorageOpt=storageDetailService.updateStorageLockSn(storageDetailList,null); //获取sn（根据 批次，仓库，数量），更新仓库
 			List<PullStorageProDetail> listPullStorageProDetail=new ArrayList<PullStorageProDetail>();
 			if(pullStorageOpt.getStatus().equals("success")){
 				for(int i=0;i<pullStorageOpt.getList().size();i++){
