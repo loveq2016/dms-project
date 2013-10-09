@@ -29,30 +29,38 @@
     <select id="selectByObjectcount" resultType="long"> 
 		select count(1) from (
 			select t1.*,t2.category_name
-			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
-				,t4.discount
-			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">,t4.discount</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)">,t4.discount</if>
 			from tb_product t1 left join tb_product_category t2 on t1.category_id = t2.id
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
 				left join dms.tb_dealer_auth_product t3 on t3.product_category_id = t2.id 
 				left join dms.tb_dealer_auth_discount t4 on t1.item_number = t4.item_number
 				where t3.dealer_id = #{dealer_id}
 			</if>
-		) t 
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)">
+				left join dms.tb_dealer_auth_product t3 on t3.product_category_id = t2.id 
+				left join dms.tb_dealer_auth_discount t4 on t1.item_number = t4.item_number
+				where t3.dealer_id in (${dealer_ids})
+			</if>
+			) t 
 		<include refid="adsWhere"/>
 	</select>
 
  	<select id="selectByObject" resultType="dms.yijava.entity.product.Product">
 		select * from (
 			select t1.*,t2.category_name
-			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
-				,t4.discount
-			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">,t4.discount</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)">,t4.discount</if>
 			from tb_product t1 left join tb_product_category t2 on t1.category_id = t2.id
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
 				left join dms.tb_dealer_auth_product t3 on t3.product_category_id = t2.id 
 				left join dms.tb_dealer_auth_discount t4 on t1.item_number = t4.item_number
 				where t3.dealer_id = #{dealer_id}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)">
+				left join dms.tb_dealer_auth_product t3 on t3.product_category_id = t2.id 
+				left join dms.tb_dealer_auth_discount t4 on t1.item_number = t4.item_number
+				where t3.dealer_id in (${dealer_ids})
 			</if>
 			) t 
 		<include refid="adsWhere"/>

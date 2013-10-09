@@ -11,6 +11,8 @@ import dms.yijava.event.EventDriven;
 import dms.yijava.event.UserCheckFlowEvent;
 import dms.yijava.service.deliver.DeliverService;
 import dms.yijava.service.order.OrderService;
+import dms.yijava.service.pullstorage.PullStorageService;
+import dms.yijava.service.pullstorage.SalesStorageService;
 import dms.yijava.service.trial.TrialService;
 
 @EventDriven
@@ -25,7 +27,10 @@ public class UserCheckFlowEventHandler {
 	private OrderService orderService;
 	@Autowired
 	private DeliverService deliverService;
-	
+	@Autowired
+	private PullStorageService pullStorageService;
+	@Autowired
+	private SalesStorageService salesStorageService;
 	
 	@Value("#{properties['trialflow_identifier_num']}")   	
 	private String flowIdentifierNumber;
@@ -33,7 +38,10 @@ public class UserCheckFlowEventHandler {
 	private String deliverflow_identifier_num;
 	@Value("#{properties['orderflow_identifier_num']}")   	
 	private String orderflow_identifier_num;
-	
+	@Value("#{properties['pullStorageflow_identifier_num']}")   	
+	private String pullStorageflow_identifier_num;
+	@Value("#{properties['salesStorageflow_identifier_num']}")   	
+	private String salesStorageflow_identifier_num;
 	@Subscribe
 	public void onUserCheckAgree(UserCheckFlowEvent flow_check) {
 		logger.debug("get user check flow"+flow_check.toString());
@@ -51,6 +59,14 @@ public class UserCheckFlowEventHandler {
 			//订单
 			logger.debug("订单流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());
 			orderService.updateStatus(flow_check.getBussiness_id(),"3");//审核通过
+		}else if(flow_check.getFlow_id().equals(pullStorageflow_identifier_num)){
+			//借贷出货
+			logger.debug("借贷出货流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());
+			pullStorageService.updateStatus(flow_check.getBussiness_id(),"3");//审核通过
+		}else if(flow_check.getFlow_id().equals(salesStorageflow_identifier_num)){
+			//销售出货
+			logger.debug("销售出货流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());
+			salesStorageService.updateStatus(flow_check.getBussiness_id(),"3");//审核通过
 		}
 		
 	}
