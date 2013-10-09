@@ -5,7 +5,8 @@ var resPath = "/yijava-dms/";
 var trialflow_identifier_num="300000";
 var orderflow_identifier_num="200000";
 var deliverflow_identifier_num="400000";
-
+var pullStorageflow_identifier_num="500000";
+var salesStorageflow_identifier_num="600000";
 $(function(){
 	InitLeftMenu();
 	

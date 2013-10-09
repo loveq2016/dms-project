@@ -81,17 +81,22 @@ $('#tochecktree').tree({
 			var tabTitle = "试用管理";
 			var url = "trial/view.jsp";
 			addTabByChild(tabTitle,url);
-			
-			
-			
 		}else if(node.id==orderflow_identifier_num)
 		{
 			var tabTitle = "订单管理";
 			var url = "order/view.jsp";
 			addTabByChild(tabTitle,url);
+		}else if(node.id==pullStorageflow_identifier_num)
+		{
+			var tabTitle = "借贷出库管理";
+			var url = "pullstorage/loans/pullview.jsp";
+			addTabByChild(tabTitle,url);
+		}else if(node.id==salesStorageflow_identifier_num)
+		{
+			var tabTitle = "销售出库管理";
+			var url = "pullstorage/sales/salesview.jsp";
+			addTabByChild(tabTitle,url);
 		}
-		
-		
 	}
 });
 function checkReload()

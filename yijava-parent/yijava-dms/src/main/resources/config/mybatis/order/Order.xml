@@ -10,12 +10,6 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)">
 				  and dealer_id in (${dealer_ids})
 			</if>
-			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(statuses)">
-				  and order_status in (${statuses})
-			</if>
-			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(check_id)">
-				  and id in (select bussiness_id from tb_flow_record where check_id= #{check_id})
-			</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(order_code)">
 				  and order_code=#{order_code}
 			</if>
@@ -29,6 +23,14 @@
 				  <![CDATA[ and order_date < #{end_date}]]>
 			</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">and dealer_name like CONCAT('%','${dealer_name}','%' ) </if>
+			
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(statuses)">
+				  and order_status in (${statuses})
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(check_id) and
+				@com.yijava.orm.core.OgnlUtils@isNotEmpty(flow_id)">
+				  and id in (select bussiness_id from tb_flow_record where check_id= #{check_id} and flow_id=#{flow_id})
+			</if>
 		</trim>
 	</sql>
 	<sql id="adsOrder">

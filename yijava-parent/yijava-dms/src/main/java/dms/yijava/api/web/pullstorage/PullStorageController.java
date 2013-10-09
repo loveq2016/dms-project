@@ -8,7 +8,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +21,10 @@ import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
+import com.yijava.web.vo.ErrorCode;
 import com.yijava.web.vo.Result;
 
+import dms.yijava.api.web.order.OrderController;
 import dms.yijava.entity.pullstorage.PullStorage;
 import dms.yijava.entity.pullstorage.PullStorageDetail;
 import dms.yijava.entity.pullstorage.PullStorageProDetail;
@@ -27,6 +32,7 @@ import dms.yijava.entity.storage.StorageDetail;
 import dms.yijava.entity.storage.StorageProDetail;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.user.UserDealer;
+import dms.yijava.service.flow.FlowBussService;
 import dms.yijava.service.pullstorage.PullStorageDetailService;
 import dms.yijava.service.pullstorage.PullStorageProDetailService;
 import dms.yijava.service.pullstorage.PullStorageService;
@@ -35,7 +41,9 @@ import dms.yijava.service.storage.StorageDetailService.PullStorageOpt;
 @Controller
 @RequestMapping("/api/pullstorage")
 public class PullStorageController {
-
+	private static final Logger logger = LoggerFactory.getLogger(PullStorageController.class);
+	@Value("#{properties['pullStorageflow_identifier_num']}")   	
+	private String flowIdentifierNumber;
 	@Autowired
 	private PullStorageService pullStorageService;
 	@Autowired
@@ -44,11 +52,14 @@ public class PullStorageController {
 	private PullStorageProDetailService pullStorageProDetailService;
 	@Autowired
 	private StorageDetailService storageDetailService;
+	@Autowired
+	private FlowBussService flowBussService;
 	
 	@ResponseBody
 	@RequestMapping("paging")
 	public JsonPage<PullStorage> paging(PageRequest pageRequest,HttpServletRequest request) {
 		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+		String currentUserId=sysUser.getId();
 		List<PropertyFilter> filters = PropertyFilters.build(request);
 		if(null!=sysUser){
 			//经销商
@@ -56,6 +67,9 @@ public class PullStorageController {
 				filters.add(PropertyFilters.build("ANDS_fk_pull_storage_party_id",sysUser.getFk_dealer_id()));
 			}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
 				filters.add(PropertyFilters.build("ANDS_fk_pull_storage_party_ids", this.listString(sysUser.getUserDealerList())));
+				filters.add(PropertyFilters.build("ANDS_statuses","1,2,3,4,5,6"));
+				filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
+				filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
 			}
 			return pullStorageService.paging(pageRequest,filters);
 		}
@@ -96,14 +110,49 @@ public class PullStorageController {
 		}
 	}
 	@ResponseBody
-	@RequestMapping("updateStatus")
+	@RequestMapping("updateEntity")
 	public Result<Integer> updateStatus(@ModelAttribute("entity") PullStorage entity) {
 		pullStorageService.updateEntity(entity);
 		return new Result<Integer>(1, 1);
 	}
-		
+	
+	/**
+	 * 修改状态 提交审核
+	 * @param trial_id
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping("submit")
+	@RequestMapping("updatetocheck")
+	public Result<Integer> updatetocheck(PullStorage entity,HttpServletRequest request) {
+		Result<Integer> result=new Result<Integer>(0, 0);
+		try {
+			///以下开始走流程处理
+			SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+			if(flowBussService.processFlow(Integer.parseInt(entity.getId()),sysUser,flowIdentifierNumber))
+			{
+				//更新库存
+				/**
+				 * 
+				 * 
+				 * 方法实现
+				 * 
+				 * 
+				 */
+				//更新状态
+				pullStorageService.updateStatus(entity.getId(),"1");
+				result.setData(1);
+				result.setState(1);;
+			}else
+			{
+				result.setError(new ErrorCode("出现系统错误，处理流程节点"));
+			}
+		} catch (Exception e) {
+			logger.error("error" + e);
+		}
+		return result;
+	}
+		
 	public Result<Integer> submitPullStorage(@ModelAttribute("entity") PullStorage entity,HttpServletRequest request) {
 		/**
 		 * 添加产品SN明细
