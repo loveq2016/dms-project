@@ -35,8 +35,8 @@ public class StorageProDetailController {
 	
 	
 	@ResponseBody
-	@RequestMapping("paging")
-	public JsonPage<StorageProDetail> paging(PageRequest pageRequest,
+	@RequestMapping("api_paging")
+	public JsonPage<StorageProDetail> api_paging(PageRequest pageRequest,
 			HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("user");

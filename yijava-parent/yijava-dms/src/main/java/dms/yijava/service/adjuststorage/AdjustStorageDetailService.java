@@ -14,6 +14,7 @@ import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.adjuststorage.AdjustStorageDao;
 import dms.yijava.dao.adjuststorage.AdjustStorageDetailDao;
+import dms.yijava.dao.adjuststorage.AdjustStorageProDetailDao;
 import dms.yijava.entity.adjuststorage.AdjustStorage;
 import dms.yijava.entity.adjuststorage.AdjustStorageDetail;
 
@@ -25,6 +26,8 @@ public class AdjustStorageDetailService {
 	private AdjustStorageDao adjustStorageDao;
 	@Autowired
 	private AdjustStorageDetailDao adjustStorageDetailDao;
+	@Autowired
+	private AdjustStorageProDetailDao adjustStorageProDetailDao;
 
 	public JsonPage<AdjustStorageDetail> paging(PageRequest pageRequest,
 			List<PropertyFilter> filters) {
@@ -53,6 +56,17 @@ public class AdjustStorageDetailService {
 
 	public void removeByIdEntity(String id,String adjust_storage_code) {
 		adjustStorageDetailDao.removeById(id);
+		adjustStorageProDetailDao.removeObject(".deleteByAdjust_storage_detail_id", id);
+		AdjustStorageDetail adjustStorageDetail = adjustStorageDetailDao.getObject(".selectAdjustStorageProDetailTotalNumber",id);
+		if (null != adjustStorageDetail) {
+			adjustStorageDetail.setId(id);
+			adjustStorageDetailDao.updateObject(".updateTotalNumber", adjustStorageDetail);
+		}else{
+			adjustStorageDetail = new AdjustStorageDetail();
+			adjustStorageDetail.setId(id);
+			adjustStorageDetail.setAdjust_number("0");
+			adjustStorageDao.updateObject(".updateTotalNumber", adjustStorageDetail);
+		}
 		AdjustStorage adjustStorage = adjustStorageDao.getObject(".selectAdjustStorageDetailTotalNumber",adjust_storage_code);
 		if (null != adjustStorage) {
 			adjustStorageDao.updateObject(".updateTotalNumber", adjustStorage);

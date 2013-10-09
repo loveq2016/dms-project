@@ -16,5 +16,4 @@ public class AdjustStorage {
 	private String total_number;
 	private String status;
 	private String remark;
-
 }

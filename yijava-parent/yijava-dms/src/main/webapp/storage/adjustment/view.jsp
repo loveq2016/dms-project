@@ -55,7 +55,9 @@
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>			   
+						<restrict:function funId="165">
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>	
+						</restrict:function>		   
 					</div>
 				</div>
 			</div>
@@ -79,12 +81,44 @@
 					</thead>
 				</table>
 				<div id="tb">     
-					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
-					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntity()">编辑</a>
-        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity()">删除</a>
+					<restrict:function funId="165">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
+					</restrict:function>
+					<restrict:function funId="165">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntity()">编辑</a>
+					</restrict:function>
+					<restrict:function funId="165">
+	        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity()">删除</a>
+	        		</restrict:function>
 				</div> 
 			</div>
 			<div style="margin: 10px 0;"></div>
+			<div id="dlgW" class="easyui-dialog" style="width:400px;height:160px;padding:5px 5px 5px 5px;"
+		            modal="true" closed="true" buttons="#dlgW-buttons">
+			        <form id="fm2" action="" method="post" enctype="multipart/form-data">
+						      <table>
+							        <tr>
+						             	<td>调整类型:</td>
+						             	<td><input class="easyui-combobox" name="type" id="type" style="width:150px"
+												data-options="
+													required:true,
+													valueField: 'id',
+													textField: 'value',
+													panelHeight:'auto',
+													data: [
+														{id: '1',value: '其他出库'},
+														{id: '2',value: '异常入库'},
+														{id: '3',value: '报废'}
+														]" />
+										</td>
+						             </tr>
+						      </table>    	
+			        </form>
+		    </div>
+		    <div id="dlgW-buttons">
+		        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="createAdjustStorageEntity();">保存</a>
+		        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgW').dialog('close')">取消</a>
+		    </div>	
 		</div>
 		
 		<div id="dlgAdjustDetail" class="easyui-dialog" title="库存调整明细" style="width:950px;height:auto;padding:5px 5px 5px 5px;"
@@ -106,7 +140,7 @@
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:100px;" name="adjust_storage_date" id="adjust_storage_date"/></td>
 									<td></td>
 									<td>调整类型:</td>	
-									<td><input class="easyui-combobox" name="type" id="type" 
+									<td><input class="easyui-combobox" name="type" id="type"  readonly="readonly"
 												data-options="
 													valueField: 'id',
 													textField: 'value',
@@ -223,7 +257,7 @@
 								<th field="storage_name" width="120" align="center" sortable="true">仓库</th>
 								<th field="product_item_number" width="120" align="center" sortable="true">产品编号</th>
 								<th field="product_cname" width="120" align="center" sortable="true">产品中文名称</th>
-								<th field="batch_no" width="100" align="center" sortable="true">批号/序列号</th>
+								<th field="batch_no" width="100" align="center" sortable="true">产品批次</th>
 								<th field="valid_date" width="100" align="center" sortable="true">有效期</th>
 								<th field="inventory_number" width="100" align="center" sortable="true">产品数量（EA）</th>
 							</tr>
@@ -232,12 +266,12 @@
 		</div>
 		<div style="margin: 10px 0;"></div>
 	    <div id="dlgProduct-buttons">
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductSnEntity()">添加</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductEntity()">添加</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
 	    </div>
 	    
-		<div id="dlgProductSn" class="easyui-dialog" style="width:400px;height:460px;padding:5px 5px 5px 5px;"
-	            modal="true" closed="true" buttons="#dlgProductSn-buttons">
+		<div id="dlgProductAdd" class="easyui-dialog" style="width:400px;height:460px;padding:5px 5px 5px 5px;"
+	            modal="true" closed="true" buttons="#dlgProductAdd-buttons">
 		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
 		        
 		       			 <input name="adjust_storage_code" hidden="true" class="easyui-validatebox" style="width:150px;">
@@ -267,7 +301,8 @@
 					             	<td>库存量:</td>
 					             	<td><input name="inventory_number" readonly="true" class="easyui-numberbox" style="width:150px"></td>
 					             </tr>
-						        <tr>
+<!-- 						             
+					        <tr> 
 					             	<td>调整数量:</td>
 					             	<td><input name="adjust_number" class="easyui-numberbox" style="width:150px" data-options="required:true"></td>
 					             </tr>
@@ -279,14 +314,93 @@
 						             	</font>
 						             </td>
 					             </tr>
+-->
 					      </table>    	
 		        </form>
 	    </div>
-	    <div id="dlgProductSn-buttons">
+	    <div id="dlgProductAdd-buttons">
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveAdjustStorageDetailEntity();">保存</a>
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProductSn').dialog('close')">取消</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProductAdd').dialog('close')">取消</a>
 	    </div>	    
-	
+	    
+	    
+	    <div id="dlgAdjustProductSn" class="easyui-dialog" style="width:403px;height:413px;padding: 5px 5px 5px 5px;"
+            modal="true" closed="true">
+				<table id="dgAdjustProductSn"  class="easyui-datagrid" title="查询结果" style="height:365px;width:380px;" method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="id"  toolbar="#tb3"
+						pagination="true" iconCls="icon-search" sortOrder="asc">
+					<thead>
+						<tr>
+							<th data-options="field:'product_sn',width:240,align:'center'" sortable="true">序列号</th>
+						</tr>
+					</thead>
+				</table>
+				<div id="tb3">
+<%-- 					<restrict:function funId="152"> --%>
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="selectProductSn()">添加</a>
+<%-- 					</restrict:function> --%>
+<%-- 					<restrict:function funId="154"> --%>
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteAdjustSn()">删除</a>
+<%-- 					</restrict:function> --%>
+				</div>
+    </div>
+	    
+		<div id="dlgProductSn" class="easyui-dialog" title="序列号列表" style="width:800px;height:495px;padding:5px 5px 5px 5px;"
+            modal="true" closed="true" buttons="#dlgProductSn-buttons">
+				<div class="easyui-panel" title="查询条件" style="width:775px;">
+						<div style="padding: 10px 0 0 30px">
+							<form id="fffdetail" method="post">
+								<input type="hidden" name="batch_no" id="batch_no" value=""></input>
+								<input type="hidden" name="fk_storage_id" id="fk_storage_id" value=""></input>
+								<table>
+									<tr>
+<%-- 										<input type="hidden" name="fk_dealer_id" id="fk_dealer_id" value="${user.fk_dealer_id}"></input>
+										<td>仓库:</td>
+										<td width="100px">
+											<input class="easyui-combobox" name="fk_storage_id" id="fk_storage_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+						             			data-options="
+							             			url:'${basePath}api/storage/list?dealer_id=${user.fk_dealer_id}',
+								                    method:'get',
+								                    valueField:'id',
+													textField:'storage_name',
+								                    panelHeight:'auto'
+						            			"/>
+										</td>
+										<td>产品编号:</td>	
+										<td width="100px"><input class="easyui-validatebox" type="text" name="product_item_number" id="product_item_number" ></input></td>
+--%>
+										<td>序列号:</td>	
+										<td width="100px"><input class="easyui-validatebox" type="text" name="product_sn" id="product_sn" ></input></td>
+									</tr>
+								</table>
+							</form>
+						</div>
+						<div style="text-align: right; padding:5px">
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearchProductSn()">查询</a>   
+						</div>
+					</div>
+				<div style="margin: 10px 0;"></div>
+					<table id="dgProductSn" class="easyui-datagrid" title="查询结果" style="height:300px" method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbProduct">
+						<thead>
+							<tr>
+<!-- 								<th field="dealer_name" width="100" align="center" hidden="true">经销商</th> -->
+<!-- 								<th field="fk_storage_id" width="120" align="center" hidden="true"></th> -->
+								<th field="storage_name" width="120" align="center" sortable="true">仓库</th>
+<!-- 								<th field="product_item_number" width="120" align="center" sortable="true">产品编号</th> -->
+<!-- 								<th field="product_cname" width="120" align="center" sortable="true">产品中文名称</th> -->
+								<th field="batch_no" width="100" align="center" sortable="true">产品批次</th>
+								<th field="product_sn" width="100" align="center" sortable="true">序列号</th>
+<!-- 								<th field="inventory_number" width="100" align="center" sortable="true">产品数量（EA）</th> -->
+							</tr>
+						</thead>
+					</table>
+		</div>
+		<div style="margin: 10px 0;"></div>
+	    <div id="dlgProductSn-buttons">
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="addProductSn()">添加</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProductSn').dialog('close')">取消</a>
+	    </div>
 
 	<script type="text/javascript">
 	 	var url;
@@ -305,15 +419,11 @@
 		}
 		
 		function formatterType(value, row, index){
-			if(value=='0')
-				return '<span>未选择</span>'; 
-			else if(value=='1')
+			 if(value=='1')
 				return '<span>其他出库</span>'; 
 			else if(value=='2')
-				return '<span>退货</span>'; 
-			else if(value=='3')
 				return '<span>异常入库</span>'; 
-			else if(value=='4')
+			else if(value=='3')
 				return '<span>报废</span>'; 
 		}
 		
@@ -341,19 +451,30 @@
 		} 
 		
 		function newEntity(){
-			$.getJSON(basePath + "api/adjuststorage/save",function(result){
-				if(result.id==""){
-					alert("Not Login");
-				}else{
-					$("#dealer_name").val(result.dealer_name);
-					$("#adjust_storage_code").val(result.adjust_storage_code);
-					$("#adjust_storage_date").val(result.adjust_storage_date);
-					$('#dg').datagrid('reload');
-					$('#dlgAdjustDetail').dialog('open');
-					url =basePath+'api/adjuststorage/update';
-				}
-			});	
+			$('#fm2').form('clear');
+			$('#dlgW').dialog('open').dialog('setTitle','添加调整单信息');
 		}		
+		
+		function createAdjustStorageEntity(){
+			$('#fm2').form('submit', {
+				url :basePath+'api/adjuststorage/save',
+			    method:"post",
+			    onSubmit: function(){
+			        return $(this).form('validate');
+			    },
+			    success:function(msg){
+			    	var jsonobj = $.parseJSON(msg);
+			    	if(jsonobj.state==1){
+						 $('#dlgW').dialog('close');     
+	                     $('#dg').datagrid('reload');
+			    	}else if(jsonobj.state==2){
+			    		$.messager.alert('提示','不是经销商用户不能添加调整单!','error');
+			    	}else{
+			    		$.messager.alert('提示','Error!','error');	
+			    	}
+			    }
+			});
+		}
 		
 		function editEntity(){
 	           var row = $('#dg').datagrid('getSelected');
@@ -368,8 +489,6 @@
 	            }else{
 					$.messager.alert('提示','请选中数据!','warning');				
 				 }		
-			
-			
 		}
 		
 		
@@ -410,10 +529,10 @@
 			if($('#status').combobox('getValue')==0){
 				$('#dlgProduct').dialog('open');
 				$('#dgProduct').datagrid({
-					 url:basePath+'api/storageDetail/paging',
-					 queryParams: {
-						filter_ANDS_fk_dealer_id : $('#fk_dealer_id').val()
-					 }
+					 url:basePath+'api/storageDetail/api_paging',
+					queryParams: {
+						filter_ANDS_dealer_id : dealer_id
+					}
 				});
 			}else{
 				$.messager.alert('提示','无法编辑已提交的调整单!','error');
@@ -455,15 +574,12 @@
 		}
 		
 		
-		function newProductSnEntity() {
+		function newProductEntity() {
 			$('#fm3').form('clear');
 			var row = $('#dgProduct').datagrid('getSelected');
 			if(row){
-				$('#dlgProductSn').dialog('open').dialog('setTitle','添加产品');
+				$('#dlgProductAdd').dialog('open').dialog('setTitle','添加产品');
 				$('#fm3').form('load',row);
-				
-				
-				
 				$("#fm3 input[name=adjust_storage_code]").val(adjust_storage_code);
 			}else{
 				$.messager.alert('提示','请选中某个产品!','warning');
@@ -482,9 +598,10 @@
 				    success:function(msg){
 				    	var jsonobj = $.parseJSON(msg);
 				    	if(jsonobj.state==1){
-							 $('#dlgProductSn').dialog('close');     
+							 $('#dlgProductAdd').dialog('close');     
 		                     $('#dgDetail').datagrid('reload');
 		                     $('#dg').datagrid('reload');
+		                     $.messager.alert('提示','产品添加成功!','info');		
 				    	}else if(jsonobj.state==2){
 				    		$.messager.alert('提示','不可重复添加一个批次!','error');	
 				    	}else{
@@ -495,16 +612,16 @@
 		//	}else{
 		//		$.messager.alert('提示','无法编辑已提交的调整单!','error');
 		//	}
-				
 		}
 		
+		var dealer_id ; 
 		var adjust_storage_code ;
 		function openAdjustDetail(index){
 			$('#dg').datagrid('selectRow',index);
 			var row = $('#dg').datagrid('getSelected');
 			$('#fm').form('load',row);
 			if(row.status==0){
-				$('#type').combobox('setValue','1');
+				//$('#type').combobox('setValue','1');
 				$("#newAdjustBtn").linkbutton('enable');
 				$("#deleteAdjustBtn").linkbutton('enable');
 				$("#submitAdjustBtn").linkbutton('enable');
@@ -516,6 +633,7 @@
 				
 			$('#dlgAdjustDetail').dialog('open');
 			adjust_storage_code = row.adjust_storage_code;
+			dealer_id = row.dealer_id;
             $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
 			$('#dgDetail').datagrid({
 				url : basePath + "api/adjuststoragedetail/paging",
@@ -537,23 +655,133 @@
 		    });
 		}
 		
+		function doSearchProductSn(){
+		    $('#dgProductSn').datagrid('load',{
+		    	filter_ANDS_fk_storage_id: $("#fffdetail input[name=fk_storage_id]").val(),
+		    	filter_ANDS_batch_no: $("#fffdetail input[name=batch_no]").val(),
+		    	filter_ANDS_product_sn: $("#fffdetail input[name=product_sn]").val()
+		    });
+		}
+		
+
 		var adjust_detail_id;
 		var sn_num;
+		var batch_no;
+		var fk_storage_id;
 		function openProductSn(index){
 			$('#dgDetail').datagrid('selectRow',index);
 			var row = $('#dgDetail').datagrid('getSelected');
-// 			$('#dlgProductSn').dialog('open').dialog('setTitle', '['+row.express_sn+']产品序列号维护');
+			$('#dlgAdjustProductSn').dialog('open').dialog('setTitle','产品下序列号');
+			adjust_storage_code = row.adjust_storage_code;
 			adjust_detail_id = row.id;
 			sn_num = Math.abs(row.adjust_number);
-			alert(sn_num)
-// 			$('#dgProductSn').datagrid('loadData', {total: 0, rows: []});
-// 			$('#dgProductSn').datagrid({
-// 				url : basePath + "api/deliverExpressSn/paging",
-// 				queryParams: {
-// 					filter_ANDS_deliver_express_detail_id : deliver_express_detail_id
-// 				}
-// 			});
+			batch_no = row.batch_no;
+			fk_storage_id = row.fk_storage_id;
+			$('#dgAdjustProductSn').datagrid('loadData', {total: 0, rows: []});
+			$('#dgAdjustProductSn').datagrid({
+				url : basePath + "api/adjuststoragedetailpro/paging",
+				queryParams: {
+					filter_ANDS_adjust_storage_code: adjust_storage_code,
+					filter_ANDS_fk_storage_id : fk_storage_id	,
+					filter_ANDS_batch_no : batch_no,
+					filter_ANDS_status : 1
+				}
+			});
 		}
+		
+		function selectProductSn(){
+			$('#dlgProductSn').dialog('open');
+			$("#fffdetail input[name=batch_no]").val(batch_no);
+			$('#dgProductSn').datagrid('loadData', {total: 0, rows: []});
+			$('#dgProductSn').datagrid({
+				url : basePath + "api/storageProDetail/api_paging",
+				queryParams: {
+					filter_ANDS_fk_storage_id: fk_storage_id,
+					filter_ANDS_batch_no : batch_no,
+					filter_ANDS_status : 1
+				}
+			});
+		}
+		
+		function addProductSn(){
+	           var row = $('#dgProductSn').datagrid('getSelected');
+	            if (row){
+// 	            	if(row.status=='0'){
+		            			$.ajax({
+		            				type : "POST",
+		            				url : basePath + 'api/adjuststoragedetailpro/save',
+		            				data : {
+		            					    adjust_storage_detail_id : adjust_detail_id,
+		            						fk_storage_id:row.fk_storage_id,
+		            						batch_no : row.batch_no,
+		            						product_sn : row.product_sn,
+		            						adjust_storage_code:adjust_storage_code
+		            				},
+		            				error : function(request) {
+		            					$.messager.alert('提示','Error!','error');	
+		            				},
+		            				success : function(data) {
+		            					var jsonobj = $.parseJSON(data);
+		            					if (jsonobj.state == 1) {  
+		            	                     $('#dgAdjustProductSn').datagrid('reload');
+		            	                     $('#dgDetail').datagrid('reload');
+		            	                     $('#dg').datagrid('reload');
+		            	                     
+		            	                     $.messager.alert('提示','序列号添加成功!','info');			
+		            					}else if(jsonobj.state == 2){
+		            						$.messager.alert('提示','序列号已经存在!','warning');			
+		            					}else{
+		            						$.messager.alert('提示','Error!','error');	
+		            					}
+		            				}
+		            			});                    	            		
+// 	            	}else{
+// 	            		$.messager.alert('提示','无法删除已提交的调整单!','error');
+// 	            	}
+	            }else{
+					$.messager.alert('提示','请选中数据!','warning');				
+				 }	
+			
+		}
+		
+		function deleteAdjustSn(){
+	           var row = $('#dgAdjustProductSn').datagrid('getSelected');
+	            if (row){
+// 	            	if($('#status').combobox('getValue')==0){
+		                $.messager.confirm('Confirm','是否确定删除?',function(r){
+		                    if (r){
+		            			$.ajax({
+		            				type : "POST",
+		            				url : basePath + 'api/adjuststoragedetailpro/delete',
+		            				data : {
+		            					id:row.id , 
+		            					adjust_storage_code:adjust_storage_code,
+		            					adjust_storage_detail_id : adjust_detail_id},
+		            				error : function(request) {
+		            					$.messager.alert('提示','Error!','error');	
+		            				},
+		            				success : function(data) {
+		            					var jsonobj = $.parseJSON(data);
+		            					if (jsonobj.state == 1) {  
+		            	                     $('#dgAdjustProductSn').datagrid('reload');
+		            	                     $('#dgDetail').datagrid('reload');
+		            	                     $('#dg').datagrid('reload');
+		            					}else{
+		            						$.messager.alert('提示','Error!','error');	
+		            					}
+		            				}
+		            			});                    	
+		                    }
+		                });	            		
+// 	            	}else{
+// 	            		$.messager.alert('提示','无法编辑已提交的调整单!','error');
+// 	            	}
+	            }else{
+					$.messager.alert('提示','请选中数据!','warning');				
+				 }	
+		}
+		
+		
 		
 		
 		function submitAdjustStorage(){

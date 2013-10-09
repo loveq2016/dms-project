@@ -22,6 +22,7 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_dealer_id)">and fk_dealer_id = #{fk_dealer_id}</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(batch_no)">and batch_no =#{batch_no}</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">and status = #{status}</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(product_sn)">and product_sn like CONCAT('%','${product_sn}','%' ) </if>
 		</trim>
 	</sql>
 	<sql id="adsOrder">

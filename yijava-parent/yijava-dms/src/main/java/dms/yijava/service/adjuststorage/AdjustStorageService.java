@@ -16,6 +16,7 @@ import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.adjuststorage.AdjustStorageDao;
 import dms.yijava.dao.adjuststorage.AdjustStorageDetailDao;
+import dms.yijava.dao.adjuststorage.AdjustStorageProDetailDao;
 import dms.yijava.entity.adjuststorage.AdjustStorage;
 @Service
 @Transactional
@@ -24,6 +25,8 @@ public class AdjustStorageService{
 	private AdjustStorageDao adjustStorageDao;
 	@Autowired
 	private AdjustStorageDetailDao adjustStorageDetailDao;
+	@Autowired
+	private AdjustStorageProDetailDao adjustStorageProDetailDao;
 	
 	
 	public JsonPage<AdjustStorage> paging(PageRequest pageRequest,List<PropertyFilter> filters) {
@@ -57,9 +60,10 @@ public class AdjustStorageService{
 	public void removeEntity(String id,String adjust_storage_code) {
 		adjustStorageDao.removeById(id);
 		adjustStorageDetailDao.removeObject(".deleteByAdjustStorageCode", adjust_storage_code);
+		adjustStorageProDetailDao.removeObject(".deleteByAdjustStorageCode", adjust_storage_code);
 	}
 
-	public AdjustStorage getAdjustStorageCode(String dealer_id) {
+	public synchronized AdjustStorage getAdjustStorageCode(String dealer_id) {
 		AdjustStorage adjustStorage= adjustStorageDao.getObject(".selectAdjustStorageCode",dealer_id);
 		if(null==adjustStorage || StringUtils.isEmpty(adjustStorage.getAdjust_storage_no())){
 			adjustStorage = new AdjustStorage();

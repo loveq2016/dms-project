@@ -40,9 +40,9 @@ public class AdjustStorageController {
 		if (null != sysUser) {
 			//经销商
 			if (!StringUtils.equals("0", sysUser.getFk_dealer_id())) {
-				filters.add(PropertyFilters.build("ANDS_fk_put_storage_party_id",sysUser.getFk_dealer_id()));
+				filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
 			}else if(!StringUtils.equals("0",sysUser.getFk_department_id())){
-				filters.add(PropertyFilters.build("ANDS_fk_put_storage_party_ids", this.listString(sysUser.getUserDealerList())));
+				filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
 			}
 			return adjustStorageService.paging(pageRequest,filters);
 		}
@@ -52,26 +52,27 @@ public class AdjustStorageController {
 	
 	@ResponseBody
 	@RequestMapping("save")
-	public AdjustStorage save(HttpServletRequest request) {
+	public  Result<String> save(@ModelAttribute("entity") AdjustStorage entity, HttpServletRequest request) {
 		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
 		SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");
 		SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
 		//必须是经销商才可以添加出货单
-		if(StringUtils.isNotEmpty(sysUser.getFk_dealer_id())){
+		if(StringUtils.isNotEmpty(sysUser.getFk_dealer_id()) && !"0".equals(sysUser.getFk_dealer_id())){
 			try {
+				
 				AdjustStorage adjustStorage =  adjustStorageService.getAdjustStorageCode(sysUser.getFk_dealer_id());
 				adjustStorage.setAdjust_storage_code(sysUser.getDealer_code()+"AJ"+formatter.format(new Date())+adjustStorage.getAdjust_storage_no());
 				adjustStorage.setDealer_id(sysUser.getFk_dealer_id());
-				adjustStorage.setDealer_name(sysUser.getDealer_name());
+				adjustStorage.setType(entity.getType());
 				adjustStorage.setAdjust_storage_date(formatter2.format(new Date()));
 				adjustStorageService.saveEntity(adjustStorage);
-				return adjustStorage;
+				return new Result<String>(adjustStorage.getId(), 1);
 			} catch (Exception e) {
 				e.printStackTrace();
-				return null;
+				return new Result<String>("0", 0);
 			}
 		}else{
-			return null;
+			return new Result<String>("2", 2);
 		}
 	}
 	

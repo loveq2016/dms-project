@@ -6,9 +6,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class AdjustStorageProDetail {
-	public String id;
-	public String fk_storage_id;
-	public String adjust_storage_code;
-	public String batch_no;
-	public String product_sn;
+	private String id;
+	private String adjust_storage_detail_id;
+	private String fk_storage_id;
+	private String adjust_storage_code;
+	private String batch_no;
+	private String product_sn;
+
 }

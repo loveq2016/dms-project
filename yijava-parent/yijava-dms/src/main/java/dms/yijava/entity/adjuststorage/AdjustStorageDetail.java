@@ -15,5 +15,6 @@ public class AdjustStorageDetail {
 	private String adjust_number;
 	private String valid_date;
 	private String inventory_number;
+	
 
 }

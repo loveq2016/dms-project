@@ -5,12 +5,8 @@
 <mapper namespace="AdjustStorage">
 	<sql id="adsWhere">
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(type)">
-				and type=#{type}
-			</if>
-			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">
-				and status=#{status}
-			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(type)">and type=#{type}</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">and status=#{status}</if>
 			<!-- 单据 -->
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(adjust_storage_code)">
 				and adjust_storage_code=#{adjust_storage_code}
@@ -57,7 +53,7 @@
 	<insert id="insert" parameterType="dms.yijava.entity.adjuststorage.AdjustStorage" useGeneratedKeys="true" keyProperty="id">
 		insert into dms.tb_adjust_storage
 		(adjust_storage_code,adjust_storage_no,adjust_storage_date,dealer_id,type,total_number,status,create_date)
-		values(#{adjust_storage_code},#{adjust_storage_no},#{adjust_storage_date},#{dealer_id},0,0,0,NOW())
+		values(#{adjust_storage_code},#{adjust_storage_no},#{adjust_storage_date},#{dealer_id},#{type},0,0,NOW())
 	</insert>
 	
 	<update id="submitAdjustStorage" parameterType="dms.yijava.entity.adjuststorage.AdjustStorage">

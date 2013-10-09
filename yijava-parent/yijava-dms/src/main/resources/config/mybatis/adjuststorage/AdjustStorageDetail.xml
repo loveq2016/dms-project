@@ -44,9 +44,20 @@
 		<include refid="adsWhere"/>
 	</select>
 
+
+	<select id="selectAdjustStorageProDetailTotalNumber" resultType="dms.yijava.entity.adjuststorage.AdjustStorageDetail">
+		SELECT adjust_storage_detail_id as id,COUNT(1) as adjust_number 
+		FROM tb_adjust_storage_pro_detail WHERE adjust_storage_detail_id = #{id}
+	</select>
+	
+	<update id="updateTotalNumber" parameterType="dms.yijava.entity.adjuststorage.AdjustStorageDetail">
+		update dms.tb_adjust_storage_detail set adjust_number=#{adjust_number} WHERE id=#{id}
+	</update>
+	
+	
 	<insert id="insert" parameterType="dms.yijava.entity.adjuststorage.AdjustStorageDetail">
 		insert into dms.tb_adjust_storage_detail (fk_storage_id,adjust_storage_code,product_item_number,batch_no,adjust_number,valid_date) 
-    	values(#{fk_storage_id},#{adjust_storage_code},#{product_item_number},#{batch_no},#{adjust_number},#{valid_date})
+    	values(#{fk_storage_id},#{adjust_storage_code},#{product_item_number},#{batch_no},0,#{valid_date})
     </insert>
 	
 	<delete id="deleteByPrimaryKey" parameterType="int">

@@ -44,13 +44,18 @@ public class AdjustStorageDetailController {
 	@RequestMapping("save")
 	public Result<String> save(@ModelAttribute("entity") AdjustStorageDetail entity) {
 		//同一个仓库下的，同一个批次 不能重复添加
-		AdjustStorageDetail asd= adjustStorageDetailService.getAdjustStorageDetail(entity);
-		if (null == asd) {
-			adjustStorageDetailService.saveEntity(entity);
-			return new Result<String>(entity.getId(), 1);
-		}else{
-			return new Result<String>(entity.getId(), 2);
+		try {
+			AdjustStorageDetail asd= adjustStorageDetailService.getAdjustStorageDetail(entity);
+			if (null == asd) {
+				adjustStorageDetailService.saveEntity(entity);
+				return new Result<String>(entity.getId(), 1);
+			}else{
+				return new Result<String>(entity.getId(), 2);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return new Result<String>("0", 0);
 	}
 	
 	@ResponseBody
