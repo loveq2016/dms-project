@@ -6,12 +6,10 @@
 
 <sql id="adsWhere">
 	<trim prefix="WHERE" prefixOverrides="AND|OR">
-		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
-			and dealer_id=#{dealer_id}
-		</if>
-		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(category_id)">
-			and category_id=#{category_id}
-		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">and dealer_id=#{dealer_id}</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(category_id)">and category_id=#{category_id}</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)">and dealer_id in (${dealer_ids})</if>
+		
 	</trim>
 </sql>
 
