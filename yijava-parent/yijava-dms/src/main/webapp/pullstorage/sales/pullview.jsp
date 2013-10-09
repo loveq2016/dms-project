@@ -17,7 +17,7 @@
 						<form id="ff" method="post">
 							<table>
 								<tr>
-									<input class="easyui-validatebox" hidden="true" name="type" id="type" value="1"/>
+									<input class="easyui-validatebox" type="hidden" name="type" id="type" value="1"/>
 									<td width="200">分销出库单号:</td>	
 									<td><input class="easyui-validatebox" type="text" name="pull_storage_code"></input></td>
 									<td width="150">经销商:</td>
@@ -25,7 +25,7 @@
 										<c:choose>
 										       <c:when test="${user.fk_dealer_id!='0'}">
 													<input class="easyui-validatebox" disabled="disabled" id="pull_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
-													<input class="easyui-validatebox" hidden="true" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">					       	
+													<input class="easyui-validatebox" type="hidden" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">					       	
 										       </c:when>
 										       <c:otherwise>
 										       		<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
@@ -62,15 +62,12 @@
 												id: '0',
 												value: '未提交'
 											},{
-												id: '1',
+												id: '3',
 												value: '在途'
 											},{
-												id: '2',
+												id: '4',
 												value: '成功'
-											},{
-												id: '3',
-												value: '取消'
-											},]" />
+											}]" />
 									</td>
 									<td width="100">开始时间:</td>
 									<td width="270">
@@ -190,19 +187,16 @@
 										<input name="status" readonly="readonly" class="easyui-combobox" data-options="
 											valueField: 'id',
 											textField: 'value',
-											data: [{
+											data:[{
 												id: '0',
 												value: '未提交'
 											},{
-												id: '1',
+												id: '3',
 												value: '在途'
 											},{
-												id: '2',
+												id: '4',
 												value: '成功'
-											},{
-												id: '3',
-												value: '取消'
-											},]" />
+											}]" />
 									</td>
 								</tr>
 							</table>
@@ -300,14 +294,14 @@
 					      <table>
 					      	     <tr>
 					             	<td>仓库:</td>
-					             	<input name="fk_storage_id" hidden="true" class="easyui-validatebox" style="width:150px;">
+					             	<input name="fk_storage_id" type="hidden" class="easyui-validatebox" style="width:150px;">
 					             	<td><input name="storage_name" readonly="true" class="easyui-validatebox" style="width:150px;"></td>
 					            </tr>
 					    		<tr>
 					             	<td>分销出库单号:</td>
 					             	<td>
 					             		<input name="pull_storage_code" readonly="true" class="easyui-validatebox" style="width:150px;">
-					             		<input name="put_storage_code" hidden="true" class="easyui-validatebox" style="width:150px;">
+					             		<input name="put_storage_code" type="hidden" class="easyui-validatebox" style="width:150px;">
 					             	</td>
 					            </tr>
 					            <tr>
@@ -370,12 +364,10 @@
 		function formatterStatus(value, row, index){
 			if(value=='0')
 				return '<span>未提交</span>'; 
-			else if(value=='1')
-				return '<span>在途</span>'; 
-			else if(value=='2')
-				return '<span>成功</span>'; 
 			else if(value=='3')
-				return '<span>取消</span>'; 
+				return '<span>在途</span>'; 
+			else if(value=='4')
+				return '<span>成功</span>'; 
 		}
 		function newEntity()
 		{

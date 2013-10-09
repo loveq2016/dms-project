@@ -486,9 +486,8 @@
 		var order_status;
 		var order_code;
 		var dealer_id=${user.fk_dealer_id};
-		$(function() {
-			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
-			pager.pagination();                    
+		$(function() {  
+			$('#dg').datagrid({url : basePath +"api/order/paging"});
 			//计算订单项小计
 			$("#order_number_sum").keyup(function(){
 		    	var order_price= $('input[name=order_price]').val();
@@ -504,7 +503,6 @@
 			return '<span style="color:red;cursor:pointer" onclick="onClickOrderDetail('+index+')">明细</span>'; 
 		}
 		function doSearch(){
-			$('#dg').datagrid({url : basePath +"api/order/paging"});
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_order_code:$('#ff input[name=order_code]').val(),
 		    	filter_ANDS_dealer_id: $('#ff input[name=dealer_id]').val(),
@@ -548,8 +546,7 @@
 			    	if(jsonobj.state==1){
 			    		clearForm();
 				    	$('#w').window('close');
-				    	var pager = $('#dg').datagrid().datagrid('getPager');
-				    	pager.pagination('select');	
+				    	$('#dg').datagrid('reload');
 			    	}else{
 			    		$.messager.alert('提示','Error!','error');	
 			    	}
@@ -752,8 +749,7 @@
 					 if (r){
 	                        $.post(basePath+'api/order/updatetocheck',{order_id:row.id},function(result){
 	        			    	if(result.state==1){
-	        			    		var pager = $('#dg').datagrid().datagrid('getPager');
-	    			    			pager.pagination('select');	
+	        			    		$('#dg').datagrid('reload');
 	                            } else {
 	                                $.messager.show({
 	                                    title: 'Error',
@@ -799,8 +795,7 @@
 				   {
 					    clearForm();
 					    $('#dlgOrderDetail').dialog('close');
-					    var pager = $('#dg').datagrid().datagrid('getPager');
-					    pager.pagination('select');				
+					    $('#dg').datagrid('reload');			
 				   }
 				}
 			});

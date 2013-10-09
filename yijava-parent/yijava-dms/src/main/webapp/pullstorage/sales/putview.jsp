@@ -17,7 +17,7 @@
 						<form id="ff" method="post">
 							<table>
 								<tr>
-									<input class="easyui-validatebox" hidden="true" name="type" id="type" value="1"/>
+									<input class="easyui-validatebox" type="hidden" name="type" id="type" value="1"/>
 									<td width="200">分销出库单号:</td>	
 									<td><input class="easyui-validatebox" type="text" name="pull_storage_code"></input></td>
 									<td width="150">经销商:</td>
@@ -25,7 +25,7 @@
 										<c:choose>
 										       <c:when test="${user.fk_dealer_id!='0'}">
 													<input class="easyui-validatebox" disabled="disabled" id="put_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
-													<input class="easyui-validatebox" hidden="true" name="fk_put_storage_party_id" id="fk_put_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">					       	
+													<input class="easyui-validatebox" type="hidden" name="fk_put_storage_party_id" id="fk_put_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">					       	
 										       </c:when>
 										       <c:otherwise>
 										       		<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
@@ -44,19 +44,16 @@
 										<input name="status" class="easyui-combobox" data-options="
 											valueField: 'id',
 											textField: 'value',
-											data: [{
+											data:[{
 												id: '0',
 												value: '未提交'
 											},{
-												id: '1',
-												value: '待接收'
-											},{
-												id: '2',
-												value: '成功'
-											},{
 												id: '3',
-												value: '取消'
-											},]" />
+												value: '在途'
+											},{
+												id: '4',
+												value: '成功'
+											}]" />
 									</td>
 								</tr>
 								<tr>
@@ -121,19 +118,16 @@
 										<input name="status" readonly="readonly" class="easyui-combobox" data-options="
 											valueField: 'id',
 											textField: 'value',
-											data: [{
+											data:[{
 												id: '0',
 												value: '未提交'
 											},{
-												id: '1',
-												value: '待接收'
-											},{
-												id: '2',
-												value: '成功'
-											},{
 												id: '3',
-												value: '取消'
-											},]" />
+												value: '在途'
+											},{
+												id: '4',
+												value: '成功'
+											}]" />
 									</td>
 								</tr>
 								<tr>
@@ -201,12 +195,10 @@
 		function formatterStatus(value, row, index){
 			if(value=='0')
 				return '<span>未提交</span>'; 
-			else if(value=='1')
-				return '<span>待接收</span>'; 
-			else if(value=='2')
-				return '<span>成功</span>'; 
 			else if(value=='3')
-				return '<span>取消</span>'; 
+				return '<span>在途</span>'; 
+			else if(value=='4')
+				return '<span>成功</span>'; 
 		}
 		//open订单项
 		function openPullStorageDetail(index){
