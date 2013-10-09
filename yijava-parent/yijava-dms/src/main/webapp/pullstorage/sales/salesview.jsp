@@ -17,7 +17,7 @@
 						<form id="ff" method="post">
 							<table>
 								<tr>
-									<input class="easyui-validatebox" hidden="true" name="type" id="type" value="3"/>
+									<input class="easyui-validatebox" type="hidden" name="type" id="type" value="3"/>
 									<td width="200">销售单号:</td>	
 									<td><input class="easyui-validatebox" type="text" name="pull_storage_code"></input></td>
 									<td width="150">经销商:</td>
@@ -25,7 +25,7 @@
 										<c:choose>
 										       <c:when test="${user.fk_dealer_id!='0'}">
 													<input class="easyui-validatebox" disabled="disabled" id="pull_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
-											<input class="easyui-validatebox" hidden="true" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">					       	
+											<input class="easyui-validatebox" type="hidden" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">					       	
 										       </c:when>
 										       <c:otherwise>
 										       		<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
@@ -53,6 +53,12 @@
 												value: '未提交'
 											},{
 												id: '1',
+												value: '已提交'
+											},{
+												id: '2',
+												value: '驳回'
+											},{
+												id: '3',
 												value: '成功'
 											}]" />
 									</td>
@@ -200,6 +206,12 @@
 												value: '未提交'
 											},{
 												id: '1',
+												value: '已提交'
+											},{
+												id: '2',
+												value: '驳回'
+											},{
+												id: '3',
 												value: '成功'
 											}]" />
 									</td>
@@ -363,7 +375,7 @@
 					      <table>
 					      	    <tr>
 					             	<td>仓库:</td>
-					             	<input name="fk_storage_id" hidden="true" class="easyui-validatebox" style="width:150px;">
+					             	<input name="fk_storage_id" type="hidden" class="easyui-validatebox" style="width:150px;">
 					             	<td><input name="storage_name" readonly="true" class="easyui-validatebox" style="width:150px;"></td>
 					            </tr>
 					    		<tr>
@@ -439,7 +451,11 @@
 			if(value=='0')
 				return '<span>未提交</span>'; 
 			else if(value=='1')
-				return '<span>成功</span>'; 
+				return '<span>已提交</span>'; 
+			else if(value=='2')
+				return '<span>驳回</span>'; 
+			else if(value=='3')
+				return '<span>成功</span>';
 		}
 		function newEntity()
 		{
@@ -515,8 +531,6 @@
 		}
 		//open订单项
 		function openPullStorageDetail(row,type){
-			$('#dg').datagrid('selectRow',index);
-			var row = $('#dg').datagrid('getSelected');
 			$('#ffPullStorageDetail').form('load',row);
 			$('#dlgPullStorageDetail').dialog('open');
             $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
@@ -531,16 +545,16 @@
 			$('#dgUpdateLog').datagrid({
 			    url:basePath+'api/flowlog/list?bussiness_id='+row.id+"&flow_id="+salesStorageflow_identifier_num
 			}); 
-			if(order_status=='0'|| order_status=='2'){
-				$('#savePullStorageDetail').linkbutton('disable');
-				$('#delPullStorageDetail').linkbutton('disable');
-				$('#saveDraft').linkbutton('disable');
-				$('#submitPullStorage').linkbutton('disable');
-			}else{
+			if(status=='0'|| status=='2'){
 				$('#savePullStorageDetail').linkbutton('enable');
 				$('#delPullStorageDetail').linkbutton('enable');
 				$('#saveDraft').linkbutton('enable');
 				$('#submitPullStorage').linkbutton('enable');
+			}else{
+				$('#savePullStorageDetail').linkbutton('disable');
+				$('#delPullStorageDetail').linkbutton('disable');
+				$('#saveDraft').linkbutton('disable');
+				$('#submitPullStorage').linkbutton('disable');
 			}
 			if(typeof(type) != "undefined"){
 				$('#dlgPullStorageDetailtabs').tabs('enableTab', '审核'); 

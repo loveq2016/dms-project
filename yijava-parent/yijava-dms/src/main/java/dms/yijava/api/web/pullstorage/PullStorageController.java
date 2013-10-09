@@ -152,7 +152,10 @@ public class PullStorageController {
 		}
 		return result;
 	}
-		
+	
+	
+	@ResponseBody
+	@RequestMapping("submitPullStorage")
 	public Result<Integer> submitPullStorage(@ModelAttribute("entity") PullStorage entity,HttpServletRequest request) {
 		/**
 		 * 添加产品SN明细
