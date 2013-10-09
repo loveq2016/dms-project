@@ -42,13 +42,7 @@ public class StorageDetailController {
 	public JsonPage<StorageDetail> api_paging(PageRequest pageRequest,
 			HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
-		SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
-		if (!StringUtils.equals("0", sysUser.getFk_dealer_id())) {
-			filters.add(PropertyFilters.build("ANDS_fk_dealer_id",sysUser.getFk_dealer_id()));
-			return storageDetailService.paging(pageRequest, filters);
-		}
-		return null;
-		
+		return storageDetailService.paging(pageRequest, filters);
 	}
 	
 	

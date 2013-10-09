@@ -677,7 +677,10 @@
 			if(typeof(order_code) != "undefined"){
 				$('#dlgProduct').dialog('open').dialog('setTitle','['+order_code+']产品列表');
 				$('#dgProduct').datagrid({
-					 url:basePath+'api/product/api_paging'
+					 url:basePath+'api/product/api_paging',
+					 queryParams: {
+							filter_ANDS_dealer_id : dealer_id
+					 }
 				});
 			}else
 			{

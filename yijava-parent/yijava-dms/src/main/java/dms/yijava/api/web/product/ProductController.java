@@ -44,24 +44,8 @@ public class ProductController {
 	@RequestMapping("api_paging")
 	public JsonPage<Product> api_paging(PageRequest pageRequest,HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
-		//filters.add(PropertyFilters.build("ANDS_dealer_id",dealer_ids));
 		return productService.paging(pageRequest, filters);
-		/*SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
-		if (!StringUtils.equals("0", sysUser.getFk_dealer_id())) {
-			filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
-			return productService.paging(pageRequest, filters);
-		}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
-			filters.add(PropertyFilters.build("ANDS_dealer_ids",this.listString(sysUser.getUserDealerList())));
-			return productService.paging(pageRequest, filters);
-			
-		}*/
-		//return null;
 	}
-	
-	
-	
-
-
 	
 	@ResponseBody
 	@RequestMapping("list")
