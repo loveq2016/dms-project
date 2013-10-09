@@ -42,7 +42,7 @@
 									<td>
 										<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 						             			data-options="
-							             			url:'${basePath}api/userDealerFun/list?d_id=${user.fk_department_id}&u_id=${user.id}',
+							             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
 								                    method:'get',
 								                    valueField:'dealer_id',
 								                    textField:'dealer_name',
@@ -107,6 +107,7 @@
 		</div>
 		
 
+
 	<!--add start -->	
 	<div id="dlgadd" class="easyui-dialog" title="申请试用" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
 	style="width:720px;height:500px;padding:10px;">
@@ -131,8 +132,17 @@
 									<tr>
 										<td>经销商:</td>
 										<td>
-										<input  style="width:260px;" class="easyui-validatebox" type="text"
-										 name="dealer_user_id" data-options="required:true"></input></td>								
+										
+										 <input class="easyui-combobox" name="dealer_user_id" id="dealer_user_id" style="width:260px" 
+										 maxLength="100" class="easyui-validatebox"
+						             			data-options="
+							             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
+								                    method:'get',
+								                    valueField:'dealer_id',
+								                    textField:'dealer_name',
+								                    panelHeight:'auto'
+						            			"/>	
+						            	</td>							
 									</tr>
 									<tr>
 										<td>试用时间:</td>
@@ -155,7 +165,11 @@
 				</div>
 			</div>
 			
-			<div title="产品明细行" >
+			<%-- <div title="产品明细行" >
+					<div id="tbOrderDetail">    
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="saveOrderDetail" onclick="newOrderDetailEntity();">添加产品</a>
+					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="delOrderDetail" onclick="removeOrderDetailEntity();">删除产品</a>
+					</div>
 				<table id="dgadd" title="查询结果" style="width:650px;height: 340px" url="${basePath}api/flow/paging" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="asc">
 					<thead>
@@ -168,12 +182,12 @@
 							<th data-options="field:'add_date',width:50">备注</th>										
 						</tr>
 					</thead>
-				</table>
-			</div>
-			
+				</table>				
+			</div>		 --%>	
 		</div>
 	</div>
 	<!--add end -->	
+	
 	
 	<!--dlgdetail start -->	
 	<div id="dlgdetail" class="easyui-dialog" title="申请试用" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
@@ -215,16 +229,19 @@
 			</div>
 			
 			<div title="产品明细行" >
-				<table id="dgdesc" title="查询结果" style="width:650px;height: 340px" url="${basePath}api/flow/paging" method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="asc">
+			
+					<div id="tbOrderDetail">    
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="saveOrderDetail" onclick="newOrderDetailEntity();">添加产品</a>
+					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="delOrderDetail" onclick="removeOrderDetailEntity();">删除产品</a>
+					</div>
+				<table id="dgdesc" title="查询结果" style="width:650px;height: 340px">
 					<thead>
 						<tr>
-							<th data-options="field:'flow_id',width:10"  sortable="true" hidden="true">id</th>
-							<th data-options="field:'flow_name',width:100"  sortable="true">产品名称</th>
-							<th data-options="field:'flow_desc',width:100" sortable="true">规格型号</th>
-							<th data-options="field:'is_system',width:50" sortable="true">数量</th>
-							
-							<th data-options="field:'add_date',width:50">备注</th>										
+							<th data-options="field:'trial_detail_id',width:10"  sortable="true" hidden="true">trial_detail_id</th>
+							<th data-options="field:'product_name',width:100"  sortable="true">产品名称</th>
+							<th data-options="field:'product_name',width:100" sortable="true">规格型号</th>
+							<th data-options="field:'trial_num',width:50" sortable="true">数量</th>							
+							<th data-options="field:'remark',width:50">备注</th>										
 						</tr>
 					</thead>
 				</table>
@@ -364,8 +381,56 @@
 	</div>
 	<!--flow end -->	
 	
-
-
+		<div id="dlgProduct" class="easyui-dialog" title="申请试用-审核" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
+			style="width:850px;height:500px;padding:10px;" buttons="#dlgProduct-buttons">
+						<div class="easyui-panel" title="查询条件" style="width:775px;">
+								<div style="padding: 10px 0 0 30px">
+									<form id="ffdetail" method="post">
+										<table>
+											<tr>
+												<td>产品编号:</td>	
+												<td width="100px"><input class="easyui-validatebox" type="text" name="item_number" id="item_number" ></input></td>
+												<td>选择分类:</td>
+												<td>
+									            	<input class="easyui-combobox" name="category_id" id="category_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+								             			data-options="
+									             			url: '${basePath}api/dealerAuthProduct/list?dealer_id=${user.fk_dealer_id}',
+										                    method:'get',
+										                    valueField:'product_category_id',
+															textField:'category_name',
+										                    panelHeight:'auto'
+								            			"/>
+							                	</td>
+											</tr>
+										</table>
+									</form>
+								</div>
+								<div style="text-align: right; padding:5px">
+									<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearchProduct()">查询</a>   
+								</div>
+							</div>	
+							<div style="margin: 10px 0;"></div>
+								<table id="dgProduct" title="查询结果" style="height:300px" method="get"
+								rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="desc" toolbar="#tbProduct">
+									<thead>
+										<tr>
+											<th data-options="field:'item_number',width:100,align:'center'" sortable="true">产品编号</th>
+											<th data-options="field:'cname',width:150,align:'center'" sortable="true">中文名称</th>
+											<th data-options="field:'ename',width:150,align:'center'" sortable="true">英文说明</th>
+											<th data-options="field:'price',width:80,align:'center'" sortable="true">价格</th>
+											<th data-options="field:'discount',width:80,align:'center'" sortable="true">折扣</th>
+											<th data-options="field:'order_company',width:80,align:'center'">订购单位</th>
+											<th data-options="field:'is_order',width:80" formatter="formatterIs_order">是否可订货</th>
+										</tr>
+									</thead>
+								</table>
+			</div>
+				<div style="margin: 10px 0;"></div>
+			    <div id="dlgProduct-buttons">
+			    		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductNumEntity()">添加</a>
+			        	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
+			    </div>	
+		
 	<script type="text/javascript">
 	
 	 	var url;	 
@@ -392,7 +457,9 @@
 			 	return '<a class="questionBtn" href="javascript:void(0)"  onclick="View_Entity('+index+')" ></a>';
 			 //return '<span><img src="'+basePath+'resource/themes/icons/detail.png" style="cursor:pointer" onclick="View_Entity(' + index + ');"></span>'; 
 		} 
-		
+		 function formatterIs_order (value, row, index) { 
+				return value==1?"<span style='color:green'>是</span>":"<span style='color:red'>否</span>";
+			}
 		
 		 function formatterstatus (value, row, index) { 
 			 if(value=='0')
@@ -610,16 +677,18 @@
 			 //填充基本信息			 
 			 //selectRow
 			 $('#dg').datagrid('selectRow', index);
+			
+
 			 var row = $('#dg').datagrid('getSelected');
 			  $('#base_form_detail').form('load', row);
 			 //加载流程记录
 			 LoadFlowRecord(row.trial_id);
+			 LoadProductDetail(row.trial_id);
 			
 			
 			
-			
-			var pagerdesc = $('#dgdesc').datagrid().datagrid('getPager'); 
-			pagerdesc.pagination(); 
+			//var pagerdesc = $('#dgdesc').datagrid().datagrid('getPager'); 
+			//pagerdesc.pagination(); 
 			
 			
 			
@@ -628,6 +697,16 @@
 			 $('#dlgdetail').dialog('open').dialog('setTitle', '审核');
 			//var row = $('#dg').datagrid('getSelected');
 			//if (row && row.status ==1){				
+		}
+			
+		function LoadProductDetail(trial_id)
+		{
+			 $('#dgdesc').datagrid({
+				 url:basePath+'api/trialdetail/view?trial_id='+trial_id
+				}); 
+				
+		
+			
 		}
 			
 		function  LoadFlowRecord(bussinessId)
@@ -701,7 +780,7 @@
                 	
 			    	if(result.state==1){
 			    		alert(result.data);
-			    		var tabTitle = "试用管理单据 ";
+			    		var tabTitle = "试用管理单据 "+result.data;
 						var url = "generate/"+result.data;						
 						addTabByChild(tabTitle,url);
 			    		//var pager = $('#dg').datagrid().datagrid('getPager');
@@ -719,7 +798,15 @@
 			}
 			
 		}
-		
+		function newOrderDetailEntity()
+		{
+			$('#dlgProduct').dialog('open').dialog('setTitle','[产品列表');
+			$('#dgProduct').datagrid({
+					 url:basePath+'api/product/orderpaging'
+			});
+				
+				
+		}	
 	</script>
 
 	<script type="text/javascript"> 

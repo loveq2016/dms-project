@@ -6,7 +6,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +31,7 @@ import com.yijava.web.vo.ErrorCode;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.api.web.word.util.TheFreemarker;
+import dms.yijava.api.web.word.util.TrialProduct;
 import dms.yijava.entity.department.Department;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.trial.Trial;
@@ -89,6 +93,7 @@ public class TrialController {
 			
 			filters.add(PropertyFilters.build("ANDS_statuses","1,2,3,4"));
 			filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
+			filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
 			
 		}
 		
@@ -209,10 +214,33 @@ public class TrialController {
 		
 		try {
 			String filePath=document_filepath;
-			String fileName="trial"+File.separator+"试用-"+trial_id+".doc";
+			String fileName="trial"+File.separator+"trial-"+trial_id+".doc";
 			File outFile = new File(filePath+fileName);			
 			TheFreemarker freemarker = new TheFreemarker();
-			freemarker.createTrialWord(new FileOutputStream(outFile));	
+			
+			
+			Map<String,Object> dataMap = new HashMap<String, Object>();
+			dataMap.put("hospital", "北京医院");
+			dataMap.put("requesttime", "2013年10月8日");
+			dataMap.put("reason", "试用理由");
+			dataMap.put("regionsign", "沈强");
+			dataMap.put("principalsign", "车海波");
+			
+			List<TrialProduct> list = new ArrayList<TrialProduct>();
+			for (int j = 1; j < 5; j++) {
+				TrialProduct product = new TrialProduct();
+				product.setProductname("测试名称");
+				product.setProductmodel("测试型号 ");
+				product.setSumnumber("10");
+				product.setRemark("测试备注");
+				
+				list.add(product);
+			}
+			dataMap.put("table", list);
+			
+			
+			
+			freemarker.createTrialWord(new FileOutputStream(outFile),dataMap);	
 			result.setData(fileName);
 			result.setState(1);
 		} catch (IOException e) {

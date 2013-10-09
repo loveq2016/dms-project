@@ -13,7 +13,7 @@
 			</if>
 			<!-- 增加是否提交给当前用户审核的过滤 start -->
 			<if test="check_id != null and check_id != '' ">
-				AND trial_id in (select bussiness_id from tb_flow_record  where check_id= #{check_id})
+				AND trial_id in (select bussiness_id from tb_flow_record  where check_id= #{check_id} and flow_id=#{flow_id})
 			</if>
 			<!-- 增加是否提交给当前用户审核的过滤 end -->
 			<if test="dealer_user_id != null and dealer_user_id != '' ">
