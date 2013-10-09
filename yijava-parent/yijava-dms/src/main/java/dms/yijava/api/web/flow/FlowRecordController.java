@@ -64,6 +64,9 @@ public class FlowRecordController {
 	@Value("#{properties['orderflow_identifier_num']}")   	
 	private String orderflow_identifier_num;
 	
+	
+	@Value("#{properties['deliverflow_identifier_num']}")   	
+	private String deliverflow_identifier_num;
 	/**
 	 * 查询流程处理记录
 	 * @param bussiness_id
@@ -428,6 +431,9 @@ public class FlowRecordController {
 		}else if(flow_id.equals(orderflow_identifier_num))
 		{
 			flowDescibe="订单审核"+"(<font color='red'>"+item_number+"</font>)";
+		}else if(flow_id.equals(deliverflow_identifier_num))
+		{
+			flowDescibe="发货单审核"+"(<font color='red'>"+item_number+"</font>)";
 		}
 		return flowDescibe;
 	}
