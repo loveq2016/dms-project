@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,6 +20,7 @@ import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.dealer.DealerAuthHospital;
 import dms.yijava.entity.system.SysUser;
+import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.dealer.DealerAuthHospitalService;
 
 @Controller
@@ -87,12 +89,42 @@ public class DealerAuthHospitalController {
 		}
 		return new Result<String>("1", 0);
 	}
+	
 	@ResponseBody
-	@RequestMapping("list")
+	@RequestMapping("api_list")
 	public List<DealerAuthHospital> getList(HttpServletRequest request){
-		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+		SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
 		List<PropertyFilter> filters = PropertyFilters.build(request);
-		filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
-		return dealerAuthHospitalService.getList(filters);
+		if (null != sysUser) {
+			//经销商
+			if (!StringUtils.equals("0", sysUser.getFk_dealer_id())) {
+				filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
+			}else if(!StringUtils.equals("0",sysUser.getFk_department_id())){
+				filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
+			}
+			return dealerAuthHospitalService.getList(filters);
+		}
+		return null;
+
+	}
+	
+	/**
+	 * 把一个list转换为String返回过去
+	 */
+	public String listString(List<UserDealer> list) {
+		String listString = "";
+		for (int i = 0; i < list.size(); i++) {
+			try {
+				if (i == list.size() - 1) {
+					UserDealer ud = list.get(i);
+					listString += ud.getDealer_id();
+				} else {
+					UserDealer ud = list.get(i);
+					listString += ud.getDealer_id() + ",";
+				}
+			} catch (Exception e) {
+			}
+		}
+		return listString;
 	}
 }
