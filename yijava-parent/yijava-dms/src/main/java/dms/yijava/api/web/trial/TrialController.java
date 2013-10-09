@@ -6,7 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,7 @@ import com.yijava.web.vo.Result;
 import dms.yijava.api.web.word.util.TheFreemarker;
 import dms.yijava.api.web.word.util.TrialProduct;
 import dms.yijava.entity.department.Department;
+import dms.yijava.entity.pullstorage.PullStorage;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.trial.Trial;
 import dms.yijava.entity.user.UserDealer;
@@ -107,15 +110,18 @@ public class TrialController {
 	public Result<Integer> save(@ModelAttribute("entity") Trial entity,HttpServletRequest request) {
 		Result<Integer> result=new Result<Integer>(0, 0);
 		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");
 			SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
 			String currentUserId=sysUser.getId();
-			entity.setSales_user_id(currentUserId);
+			
+			
+			Trial trial=trialService.getTrialCode();
+			entity.setTrial_code(entity.getDealer_user_id()+"TR"+formatter.format(new Date())+trial.getTrial_code());			
+			entity.setTrial_no(String.valueOf((Integer.parseInt(trial.getTrial_code()))));		
+			entity.setSales_user_id(currentUserId);			
 			if(entity.getStatus()==null)
 				entity.setStatus(0);
-			trialService.saveEntity(entity);
-			
-			
-			
+			trialService.saveEntity(entity);			
 			result.setData(1);
 			result.setState(1);;
 		} catch (Exception e) {
