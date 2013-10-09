@@ -95,6 +95,7 @@ $('#tochecktree').tree({
 		{
 			var tabTitle = "销售出库管理";
 			var url = "pullstorage/sales/salesview.jsp";
+			addTabByChild(tabTitle,url);
 		}else if(node.id==deliverflow_identifier_num)
 		{
 			var tabTitle = "发货单管理";

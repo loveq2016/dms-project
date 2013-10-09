@@ -311,16 +311,16 @@
 			</div>
 			
 			<div title="产品明细行" >
-				<table id="dgflow" title="查询结果" style="width:650px;height: 340px" url="${basePath}api/flow/paging" method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="asc">
+				
+					
+					<table id="dgflow" title="查询结果" style="width:650px;height: 320px">
 					<thead>
 						<tr>
-							<th data-options="field:'flow_id',width:10"  sortable="true" hidden="true">id</th>
-							<th data-options="field:'flow_name',width:100"  sortable="true">产品名称</th>
-							<th data-options="field:'flow_desc',width:100" sortable="true">规格型号</th>
-							<th data-options="field:'is_system',width:50" sortable="true">数量</th>
-							
-							<th data-options="field:'add_date',width:50">备注</th>										
+							<th data-options="field:'trial_detail_id',width:10"  sortable="true" hidden="true">trial_detail_id</th>
+							<th data-options="field:'product_name',width:150"  sortable="true">产品名称</th>
+							<th data-options="field:'product_name',width:150" sortable="true">规格型号</th>
+							<th data-options="field:'trial_num',width:50" sortable="true">数量</th>							
+							<th data-options="field:'remark',width:290">备注</th>										
 						</tr>
 					</thead>
 				</table>
@@ -696,8 +696,7 @@
 					 $("#flow_id").val(trialflow_identifier_num);
 					 //填充基本信息
 					  $('#base_form_flowcheck').form('load', row);
-					 var dgflow = $('#dgflow').datagrid().datagrid('getPager'); 
-					 dgflow.pagination(); 
+					  LoadProductDetailForFlow(row.trial_id);
 					 //加载流程记录
 					 LoadCheckFlowRecord(row.trial_id);
 					 
@@ -726,12 +725,30 @@
 			 LoadProductDetail(row.trial_id);				
 			 $('#dlgdetail').dialog('open').dialog('setTitle', '明细');
 			//var row = $('#dg').datagrid('getSelected');
-			//if (row && row.status ==1){				
+			//if (row && row.status ==1){		
+				
+			if(trial_status=='0'|| trial_status=='2'){
+				$('#saveOrderDetail').linkbutton('enable');
+				$('#delOrderDetail').linkbutton('enable');
+			}else{
+				$('#saveOrderDetail').linkbutton('disable');
+				$('#delOrderDetail').linkbutton('disable');
+			}
 		}
 			
 		function LoadProductDetail(trial_id)
 		{
 			 $('#dgDetail').datagrid({
+				 url:basePath+'api/trialdetail/view?trial_id='+trial_id
+				}); 
+				
+		
+			
+		}
+		
+		function LoadProductDetailForFlow(trial_id)
+		{
+			 $('#dgflow').datagrid({
 				 url:basePath+'api/trialdetail/view?trial_id='+trial_id
 				}); 
 				
@@ -811,7 +828,7 @@
 				$.post(basePath+'api/protrial/viewdocument',{trial_id:row.trial_id},function(result){
                 	
 			    	if(result.state==1){
-			    		alert(result.data);
+			    		
 			    		var tabTitle = "试用管理单据 "+result.data;
 						var url = "generate/"+result.data;						
 						addTabByChild(tabTitle,url);
@@ -832,14 +849,20 @@
 		}
 		function newOrderDetailEntity()
 		{
-			$('#dlgProduct').dialog('open').dialog('setTitle','['+trial_code+']产品列表');
-			$('#dgProduct').datagrid({
-					 url:basePath+'api/product/api_paging',
-					 queryParams: {
-							filter_ANDS_dealer_id : dealer_id
-					 }
-
-			});				
+			if(trial_status=="0")
+			{
+				$('#dlgProduct').dialog('open').dialog('setTitle','['+trial_code+']产品列表');
+				$('#dgProduct').datagrid({
+						 url:basePath+'api/product/api_paging',
+						 queryParams: {
+								filter_ANDS_dealer_id : dealer_id
+						 }
+	
+				});	
+			}else
+			{
+				$.messager.alert('提示','申请已经提交不能修改','warning');
+			}
 		}
 		/**
 		选择产品明细 
