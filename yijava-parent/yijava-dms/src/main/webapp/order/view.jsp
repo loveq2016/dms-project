@@ -677,7 +677,10 @@
 			if(typeof(order_code) != "undefined"){
 				$('#dlgProduct').dialog('open').dialog('setTitle','['+order_code+']产品列表');
 				$('#dgProduct').datagrid({
-					 url:basePath+'api/product/api_paging'
+					 url:basePath+'api/product/api_paging',
+					 queryParams: {
+							filter_ANDS_dealer_id : dealer_id
+					 }
 				});
 			}else
 			{
@@ -743,7 +746,6 @@
 		*/
 		function ToCheckEntity(){
 			var row = $('#dg').datagrid('getSelected');
-			alert(row.id)
 			if (row && (row.order_status ==0 || row.order_status ==2) ){			
 				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
 					 if (r){

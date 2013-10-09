@@ -123,7 +123,7 @@
         		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
         	</restrict:function>
         	<restrict:function funId="163">
-        		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="CheckEntity()">审核</a>
+        		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="CheckEntity()">审核</a>
         	</restrict:function>
 			</div>
 			<div style="margin: 10px 0;"></div>
@@ -309,7 +309,7 @@
 		</div>
 		<div id="dlg-buttons">
 	        <restrict:function funId="51">
-	       		<a href="javascript:void(0)" class="easyui-linkbutton" id="submitPullStorage" iconCls="icon-ok" onclick="submitPullStorage()">提交</a>
+	       		<a href="javascript:void(0)" class="easyui-linkbutton" id="submitPullStorage" iconCls="icon-ok" onclick="ToCheckEntity()">提交</a>
 	        </restrict:function>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgPullStorageDetail').dialog('close')">取消</a>
 	    </div>
@@ -418,6 +418,7 @@
 		var status;
 		var pull_storage_code;
 		var put_storage_code;
+		var dealer_id=${user.fk_dealer_id};
 		$(function() {
 			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
 			pager.pagination();  
@@ -600,7 +601,10 @@
 			if(typeof(pull_storage_code) != "undefined"){
 				$('#dlgProduct').dialog('open');
 				$('#dgProduct').datagrid({
-					url:basePath+'api/storageDetail/api_paging'
+					url:basePath+'api/storageDetail/api_paging',
+					queryParams: {
+						filter_ANDS_dealer_id : dealer_id
+					}
 				});
 			}else
 			{
@@ -695,7 +699,7 @@
 		function ToCheckEntity(){
 			var row = $('#dg').datagrid('getSelected');
 			if(typeof(pull_storage_code) != "undefined")
-			if (row && (row.order_status ==0 || row.order_status ==2) ){
+			if (row && (row.status ==0 || row.status ==2) ){
 				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
 					 if (r){
 	                        $.post(basePath+'api/pullstorage/updatetocheck',{id:row.id,
@@ -723,7 +727,7 @@
 		*/
 		function CheckEntity(){
 			var row = $('#dg').datagrid('getSelected');
-			if (row && row.order_status==1){
+			if (row && row.status==1){
 				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){
 					 $('#bussiness_id').val(row.id);
 					 $("#flow_id").val(pullStorageflow_identifier_num);

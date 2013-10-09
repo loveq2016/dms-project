@@ -72,6 +72,7 @@
 					<thead>
 						<tr>
 							<th data-options="field:'trial_id',width:100"  sortable="true" hidden="true">trial_id</th>
+							<th data-options="field:'dealer_user_id',width:100"  sortable="true" hidden="true">dealer_user_id</th>
 							<th data-options="field:'trial_code',width:200"  sortable="true">试用申请单号</th>
 							<th data-options="field:'dealer_name',width:200"  sortable="true">经销商名称</th>
 							<th data-options="field:'hospital_name',width:200"  sortable="true">医院名称</th>									
@@ -239,10 +240,10 @@
 					<thead>
 						<tr>
 							<th data-options="field:'trial_detail_id',width:10"  sortable="true" hidden="true">trial_detail_id</th>
-							<th data-options="field:'product_name',width:100"  sortable="true">产品名称</th>
-							<th data-options="field:'product_name',width:100" sortable="true">规格型号</th>
+							<th data-options="field:'product_name',width:150"  sortable="true">产品名称</th>
+							<th data-options="field:'product_name',width:150" sortable="true">规格型号</th>
 							<th data-options="field:'trial_num',width:50" sortable="true">数量</th>							
-							<th data-options="field:'remark',width:200">备注</th>										
+							<th data-options="field:'remark',width:290">备注</th>										
 						</tr>
 					</thead>
 				</table>
@@ -475,6 +476,7 @@
 	 	var trial_id;
 	 	var trial_code;
 	 	var trial_status;
+	 	var dealer_id;
 		$('#dg').datagrid(
 				{
 					onLoadSuccess:function(data){ 
@@ -718,6 +720,7 @@
 			 trial_id=row.trial_id;
 			 trial_code=row.trial_code;
 			 trial_status=row.status;
+			 dealer_id=row.dealer_user_id;
 			 //加载流程记录
 			 LoadFlowRecord(row.trial_id);
 			 LoadProductDetail(row.trial_id);				
@@ -829,9 +832,13 @@
 		}
 		function newOrderDetailEntity()
 		{
-			$('#dlgProduct').dialog('open').dialog('setTitle','[产品列表');
+			$('#dlgProduct').dialog('open').dialog('setTitle','['+trial_code+']产品列表');
 			$('#dgProduct').datagrid({
-					 url:basePath+'api/product/orderpaging'
+					 url:basePath+'api/product/api_paging',
+					 queryParams: {
+							filter_ANDS_dealer_id : dealer_id
+					 }
+
 			});				
 		}
 		/**
