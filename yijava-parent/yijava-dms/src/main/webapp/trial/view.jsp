@@ -239,10 +239,10 @@
 					<thead>
 						<tr>
 							<th data-options="field:'trial_detail_id',width:10"  sortable="true" hidden="true">trial_detail_id</th>
-							<th data-options="field:'product_name',width:100"  sortable="true">产品名称</th>
-							<th data-options="field:'product_name',width:100" sortable="true">规格型号</th>
+							<th data-options="field:'product_name',width:150"  sortable="true">产品名称</th>
+							<th data-options="field:'product_name',width:150" sortable="true">规格型号</th>
 							<th data-options="field:'trial_num',width:50" sortable="true">数量</th>							
-							<th data-options="field:'remark',width:200">备注</th>										
+							<th data-options="field:'remark',width:290">备注</th>										
 						</tr>
 					</thead>
 				</table>
@@ -829,9 +829,9 @@
 		}
 		function newOrderDetailEntity()
 		{
-			$('#dlgProduct').dialog('open').dialog('setTitle','[产品列表');
+			$('#dlgProduct').dialog('open').dialog('setTitle','['+trial_code+']产品列表');
 			$('#dgProduct').datagrid({
-					 url:basePath+'api/product/orderpaging'
+					 url:basePath+'api/product/api_paging'
 			});				
 		}
 		/**
