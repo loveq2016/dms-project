@@ -235,14 +235,14 @@
 						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="saveOrderDetail" onclick="newOrderDetailEntity();">添加产品</a>
 					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="delOrderDetail" onclick="removeOrderDetailEntity();">删除产品</a>
 					</div>
-				<table id="dgdesc" title="查询结果" style="width:650px;height: 340px">
+				<table id="dgDetail" title="查询结果" style="width:650px;height: 320px">
 					<thead>
 						<tr>
 							<th data-options="field:'trial_detail_id',width:10"  sortable="true" hidden="true">trial_detail_id</th>
 							<th data-options="field:'product_name',width:100"  sortable="true">产品名称</th>
 							<th data-options="field:'product_name',width:100" sortable="true">规格型号</th>
 							<th data-options="field:'trial_num',width:50" sortable="true">数量</th>							
-							<th data-options="field:'remark',width:50">备注</th>										
+							<th data-options="field:'remark',width:200">备注</th>										
 						</tr>
 					</thead>
 				</table>
@@ -474,6 +474,7 @@
 	 	var url;
 	 	var trial_id;
 	 	var trial_code;
+	 	var trial_status;
 		$('#dg').datagrid(
 				{
 					onLoadSuccess:function(data){ 
@@ -716,6 +717,7 @@
 			  $('#base_form_detail').form('load', row);
 			 trial_id=row.trial_id;
 			 trial_code=row.trial_code;
+			 trial_status=row.status;
 			 //加载流程记录
 			 LoadFlowRecord(row.trial_id);
 			 LoadProductDetail(row.trial_id);				
@@ -726,7 +728,7 @@
 			
 		function LoadProductDetail(trial_id)
 		{
-			 $('#dgdesc').datagrid({
+			 $('#dgDetail').datagrid({
 				 url:basePath+'api/trialdetail/view?trial_id='+trial_id
 				}); 
 				
@@ -794,6 +796,44 @@
 			
 		}
 		
+		
+		
+		/**
+		查看单据
+		*/
+		function VidwDocument (value, row, index) 
+		{
+			var row = $('#dg').datagrid('getSelected');
+			if (row && row.status ==3){				
+				$.post(basePath+'api/protrial/viewdocument',{trial_id:row.trial_id},function(result){
+                	
+			    	if(result.state==1){
+			    		alert(result.data);
+			    		var tabTitle = "试用管理单据 "+result.data;
+						var url = "generate/"+result.data;						
+						addTabByChild(tabTitle,url);
+			    		//var pager = $('#dg').datagrid().datagrid('getPager');
+		    			//pager.pagination('select');	
+                    } else {
+                        $.messager.show({    // show error message
+                            title: 'Error',
+                            msg: result.error
+                        });
+                    } 
+                },'json');
+			}else
+			{
+				$.messager.alert('提示-审核结束才能查看单据 ','请选中数据!','warning');
+			}
+			
+		}
+		function newOrderDetailEntity()
+		{
+			$('#dlgProduct').dialog('open').dialog('setTitle','[产品列表');
+			$('#dgProduct').datagrid({
+					 url:basePath+'api/product/orderpaging'
+			});				
+		}
 		/**
 		选择产品明细 
 		*/
@@ -833,7 +873,7 @@
 				    	if(jsonobj.state==1){
 							 $('#dlgProductSum').dialog('close');     
 		                     $('#dgDetail').datagrid('reload');
-		                     $('#dg').datagrid('reload');
+		                     //$('#dg').datagrid('reload');
 				    	}else if(jsonobj.state==2){
 				    		$.messager.alert('提示','不可重复添加一个产品!','error');	
 				    	}else{
@@ -847,45 +887,36 @@
 			}
 		}
 		
-		
-		/**
-		查看单据
-		*/
-		function VidwDocument (value, row, index) 
+		//订单项
+		function removeOrderDetailEntity()
 		{
-			var row = $('#dg').datagrid('getSelected');
-			if (row && row.status ==3){				
-				$.post(basePath+'api/protrial/viewdocument',{trial_id:row.trial_id},function(result){
-                	
-			    	if(result.state==1){
-			    		alert(result.data);
-			    		var tabTitle = "试用管理单据 "+result.data;
-						var url = "generate/"+result.data;						
-						addTabByChild(tabTitle,url);
-			    		//var pager = $('#dg').datagrid().datagrid('getPager');
-		    			//pager.pagination('select');	
-                    } else {
-                        $.messager.show({    // show error message
-                            title: 'Error',
-                            msg: result.error
-                        });
-                    } 
-                },'json');
+			var row = $('#dgDetail').datagrid('getSelected');
+			if (row){
+				if(trial_status=='0'){
+				    $.ajax({
+						type : "POST",
+						url :basePath+'api/trialdetail/delete?trial_detail_id='+row.trial_detail_id,
+						error : function(request) {
+							$.messager.alert('提示','抱歉,删除错误!','error');	
+						},
+						success:function(msg){
+						    var jsonobj = $.parseJSON(msg);
+        					if (jsonobj.state == 1) {
+        	                     $('#dgDetail').datagrid('reload');
+        	                     
+        					}else{
+        						$.messager.alert('提示','抱歉,删除错误!','error');	
+        					}
+						}
+					});
+				}else{
+					$.messager.alert('提示','无法删除已提交的单据!','error');
+				}
 			}else
 			{
-				$.messager.alert('提示-审核结束才能查看单据 ','请选中数据!','warning');
+				$.messager.alert('提示','请选中某个产品!','warning');
 			}
-			
 		}
-		function newOrderDetailEntity()
-		{
-			$('#dlgProduct').dialog('open').dialog('setTitle','[产品列表');
-			$('#dgProduct').datagrid({
-					 url:basePath+'api/product/orderpaging'
-			});
-				
-				
-		}	
 	</script>
 
 	<script type="text/javascript"> 
