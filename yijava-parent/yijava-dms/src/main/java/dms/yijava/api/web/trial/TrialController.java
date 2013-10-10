@@ -38,6 +38,7 @@ import dms.yijava.entity.department.Department;
 import dms.yijava.entity.pullstorage.PullStorage;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.trial.Trial;
+import dms.yijava.entity.trial.TrialDetail;
 import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.department.DepartmentService;
 import dms.yijava.service.flow.FlowBussService;
@@ -177,8 +178,8 @@ public class TrialController {
 	public Result<Integer> remove(Integer trial_id) {
 		Result<Integer> result=new Result<Integer>(0, 0);
 		try {
-			Trial entity=trialService.getEntity(trial_id.toString());
-			if(entity.getStatus().equals("0") || entity.getStatus().equals("2"))
+			Trial entity=trialService.getEntity(trial_id);
+			if(entity.getStatus()==0 || entity.getStatus()==2)
 			{
 				//先删除子
 				trialDetailService.removeByTrialId(trial_id);
@@ -192,6 +193,7 @@ public class TrialController {
 			
 		} catch (Exception e) {
 			logger.error("error" + e);
+			result.setError(new ErrorCode(e.toString()));
 		}
 		return result;
 	}
@@ -239,6 +241,12 @@ public class TrialController {
 	public Result<String> viewdocument (Integer trial_id,HttpServletRequest request,HttpServletResponse response) {
 		Result<String> result=new Result<String>("0", 0);
 		
+		Trial entity=trialService.getEntity(trial_id);
+		if(entity.getStatus()<3)
+		{
+			result.setError(new ErrorCode("单据不正确，无法生成文档"));
+			return result;
+		}
 		try {
 			String filePath=document_filepath;
 			String fileName="trial"+File.separator+"trial-"+trial_id+".doc";
@@ -247,22 +255,36 @@ public class TrialController {
 			
 			
 			Map<String,Object> dataMap = new HashMap<String, Object>();
-			dataMap.put("hospital", "北京医院");
-			dataMap.put("requesttime", "2013年10月8日");
-			dataMap.put("reason", "试用理由");
-			dataMap.put("regionsign", "沈强");
-			dataMap.put("principalsign", "车海波");
+			
+			
+			
+			
+			
+			//查找试用明细
+			
+			 List<TrialDetail> trialDetail=trialDetailService.getTrialDetailByTrialId(trial_id.toString());
+			
 			
 			List<TrialProduct> list = new ArrayList<TrialProduct>();
-			for (int j = 1; j < 5; j++) {
+			int trialSumNum=0;
+			for (int j = 0; j < trialDetail.size(); j++) {
 				TrialProduct product = new TrialProduct();
-				product.setProductname("测试名称");
-				product.setProductmodel("测试型号 ");
-				product.setSumnumber("10");
-				product.setRemark("测试备注");
+				product.setProductname(trialDetail.get(j).getProduct_name());
+				product.setProductmodel(trialDetail.get(j).getProduct_name());
+				trialSumNum+=trialDetail.get(j).getTrial_num();
+				product.setSumnumber(trialDetail.get(j).getTrial_num().toString());
+				product.setRemark(trialDetail.get(j).getRemark());
 				
 				list.add(product);
 			}
+			dataMap.put("hospital", entity.getHospital_name());
+			dataMap.put("requesttime", entity.getCreate_time());
+			dataMap.put("reason", entity.getReason());
+			dataMap.put("dealer_name", entity.getDealer_name());
+			dataMap.put("regionsign", "沈强");
+			dataMap.put("principalsign", "车海波");
+			dataMap.put("trialSumNum", trialSumNum);
+			
 			dataMap.put("table", list);
 			
 			

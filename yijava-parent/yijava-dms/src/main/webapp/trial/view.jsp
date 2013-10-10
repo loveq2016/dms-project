@@ -468,7 +468,7 @@
 					             </tr>
 					             <tr>
 					             	<td>备注:</td>
-					             	<td><input name="remark" id="remark" class="easyui-numberbox" style="width:150px" 
+					             	<td><input name="remark" id="remark" class="" style="width:150px" 
 									data-options="required:true"></td>
 					             </tr>
 					      </table>        	
@@ -644,7 +644,7 @@
 	                            } else {
 	                                $.messager.show({    // show error message
 	                                    title: 'Error',
-	                                    msg: result.errorMsg
+	                                    msg: result.error.msg
 	                                });
 	                            } 
 	                        },'json');
@@ -847,7 +847,7 @@
                     } else {
                         $.messager.show({    // show error message
                             title: 'Error',
-                            msg: result.error
+                            msg: result.error.msg
                         });
                     } 
                 },'json');

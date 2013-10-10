@@ -42,7 +42,7 @@ public class TrialDetailService {
 	
 	public void removeByTrialId(Integer trialId)
 	{
-		trialDetailDao.removeObject("deleteByTrialId",trialId);
+		trialDetailDao.removeObject(".deleteByTrialId",trialId);
 		
 	}
 }
