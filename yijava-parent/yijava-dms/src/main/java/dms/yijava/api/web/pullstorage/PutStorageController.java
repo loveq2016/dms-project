@@ -54,7 +54,7 @@ public class PutStorageController {
 			//经销商
 			if(!StringUtils.equals("0",sysUser.getFk_dealer_id())){
 				filters.add(PropertyFilters.build("ANDS_fk_put_storage_party_id",sysUser.getFk_dealer_id()));
-			}else if(!StringUtils.equals("0",sysUser.getFk_department_id())){
+			}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
 				filters.add(PropertyFilters.build("ANDS_fk_put_storage_party_ids", this.listString(sysUser.getUserDealerList())));
 			}
 			return pullStorageService.paging(pageRequest,filters);

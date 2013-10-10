@@ -43,7 +43,17 @@ public class ProductController {
 	@ResponseBody
 	@RequestMapping("api_paging")
 	public JsonPage<Product> api_paging(PageRequest pageRequest,HttpServletRequest request) {
+		SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
 		List<PropertyFilter> filters = PropertyFilters.build(request);
+		if(filters.size()<=0)
+			if (null != sysUser) {
+				//经销商
+				if (!StringUtils.equals("0", sysUser.getFk_dealer_id())) {
+					filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
+				}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
+					filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
+				}
+			}
 		return productService.paging(pageRequest, filters);
 	}
 	

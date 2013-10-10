@@ -17,6 +17,7 @@ import com.yijava.orm.core.PropertyFilters;
 
 import dms.yijava.entity.storage.StorageProDetail;
 import dms.yijava.entity.system.SysUser;
+import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.storage.StorageProDetailService;
 
 @Controller
@@ -38,15 +39,39 @@ public class StorageProDetailController {
 	@RequestMapping("api_paging")
 	public JsonPage<StorageProDetail> api_paging(PageRequest pageRequest,
 			HttpServletRequest request) {
-		List<PropertyFilter> filters = PropertyFilters.build(request);
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
-		if(!StringUtils.equals("0",sysUser.getFk_dealer_id())){
-			filters.add(PropertyFilters.build("ANDS_fk_dealer_id",sysUser.getFk_dealer_id()));
-		}
+		List<PropertyFilter> filters = PropertyFilters.build(request);
+		if(filters.size()<=0)
+			if (null != sysUser) {
+				//经销商
+				if (!StringUtils.equals("0", sysUser.getFk_dealer_id())) {
+					filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
+				}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
+					filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
+				}
+			}
 		return storageProDetailService.paging(pageRequest, filters);
 	}
 	
-	
+	/**
+	 * 把一个list转换为String返回过去
+	 */
+	public String listString(List<UserDealer> list) {
+		String listString = "";
+		for (int i = 0; i < list.size(); i++) {
+			try {
+				if (i == list.size() - 1) {
+					UserDealer ud = list.get(i);
+					listString += ud.getDealer_id();
+				} else {
+					UserDealer ud = list.get(i);
+					listString += ud.getDealer_id() + ",";
+				}
+			} catch (Exception e) {
+			}
+		}
+		return listString;
+	}
 	
 
 }
