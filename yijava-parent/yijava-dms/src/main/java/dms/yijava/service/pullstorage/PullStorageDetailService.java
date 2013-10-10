@@ -22,6 +22,8 @@ public class PullStorageDetailService{
 
 	@Autowired
 	private PullStorageDetailDao pullStorageDetailDao;
+	@Autowired
+	private PullStorageProDetailService pullStorageProDetailService;
 	
 	public JsonPage<PullStorageDetail> paging(PageRequest pageRequest,List<PropertyFilter> filters) {
 		Map<String,String> parameters = new HashMap<String,String>();
@@ -44,22 +46,30 @@ public class PullStorageDetailService{
 	public PullStorageDetail getEntity(String id) {
 		return pullStorageDetailDao.get(id);
 	}
-	
 	public void saveEntity(PullStorageDetail entity) {
 		pullStorageDetailDao.insert(entity);
 	}
-	
+	public void updateEntity(PullStorageDetail entity) {
+		pullStorageDetailDao.update(entity);
+	}
 	public void removeByIdEntity(String id) {
+		pullStorageProDetailService.removeByFullStorageDetailId(id);
 		pullStorageDetailDao.removeById(id);
 	}
 	public void removeByPullStorageCode(String pull_storage_code) {
+		pullStorageProDetailService.removeByPullStorageCode(pull_storage_code);
 		pullStorageDetailDao.removeObject(".deleteByPullStorageCode",pull_storage_code);
-	}
-	public void removeByStorageOrBatchNo(PullStorageDetail entity) {
-		pullStorageDetailDao.removeObject(".deleteByStorageOrBatchNo",entity);
 	}
 	public PullStorageDetail getPullStorageDetail(PullStorageDetail entity) {
 		PullStorageDetail d=pullStorageDetailDao.getObject(".selectPullStorageDetail",entity);
 		return d;
 	}
+	public PullStorageDetail getStorageProDetailSalesNumber(String id) {
+		PullStorageDetail d=pullStorageDetailDao.getObject(".selectStorageProDetailSalesNumber",id);
+		return d;
+	}
+	
+	
 }
+
+

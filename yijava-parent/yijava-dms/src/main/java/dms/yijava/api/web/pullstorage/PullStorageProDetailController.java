@@ -20,17 +20,14 @@ import com.yijava.web.vo.Result;
 import dms.yijava.entity.pullstorage.PullStorage;
 import dms.yijava.entity.pullstorage.PullStorageDetail;
 import dms.yijava.entity.pullstorage.PullStorageProDetail;
-import dms.yijava.entity.storage.StorageDetail;
-import dms.yijava.entity.storage.StorageProDetail;
-import dms.yijava.entity.system.SysUser;
 import dms.yijava.service.pullstorage.PullStorageDetailService;
 import dms.yijava.service.pullstorage.PullStorageProDetailService;
 import dms.yijava.service.pullstorage.PullStorageService;
 import dms.yijava.service.storage.StorageDetailService;
 
 @Controller
-@RequestMapping("/api/pullstoragedetail")
-public class PullStorageDetailController {
+@RequestMapping("/api/pullstorageprodetail")
+public class PullStorageProDetailController {
 	@Autowired
 	private PullStorageService pullStorageService;
 	@Autowired
@@ -41,19 +38,25 @@ public class PullStorageDetailController {
 	private StorageDetailService storageDetailService;
 	
 	@ResponseBody
-	@RequestMapping("detailpaging")
-	public JsonPage<PullStorageDetail> paging(PageRequest pageRequest,HttpServletRequest request) {
+	@RequestMapping("paging")
+	public JsonPage<PullStorageProDetail> paging(PageRequest pageRequest,HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
-		return pullStorageDetailService.paging(pageRequest,filters);
+		return pullStorageProDetailService.paging(pageRequest,filters);
 	}
 	
 	@ResponseBody
-	@RequestMapping("savedetail")
-	public Result<String> savedetail(@ModelAttribute("entity") PullStorageDetail entity) {
-		//同一个仓库下的，同一个批次 不能重复添加
-		PullStorageDetail psd= pullStorageDetailService.getPullStorageDetail(entity);
+	@RequestMapping("save")
+	public Result<String> savedetail(@ModelAttribute("entity") PullStorageProDetail entity) {
+		//同一个单据，同一个仓库下的，同一个批次，同一个序号   不能重复添加
+		PullStorageProDetail psd= pullStorageProDetailService.getPullStorageProDetail(entity);
 		if(null==psd){
-			pullStorageDetailService.saveEntity(entity);//保存产品
+			List<PullStorageProDetail> list = new ArrayList<PullStorageProDetail>();
+			list.add(entity);
+			pullStorageProDetailService.saveEntity(list);//保存SN
+			PullStorageDetail pullStorageDetail=pullStorageDetailService.getStorageProDetailSalesNumber(entity.getFk_pull_storage_detail_id());//查询SN总数
+			pullStorageDetailService.updateEntity(pullStorageDetail);//修改产品数量
+			PullStorage pullStorage = pullStorageService.getStorageDetailTotalNumber(entity.getPull_storage_code());//查询产品总数
+			pullStorageService.updateEntity(pullStorage);//修改出库单据总数量
 			return new Result<String>(entity.getId(), 1);
 		}else{
 			return new Result<String>(entity.getId(), 2);
@@ -61,20 +64,26 @@ public class PullStorageDetailController {
 	}
 	
 	/**
-	 * 删除产品
-	 *  pull_storage_code
-	 *	batch_no
-	 *	fk_storage_id
-	 *	product_item_number
-	 *	sales_number
+	 * 删除SN
+	 * id
+	 * pull_storage_code
+	 * batch_no
+	 * fk_storage_id
 	 * @param entity
 	 * @param request
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("remove")
-	public Result<Integer> remove(@ModelAttribute("entity") PullStorageDetail entity,HttpServletRequest request) {
-		pullStorageDetailService.removeByIdEntity(entity.getId());
+	public Result<Integer> remove(@ModelAttribute("entity") PullStorageProDetail entity,HttpServletRequest request) {
+		pullStorageProDetailService.removeByIdEntity(entity.getId());
+		PullStorageDetail pullStorageDetail=pullStorageDetailService.getStorageProDetailSalesNumber(entity.getFk_pull_storage_detail_id());//查询SN总数
+		if(null==pullStorageDetail){
+			pullStorageDetail=new PullStorageDetail();
+			pullStorageDetail.setId(entity.getFk_pull_storage_detail_id());
+			pullStorageDetail.setSales_number("0");
+		}
+		pullStorageDetailService.updateEntity(pullStorageDetail);//修改产品数量
 		//修改总数
 		PullStorage pullStorage = pullStorageService.getStorageDetailTotalNumber(entity.getPull_storage_code());
 		if(null==pullStorage){

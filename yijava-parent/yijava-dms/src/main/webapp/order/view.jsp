@@ -756,7 +756,7 @@
 	                            } else {
 	                                $.messager.show({
 	                                    title: 'Error',
-	                                    msg: result.errorMsg
+	                                    msg: "订单提交失败!"
 	                                });
 	                            }
 	                        },'json');

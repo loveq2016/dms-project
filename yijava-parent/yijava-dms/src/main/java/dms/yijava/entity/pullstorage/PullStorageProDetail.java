@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PullStorageProDetail {
 	public String id;
+	public String fk_pull_storage_detail_id;
 	public String fk_storage_id;
 	public String pull_storage_code;
 	public String put_storage_code;

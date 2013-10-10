@@ -707,7 +707,7 @@
 	                            } else {
 	                                $.messager.show({
 	                                    title: 'Error',
-	                                    msg: result.errorMsg
+	                                    msg: "提交失败!"
 	                                });
 	                            }
 	                        },'json');
