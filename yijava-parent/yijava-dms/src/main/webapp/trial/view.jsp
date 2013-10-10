@@ -157,13 +157,13 @@
 														
 									</tr>
 									
-									<tr>
+									<!-- <tr>
 										<td>试用时间:</td>
 										<td>
 										<input name="create_time"  class="easyui-datebox" style="width:260px"></input>
 										
 										</td>								
-									</tr>
+									</tr> -->
 									<tr>
 										<td>试用理由:</td>
 										<td>
@@ -171,9 +171,9 @@
 										</td>								
 									</tr>
 								</table>
-								<input type="text" name="trial_id" id="trial_id" value="">
-								<input type="text" name="dealer_name" id="dealer_name" value="">
-								<input type="text" name="hospital_name" id="hospital_name" value="">
+								<input type="hidden" name="trial_id" id="trial_id" value="">
+								<input type="hidden" name="dealer_name" id="dealer_name" value="">
+								<input type="hidden" name="hospital_name" id="hospital_name" value="">
 				</form>			
 				<div style="text-align: right; padding: 5px">
 						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveEntity()">确定</a>
@@ -229,7 +229,7 @@
 									<tr>
 										<td>试用时间:</td>
 										<td>
-										<input name="create_time"  class="easyui-datebox"></input>
+										<input name="create_time"  class="easyui-validatebox"></input>
 										
 										</td>								
 									</tr>
@@ -311,9 +311,9 @@
 										 name="dealer_user_id" data-options="required:true"></input></td>								
 									</tr>
 									<tr>
-										<td>试用时间:</td>
+										<td>申请试用时间:</td>
 										<td>
-										<input name="create_time"  class="easyui-datebox"></input>
+										<input name="create_time"  class="easyui-validatebox"></input>
 										
 										</td>								
 									</tr>
@@ -450,7 +450,7 @@
 		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
 					      <table> 
 					    		<tr>
-					             	<td>试用单号:</td><input name="trial_id" readonly="true" type="input">
+					             	<td>试用单号:</td><input name="trial_id" readonly="true" type="hidden">
 					             	<td><input name="trial_code" readonly="true" class="easyui-validatebox" style="width:150px;"></td>
 					            </tr>
 					            <tr>
@@ -562,7 +562,10 @@
 		
 		function doSearch(){
 		    $('#dg').datagrid('load',{
-		    	filter_ANDS_flow_name: $('#flow_name').val()
+		    	filter_ANDS_hospital_id: $("#ffquery input[name=hospital_id]").val(),
+		    	filter_ANDS_dealer_user_id: $("#ffquery input[name=querydealer_id]").val(),
+		    	filter_ANDS_q_start_time: $("#ffquery input[name=q_start_time]").val(),
+		    	filter_ANDS_q_end_time: $("#ffquery input[name=q_end_time]").val()
 		    });
 		}
 		
@@ -604,7 +607,13 @@
 			    			var pager = $('#dg').datagrid().datagrid('getPager');
 			    			pager.pagination('select');	
 				   			
-			    		}
+			    		}else
+			    			{
+				    			 $.messager.show({    // show error message
+		                                title: 'Error',
+		                                msg: jsonobj.error.msg
+		                            });
+			    			}
 			    }		
 			});			
 		}		

@@ -43,12 +43,12 @@
 		function updatepwd() {
 			$.ajax({
 				type : "POST",
-				url : basePath+"/api/sysuser/updatepwd",
+				url : basePath+"api/sysuser/updatepwd",
 				data : $('#ffupdatepwd').serialize(),
-				error : function(request) {
+				/* error : function(request) {
 					
 					$.messager.alert('提示',error,'error');
-				},
+				}, */
 				success:function(msg){
 					var jsonobj= eval('('+msg+')'); 
 				   	if(jsonobj.state=='0'){
