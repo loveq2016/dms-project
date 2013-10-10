@@ -52,8 +52,8 @@ public class PullStorageProDetailService{
 	public void removeByPullStorageCode(String pull_storage_code) {
 		pullStorageProDetailDao.removeObject(".deleteByPullStorageCode",pull_storage_code);
 	}
-	public void removeByStorageOrBatchNo(PullStorageProDetail entity) {
-		pullStorageProDetailDao.removeObject(".deleteByStorageOrBatchNo",entity);
+	public void removeByFullStorageDetailId(String fk_pull_storage_detail_id) {
+		pullStorageProDetailDao.removeObject(".deleteByFullStorageDetailId",fk_pull_storage_detail_id);
 	}
 	/**
 	 * pull_storage_code

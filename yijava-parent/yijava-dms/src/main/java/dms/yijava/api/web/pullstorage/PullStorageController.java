@@ -264,11 +264,9 @@ public class PullStorageController {
 	@ResponseBody
 	@RequestMapping("remove")
 	public Result<Integer> remove(HttpServletRequest request,@ModelAttribute("entity") PullStorage entity) {
-		pullStorageDetailService.removeByPullStorageCode(entity.getPull_storage_code());
 		pullStorageService.removeByPullStorageCode(entity.getPull_storage_code());
 		return new Result<Integer>(1, 1);
 	}
-	
 	
 	/**
 	 * 把一个list转换为String返回过去

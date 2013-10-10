@@ -23,6 +23,8 @@ import dms.yijava.entity.pullstorage.PullStorage;
 public class PullStorageService{
 	@Autowired
 	private PullStorageDao pullStorageDao;
+	@Autowired
+	private PullStorageDetailService pullStorageDetailService;
 	
 	public JsonPage<PullStorage> paging(PageRequest pageRequest,List<PropertyFilter> filters) {
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -78,6 +80,7 @@ public class PullStorageService{
 		pullStorageDao.removeById(id);
 	}
 	public void removeByPullStorageCode(String pull_storage_code) {
+		pullStorageDetailService.removeByPullStorageCode(pull_storage_code);
 		pullStorageDao.removeObject(".deleteByPullStorageCode",pull_storage_code);
 	}
 	public PullStorage getStorageDetailTotalNumber(String pull_storage_code) {
