@@ -110,6 +110,11 @@ public class TrialController {
 	public Result<Integer> save(@ModelAttribute("entity") Trial entity,HttpServletRequest request) {
 		Result<Integer> result=new Result<Integer>(0, 0);
 		try {
+			if(entity.getHospital_id()==null)
+			{
+				entity.setHospital_id(entity.getAddhospital_id());
+			}
+			
 			SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");
 			SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
 			String currentUserId=sysUser.getId();

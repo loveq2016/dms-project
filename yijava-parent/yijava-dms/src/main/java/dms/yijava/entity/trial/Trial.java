@@ -18,6 +18,7 @@ public class Trial {
 	private String sales_user_id;//销售id
 	private Integer region_user_id;//区域负责人
 	private Integer company_user_id;//公司负责人
+	private String addhospital_id;
 	private String hospital_id;
 	private String hospital_name;//仅查询使用
 	private String reason;
