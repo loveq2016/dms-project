@@ -41,7 +41,7 @@ public class NoticeDealerController {
 		try {
 				SysUser sysUser = (SysUser) request.getSession().getAttribute("user"); // 当前用户信息
 				NoticeDealer entity = new NoticeDealer();
-				entity.setDealer_id(sysUser.getId());
+				entity.setDealer_id(sysUser.getFk_dealer_id());
 				entity.setNotice_id(id);
 				noticeDealerService.updateEntity(entity);
 				return new Result<String>(id, 1);

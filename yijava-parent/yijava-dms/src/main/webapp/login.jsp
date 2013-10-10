@@ -37,10 +37,10 @@
           <label>Validation Code/验证码：</label>
           <input type="text" class="ipt code" value="" name="captcha">&nbsp;&nbsp;
           <img id="captchaImg" src="getCaptcha" width="84" height="32"  align="absmiddle" style="cursor:hand" onclick="javascript:reloadValidateCode();" title="看不请?点击刷新"/>
-          <!-- <img src="images/code.gif" width="84" height="32"> --><a href="javascript:reloadValidateCode();">看不请?</a>
+          <!-- <img src="images/code.gif" width="84" height="32"> <a href="javascript:reloadValidateCode();">看不请?</a>-->
         </div>
         <div class="formline">
-          <input type="button" value="Login/登录" class="btn" onclick="login()">
+          <input type="button" name="loginbtn" id="loginbtn" value="Login/登录" class="btn" onclick="login()">
         </div>
       </form>
       <p>支持热线：+86-10-59000321</p>
@@ -60,6 +60,7 @@
 <div class="footer">主办单位：深圳市金瑞凯利生物科技有限公司 粤ICP备09108850号-1</div>
 <script type="text/javascript">
 		function login() {
+			$("#loginbtn").attr('disabled',true);
 			$.ajax({
 				type : "POST",
 				url : basePath+"api/sys/login",
@@ -70,6 +71,8 @@
 				success:function(msg){
 					var jsonobj= eval('('+msg+')'); 
 					if(jsonobj.state=='0'){
+						
+						$('#loginbtn').removeAttr("disabled"); 
 				   		$.messager.alert('提示',jsonobj.error.msg,'warning');				   		
 				   		
 				   	}else{

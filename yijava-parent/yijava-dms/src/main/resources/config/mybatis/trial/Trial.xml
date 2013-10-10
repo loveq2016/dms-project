@@ -26,15 +26,14 @@
 				AND hospital_id = #{hospital_id}
 			</if>
 			
-			<if test="(q_start_time != null and q_start_time != '')  and (q_end_time != null and q_end_time != '') ">
-				AND create_time between  #{q_start_time} and #{q_end_time}
+				<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(q_start_time)">
+				 <![CDATA[ and create_time >= #{q_start_time} ]]>
+				</if>
+			
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(q_end_time)">
+				  <![CDATA[ and create_time <= #{q_end_time}]]>
 			</if>
-			<if test="(q_start_time != null and q_start_time != '')  and (q_end_time == null and q_end_time == '') ">				
-				AND <![CDATA[ create_time >= #q_start_time# ]]>
-			</if>
-			<if test="(q_start_time == null and q_start_time == '')  and (q_end_time != null and q_end_time != '') ">				
-				AND <![CDATA[ create_time <= #(q_end_time# ]]>
-			</if>
+			
 		</trim>
 	</sql>
 
@@ -107,9 +106,9 @@
 		delete from tb_trial where trial_id=#{trial_id}
 	</update>
 	
-	<select id="selectTrialCode" resultType="dms.yijava.entity.pullstorage.PullStorage">
+	<select id="selectTrialCode" resultType="dms.yijava.entity.trial.Trial">
 		select LPAD(max(trial_no)+1,3,0) as trial_no from dms.tb_trial WHERE 
-		create_time between CURDATE() AND CONCAT(CURDATE(),' 23:59:59')
+		create_time between CURDATE() AND CONCAT(CURDATE(),' 23:59:59') and dealer_user_id=#{dealer_user_id}
 	</select>
 	
 </mapper>

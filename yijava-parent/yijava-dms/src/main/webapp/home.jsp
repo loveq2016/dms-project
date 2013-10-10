@@ -9,28 +9,64 @@
 <%@include file="/common/head.jsp"%>
 </head>
 <body class="easyui-layout">	
-	<div data-options="region:'west',split:true,title:'公司信息'"
-		style="width: 150px; padding: 10px;">海利欧斯经销商管理系统
+	<div data-options="iconCls:'icon-info',region:'west',split:true,title:'公司信息'"
+		style="width: 400px; padding: 10px;">
+
+								<div id="Panel1_Body" class=" ">
+                            <h1>公司信息</h1>
+                            <br>
+                            <h1>深圳市金瑞凯利生物科技有限公司</h1>
+                            
+                           深圳公司地址：深圳市福田区皇岗北路彩电工业区402栋6楼<br>
+                            邮编：518035<br>
+                            电话：0755-83073249<br>
+                            传真：0755-83073251、83197052<br>
+                            &nbsp;<br>
+                           
+                             <h1>北京办事处地址：北京市朝阳区东三环中路39号建外SOHO西区18号楼18层1801室</h1>
+                            邮编：100022 <br>
+                            电话：010-59000321<br>
+                            传真：010-59009006<br>
+                            &nbsp;<br>
+                            
+                            <h1>上海办事处地址：上海市闵行区古方路18号南方商务大厦1007室</h1>
+                            邮编：201102		<br>
+		   电话：021-64136730<br>		
+		  传真：021-64136370<br>
+                            <br>
+                            <h1>客服人员</h1>
+                            <br>
+                           北区负责人<br>
+		  杨绛红：010-59000321 <br>
+		  jianghong.yang@kinhely.com<br>
+<br><br><br>
+                          南区负责人<br>
+                          潘丽美: 021-64136730 <br>
+                          limei.pan@kinhely.com<br>
+                            <br>
+                        </div>
+
+			
 	</div>
 	<div
-		data-options="region:'east',split:true,collapsed:false,title:'待处理事项',tools:'#treetool'"
+		data-options="iconCls:'icon-remind',region:'east',split:true,collapsed:false,title:'待处理事项',tools:'#treetool'"
 		style="width: 200px; padding: 10px;">
 			<ul id="tochecktree" class="easyui-tree" data-options="url:'${basePath}api/flowrecord/tocheck',method:'get',animate:true"></ul>
 	</div>	
 	<div id="mainPanle11" data-options="iconCls:'icon-info',region:'center',title:'公告及通知'">		
 		<div title="公告及通知" data-options="iconCls:'icon-info',closable:false" style="padding:2px;overflow:hidden;" id="home">
 			<div style="">
-				<table id="dg"  title="查询结果" style="height: 630px"  method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="" sortOrder="desc" toolbar="#tb">
+				<table id="dg"  title="" style="height: 590px"  method="get"
+					rownumbers="false" singleSelect="true" pagination="true" sortName="notice_id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
-							<th field="title" width="200" align="center" sortable="true">标题</th>
-							<th field="realname" width="100" align="center" sortable="true">发布人</th>
-							<th field="status_name" width="100" align="center"  sortable="true">发布状态</th>
-							<th field="publish_date" width="150" align="center" sortable="true">发布时间</th>
-							<th field="validity_date" width="150" align="center" sortable="true">有效期</th>
-							<th field="level_name" width="100" align="center"  sortable="true">紧急程度</th>
-							<th field="dealer_id" width="100" align="center"  sortable="true" formatter="formatterInfo">详细</th>							
+							<th field="title" width="200" align="left" sortable="true">标题</th>
+							<th field="realname" width="150" align="left" sortable="true">发布人</th>
+							<th field="status_name" width="100" align="left"  sortable="true">发布状态</th>
+							<th field="publish_date" width="150" align="left" sortable="true">发布时间</th>
+							<th field="validity_date" width="150" align="left" sortable="true">有效期</th>
+							<th field="level_name" width="100" align="left"  sortable="true">紧急程度</th>
+							<th field="dealer_id" width="80" align="left"  sortable="true" formatter="formatterInfo">详细</th>							
 						</tr>
 					</thead>
 				</table>
