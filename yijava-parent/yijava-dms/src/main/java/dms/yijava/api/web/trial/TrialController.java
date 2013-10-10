@@ -42,6 +42,7 @@ import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.department.DepartmentService;
 import dms.yijava.service.flow.FlowBussService;
 import dms.yijava.service.flow.FlowLogService;
+import dms.yijava.service.trial.TrialDetailService;
 import dms.yijava.service.trial.TrialService;
 
 @Controller
@@ -63,6 +64,10 @@ public class TrialController {
 	
 	@Autowired
 	private TrialService trialService;
+	
+	@Autowired
+	private TrialDetailService trialDetailService;
+
 
 	@Autowired
 	private FlowBussService flowBussService;
@@ -153,6 +158,7 @@ public class TrialController {
 	public Result<Integer> update(@ModelAttribute("entity") Trial entity) {
 		Result<Integer> result=new Result<Integer>(0, 0);
 		try {
+			entity.setHospital_id(entity.getAddhospital_id());
 			trialService.updateEntity(entity);
 			result.setData(1);
 			result.setState(1);;
@@ -171,9 +177,19 @@ public class TrialController {
 	public Result<Integer> remove(Integer trial_id) {
 		Result<Integer> result=new Result<Integer>(0, 0);
 		try {
-			trialService.removeEntity(trial_id);
-			result.setData(1);
-			result.setState(1);;
+			Trial entity=trialService.getEntity(trial_id.toString());
+			if(entity.getStatus().equals("0") || entity.getStatus().equals("2"))
+			{
+				//先删除子
+				trialDetailService.removeByTrialId(trial_id);
+				trialService.removeEntity(trial_id);
+				result.setData(1);
+				result.setState(1);;
+			}else
+			{
+				result.setError(new ErrorCode("此单据不可删除"));
+			}
+			
 		} catch (Exception e) {
 			logger.error("error" + e);
 		}

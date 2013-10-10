@@ -44,4 +44,9 @@
     <update id="delete" parameterType="dms.yijava.entity.trial.Trial">
     	delete from tb_trial_detail where trial_detail_id=#{trial_detail_id}	   	 		
 	</update>
+	
+	
+	 <update id="deleteByTrialId" parameterType="dms.yijava.entity.trial.Trial">
+    	delete from tb_trial_detail where trial_id=#{trial_id}	   	 		
+	</update>
 </mapper>

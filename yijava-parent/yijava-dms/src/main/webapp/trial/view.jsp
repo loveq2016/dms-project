@@ -171,6 +171,7 @@
 										</td>								
 									</tr>
 								</table>
+								<input type="text" name="trial_id" id="trial_id" value="">
 								<input type="text" name="dealer_name" id="dealer_name" value="">
 								<input type="text" name="hospital_name" id="hospital_name" value="">
 				</form>			
@@ -610,18 +611,18 @@
 		function viewEntity()
 		{
 			var row = $('#dg').datagrid('getSelected');			
-			if (row && row.status ==0){		  
+			if (row && (row.status ==0 || row.status==2)){		  
 			    $('#ffadd').form('load', row);
 			    
 			    /**
 		 		添加数据加载
 		 		*/
 		 		
-	 			var pager1 = $('#dgadd').datagrid().datagrid('getPager'); // get the pager of datagrid
-	 			pager1.pagination();
+	 			/* var pager1 = $('#dgadd').datagrid().datagrid('getPager'); // get the pager of datagrid
+	 			pager1.pagination(); */
 	 			
 	 			
-			    url = basePath+'api/protrial/update?flow_id='+row.flow_id;
+			    url = basePath+'api/protrial/update';
 			    $('#dlgadd').dialog('open').dialog('setTitle', '修改申请试用');
 			}else
 			{
@@ -632,7 +633,7 @@
 		function deleteEntity()
 		{
 			var row = $('#dg').datagrid('getSelected');
-			if (row && row.status ==0){		
+			if (row && (row.status ==0 || row.status==2)){		
 				 $.messager.confirm('确定','确定要删除吗 ?',function(r){
 					 if (r){
 	                        $.post(basePath+'api/protrial/remove',{trial_id:row.trial_id},function(result){
@@ -873,7 +874,7 @@
 				$('#dgProduct').datagrid({
 						 url:basePath+'api/product/api_paging',
 						 queryParams: {
-								filter_ANDS_dealer_id : dealer_id
+							 filter_ANDS_dealer_id : dealer_id
 						 }
 	
 				});	
@@ -953,7 +954,7 @@
         	                     $('#dgDetail').datagrid('reload');
         	                     
         					}else{
-        						$.messager.alert('提示','抱歉,删除错误!','error');	
+        						$.messager.alert('提示',jsonobj.error.msg,'error');	
         					}
 						}
 					});

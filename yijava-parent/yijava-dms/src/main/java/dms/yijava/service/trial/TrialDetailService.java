@@ -39,4 +39,10 @@ public class TrialDetailService {
 	public void removeEntity(TrialDetail entity) {
 		trialDetailDao.remove(entity);
 	}
+	
+	public void removeByTrialId(Integer trialId)
+	{
+		trialDetailDao.removeObject("deleteByTrialId",trialId);
+		
+	}
 }
