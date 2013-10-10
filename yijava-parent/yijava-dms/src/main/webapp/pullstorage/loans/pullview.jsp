@@ -366,8 +366,8 @@
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductSnEntity()">添加</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
 	    </div>
-		<div id="dlgProductSn" class="easyui-dialog" style="width:300px;height:320px;padding:5px 5px 5px 5px;"
-	            modal="true" closed="true" buttons="#dlgProductSn-buttons">
+		<div id="dlgProductAdd" class="easyui-dialog" style="width:300px;height:320px;padding:5px 5px 5px 5px;"
+	            modal="true" closed="true" buttons="#dlgProductAdd-buttons">
 		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
 					      <table>
 					      	     <tr>
@@ -402,18 +402,68 @@
 					             	<td>库存量:</td>
 					             	<td><input name="inventory_number" readonly="true" class="easyui-numberbox" style="width:150px"></td>
 					             </tr>
-						        <tr>
-					             	<td>数量:</td>
-					             	<td><input name="sales_number" id="sales_number" class="easyui-numberbox" style="width:150px" 
-									data-options="required:true"></td>
-					             </tr>
 					      </table>    	
 		        </form>
 	    </div>
-	    <div id="dlgProductSn-buttons">
+	    <div id="dlgProductAdd-buttons">
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="savePullStorageDetailEntity();">保存</a>
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProductSn').dialog('close')">取消</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProductAdd').dialog('close')">取消</a>
 	    </div>
+	    
+	    <div id="dlgProductSn" class="easyui-dialog" style="width:403px;height:413px;padding: 5px 5px 5px 5px;"
+            modal="true" closed="true">
+				<table id="dgAdjustProductSn"  class="easyui-datagrid" title="查询结果" style="height:365px;width:380px;" method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="id"  toolbar="#tb3"
+						pagination="true" iconCls="icon-search" sortOrder="asc">
+					<thead>
+						<tr>
+							<th data-options="field:'product_sn',width:240,align:'center'" sortable="true">序列号</th>
+						</tr>
+					</thead>
+				</table>
+				<div id="tb3">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="selectProductSn()">添加</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteAdjustSn()">删除</a>
+				</div>
+    	</div>
+    	<div id="dlgStorageProductSn" class="easyui-dialog" title="序列号列表" style="width:800px;height:495px;padding:5px 5px 5px 5px;"
+            modal="true" closed="true" buttons="#dlgProductSn-buttons">
+				<div class="easyui-panel" title="查询条件" style="width:775px;">
+						<div style="padding: 10px 0 0 30px">
+							<form id="fffdetail" method="post">
+								<input type="hidden" name="batch_no" id="batch_no" value=""></input>
+								<input type="hidden" name="fk_storage_id" id="fk_storage_id" value=""></input>
+								<table>
+									<tr>
+										<td>序列号:</td>	
+										<td width="100px"><input class="easyui-validatebox" type="text" name="product_sn" id="product_sn" ></input></td>
+									</tr>
+								</table>
+							</form>
+						</div>
+						<div style="text-align: right; padding:5px">
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearchProductSn()">查询</a>   
+						</div>
+					</div>
+				<div style="margin: 10px 0;"></div>
+					<table id="dgProductSn" class="easyui-datagrid" title="查询结果" style="height:300px" method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbProduct">
+						<thead>
+							<tr>
+								<th field="storage_name" width="120" align="center" sortable="true">仓库</th>
+								<th field="product_item_number" width="120" align="center" sortable="true">产品编号</th>
+								<th field="product_cname" width="120" align="center" sortable="true">产品中文名称</th>
+								<th field="batch_no" width="100" align="center" sortable="true">产品批次</th>
+								<th field="product_sn" width="100" align="center" sortable="true">序列号</th>
+							</tr>
+						</thead>
+					</table>
+			</div>
+		<div style="margin: 10px 0;"></div>
+		<div id="dlgStorageProductSn-buttons">
+		      <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="addProductSn()">添加</a>
+		      <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProductSn').dialog('close')">取消</a>
+		</div>
 	<script type="text/javascript">
 		var status;
 		var pull_storage_code;
@@ -615,16 +665,10 @@
 			clearPullStorageDetailForm();
 			var row = $('#dgProduct').datagrid('getSelected');
 			if(row){
+				$('#fm3').form('load',row);
 				$("#fm3 input[name=pull_storage_code]").val(pull_storage_code);
 				$("#fm3 input[name=put_storage_code]").val(put_storage_code);
-				$("#fm3 input[name=product_item_number]").val(row.product_item_number);
-				$("#fm3 input[name=product_cname]").val(row.product_cname);
-				$("#fm3 input[name=batch_no]").val(row.batch_no);	
-				$("#fm3 input[name=inventory_number]").val(row.inventory_number);	
-				$("#fm3 input[name=fk_storage_id]").val(row.fk_storage_id);	
-				$("#fm3 input[name=storage_name]").val(row.storage_name);
-				$("#fm3 input[name=valid_date]").val(row.valid_date);
-				$('#dlgProductSn').dialog('open').dialog('setTitle','添加产品');
+				$('#dlgProductAdd').dialog('open').dialog('setTitle','添加产品');
 			}else
 			{
 				$.messager.alert('提示','请选中某个产品!','warning');
@@ -642,9 +686,10 @@
 				    success:function(msg){
 				    	var jsonobj = $.parseJSON(msg);
 				    	if(jsonobj.state==1){
-							 $('#dlgProductSn').dialog('close');     
+							 $('#dlgProductAdd').dialog('close');     
 		                     $('#dgDetail').datagrid('reload');
 		                     $('#dg').datagrid('reload');
+		                     $.messager.alert('提示','添加成功!','error');
 				    	}else if(jsonobj.state==2){
 				    		$.messager.alert('提示','不可重复添加一个批次!','error');	
 				    	}else{

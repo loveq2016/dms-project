@@ -47,8 +47,8 @@ public class StorageDetailController {
 		boolean isDealerId=false;
 		for (PropertyFilter propertyFilter : filters) {
 			String propertyKey = propertyFilter.getPropertyNames()[0];
-			if(propertyKey.equals("ANDS_dealer_id") || 
-					propertyKey.equals("ANDS_dealer_ids")){
+			if(propertyKey.equals("dealer_id") || 
+					propertyKey.equals("dealer_ids")){
 				isDealerId=true;
 			}
 		}

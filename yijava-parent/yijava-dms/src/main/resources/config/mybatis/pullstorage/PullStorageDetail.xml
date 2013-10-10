@@ -63,8 +63,8 @@
 		<include refid="adsWhere"/>
 	</select>
 	<insert id="insert" parameterType="dms.yijava.entity.pullstorage.PullStorageDetail">
-		insert into dms.tb_pull_storage_detail (fk_storage_id,pull_storage_code,put_storage_code,product_item_number,money,models,batch_no,sales_number,valid_date) 
-    	values(#{fk_storage_id},#{pull_storage_code},#{put_storage_code},#{product_item_number},#{money},#{models},#{batch_no},#{sales_number},#{valid_date})
+		insert into dms.tb_pull_storage_detail (fk_storage_id,pull_storage_code,put_storage_code,product_item_number,money,models,batch_no,valid_date) 
+    	values(#{fk_storage_id},#{pull_storage_code},#{put_storage_code},#{product_item_number},#{money},#{models},#{batch_no},#{valid_date})
     </insert>
     <delete id="deleteByPrimaryKey" parameterType="int">
     	delete from dms.tb_pull_storage_detail where id = #{id}
