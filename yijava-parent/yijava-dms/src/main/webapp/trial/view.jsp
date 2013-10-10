@@ -132,6 +132,7 @@
 								                    textField:'dealer_name',
 								                    panelHeight:'auto',
 								                    onSelect: function(rec){
+								                    	$('#dealer_name').val(rec.dealer_name);								                    	
 											            var url = '${basePath}api/dealerAuthHospital/api_list?filter_ANDS_dealer_id='+rec.dealer_id;
 											            $('#addhospital_id').combobox('reload', url);
 											        }
@@ -142,7 +143,13 @@
 										<td>试用医院:</td>
 										<td>										
 											<input class="easyui-combobox" name="addhospital_id" id="addhospital_id" 
-											style="width:150px" maxLength="100" value="" class="easyui-validatebox""/>
+											style="width:260px" maxLength="100" value="" class="easyui-validatebox"" data-options="
+											valueField:'hospital_id',
+											textField:'hospital_name',
+											 onSelect: function(rec){
+											 	$('#hospital_name').val(rec.hospital_name);		
+											  }
+											"/>	
 												
 										</td>		
 										
@@ -153,7 +160,7 @@
 									<tr>
 										<td>试用时间:</td>
 										<td>
-										<input name="create_time"  class="easyui-datebox"></input>
+										<input name="create_time"  class="easyui-datebox" style="width:260px"></input>
 										
 										</td>								
 									</tr>
@@ -164,6 +171,8 @@
 										</td>								
 									</tr>
 								</table>
+								<input type="text" name="dealer_name" id="dealer_name" value="">
+								<input type="text" name="hospital_name" id="hospital_name" value="">
 				</form>			
 				<div style="text-align: right; padding: 5px">
 						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveEntity()">确定</a>
