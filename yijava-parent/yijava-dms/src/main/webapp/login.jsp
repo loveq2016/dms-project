@@ -7,6 +7,8 @@
 <meta charset="utf-8">
 <title>海利欧斯经销商管理系统</title>
 <link rel="stylesheet" type="text/css" href="${resPath}css/css.css">
+<link rel="stylesheet" type="text/css"	href="${resPath}resource/themes/gray/easyui.css">
+
 <script type="text/javascript" src="${resPath}resource/js/jquery-1.7.2.js"></script>
 <script type="text/javascript" src="${resPath}resource/js/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${resPath}resource/js/common.js"></script>
@@ -33,7 +35,9 @@
         </div>
         <div class="formline">
           <label>Validation Code/验证码：</label>
-          <input type="text" class="ipt code" value="">&nbsp;&nbsp;<img src="images/code.gif" width="84" height="32">
+          <input type="text" class="ipt code" value="" name="captcha">&nbsp;&nbsp;
+          <img id="captchaImg" src="getCaptcha" width="84" height="32"  align="absmiddle" style="cursor:hand" onclick="javascript:reloadValidateCode();" title="看不请?点击刷新"/>
+          <!-- <img src="images/code.gif" width="84" height="32"> --><a href="javascript:reloadValidateCode();">看不请?</a>
         </div>
         <div class="formline">
           <input type="button" value="Login/登录" class="btn" onclick="login()">
@@ -73,6 +77,10 @@
 				   	}			   		
 				}	
 			});
+		}
+		
+		function reloadValidateCode() {
+			$("#captchaImg").attr("src","getCaptcha?date = " + new Date() + Math.floor(Math.random()*24));
 		}
 	</script>
 </body>

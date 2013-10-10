@@ -48,7 +48,7 @@
 	</select>
 
 <!-- 查询试用记录 -->
-	<select id="selectByObject" resultType="dms.yijava.entity.trial.Trial">
+	<!-- <select id="selectByObject" resultType="dms.yijava.entity.trial.Trial">
 		select tb_trial.trial_id,tb_trial.trial_code,tb_trial.dealer_user_id,tb_trial.sales_user_id,tb_dealer.dealer_name,
 		tb_trial.region_user_id,tb_trial.company_user_id,tb_trial.hospital_id,
 		tb_hospital.hospital_name,tb_trial.reason,tb_trial.trial_num_sum,tb_trial.create_time,
@@ -56,12 +56,22 @@
 		 from tb_trial 
 		left join tb_dealer on tb_trial.dealer_user_id=tb_dealer.dealer_id
 		left join tb_hospital on tb_trial.hospital_id=tb_hospital.id
-		<!--  inner join tb_flow_record on tb_trial.trial_id = tb_flow_record.bussiness_id  -->
+		 inner join tb_flow_record on tb_trial.trial_id = tb_flow_record.bussiness_id 
 		<include refid="adsWhere" />
 		<include refid="adsOrder" />
 		limit #{offset},#{pagesize}
-	</select>
-
+	</select> -->
+	<select id="selectByObject" resultType="dms.yijava.entity.trial.Trial">
+			select tb_trial.trial_id,tb_trial.trial_code,tb_trial.dealer_user_id,tb_trial.sales_user_id,tb_trial.dealer_name,
+			tb_trial.region_user_id,tb_trial.company_user_id,tb_trial.hospital_id,
+			tb_trial.hospital_name,tb_trial.reason,tb_trial.trial_num_sum,tb_trial.create_time,
+			tb_trial.status,tb_trial.last_update
+			 from tb_trial 
+			
+			<include refid="adsWhere" />
+			<include refid="adsOrder" />
+			limit #{offset},#{pagesize}
+		</select>
 	<select id="select" parameterType="int" resultType="dms.yijava.entity.trial.Trial">
 		select * from tb_trial where trial_id = #{trial_id}
 	</select>
@@ -70,22 +80,24 @@
 
 	<insert id="insert" parameterType="dms.yijava.entity.trial.Trial" useGeneratedKeys="true" keyProperty="trial_id">
 		insert into
-		tb_trial(trial_code,trial_no,dealer_user_id,sales_user_id,region_user_id,company_user_id,hospital_id,reason,trial_num_sum,create_time,status,last_update)
-		values(#{trial_code},#{trial_no},#{dealer_user_id},#{sales_user_id},#{region_user_id},#{company_user_id},#{hospital_id},#{reason},#{trial_num_sum},NOW(),#{status},NOW())
+		tb_trial(trial_code,trial_no,dealer_user_id,sales_user_id,region_user_id,company_user_id,hospital_id,reason,trial_num_sum,create_time,status,last_update,dealer_name,hospital_name)
+		values(#{trial_code},#{trial_no},#{dealer_user_id},#{sales_user_id},#{region_user_id},#{company_user_id},#{hospital_id},#{reason},#{trial_num_sum},NOW(),#{status},NOW(),#{dealer_name},#{hospital_name})
 	</insert>
 
 	<insert id="update" parameterType="dms.yijava.entity.trial.Trial">
 		update tb_trial
 		<set>
-			<if test="dealer_user_id != null">dealer_user_id=#{dealer_user_id},</if>
-			<if test="sales_user_id != null">sales_user_id=#{sales_user_id},</if>
+			<if test="dealer_user_id != null and dealer_user_id != ''">dealer_user_id=#{dealer_user_id},</if>
+			<if test="sales_user_id != null ">sales_user_id=#{sales_user_id},</if>
 			<if test="region_user_id != null">region_user_id=#{region_user_id},</if>
 			<if test="company_user_id != null">company_user_id=#{company_user_id},</if>
-			<if test="hospital_id != null">hospital_id=#{hospital_id},</if>
+			<if test="hospital_id != null and hospital_id != ''">hospital_id=#{hospital_id},</if>
 			<if test="reason != null">reason=#{reason},</if>
 			<if test="trial_num_sum != null">trial_num_sum=#{trial_num_sum},</if>
-			<if test="create_time != null">create_time=#{create_time},</if>
+			<!-- <if test="create_time != null">create_time=#{create_time},</if> -->
 			<if test="status != null">status=#{status},</if>
+			<if test="dealer_name != null and dealer_name != ''">dealer_name=#{dealer_name},</if>
+			<if test="hospital_name != null and hospital_name != ''">hospital_name=#{hospital_name},</if>
 			 last_update=NOW()			
 		</set>
 		where trial_id=#{trial_id}

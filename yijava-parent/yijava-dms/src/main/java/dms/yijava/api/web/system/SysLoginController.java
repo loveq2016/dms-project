@@ -21,6 +21,7 @@ import com.yijava.common.utils.EncodeUtils;
 import com.yijava.web.vo.ErrorCode;
 import com.yijava.web.vo.Result;
 
+import dms.yijava.common.SysConstant;
 import dms.yijava.entity.system.SysLogin;
 import dms.yijava.entity.system.SysMenuFunction;
 import dms.yijava.entity.system.SysUser;
@@ -62,6 +63,22 @@ public class SysLoginController {
 		Result<Integer> result=new Result<Integer>(0, 0);
 		String account = request.getParameter("account");
 		String password = request.getParameter("password");
+		String randcode = request.getParameter("captcha");
+		
+		if(account==null || account.equals("")|| password==null || password.equals(""))
+		{
+			result.setError(new ErrorCode("账户名和密码不可为空"));
+			return result;
+		}
+		
+		String sessionCode=(String)request.getSession().getAttribute(SysConstant.DEFAULT_CAPTCHA_PARAM);
+		if(!StringUtils.equalsIgnoreCase(randcode, sessionCode))
+		
+		{
+			result.setError(new ErrorCode("验证码错误！"));
+			return result;
+		}
+		
 		if(StringUtils.isNotEmpty(account) && 
 				StringUtils.isNotEmpty(password)){
 			SysUser sysUser=new SysUser();

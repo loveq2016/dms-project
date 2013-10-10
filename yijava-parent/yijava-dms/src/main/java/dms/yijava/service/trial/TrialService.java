@@ -42,7 +42,7 @@ public class TrialService {
 				pageRequest.getOrderDir());
 	}
 	
-	public Trial getEntity(String id) {
+	public Trial getEntity(Integer id) {
 		return trialDao.get(id);
 	}
 	
