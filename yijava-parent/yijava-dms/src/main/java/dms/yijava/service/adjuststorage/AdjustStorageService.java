@@ -56,6 +56,13 @@ public class AdjustStorageService{
 	}
 	
 	
+	public void updateAdjustStorageStatus(String id,String status){
+		AdjustStorage entity = new AdjustStorage();
+		entity.setId(id);
+		entity.setStatus(status);
+		adjustStorageDao.updateObject(".updateAdjustStorageStatus", entity);
+	}
+	
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
 	public void removeEntity(String id,String adjust_storage_code) {
 		adjustStorageDao.removeById(id);

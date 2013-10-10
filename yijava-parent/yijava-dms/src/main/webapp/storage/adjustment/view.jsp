@@ -42,11 +42,11 @@
 													textField: 'value',
 													panelHeight:'auto',
 													data: [
-														{id: '1',value: '同意'},
-														{id: '2',value: '撤销'},
-														{id: '3',value: '拒绝'},
-														{id: '4',value: '提交'},
-														{id: '5',value: '待批'}
+														{id: '1',value: '未提交'},
+														{id: '2',value: '提交'},
+														{id: '3',value: '驳回'},
+														{id: '4',value: '已经审核'},
+														{id: '5',value: '完成'}
 														]" />
 									</td>
 									
@@ -81,14 +81,17 @@
 					</thead>
 				</table>
 				<div id="tb">     
-					<restrict:function funId="165">
+					<restrict:function funId="166">
 						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntity()">添加</a>
 					</restrict:function>
-					<restrict:function funId="165">
+					<restrict:function funId="167">
 						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntity()">编辑</a>
 					</restrict:function>
-					<restrict:function funId="165">
+					<restrict:function funId="168">
 	        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity()">删除</a>
+	        		</restrict:function>
+	        		<restrict:function funId="174">
+	        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="CheckEntity()">审核</a>
 	        		</restrict:function>
 				</div> 
 			</div>
@@ -125,6 +128,7 @@
             modal="true" closed="true" buttons="#dlg-buttons">
             <div class="easyui-panel" style="width:925px;" style="margin: 10px 0;">
 					<form id="fm" method="post" enctype="multipart/form-data">
+						<input type="hidden" name="id" id="id"></input>
 							<table>
 								<tr>
 									<td>经销商:</td>
@@ -160,11 +164,10 @@
 													panelHeight:'auto',
 													data: [
 														{id: '0',value: '未提交'},
-														{id: '1',value: '同意'},
-														{id: '2',value: '撤销'},
-														{id: '3',value: '拒绝'},
-														{id: '4',value: '提交'},
-														{id: '5',value: '待批'}
+														{id: '1',value: '提交'},
+														{id: '2',value: '驳回'},
+														{id: '3',value: '已经审核'},
+														{id: '4',value: '完成'}
 														]" />
 									</td>
 								</tr>
@@ -177,7 +180,7 @@
 					</form>
 			</div>
 			<div style="margin: 10px 0;"></div>
-			<div class="easyui-tabs" style="width:925px;height:auto;">
+			<div id="tabs" class="easyui-tabs" style="width:925px;height:auto;">
 				<div title="明细行" style="padding: 5px 5px 5px 5px;" >
 					<table id="dgDetail" class="easyui-datagrid" title="订单明细信息" style="height:300px" method="get"
 						 rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tb1">
@@ -194,20 +197,61 @@
 						</thead>
 					</table>
 					<div id="tb1">     
-						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true"  id="newAdjustBtn" onclick="newDetailEntity()">添加产品</a>
-        				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true"  id="deleteAdjustBtn" onclick="deleteDetailEntity()">删除产品</a>
+						<restrict:function funId="176">
+							<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true"  id="newAdjustBtn" onclick="newDetailEntity()">添加产品</a>
+	        			</restrict:function>
+	        			<restrict:function funId="177">	
+	        				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true"  id="deleteAdjustBtn" onclick="deleteDetailEntity()">删除产品</a>
+						</restrict:function>
 					</div> 
 				</div>
-				<div title="修改记录" style="padding: 5px 5px 5px 5px;" >
-					<table id="dgUpdateLog" class="easyui-datagrid" title="修改记录" style="height:370px" method="get"
-						rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc">
+				<div title="流程记录" style="padding: 5px 5px 5px 5px;" >
+					<table id="dgflow_record" class="easyui-datagrid" title="查询结果" style="height: 330px">
 						<thead>
 							<tr>
-								
+								<th data-options="field:'user_id',width:80"  sortable="true" hidden="true">修改人id</th>	
+								<th data-options="field:'user_name',width:80"  sortable="true">修改人</th>							
+								<th data-options="field:'create_date',width:120" sortable="true">日期</th>
+								<th data-options="field:'action_name',width:120"  sortable="true">动作</th>
+								<th data-options="field:'content',width:220"  sortable="true" formatter="FormatFlowlog" >内容</th>
+								<th data-options="field:'check_user_id',width:10"  sortable="true" hidden="true">修改人id</th>	
+								<th data-options="field:'check_user_name',width:10"  sortable="true" hidden="true">修改人</th>						
+								<th data-options="field:'check_reason',width:150">处理意见</th>	
+								<th data-options="field:'sign',width:100" formatter="formattersign">签名</th>														
 							</tr>
 						</thead>
-					</table>
+					</table> 
 				</div>
+				<div title="审核" style="padding: 5px 5px 5px 5px;">
+					<form id="base_form_check" action="" method="post" enctype="multipart/form-data">
+							<table style="height: 330px">
+								<tr height="20" >
+									<td>处理选项:</td>
+									<td>
+									<select class="easyui-combobox" name="status" style="width:200px;">
+										<option value="1">同意</option>
+										<option value="2">驳回</option>
+									</select>
+									</td>								
+								</tr>
+								<tr>
+									<td>处理意见:</td>
+									<td>
+									<textarea name="check_reason" style="height:60px;width:260px;"></textarea>
+									</td>								
+								</tr>
+								<tr height="100"><td colspan="2">
+								<input type="hidden" name="bussiness_id" id="bussiness_id">
+								<input type="hidden" name="flow_id" id="flow_id" value="">
+								<div style="text-align: right; padding: 5px">
+										<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveFlowCheck()">提交</a>
+<!-- 										<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="javascript:$('#dlgflowcheck').dialog('close')">取消</a>					    -->
+								</div>				
+								</td>
+								</tr>					
+							</table>
+					</form>					
+			</div>				
 			</div>
 		</div>
 		<div id="dlg-buttons">
@@ -337,10 +381,10 @@
 				</table>
 				<div id="tb3">
 <%-- 					<restrict:function funId="152"> --%>
-						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="selectProductSn()">添加</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="selectProductSn" onclick="selectProductSn()">添加</a>
 <%-- 					</restrict:function> --%>
 <%-- 					<restrict:function funId="154"> --%>
-						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteAdjustSn()">删除</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="deleteAdjustSn" onclick="deleteAdjustSn()">删除</a>
 <%-- 					</restrict:function> --%>
 				</div>
     </div>
@@ -431,15 +475,13 @@
 			if(value=='0')
 				return '<span>未提交</span>'; 
 			else if(value=='1')
-				return '<span>同意</span>'; 
-			else if(value=='2')
-				return '<span>撤销</span>'; 
-			else if(value=='3')
-				return '<span>拒绝</span>'; 
-			else if(value=='4')
 				return '<span>提交</span>'; 
-			else if(value=='5')
-				return '<span>待批</span>'; 
+			else if(value=='2')
+				return '<span>驳回</span>'; 
+			else if(value=='3')
+				return '<span>已经审核</span>'; 
+			else if(value=='4')
+				return '<span>已完成</span>'; 
 		}
 
 		function formatterInfo(value, row, index){
@@ -479,7 +521,7 @@
 		function editEntity(){
 	           var row = $('#dg').datagrid('getSelected');
 	            if (row){
-	            	if(row.status=='0'){
+	            	if(row.status=='0' || row.status=='2'){
 	            		 idx = $('#dg').datagrid('getRowIndex',row);
 	            		openAdjustDetail(idx);
 						url =basePath+'api/adjuststorage/update';
@@ -495,7 +537,7 @@
 		function deleteEntity(){
 	           var row = $('#dg').datagrid('getSelected');
 	            if (row){
-	            	if(row.status=='0'){
+	            	if(row.status=='0' || row.status=='2'){
 		                $.messager.confirm('Confirm','是否确定删除?',function(r){
 		                    if (r){
 		            			$.ajax({
@@ -526,7 +568,7 @@
 		
 		function newDetailEntity(){	
 			
-			if($('#status').combobox('getValue')==0){
+			if($('#status').combobox('getValue')==0 || $('#status').combobox('getValue')==2){
 				$('#dlgProduct').dialog('open');
 				$('#dgProduct').datagrid({
 					 url:basePath+'api/storageDetail/api_paging',
@@ -543,7 +585,7 @@
 		function deleteDetailEntity(){
 	           var row = $('#dgDetail').datagrid('getSelected');
 	            if (row){
-	            	if($('#status').combobox('getValue')==0){
+	            	if($('#status').combobox('getValue')==0 || $('#status').combobox('getValue')==2){
 		                $.messager.confirm('Confirm','是否确定删除?',function(r){
 		                    if (r){
 		            			$.ajax({
@@ -616,11 +658,12 @@
 		
 		var dealer_id ; 
 		var adjust_storage_code ;
+		var status;
 		function openAdjustDetail(index){
 			$('#dg').datagrid('selectRow',index);
 			var row = $('#dg').datagrid('getSelected');
 			$('#fm').form('load',row);
-			if(row.status==0){
+			if(row.status==0 || row.status==2){
 				//$('#type').combobox('setValue','1');
 				$("#newAdjustBtn").linkbutton('enable');
 				$("#deleteAdjustBtn").linkbutton('enable');
@@ -630,10 +673,10 @@
 				$("#deleteAdjustBtn").linkbutton('disable');
 				$("#submitAdjustBtn").linkbutton('disable');
 			}
-				
 			$('#dlgAdjustDetail').dialog('open');
 			adjust_storage_code = row.adjust_storage_code;
 			dealer_id = row.dealer_id;
+			status = row.status;
             $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
 			$('#dgDetail').datagrid({
 				url : basePath + "api/adjuststoragedetail/paging",
@@ -644,6 +687,9 @@
 					  $(".productSnBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
 				 }
 			});
+			
+			 LoadCheckFlowRecord(row.id);
+			 $('#tabs').tabs('disableTab', '审核'); 
 		}
 
 		function doSearchProduct(){
@@ -677,6 +723,16 @@
 			sn_num = Math.abs(row.adjust_number);
 			batch_no = row.batch_no;
 			fk_storage_id = row.fk_storage_id;
+			
+			if(status==0 || status==2){
+				$("#selectProductSn").linkbutton('enable');
+				$("#deleteAdjustSn").linkbutton('enable');
+			}else{
+				$("#selectProductSn").linkbutton('disable');
+				$("#deleteAdjustSn").linkbutton('disable');
+			}
+			
+			
 			$('#dgAdjustProductSn').datagrid('loadData', {total: 0, rows: []});
 			$('#dgAdjustProductSn').datagrid({
 				url : basePath + "api/adjuststoragedetailpro/paging",
@@ -805,8 +861,72 @@
         			});
                 }
             });
-			
 		}
+		
+		/**
+		审核
+		*/
+		function CheckEntity(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row && row.check_status ==1){				
+				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){
+					 $('#bussiness_id').val(row.deliver_id);
+					 $("#flow_id").val(adjustStorageflow_identifier_num);
+					 //填充基本信息
+					  $('#base_form_flowcheck').form('load', row);
+					 //var dgflow = $('#dgflow').datagrid().datagrid('getPager'); 
+					 //dgflow.pagination(); 
+					 //加载流程记录
+					 //LoadCheckFlowRecord(row.deliver_id);
+					 openAdjustDetail($('#dg').datagrid('getRowIndex'));
+					 $('#tabs').tabs('enableTab', '审核'); 
+					 $('#tabs').tabs('select', '审核');
+					 //$('#dlgDeliverDetail').dialog('open').dialog('setTitle', '审核');
+				 });
+			}else{
+				$.messager.alert('提示','请选中数据!','warning');
+			}
+			 
+		}
+		
+		function  LoadCheckFlowRecord(bussinessId){
+			 $('#dgflow_record').datagrid({
+			    url:basePath+'api/flowlog/list?bussiness_id='+bussinessId+"&flow_id="+adjustStorageflow_identifier_num
+			}); 
+		}
+		function FormatFlowlog (value, row, index) {
+			if(row.user_name  && row.action_name){
+				return row.user_name +" 进行"+row.action_name ;
+			}else{
+				return row.user_name ;
+			}
+		}
+		 function formattersign(value, row, index){
+			 if(row.sign && row.sign!="")
+			 	return '<span><img src="'+basePath+'resource/signimg/'+value+'" width="50" height="50"></span>'; 
+		 }
+		 
+		function saveFlowCheck(){
+				$('#base_form_check').form('submit', {
+				    url:basePath+'/api/flowrecord/do_flow',
+				    method:"post",
+				    onSubmit: function(){
+				        // do some check
+				        // return false to prevent submit;
+				    	return $(this).form('validate');;
+				    },
+				    success:function(msg){
+				    	var jsonobj= eval('('+msg+')');  
+				    	if(jsonobj.state==1){
+				    			//clearForm();			    			
+				    		$('#dlgAdjustDetail').dialog('close');
+				    		//var pager = $('#dg').datagrid().datagrid('getPager');
+				    		//pager.pagination('select');	
+				    		$('#dg').datagrid('reload');
+				    	}
+				    }		
+				});		
+			}
 		
 	</script>
 

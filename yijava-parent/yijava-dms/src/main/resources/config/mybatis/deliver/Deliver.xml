@@ -10,15 +10,9 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(deliver_status)">and deliver_status = #{deliver_status}</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(check_status)">and check_status = #{check_status}</if>
 			
-			<if test="dealer_ids != null and dealer_ids != '' ">
-				AND dealer_id in (${dealer_ids})
-			</if>
-			<if test="statuses != null and statuses != '' ">
-				AND check_status  in (${statuses})
-			</if>
-			<if test="check_id != null and check_id != '' ">
-				AND deliver_id in (select bussiness_id from tb_flow_record  where check_id= #{check_id})
-			</if>
+			<if test="dealer_ids != null and dealer_ids != '' ">AND dealer_id in (${dealer_ids})</if>
+			<if test="statuses != null and statuses != '' ">AND check_status  in (${statuses})</if>
+			<if test="check_id != null and check_id != '' ">AND deliver_id in (select bussiness_id from tb_flow_record  where check_id= #{check_id} and flow_id=#{flow_id})</if>
 			
 			
 		</trim>

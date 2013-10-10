@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,25 +25,35 @@ import dms.yijava.entity.adjuststorage.AdjustStorage;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.adjuststorage.AdjustStorageService;
+import dms.yijava.service.flow.FlowBussService;
 @Controller
 @RequestMapping("/api/adjuststorage")
 public class AdjustStorageController {
 
 	@Autowired
 	private AdjustStorageService adjustStorageService;
-
+	@Autowired
+	private FlowBussService flowBussService;
+	@Value("#{properties['adjustStorageflow_identifier_num']}")   	
+	private String flowIdentifierNumber;
+	@Value("#{properties['document_filepath']}")   	
+	private String document_filepath;
 	
 	@ResponseBody
 	@RequestMapping("paging")
 	public JsonPage<AdjustStorage> paging(PageRequest pageRequest,HttpServletRequest request) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
+		String currentUserId = sysUser.getId();
 		List<PropertyFilter> filters = PropertyFilters.build(request);
 		if (null != sysUser) {
 			//经销商
 			if (!StringUtils.equals("0", sysUser.getFk_dealer_id())) {
 				filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
 			}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
+				filters.add(PropertyFilters.build("ANDS_statuses","1,2,3,4"));
+				filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
 				filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
+				filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
 			}
 			return adjustStorageService.paging(pageRequest,filters);
 		}
@@ -97,11 +108,14 @@ public class AdjustStorageController {
 	public Result<String> submitAdjustStorage(@ModelAttribute("entity") AdjustStorage entity,HttpServletRequest request) {
 		try {
 			adjustStorageService.submitAdjustStorage(entity);
+			///以下开始走流程处理
+			SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
+			flowBussService.processFlow(Integer.parseInt(entity.getId()),sysUser,flowIdentifierNumber);
 			return new Result<String>("1", 1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new Result<String>("0", 1);
+		return new Result<String>("0", 0);
 	}
 	
 	

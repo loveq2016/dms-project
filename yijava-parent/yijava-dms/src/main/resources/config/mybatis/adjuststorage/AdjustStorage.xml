@@ -8,9 +8,14 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(type)">and type=#{type}</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">and status=#{status}</if>
 			<!-- 单据 -->
-			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(adjust_storage_code)">
-				and adjust_storage_code=#{adjust_storage_code}
-			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(adjust_storage_code)">and adjust_storage_code=#{adjust_storage_code}</if>
+			
+			<if test="dealer_ids != null and dealer_ids != '' ">AND dealer_id in (${dealer_ids})</if>
+			<if test="statuses != null and statuses != '' ">AND status  in (${statuses})</if>
+			<if test="check_id != null and check_id != '' ">AND deliver_id in (select bussiness_id from tb_flow_record  where check_id= #{check_id} and flow_id=#{flow_id})</if>
+			
+			
+			
 		</trim>
 	</sql>
 	<sql id="adsOrder">
@@ -57,7 +62,7 @@
 	</insert>
 	
 	<update id="submitAdjustStorage" parameterType="dms.yijava.entity.adjuststorage.AdjustStorage">
-		update dms.tb_adjust_storage set type=#{type},status=4,remark=#{remark} WHERE adjust_storage_code=#{adjust_storage_code}
+		update dms.tb_adjust_storage set status=1,remark=#{remark} WHERE adjust_storage_code=#{adjust_storage_code}
 	</update>
 	
 	<update id="updateTotalNumber" parameterType="dms.yijava.entity.adjuststorage.AdjustStorage">
@@ -67,5 +72,10 @@
 	<delete id="deleteByPrimaryKey" parameterType="int">
 		delete from dms.tb_adjust_storage where id = #{id}
 	</delete>
+	
+	<update id="updateAdjustStorageStatus" parameterType="dms.yijava.entity.adjuststorage.AdjustStorage">
+		update dms.tb_adjust_storage set status=#{status} WHERE id=#{id}
+	</update>
+	
 	
 </mapper>

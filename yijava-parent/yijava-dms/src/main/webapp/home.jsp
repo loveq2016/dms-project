@@ -137,7 +137,16 @@ $('#tochecktree').tree({
 			var tabTitle = "发货单管理";
 			var url = "deliver/apply/view.jsp";
 			addTabByChild(tabTitle,url);
+		}else if(node.id==adjustStorageflow_identifier_num)
+		{
+			var tabTitle = "调整单管理";
+			var url = "storage/adjustment/view.jsp";
+			addTabByChild(tabTitle,url);
 		}
+		
+		
+		
+		
 	}
 });
 function checkReload()

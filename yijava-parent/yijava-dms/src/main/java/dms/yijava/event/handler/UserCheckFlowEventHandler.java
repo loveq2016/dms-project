@@ -9,6 +9,7 @@ import com.google.common.eventbus.Subscribe;
 
 import dms.yijava.event.EventDriven;
 import dms.yijava.event.UserCheckFlowEvent;
+import dms.yijava.service.adjuststorage.AdjustStorageService;
 import dms.yijava.service.deliver.DeliverService;
 import dms.yijava.service.order.OrderService;
 import dms.yijava.service.pullstorage.PullStorageService;
@@ -31,6 +32,8 @@ public class UserCheckFlowEventHandler {
 	private PullStorageService pullStorageService;
 	@Autowired
 	private SalesStorageService salesStorageService;
+	@Autowired
+	private AdjustStorageService adjustStorageService;
 	
 	@Value("#{properties['trialflow_identifier_num']}")   	
 	private String flowIdentifierNumber;
@@ -42,6 +45,10 @@ public class UserCheckFlowEventHandler {
 	private String pullStorageflow_identifier_num;
 	@Value("#{properties['salesStorageflow_identifier_num']}")   	
 	private String salesStorageflow_identifier_num;
+	@Value("#{properties['adjustStorageflow_identifier_num']}")   	
+	private String adjustStorageflow_identifier_num;
+	
+	
 	@Subscribe
 	public void onUserCheckAgree(UserCheckFlowEvent flow_check) {
 		logger.debug("get user check flow"+flow_check.toString());
@@ -54,7 +61,7 @@ public class UserCheckFlowEventHandler {
 		{
 			//发货单
 			logger.debug("发货流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());
-			deliverService.updateDeliverStatus(flow_check.getBussiness_id(), "3");
+			deliverService.updateDeliverStatus(flow_check.getBussiness_id(), "3");//已经审核
 		}else if(flow_check.getFlow_id().equals(orderflow_identifier_num)){
 			//订单
 			logger.debug("订单流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());
@@ -67,7 +74,15 @@ public class UserCheckFlowEventHandler {
 			//销售出货
 			logger.debug("销售出货流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());
 			salesStorageService.updateStatus(flow_check.getBussiness_id(),"3");//审核通过
+		}else if(flow_check.getFlow_id().equals(adjustStorageflow_identifier_num)){
+			//库存调整
+			logger.debug("库存调整流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());
+			adjustStorageService.updateAdjustStorageStatus(flow_check.getBussiness_id(),"3");//审核通过
 		}
+		
+		
+		
+		
 		
 	}
 }
