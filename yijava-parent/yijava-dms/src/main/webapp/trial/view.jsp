@@ -28,19 +28,19 @@
 									
 									<td width="100">试用医院:</td>
 									<td>
-									<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+									<input class="easyui-combobox" name="queryhospital_id" id="queryhospital_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 						             			data-options="
-							             			url:'${basePath}api/userDealerFun/list?d_id=${user.fk_department_id}&u_id=${user.id}',
+							             			url:'${basePath}api/dealerAuthHospital/api_list',
 								                    method:'get',
-								                    valueField:'dealer_id',
-								                    textField:'dealer_name',
+								                    valueField:'hospital_id',
+								                    textField:'hospital_name',
 								                    panelHeight:'auto'
 						            			"/>								
 									</td>
 									
 									<td width="100">经销商:</td>
 									<td>
-										<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+										<input class="easyui-combobox" name="querydealer_id" id="querydealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 						             			data-options="
 							             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
 								                    method:'get',
@@ -120,18 +120,6 @@
 				<form id="ffadd" action="" method="post" enctype="multipart/form-data">
 								<table>
 									<tr>
-										<td>试用医院:</td>
-										<td>
-										
-										
-										<input  style="width:260px;" class="easyui-validatebox" type="hidden" 
-										name="trial_id" data-options="required:true" ></input>
-										
-										
-										<input  style="width:260px;" class="easyui-validatebox" type="text" 
-										name="hospital_id" data-options="required:true"></input></td>								
-									</tr>
-									<tr>
 										<td>经销商:</td>
 										<td>
 										
@@ -142,10 +130,26 @@
 								                    method:'get',
 								                    valueField:'dealer_id',
 								                    textField:'dealer_name',
-								                    panelHeight:'auto'
+								                    panelHeight:'auto',
+								                    onSelect: function(rec){
+											            var url = '${basePath}api/dealerAuthHospital/api_list?filter_ANDS_dealer_id='+rec.dealer_id;
+											            $('#addhospital_id').combobox('reload', url);
+											        }
 						            			"/>	
 						            	</td>							
 									</tr>
+									<tr>
+										<td>试用医院:</td>
+										<td>										
+											<input class="easyui-combobox" name="addhospital_id" id="addhospital_id" 
+											style="width:150px" maxLength="100" value="" class="easyui-validatebox""/>
+												
+										</td>		
+										
+										
+														
+									</tr>
+									
 									<tr>
 										<td>试用时间:</td>
 										<td>
@@ -398,14 +402,7 @@
 												<td width="100px"><input class="easyui-validatebox" type="text" name="item_number" id="item_number" ></input></td>
 												<td>选择分类:</td>
 												<td>
-									            	<input class="easyui-combobox" name="category_id" id="category_id" style="width:150px" maxLength="100" class="easyui-validatebox"
-								             			data-options="
-									             			url: '${basePath}api/dealerAuthProduct/list?dealer_id=${user.fk_dealer_id}',
-										                    method:'get',
-										                    valueField:'product_category_id',
-															textField:'category_name',
-										                    panelHeight:'auto'
-								            			"/>
+									            	<input class="easyui-combobox" name="category_id" id="category_id" style="width:150px" maxLength="100" value="" class="easyui-validatebox""/>
 							                	</td>
 											</tr>
 										</table>
@@ -549,7 +546,6 @@
 			//pager.pagination(); 
 			
 		});
-		
 		
 		
 		
@@ -853,8 +849,17 @@
 		}
 		function newOrderDetailEntity()
 		{
-			if(trial_status=="0")
+			if(trial_status=="0" || trial_status=="2")
 			{
+				/**
+				产品分类下拉框
+				*/
+				$('#category_id').combobox({
+				    url:basePath+'api/dealerAuthProduct/list?dealer_id='+dealer_id,
+				    valueField:'product_category_id',
+					textField:'category_name'
+				});
+			
 				$('#dlgProduct').dialog('open').dialog('setTitle','['+trial_code+']产品列表');
 				$('#dgProduct').datagrid({
 						 url:basePath+'api/product/api_paging',
