@@ -57,7 +57,7 @@
 		<div title="公告及通知" data-options="iconCls:'icon-info',closable:false" style="padding:2px;overflow:hidden;" id="home">
 			<div style="">
 				<table id="dg"  title="查询结果" style="height: 630px"  method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="" sortOrder="desc" toolbar="#tb">
+					rownumbers="true" singleSelect="true" pagination="true" sortName="notice_id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
 							<th field="title" width="200" align="center" sortable="true">标题</th>
