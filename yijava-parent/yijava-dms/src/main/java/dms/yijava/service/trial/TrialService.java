@@ -71,11 +71,11 @@ public class TrialService {
 	 * @param pull_storage_party_id
 	 * @return
 	 */
-	public Trial getTrialCode() {
-		Trial trial=trialDao.getObject(".selectTrialCode",null);
-		if(null==trial || StringUtils.isEmpty(trial.getTrial_code())){
+	public Trial getTrialCode(String dealer_user_id) {
+		Trial trial=trialDao.getObject(".selectTrialCode",dealer_user_id);
+		if(null==trial || StringUtils.isEmpty(trial.getTrial_no())){
 			trial=new Trial();
-			trial.setTrial_code("001");
+			trial.setTrial_no("001");
 		}
 		return trial;
 	}

@@ -22,6 +22,11 @@ import dms.yijava.common.SysConstant;
 @Controller
 public class SystemCommonController {
 
+	@RequestMapping("/index")
+	public String index()
+	{
+		 return "redirect:main.jsp";
+	}
 	/**
 	 * 生成验证码
 	 * 

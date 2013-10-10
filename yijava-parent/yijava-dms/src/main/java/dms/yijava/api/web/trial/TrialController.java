@@ -85,6 +85,7 @@ public class TrialController {
 	public JsonPage<Trial> paging(PageRequest pageRequest,
 			HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
+		
 		//找到当前登录用户所拥有的所有销售
 		//如果是销售，只查询自己的试用
 		//如果是其他用户，根据关系找到所有的销售
@@ -126,9 +127,9 @@ public class TrialController {
 			String currentUserId=sysUser.getId();
 			
 			
-			Trial trial=trialService.getTrialCode();
-			entity.setTrial_code(entity.getDealer_user_id()+"TR"+formatter.format(new Date())+trial.getTrial_code());			
-			entity.setTrial_no(String.valueOf((Integer.parseInt(trial.getTrial_code()))));		
+			Trial trial=trialService.getTrialCode(entity.getDealer_user_id());
+			entity.setTrial_code(entity.getDealer_user_id()+"TR"+formatter.format(new Date())+trial.getTrial_no());			
+			entity.setTrial_no(String.valueOf((Integer.parseInt(trial.getTrial_no()))));		
 			entity.setSales_user_id(currentUserId);			
 			if(entity.getStatus()==null)
 				entity.setStatus(0);
@@ -138,7 +139,7 @@ public class TrialController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.error("error" + e);
-			//result.setError(error);
+			result.setError(new ErrorCode(e.toString()));
 		}
 
 		return result;

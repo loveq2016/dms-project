@@ -37,7 +37,7 @@
           <label>Validation Code/验证码：</label>
           <input type="text" class="ipt code" value="" name="captcha">&nbsp;&nbsp;
           <img id="captchaImg" src="getCaptcha" width="84" height="32"  align="absmiddle" style="cursor:hand" onclick="javascript:reloadValidateCode();" title="看不请?点击刷新"/>
-          <!-- <img src="images/code.gif" width="84" height="32"> --><a href="javascript:reloadValidateCode();">看不请?</a>
+          <!-- <img src="images/code.gif" width="84" height="32"> <a href="javascript:reloadValidateCode();">看不请?</a>-->
         </div>
         <div class="formline">
           <input type="button" value="Login/登录" class="btn" onclick="login()">
