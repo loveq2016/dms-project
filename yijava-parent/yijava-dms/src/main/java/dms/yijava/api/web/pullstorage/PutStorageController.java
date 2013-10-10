@@ -57,6 +57,7 @@ public class PutStorageController {
 			}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
 				filters.add(PropertyFilters.build("ANDS_fk_put_storage_party_ids", this.listString(sysUser.getUserDealerList())));
 			}
+			filters.add(PropertyFilters.build("ANDS_status","3,4"));
 			return pullStorageService.paging(pageRequest,filters);
 		}
 		return null;

@@ -23,7 +23,8 @@ import dms.yijava.entity.pullstorage.SalesStorage;
 public class SalesStorageService{
 	@Autowired
 	private SalesStorageDao salesStorageDao;
-	
+	@Autowired
+	private PullStorageDetailService pullStorageDetailService;
 	public JsonPage<SalesStorage> paging(PageRequest pageRequest,List<PropertyFilter> filters) {
 		Map<String,String> parameters = new HashMap<String,String>();
 		try{
@@ -77,6 +78,7 @@ public class SalesStorageService{
 		salesStorageDao.removeById(id);
 	}
 	public void removeByPullStorageCode(String pull_storage_code) {
+		pullStorageDetailService.removeByPullStorageCode(pull_storage_code);
 		salesStorageDao.removeObject(".deleteByPullStorageCode",pull_storage_code);
 	}
 	public SalesStorage getStorageDetailTotalNumber(String pull_storage_code) {

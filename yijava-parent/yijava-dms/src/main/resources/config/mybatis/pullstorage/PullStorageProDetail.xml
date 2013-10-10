@@ -50,7 +50,7 @@
 	<insert id="insert" parameterType="java.util.List"> 
 		insert into dms.tb_pull_storage_pro_detail(fk_pull_storage_detail_id,fk_storage_id,pull_storage_code,put_storage_code,product_sn,batch_no,last_time)values
     	<foreach collection="list" item="item" index="index" separator=",">   
-	        (#{fk_pull_storage_detail_id},#{item.fk_storage_id},#{item.pull_storage_code},#{item.put_storage_code},#{item.product_sn},#{item.batch_no},NOW())
+	        (#{item.fk_pull_storage_detail_id},#{item.fk_storage_id},#{item.pull_storage_code},#{item.put_storage_code},#{item.product_sn},#{item.batch_no},NOW())
 	    </foreach>
     </insert>
     <delete id="deleteByPrimaryKey" parameterType="int">

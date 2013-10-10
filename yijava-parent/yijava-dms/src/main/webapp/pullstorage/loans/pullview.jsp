@@ -226,7 +226,7 @@
 					 rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbPullStorageDetail">
 					<thead>
 						<tr>
-						   <th data-options="field:'id',width:100,align:'center'" hidden="true"></th>
+						    <th data-options="field:'id',width:100,align:'center'" hidden="true"></th>
 							<th data-options="field:'fk_storage_id',width:100,align:'center'" hidden="true"></th>
 							<th data-options="field:'storage_name',width:100,align:'center'" sortable="true">仓库</th>
 							<th data-options="field:'product_item_number',width:100,align:'center'" sortable="true">产品编码</th>
@@ -411,14 +411,15 @@
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="savePullStorageDetailEntity();">保存</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProductAdd').dialog('close')">取消</a>
 	    </div>
-	    <div id="dlgProductSn" class="easyui-dialog" style="width:403px;height:413px;padding: 5px 5px 5px 5px;"
+	    <div id="dlgProductSn" class="easyui-dialog" style="width:475px;height:415px;padding: 5px 5px 5px 5px;"
             modal="true" closed="true">
-				<table id="dgProductSn"  class="easyui-datagrid" title="查询结果" style="height:365px;width:400px;" method="get"
+				<table id="dgProductSn"  class="easyui-datagrid" title="查询结果" style="height:365px;width:450px;" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id"  toolbar="#tb3"
 						pagination="true" iconCls="icon-search" sortOrder="asc">
 					<thead>
 						<tr>
-							<th data-options="field:'product_sn',width:240,align:'center'" sortable="true">序列号</th>
+							<th data-options="field:'product_sn',width:200,align:'center'" sortable="true">序列号</th>
+							<th data-options="field:'last_time',width:200,align:'center'" sortable="true">更新时间</th>
 						</tr>
 					</thead>
 				</table>
@@ -434,6 +435,8 @@
 							<form id="fffdetail" method="post">
 								<input type="hidden" name="batch_no" id="batch_no" value=""></input>
 								<input type="hidden" name="fk_storage_id" id="fk_storage_id" value=""></input>
+								<input type="hidden" name="pull_storage_code" id="pull_storage_code" value=""></input>
+								<input type="hidden" name="status" id="status" value="1"></input>
 								<table>
 									<tr>
 										<td>序列号:</td>	
@@ -468,6 +471,10 @@
 		var pull_storage_code;
 		var put_storage_code;
 		var dealer_id=${user.fk_dealer_id};
+		var fk_pull_storage_detail_id;
+		var batch_no;
+		var fk_storage_id;
+		
 		$(function() {
 			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
 			pager.pagination();  
@@ -591,7 +598,7 @@
 				},
 				onLoadSuccess:function(data){ 
 					  $(".productSnBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
-				 }
+				}
 			});
 			$('#dgUpdateLog').datagrid({
 			    url:basePath+'api/flowlog/list?bussiness_id='+row.id+"&flow_id="+pullStorageflow_identifier_num
@@ -690,7 +697,10 @@
 							 $('#dlgProductAdd').dialog('close');     
 		                     $('#dgDetail').datagrid('reload');
 		                     $('#dg').datagrid('reload');
-		                     $.messager.alert('提示','添加成功!','error');
+		                     $.messager.show({
+                                 title: '提示',
+                                 msg: "产品添加成功!"
+                             });
 				    	}else if(jsonobj.state==2){
 				    		$.messager.alert('提示','不可重复添加一个批次!','error');	
 				    	}else{
@@ -715,19 +725,18 @@
 			return value==1?"<span style='color:green'>是</span>":"<span style='color:red'>否</span>";
 		} 
 		function formatterProductSn (value, row, index) { 
-			alert(0)
-			 	return '<a class="productSnBtn" href="javascript:void(0)"  onclick="openProductSn('+index+')" ></a>';
+			return '<a class="productSnBtn" href="javascript:void(0)"  onclick="openProductSn('+index+')" ></a>';
 		}
 		function doSearchProductSn(){
 		    $('#dgStorageProductSn').datagrid('load',{
 		    	filter_ANDS_fk_storage_id: $("#fffdetail input[name=fk_storage_id]").val(),
 		    	filter_ANDS_batch_no: $("#fffdetail input[name=batch_no]").val(),
-		    	filter_ANDS_product_sn: $("#fffdetail input[name=product_sn]").val()
+		    	filter_ANDS_product_sn: $("#fffdetail input[name=product_sn]").val(),
+		    	filter_ANDS_pull_storage_code: $("#fffdetail input[name=pull_storage_code]").val(),
+		    	filter_ANDS_status: $("#fffdetail input[name=status]").val()
 		    });
 		}
-		var fk_pull_storage_detail_id;
-		var batch_no;
-		var fk_storage_id;
+		
 		//SN明细
 		function openProductSn(index){
 			$('#dgDetail').datagrid('selectRow',index);
@@ -749,6 +758,8 @@
 		function selectProductSn(){
 			$('#dlgStorageProductSn').dialog('open');
 			$("#fffdetail input[name=batch_no]").val(batch_no);
+			$("#fffdetail input[name=fk_storage_id]").val(fk_storage_id);
+			$("#fffdetail input[name=pull_storage_code]").val(pull_storage_code);
 			$('#dgStorageProductSn').datagrid('loadData', {total: 0, rows: []});
 			$('#dgStorageProductSn').datagrid({
 				url : basePath + "api/storageProDetail/api_paging",
@@ -783,7 +794,10 @@
 		            	            $('#dgProductSn').datagrid('reload');
 		            	            $('#dgDetail').datagrid('reload');
 		            	            $('#dg').datagrid('reload');
-		            	            $.messager.alert('提示','序列号添加成功!','info');			
+		            	            $.messager.show({
+	                                    title: '提示',
+	                                    msg: "序列号添加成功!"
+	                                });
 		            			}else if(jsonobj.state == 2){
 		            				$.messager.alert('提示','序列号已经存在!','warning');			
 		            			}else{
@@ -802,11 +816,11 @@
 			       	 if (r){
 				         $.ajax({
 				            type : "POST",
-				            url : basePath + 'api/pullstorageprodetail/delete',
+				            url : basePath + 'api/pullstorageprodetail/remove',
 				            data : {
 				            	id:row.id, 
 				            	pull_storage_code:pull_storage_code,
-				            	fk_pull_storage_detail_id : fk_pull_storage_detail_id},
+				            	fk_pull_storage_detail_id : row.fk_pull_storage_detail_id},
 				            	error : function(request) {
 				            		$.messager.alert('提示','Error!','error');	
 				            	},

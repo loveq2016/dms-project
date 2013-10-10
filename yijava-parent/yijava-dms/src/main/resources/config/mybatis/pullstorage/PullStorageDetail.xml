@@ -63,7 +63,7 @@
 		<include refid="adsWhere"/>
 	</select>
 	<select id="selectStorageProDetailSalesNumber" resultType="dms.yijava.entity.pullstorage.PullStorageDetail">
-		SELECT COUNT(1) as sales_number,pull_storage_code,fk_storage_id,batch_no FROM tb_pull_storage_pro_detail WHERE fk_pull_storage_detail_id=#{id}
+		SELECT COUNT(1) as sales_number,pull_storage_code,fk_storage_id,batch_no,fk_pull_storage_detail_id as id FROM tb_pull_storage_pro_detail WHERE fk_pull_storage_detail_id=#{id}
 	</select>
 	<insert id="insert" parameterType="dms.yijava.entity.pullstorage.PullStorageDetail">
 		insert into dms.tb_pull_storage_detail (fk_storage_id,pull_storage_code,put_storage_code,product_item_number,money,models,batch_no,valid_date) 
@@ -72,8 +72,7 @@
     <update id="update" parameterType="dms.yijava.entity.pullstorage.PullStorageDetail">
 		update dms.tb_pull_storage_detail
 		<trim prefix="SET" suffixOverrides=",">
-            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(total_number)">sales_number=#{sales_number},</if>
-            last_time=NOW()
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(sales_number)">sales_number=#{sales_number}</if>
         </trim>
 		WHERE id=#{id}
 	</update>

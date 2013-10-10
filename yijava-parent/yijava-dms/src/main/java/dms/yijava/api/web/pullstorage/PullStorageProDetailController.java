@@ -78,19 +78,10 @@ public class PullStorageProDetailController {
 	public Result<Integer> remove(@ModelAttribute("entity") PullStorageProDetail entity,HttpServletRequest request) {
 		pullStorageProDetailService.removeByIdEntity(entity.getId());
 		PullStorageDetail pullStorageDetail=pullStorageDetailService.getStorageProDetailSalesNumber(entity.getFk_pull_storage_detail_id());//查询SN总数
-		if(null==pullStorageDetail){
-			pullStorageDetail=new PullStorageDetail();
-			pullStorageDetail.setId(entity.getFk_pull_storage_detail_id());
-			pullStorageDetail.setSales_number("0");
-		}
+		pullStorageDetail.setId(entity.getFk_pull_storage_detail_id());
 		pullStorageDetailService.updateEntity(pullStorageDetail);//修改产品数量
 		//修改总数
 		PullStorage pullStorage = pullStorageService.getStorageDetailTotalNumber(entity.getPull_storage_code());
-		if(null==pullStorage){
-			pullStorage=new PullStorage();
-			pullStorage.setPull_storage_code(entity.getPull_storage_code());
-			pullStorage.setTotal_number("0");
-		}
 		pullStorageService.updateEntity(pullStorage);//修改单据总数
 		return new Result<Integer>(1, 1);
 	}
