@@ -17,6 +17,7 @@ import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.Result;
 
+import dms.yijava.entity.flow.FlowRecord;
 import dms.yijava.entity.hospital.Hospital;
 import dms.yijava.service.hospital.HospitalService;
 
@@ -39,6 +40,7 @@ public class HospitalController {
 	@RequestMapping("paging")
 	public JsonPage<Hospital> paging(PageRequest pageRequest,HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
+		pageRequest.setPageSize(14);
 		return hospitalService.paging(pageRequest,filters);
 	}
 	
@@ -87,4 +89,17 @@ public class HospitalController {
 		return hospitalService.getEntityByName(name);
 	}
 	
+	
+	@ResponseBody
+	@RequestMapping("getprovince_api")
+	public  List<String> getAllProvince() {
+		
+		try {
+			return hospitalService.findAllProvincd();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

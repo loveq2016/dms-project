@@ -119,4 +119,5 @@ public interface BaseDAO<T> {
 	public <T> List<T> find(Map parameters);
 	
 	public <T> List<T> find(String postfix_selectmap ,Object o);
+	public <T> List<T> findNoParamer(String postfix_selectmap);
 }

@@ -70,5 +70,10 @@ public class HospitalService {
 	public void deleteEntity(String id) {
 		hospitalDao.remove(id);
 	}
+	
+	public List<String> findAllProvincd()
+	{
+		return hospitalDao.findNoParamer(".selectAllProvince");
+	}
 		
 }

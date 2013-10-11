@@ -158,5 +158,9 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 		return getSqlSession().selectList(entityClass.getSimpleName() + postfix_selectmap,o);
 	}
 
+	public <T> List<T> findNoParamer(String postfix_selectmap)
+	{
+		return getSqlSession().selectList(entityClass.getSimpleName() + postfix_selectmap);
+	}
 
 }
