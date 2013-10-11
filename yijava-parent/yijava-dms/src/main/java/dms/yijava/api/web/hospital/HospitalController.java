@@ -40,7 +40,7 @@ public class HospitalController {
 	@RequestMapping("paging")
 	public JsonPage<Hospital> paging(PageRequest pageRequest,HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
-		pageRequest.setPageSize(14);
+		pageRequest.setPageSize(13);
 		return hospitalService.paging(pageRequest,filters);
 	}
 	

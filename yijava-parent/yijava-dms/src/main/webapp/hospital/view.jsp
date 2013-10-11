@@ -77,8 +77,10 @@
 							<th field="city" width="80" align="left" sortable="true">县市(区)</th>
 							<th field="address" width="300" align="left" sortable="true">地址</th>
 							<th field="postcode" width="100" align="left" sortable="true">邮编</th>
+							<th field="last_update" width="150" align="left" sortable="true">最后修改时间</th>
 							<th field="phone" width="200" align="left" sortable="true" hidden="true">电话</th>
 							<th field="beds" width="200" align="left" sortable="true" hidden="true">床位数</th>
+							
 							<th data-options="field:'ids',width:50" sortable="true" formatter="formatterdesc">明细</th>	
 						</tr>
 					</thead>
@@ -166,7 +168,7 @@
 		        </form>
 	    </div>
 	    <div id="dlg-buttons">
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveEntity();">保存</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" id="saveobject" iconCls="icon-ok" onclick="saveEntity();">保存</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
 	    </div>
 
@@ -198,6 +200,7 @@
 			 $('#dlg').dialog('open').dialog('setTitle','医院信息添加');
 			 url = basePath + 'api/hospital/save';
 			 $('#fm').form('clear');
+			 $('#saveobject').linkbutton('enable');
 			 saveEntity();
 		  } 
 
@@ -208,6 +211,7 @@
 	        	$('#fm').form('clear');
 	            $('#dlg').dialog('open').dialog('setTitle','医院信息更新');
 	            $('#fm').form('load',row);
+	            $('#saveobject').linkbutton('enable');
 	            url = basePath + 'api/hospital/update';
 	          }else{
 					$.messager.alert('提示','请选中数据!','warning');				
@@ -277,7 +281,9 @@
 			 $('#dg').datagrid('selectRow', index);
 			 var row = $('#dg').datagrid('getSelected');
 			 $('#fm').form('load',row);
-			 $('#dlg').dialog('open').dialog('setTitle','医院信息更新');
+			 $('#dlg').dialog('open').dialog('setTitle','医院信息明细');
+			 $('#saveobject').linkbutton('disable');
+			 
 		}
 
 
