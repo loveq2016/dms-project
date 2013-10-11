@@ -66,7 +66,7 @@
 		<include refid="adsWhere"/>
 	</select>
 	<select id="selectStorageProDetailMoveNumber" resultType="dms.yijava.entity.movestorage.MoveStorageDetail">
-		SELECT COUNT(1) as move_number,move_storage_code,fk_move_storage_id,fk_move_to_storage_id,batch_no,fk_move_storage_detail_id as id FROM tb_pull_storage_pro_detail WHERE fk_move_storage_detail_id=#{id}
+		SELECT COUNT(1) as move_number,move_storage_code,fk_move_storage_id,fk_move_to_storage_id,batch_no,fk_move_storage_detail_id as id FROM dms.tb_move_storage_pro_detail WHERE fk_move_storage_detail_id=#{id}
 	</select>
 	<insert id="insert" parameterType="dms.yijava.entity.movestorage.MoveStorageDetail">
 		insert into dms.tb_move_storage_detail(fk_move_storage_id,fk_move_to_storage_id,move_storage_code,product_item_number,money,models,batch_no,valid_date) 

@@ -168,6 +168,7 @@
 							<th data-options="field:'valid_date',width:100,align:'center'" sortable="true">有效日期</th>
 							<th data-options="field:'inventory_number',width:80,align:'center'" sortable="true">库存量</th>
 							<th data-options="field:'sales_number',width:80,align:'center'" sortable="true">销售数量(EA)</th>
+							<th data-options="field:'product_sn',width:100,align:'center',editor:'datebox'" formatter="formatterProductSn">序列号</th>
 						</tr>
 					</thead>
 				</table>
@@ -180,6 +181,19 @@
 	        </restrict:function>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgPullStorageDetail').dialog('close')">取消</a>
 	    </div>
+	     <div id="dlgProductSn" class="easyui-dialog" style="width:475px;height:415px;padding: 5px 5px 5px 5px;"
+            modal="true" closed="true">
+				<table id="dgProductSn"  class="easyui-datagrid" title="查询结果" style="height:365px;width:450px;" method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="id"
+						pagination="true" iconCls="icon-search" sortOrder="asc">
+					<thead>
+						<tr>
+							<th data-options="field:'product_sn',width:200,align:'center'" sortable="true">序列号</th>
+							<th data-options="field:'last_time',width:200,align:'center'" sortable="true">更新时间</th>
+						</tr>
+					</thead>
+				</table>
+    	</div>
 	<script type="text/javascript">
 		var status;
 		var pull_storage_code;
@@ -193,7 +207,7 @@
 		}
 		function doSearch(){
 		    $('#dg').datagrid({
-				  url : basePath +"api/pullstorage/paging",
+				  url : basePath +"api/putstorage/paging",
 				  queryParams: {
 					    filter_ANDS_pull_storage_code:$('#ff input[name=pull_storage_code]').val(),
 				    	filter_ANDS_fk_put_storage_party_id: $('#ff input[name=fk_put_storage_party_id]').val(),
@@ -230,6 +244,9 @@
 				url : basePath + "api/pullstoragedetail/detailpaging",
 				queryParams: {
 					filter_ANDS_pull_storage_code : pull_storage_code
+				},
+				onLoadSuccess:function(data){ 
+					  $(".productSnBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
 				}
 			});
 			if(status=='1'){
@@ -268,6 +285,26 @@
 		function formatterIs_pullstorage (value, row, index) { 
 			return value==1?"<span style='color:green'>是</span>":"<span style='color:red'>否</span>";
 		} 
+		function formatterProductSn (value, row, index) { 
+			return '<a class="productSnBtn" href="javascript:void(0)"  onclick="openProductSn('+index+')" ></a>';
+		}
+		//SN明细
+		function openProductSn(index){
+			$('#dgDetail').datagrid('selectRow',index);
+			var row = $('#dgDetail').datagrid('getSelected');
+			$('#dlgProductSn').dialog('open').dialog('setTitle','产品下序列号');
+			batch_no = row.batch_no;
+			fk_storage_id = row.fk_storage_id;
+			$('#dgProductSn').datagrid('loadData', {total: 0, rows: []});
+			$('#dgProductSn').datagrid({
+				url : basePath + "api/pullstorageprodetail/paging",
+				queryParams: {
+					filter_ANDS_pull_storage_code: pull_storage_code,
+					filter_ANDS_fk_storage_id : fk_storage_id,
+					filter_ANDS_batch_no : batch_no
+				}
+			});
+		}
 	</script>
 </body>
 </html>

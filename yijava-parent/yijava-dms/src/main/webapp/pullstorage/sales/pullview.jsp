@@ -357,7 +357,6 @@
 							<form id="fffdetail" method="post">
 								<input type="hidden" name="batch_no" id="batch_no" value=""></input>
 								<input type="hidden" name="fk_storage_id" id="fk_storage_id" value=""></input>
-								<input type="hidden" name="pull_storage_code" id="pull_storage_code" value=""></input>
 								<input type="hidden" name="status" id="status" value="1"></input>
 								<table>
 									<tr>
@@ -686,12 +685,10 @@
 			$('#dlgStorageProductSn').dialog('open');
 			$("#fffdetail input[name=batch_no]").val(batch_no);
 			$("#fffdetail input[name=fk_storage_id]").val(fk_storage_id);
-			$("#fffdetail input[name=pull_storage_code]").val(pull_storage_code);
 			$('#dgStorageProductSn').datagrid('loadData', {total: 0, rows: []});
 			$('#dgStorageProductSn').datagrid({
 				url : basePath + "api/storageProDetail/api_paging",
 				queryParams: {
-					filter_ANDS_pull_storage_code: pull_storage_code,
 					filter_ANDS_fk_storage_id: fk_storage_id,
 					filter_ANDS_batch_no : batch_no,
 					filter_ANDS_status : 1
