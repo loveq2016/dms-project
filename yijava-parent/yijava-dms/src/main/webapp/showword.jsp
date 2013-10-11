@@ -12,15 +12,52 @@
 
 
 function load(){  
-	document.getElementById('oframe').Open("http://localhost:8080/yijava-dms/generate/trial/trial-31.doc",false);
+	//document.getElementById('oframe').Open("http://localhost:8080/yijava-dms/generate/trial/trial-31.doc",false);
 	 //word.openDoc("trial-31.doc","http://localhost:8080/yijava-dms/generate/trial/trial-31.doc");  
 }
 </script>
 
-<object classid="clsid:00460182-9E5E-11d5-B7C8-B8269041DD57" codebase="dsoframer.ocx" id="oframe" width="100%" height="100%">  
-         <param name="BorderStyle" value="1">  
-         <param name="TitlebarColor" value="52479">  
-         <param name="TitlebarTextColor" value="0">    
-       </object>  
+<object   id=FileDialog   style="left:   0px;   TOP:   0px"   
+classid="clsid:f9043c85-f6f2-101a-a3c9-08002b2f49fb"   codebase="http://activex.microsoft.com/controls/vb5/comdlg32.cab">   
+  </object>   
+  <input   type=button   value="打开Word文档"   onclick='OpenFile()'>   
+  <input   type=button   value="HTML格式"   onclick='window.confirm(App.innerHTML)'>   
+  <div   align=left   id=App   style="border:1   solid   #000000;background-color:#FFFFFF;height:400px;overflow:auto;width:100%;z-index:2"   contentEditable></div>   
+  <script>   
+  function   OpenFile()   
+  {   
+  try   
+  {   
+  FileDialog.CancelError=true;   
+  FileDialog.Filter="Word模板|*.doc|Word模板|*.dot";   
+  FileDialog.ShowOpen();   
+  var   WordApp=new   ActiveXObject("Word.Application");   
+  WordApp.Application.Visible=false;   
+  var   Doc=WordApp.Documents.Open(FileDialog.filename);   
+  Doc.Activate();   
+  Doc.Parent.Options.InsertedTextColor=4;   
+  Doc.Parent.Options.InsertedTextMark=2;   
+  Doc.Parent.Options.DeletedTextColor=4;   
+  Doc.Parent.Options.DeletedTextMark=1;   
+  Doc.TrackRevisions=true;   
+  Doc.PrintRevisions=true;   
+  Doc.ShowRevisions=true;   
+  Doc.Application.UserName="";   
+  var   Range=Doc.Range();   
+  Range.Select();   
+  var   Selection=WordApp.Selection;   
+  Selection.Copy();   
+  App.focus();   
+  document.execCommand("Paste");   
+  App.focus();   
+  WordApp.DisplayAlerts=false;   
+  Doc.Close();   
+  WordApp.DisplayAlerts=true;   
+  WordApp.Quit();   
+  }   
+  catch(e){}   
+  return   false;   
+  }   
+  </script>
 </body>
 </html>
