@@ -177,7 +177,7 @@
 	<script type="text/javascript">
 	
 	 	var url;
-	 	//var pagesize=${pageSize};
+	 	var pagesize='13';
 
 	 	 function formatterdesc (value, row, index) { 
 				// v = "'"+ row.id + "','" + index+"'";
@@ -192,7 +192,9 @@
 
 		$('#dg').datagrid({
 			 url : basePath + "api/hospital/paging",
-			 pageSize:13,
+			 pageSize:pagesize,
+			 
+			 pageList: [13, 20, 30], 
 			 onLoadSuccess:function(data){ 
 				  $(".questionBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
 			 }
