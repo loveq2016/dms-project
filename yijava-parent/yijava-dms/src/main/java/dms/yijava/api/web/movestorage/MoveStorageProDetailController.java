@@ -26,7 +26,7 @@ import dms.yijava.service.movestorage.MoveStorageService;
 import dms.yijava.service.storage.StorageDetailService;
 
 @Controller
-@RequestMapping("/api/pullstorageprodetail")
+@RequestMapping("/api/movestorageprodetail")
 public class MoveStorageProDetailController {
 	@Autowired
 	private MoveStorageService moveStorageService;
