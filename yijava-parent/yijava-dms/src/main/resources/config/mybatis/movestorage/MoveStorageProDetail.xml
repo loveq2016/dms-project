@@ -48,9 +48,9 @@
         <include refid="adsWhere"/>
     </select>
 	<insert id="insert" parameterType="java.util.List"> 
-		insert into dms.tb_move_storage_pro_detail(fk_move_storage_id,fk_move_to_storage_id,move_storage_code,product_sn,batch_no,last_time)values
+		insert into dms.tb_move_storage_pro_detail(fk_move_storage_detail_id,fk_move_storage_id,fk_move_to_storage_id,move_storage_code,product_sn,batch_no,last_time)values
     	<foreach collection="list" item="item" index="index" separator=",">   
-	        (#{item.fk_move_storage_id},#{item.fk_move_to_storage_id},#{item.move_storage_code},#{item.product_sn},#{item.batch_no},NOW())
+	        (#{item.fk_move_storage_detail_id},#{item.fk_move_storage_id},#{item.fk_move_to_storage_id},#{item.move_storage_code},#{item.product_sn},#{item.batch_no},NOW())
 	    </foreach>
     </insert>
     <delete id="deleteByPrimaryKey" parameterType="int">
@@ -59,8 +59,7 @@
     <delete id="deleteByMoveStorageCode" parameterType="String">
    		 delete from dms.tb_move_storage_pro_detail where move_storage_code=#{move_storage_code}
     </delete>
-    <delete id="deleteByStorageOrBatchNo" parameterType="dms.yijava.entity.movestorage.MoveStorageProDetail">
-   		 delete from dms.tb_move_storage_pro_detail where fk_move_storage_id=#{fk_move_storage_id} and 
-   		 move_storage_code=#{move_storage_code} and fk_move_to_storage_id=#{fk_move_to_storage_id} and batch_no=#{batch_no}
+   <delete id="deleteByMoveStorageDetailId" parameterType="String">
+   		 delete from dms.tb_move_storage_pro_detail where fk_move_storage_detail_id=#{fk_move_storage_detail_id}
     </delete>
 </mapper>

@@ -167,6 +167,7 @@
 					 rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbMoveStorageDetail">
 					<thead>
 						<tr>
+							<th data-options="field:'id',width:100,align:'center'" hidden="true"></th>
 							<th data-options="field:'fk_move_storage_id',width:100,align:'center'" hidden="true"></th>
 							<th data-options="field:'fk_move_to_storage_id',width:100,align:'center'" hidden="true"></th>
 							<th data-options="field:'move_storage_name',width:100,align:'center'" sortable="true">移出仓库</th>
@@ -176,6 +177,7 @@
 							<th data-options="field:'inventory_number',width:80,align:'center'" sortable="true">库存量</th>
 							<th data-options="field:'move_number',width:80,align:'center'" sortable="true">移动数量(EA)</th>
 							<th data-options="field:'move_to_storage_name',width:100,align:'center'" sortable="true">移入仓库</th>
+							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
 						</tr>
 					</thead>
 				</table>
@@ -245,8 +247,8 @@
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductSnEntity()">添加</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
 	    </div>
-		<div id="dlgProductSn" class="easyui-dialog" style="width:300px;height:350px;padding:5px 5px 5px 5px;"
-	            modal="true" closed="true" buttons="#dlgProductSn-buttons">
+		<div id="dlgProductAdd" class="easyui-dialog" style="width:300px;height:350px;padding:5px 5px 5px 5px;"
+	            modal="true" closed="true" buttons="#dlgProductAdd-buttons">
 		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
 					      <table>
 					      	    <tr>
@@ -299,28 +301,82 @@
 					             	<td>库存量:</td>
 					             	<td><input name="inventory_number" readonly="true" class="easyui-numberbox" style="width:150px"></td>
 					             </tr>
-						        <tr>
-					             	<td>数量:</td>
-					             	<td><input name="move_number" id="move_number" class="easyui-numberbox" style="width:150px" 
-									data-options="required:true"></td>
-					             </tr>
-					      </table>    	
+					      </table>
 		        </form>
 	    </div>
-	    <div id="dlgProductSn-buttons">
+	    <div id="dlgProductAdd-buttons">
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveMoveStorageDetailEntity();">保存</a>
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProductSn').dialog('close')">取消</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProductAdd').dialog('close')">取消</a>
 	    </div>
+	    <div id="dlgProductSn" class="easyui-dialog" style="width:475px;height:415px;padding: 5px 5px 5px 5px;"
+            modal="true" closed="true">
+				<table id="dgProductSn"  class="easyui-datagrid" title="查询结果" style="height:365px;width:450px;" method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="id"  toolbar="#tb3"
+						pagination="true" iconCls="icon-search" sortOrder="asc">
+					<thead>
+						<tr>
+							<th data-options="field:'product_sn',width:200,align:'center'" sortable="true">序列号</th>
+							<th data-options="field:'last_time',width:200,align:'center'" sortable="true">更新时间</th>
+						</tr>
+					</thead>
+				</table>
+				<div id="tb3">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="selectProductSn()">添加</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteProductSn()">删除</a>
+				</div>
+    	</div>
+    	<div id="dlgStorageProductSn" class="easyui-dialog" title="序列号列表" style="width:800px;height:495px;padding:5px 5px 5px 5px;"
+            modal="true" closed="true" buttons="#dlgStorageProductSn-buttons">
+				<div class="easyui-panel" title="查询条件" style="width:775px;">
+						<div style="padding: 10px 0 0 30px">
+							<form id="fffdetail" method="post">
+								<input type="hidden" name="batch_no" id="batch_no" value=""></input>
+								<input type="hidden" name="fk_storage_id" id="fk_storage_id" value=""></input>
+								<input type="hidden" name="move_storage_code" id="move_storage_code" value=""></input>
+								<input type="hidden" name="status" id="status" value="1"></input>
+								<table>
+									<tr>
+										<td>序列号:</td>	
+										<td width="100px"><input class="easyui-validatebox" type="text" name="product_sn" id="product_sn" ></input></td>
+									</tr>
+								</table>
+							</form>
+						</div>
+						<div style="text-align: right; padding:5px">
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearchProductSn()">查询</a>   
+						</div>
+					</div>
+				<div style="margin: 10px 0;"></div>
+					<table id="dgStorageProductSn" class="easyui-datagrid" title="查询结果" style="height:300px" method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbProduct">
+						<thead>
+							<tr>
+								<th field="storage_name" width="120" align="center" sortable="true">仓库</th>
+								<th field="batch_no" width="100" align="center" sortable="true">产品批次</th>
+								<th field="product_sn" width="100" align="center" sortable="true">序列号</th>
+							</tr>
+						</thead>
+					</table>
+			</div>
+		<div style="margin: 10px 0;"></div>
+		<div id="dlgStorageProductSn-buttons">
+		      <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="addProductSn()">添加</a>
+		      <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgStorageProductSn').dialog('close')">取消</a>
+		</div>
 	<script type="text/javascript">
 		var status;
 		var move_storage_code;
+		var dealer_id=${user.fk_dealer_id};
+		var fk_move_storage_detail_id;
+		var batch_no;
+		var fk_storage_id;
 		$(function() {
 			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
 			pager.pagination();
 			$('#type').combobox('setValue','1');
 		})
 		function formatterDetail(value, row, index){
-			return '<span style="color:red;cursor:pointer" onclick="openMoveStorageDetail(\''+index+'\')">明细</span>'; 
+			return '<span style="color:red;cursor:pointer" onclick="onClickMoveStorageDetail(\''+index+'\')">明细</span>'; 
 		}
 		function doSearch(){
 			$('#dg').datagrid({
@@ -407,10 +463,12 @@
 		function clearMoveStorageDetailForm(){
 			$('#fm3').form('clear');
 		}
-		//open订单项
-		function openMoveStorageDetail(index){
+		function onClickMoveStorageDetail(index){
 			$('#dg').datagrid('selectRow',index);
-			var row = $('#dg').datagrid('getSelected');
+			openMoveStorageDetail($('#dg').datagrid('getSelected'));
+		}
+		//open订单项
+		function openMoveStorageDetail(row,type){
 			$('#ffMoveStorageDetail').form('load',row);
 			$('#dlgMoveStorageDetail').dialog('open');
             $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
@@ -420,6 +478,9 @@
 				url : basePath + "api/movestoragedetail/detailpaging",
 				queryParams: {
 					filter_ANDS_move_storage_code : move_storage_code
+				},
+				onLoadSuccess:function(data){ 
+					  $(".productSnBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
 				}
 			});
 			if(status!='0'){
@@ -443,8 +504,7 @@
 				    $.ajax({
 						type : "POST",
 						url :basePath+'api/movestoragedetail/remove',
-						data:{move_storage_code:move_storage_code,batch_no:row.batch_no,fk_move_storage_id:row.fk_move_storage_id,
-							fk_move_to_storage_id:row.fk_move_to_storage_id,product_item_number:row.product_item_number,move_number:row.move_number},
+						data:{id:row.id,move_storage_code:move_storage_codex},
 						error : function(request) {
 							$.messager.alert('提示','抱歉,删除错误!','error');	
 						},
@@ -485,15 +545,9 @@
 			clearMoveStorageDetailForm();
 			var row = $('#dgProduct').datagrid('getSelected');
 			if(row){
+				$('#fm3').form('load',row);
 				$("#fm3 input[name=move_storage_code]").val(move_storage_code);
-				$("#fm3 input[name=product_item_number]").val(row.product_item_number);
-				$("#fm3 input[name=product_cname]").val(row.product_cname);
-				$("#fm3 input[name=batch_no]").val(row.batch_no);	
-				$("#fm3 input[name=inventory_number]").val(row.inventory_number);	
-				$("#fm3 input[name=fk_move_storage_id]").val(row.fk_storage_id);	
-				$("#fm3 input[name=move_storage_name]").val(row.storage_name);
-				$("#fm3 input[name=valid_date]").val(row.valid_date);
-				$('#dlgProductSn').dialog('open').dialog('setTitle','添加产品');
+				$('#dlgProductAdd').dialog('open').dialog('setTitle','添加产品');
 			}else
 			{
 				$.messager.alert('提示','请选中某个产品!','warning');
@@ -511,7 +565,7 @@
 				    success:function(msg){
 				    	var jsonobj = $.parseJSON(msg);
 				    	if(jsonobj.state==1){
-							 $('#dlgProductSn').dialog('close');     
+							 $('#dlgProductAdd').dialog('close');     
 		                     $('#dgDetail').datagrid('reload');
 		                     $('#dg').datagrid('reload');
 				    	}else if(jsonobj.state==2){
@@ -557,6 +611,118 @@
 		function formatterIs_movestorage (value, row, index) { 
 			return value==1?"<span style='color:green'>是</span>":"<span style='color:red'>否</span>";
 		} 
+		function doSearchProductSn(){
+		    $('#dgStorageProductSn').datagrid('load',{
+		    	filter_ANDS_fk_storage_id: $("#fffdetail input[name=fk_storage_id]").val(),
+		    	filter_ANDS_batch_no: $("#fffdetail input[name=batch_no]").val(),
+		    	filter_ANDS_product_sn: $("#fffdetail input[name=product_sn]").val(),
+		    	filter_ANDS_move_storage_code: $("#fffdetail input[name=move_storage_code]").val(),
+		    	filter_ANDS_status: $("#fffdetail input[name=status]").val()
+		    });
+		}
+		//SN明细
+		function openProductSn(index){
+			$('#dgDetail').datagrid('selectRow',index);
+			var row = $('#dgDetail').datagrid('getSelected');
+			$('#dlgProductSn').dialog('open').dialog('setTitle','产品下序列号');
+			fk_move_storage_detail_id = row.id;
+			batch_no = row.batch_no;
+			fk_storage_id = row.fk_storage_id;
+			$('#dgProductSn').datagrid('loadData', {total: 0, rows: []});
+			$('#dgProductSn').datagrid({
+				url : basePath + "api/movestorageprodetail/paging",
+				queryParams: {
+					filter_ANDS_move_storage_code: move_storage_code,
+					filter_ANDS_fk_storage_id : fk_storage_id	,
+					filter_ANDS_batch_no : batch_no
+				}
+			});
+		}
+		function selectProductSn(){
+			$('#dlgStorageProductSn').dialog('open');
+			$("#fffdetail input[name=batch_no]").val(batch_no);
+			$("#fffdetail input[name=fk_storage_id]").val(fk_storage_id);
+			$("#fffdetail input[name=move_storage_code]").val(move_storage_code);
+			$('#dgStorageProductSn').datagrid('loadData', {total: 0, rows: []});
+			$('#dgStorageProductSn').datagrid({
+				url : basePath + "api/storageProDetail/api_paging",
+				queryParams: {
+					filter_ANDS_move_storage_code: move_storage_code,
+					filter_ANDS_fk_storage_id: fk_storage_id,
+					filter_ANDS_batch_no : batch_no,
+					filter_ANDS_status : 1
+				}
+			});
+		}
+		function addProductSn(){
+	           var row = $('#dgStorageProductSn').datagrid('getSelected');
+	            if (row){
+		            	$.ajax({
+		            	type : "POST",
+		            	url : basePath + 'api/movestorageprodetail/save',
+		            		data : {
+		            				fk_move_storage_detail_id : fk_move_storage_detail_id,
+		            				fk_storage_id:row.fk_storage_id,
+		            				batch_no : row.batch_no,
+		            				product_sn : row.product_sn,
+		            				move_storage_code:move_storage_code
+		            		},
+		            		error : function(request) {
+		            			$.messager.alert('提示','Error!','error');	
+		            		},
+		            		success : function(data) {
+		            			var jsonobj = $.parseJSON(data);
+		            			if (jsonobj.state == 1) {  
+		            	            $('#dgProductSn').datagrid('reload');
+		            	            $('#dgDetail').datagrid('reload');
+		            	            $('#dg').datagrid('reload');
+		            	            $.messager.show({
+	                                    title: '提示',
+	                                    msg: "序列号添加成功!"
+	                                });
+		            			}else if(jsonobj.state == 2){
+		            				$.messager.alert('提示','序列号已经存在!','warning');			
+		            			}else{
+		            				$.messager.alert('提示','Error!','error');	
+		            		}
+		            	}
+		            }); 
+	            }else{
+					$.messager.alert('提示','请选中数据!','warning');				
+				}	
+		}
+		function deleteProductSn(){
+	    	var row = $('#dgProductSn').datagrid('getSelected');
+	    	if (row){
+		    	$.messager.confirm('Confirm','是否确定删除?',function(r){
+			       	 if (r){
+				         $.ajax({
+				            type : "POST",
+				            url : basePath + 'api/movestorageprodetail/remove',
+				            data : {
+				            	id:row.id, 
+				            	move_storage_code:move_storage_code,
+				            	fk_move_storage_detail_id : row.fk_move_storage_detail_id},
+				            	error : function(request) {
+				            		$.messager.alert('提示','Error!','error');	
+				            	},
+				            	success : function(data) {
+					            	var jsonobj = $.parseJSON(data);
+					            	if (jsonobj.state == 1) {
+					            	    $('#dgProductSn').datagrid('reload');
+					            	    $('#dgDetail').datagrid('reload');
+					            	    $('#dg').datagrid('reload');
+					            	}else{
+					            		$.messager.alert('提示','Error!','error');	
+					            	}
+				            	}
+			            });
+			         }
+		     });
+	      }else{
+				$.messager.alert('提示','请选中数据!','warning');				
+		  }	
+	  }
 	</script>
 </body>
 </html>

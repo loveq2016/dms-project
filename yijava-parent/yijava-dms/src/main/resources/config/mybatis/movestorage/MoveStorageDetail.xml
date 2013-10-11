@@ -65,17 +65,24 @@
 		select * from dms.tb_move_storage_detail 
 		<include refid="adsWhere"/>
 	</select>
+	<select id="selectStorageProDetailMoveNumber" resultType="dms.yijava.entity.movestorage.MoveStorageDetail">
+		SELECT COUNT(1) as move_number,move_storage_code,fk_move_storage_id,fk_move_to_storage_id,batch_no,fk_move_storage_detail_id as id FROM tb_pull_storage_pro_detail WHERE fk_move_storage_detail_id=#{id}
+	</select>
 	<insert id="insert" parameterType="dms.yijava.entity.movestorage.MoveStorageDetail">
-		insert into dms.tb_move_storage_detail(fk_move_storage_id,fk_move_to_storage_id,move_storage_code,product_item_number,money,models,batch_no,move_number,valid_date) 
-    	values(#{fk_move_storage_id},#{fk_move_to_storage_id},#{move_storage_code},#{product_item_number},#{money},#{models},#{batch_no},#{move_number},#{valid_date})
+		insert into dms.tb_move_storage_detail(fk_move_storage_id,fk_move_to_storage_id,move_storage_code,product_item_number,money,models,batch_no,valid_date) 
+    	values(#{fk_move_storage_id},#{fk_move_to_storage_id},#{move_storage_code},#{product_item_number},#{money},#{models},#{batch_no},#{valid_date})
     </insert>
+    <update id="update" parameterType="dms.yijava.entity.movestorage.MoveStorageDetail">
+		update dms.tb_move_storage_detail
+		<trim prefix="SET" suffixOverrides=",">
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(move_number)">move_number=#{move_number}</if>
+        </trim>
+		WHERE id=#{id}
+	</update>
     <delete id="deleteByPrimaryKey" parameterType="int">
     	delete from dms.tb_move_storage_detail where id = #{id}
     </delete>
     <delete id="deleteByMoveStorageCode" parameterType="String">
    		 delete from dms.tb_move_storage_detail where move_storage_code=#{move_storage_code}
-    </delete>
-    <delete id="deleteByStorageOrBatchNo" parameterType="dms.yijava.entity.movestorage.MoveStorageDetail">
-   		 delete from dms.tb_move_storage_detail where fk_move_storage_id=#{fk_move_storage_id} and fk_move_to_storage_id=#{fk_move_to_storage_id} and product_item_number = #{product_item_number} and batch_no=#{batch_no}
     </delete>
 </mapper>

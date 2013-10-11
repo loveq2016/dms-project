@@ -21,7 +21,8 @@ import dms.yijava.entity.pullstorage.PullStorage;
 public class MoveStorageService{
 	@Autowired
 	private MoveStorageDao moveStorageDao;
-	
+	@Autowired
+	private MoveStorageDetailService moveStorageDetailService;
 	public JsonPage<MoveStorage> paging(PageRequest pageRequest,List<PropertyFilter> filters) {
 		Map<String,String> parameters = new HashMap<String,String>();
 		try{
@@ -60,10 +61,14 @@ public class MoveStorageService{
 	public void updateEntity(MoveStorage entity) {
 		moveStorageDao.update(entity);
 	}
-	public void removeEntity(String id) {
-		moveStorageDao.removeById(id);
+	public void updateStatus(String id,String status){
+		MoveStorage entity=new MoveStorage();
+		entity.setId(id);
+		entity.setStatus(status);
+		moveStorageDao.updateObject(".updateStatus", entity);
 	}
 	public void removeByMoveStorageCode(String move_storage_code) {
+		moveStorageDetailService.removeByMoveStorageCode(move_storage_code);
 		moveStorageDao.removeObject(".deleteByMoveStorageCode",move_storage_code);
 	}
 	public MoveStorage getStorageDetailTotalNumber(String move_storage_code) {

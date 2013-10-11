@@ -76,9 +76,6 @@ public class PullStorageService{
 		entity.setStatus(status);
 		pullStorageDao.updateObject(".updateStatus", entity);
 	}
-	public void removeEntity(String id) {
-		pullStorageDao.removeById(id);
-	}
 	public void removeByPullStorageCode(String pull_storage_code) {
 		pullStorageDetailService.removeByPullStorageCode(pull_storage_code);
 		pullStorageDao.removeObject(".deleteByPullStorageCode",pull_storage_code);

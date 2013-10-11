@@ -50,8 +50,8 @@ public class MoveStorageProDetailService{
 	public void removeByMoveStorageCode(String move_storage_code) {
 		moveStorageProDetailDao.removeObject(".deleteByMoveStorageCode",move_storage_code);
 	}
-	public void removeByStorageOrBatchNo(MoveStorageProDetail entity) {
-		moveStorageProDetailDao.removeObject(".deleteByStorageOrBatchNo",entity);
+	public void removeByMoveStorageDetailId(String fk_move_storage_detail_id) {
+		moveStorageProDetailDao.removeObject(".deleteByFullStorageDetailId",fk_move_storage_detail_id);
 	}
 	/**
 	 * move_storage_code
