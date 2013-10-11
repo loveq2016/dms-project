@@ -17,12 +17,12 @@
 								<tr>
 									<td>经销商:</td>
 									<td>
-										<input class="easyui-validatebox" type="text" name="dealer_name" id="dealer_name" data-options="required:false"></input>
+										<input class="easyui-validatebox" type="text" style="width:300px" name="dealer_name" id="dealer_name" data-options="required:false"></input>
 									</td>
 									<td></td>
 									<td>经销商代码:</td>
 									<td>
-										<input class="easyui-validatebox" type="text" name="dealer_name" id="dealer_code" data-options="required:false"></input>
+										<input class="easyui-validatebox" type="text" style="width:300px" name="dealer_name" id="dealer_code" data-options="required:false"></input>
 									</td>
 								</tr>
 							</table>
@@ -46,14 +46,15 @@
 					rownumbers="true" singleSelect="true" pagination="true" sortName="dealer_id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
-							<th field="dealer_name" width="150" align="center" sortable="true">中文名称</th>
-							<th field="dealer_code" width="200" align="center" sortable="true">经销商代码</th>
-							<th field="business_contacts" width="200" align="center" sortable="true">商务联系人</th>
-							<th field="business_phone" width="200" align="center" sortable="true">商务联系人电话</th>
-							<th field="invoice_address" width="400" align="center">发票邮寄地址</th>
-							<th field="invoicea_postcode" width="150" align="center">发票邮寄地址邮编</th>
-							<th field="status" width="150" align="center" formatter="formatterStatus">经销商状态</th>
-							<th field="attribute" width="100" align="center">经销商属性</th>
+							<th field="dealer_name" width="150" align="left" sortable="true">中文名称</th>
+							<th field="dealer_code" width="200" align="left" sortable="true">经销商代码</th>
+							<th field="business_contacts" width="200" align="left" sortable="true">商务联系人</th>
+							<th field="business_phone" width="200" align="left" sortable="true">商务联系人电话</th>
+							<th field="invoice_address" width="300" align="left">发票邮寄地址</th>
+							<th field="invoicea_postcode" width="150" align="left">发票邮寄地址邮编</th>
+							<th field="status" width="70" align="left" formatter="formatterStatus">经销商状态</th>
+							<th field="attribute" width="100" align="left" hidden="true">经销商属性</th>
+							<th data-options="field:'ids',width:50" sortable="true" formatter="formatterdesc">明细</th>	
 						</tr>
 					</thead>
 				</table>
@@ -197,12 +198,19 @@
 	
 
 	<script type="text/javascript">
-	
+		function formatterdesc (value, row, index) { 
+			// v = "'"+ row.id + "','" + index+"'";
+			 	return '<a class="questionBtn" href="javascript:void(0)"  onclick="View_Entity('+index+')" ></a>';
+			 //return '<span><img src="'+basePath+'resource/themes/icons/detail.png" style="cursor:pointer" onclick="View_Entity(' + index + ');"></span>'; 
+		} 
 		
 	
 	 	var url;
 		$('#dg').datagrid({
-			url : basePath + "api/dealer/paging"
+			url : basePath + "api/dealer/paging",
+			 onLoadSuccess:function(data){ 
+				  $(".questionBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
+			 }
 		});
 
 
@@ -301,7 +309,21 @@
 		}
 		
 		
-		
+		function View_Entity(index){
+			 $('#dg').datagrid('selectRow', index);
+			
+			 var row = $('#dg').datagrid('getSelected');
+	          if (row){
+	            $('#dlg').dialog('open').dialog('setTitle','经销商基础信息查看');
+	            $('#fm').form('load',row);
+	            
+	            if(row.status==1){
+	            	$("input[name='status']:eq(0)").attr("checked", "checked"); 
+	            }else{
+	            	$("input[name='status']:eq(1)").attr("checked", "checked"); 
+	            }
+	          }
+		}
 
 
 		
