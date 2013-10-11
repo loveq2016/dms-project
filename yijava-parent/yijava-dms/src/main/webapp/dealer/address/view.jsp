@@ -98,7 +98,7 @@
 			    </div>  
             </div>          
             <div style="margin: 5px 0;"></div>
-				<table id="dgAddress" class="easyui-datagrid" title="查询结果" style="height: 540px" url="${basePath}api/dealerAddress/paging" method="get"
+				<table id="dgAddress" class="easyui-datagrid" title="查询结果" style="height: 330px" url="${basePath}api/dealerAddress/paging" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc">
 					<thead>
 						<tr>

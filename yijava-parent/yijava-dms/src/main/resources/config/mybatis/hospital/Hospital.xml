@@ -51,7 +51,7 @@
     
     <update id="update" parameterType="dms.yijava.entity.hospital.Hospital">
     	update tb_hospital set hospital_name=#{hospital_name},hostpital_category=#{hostpital_category},level_id=#{level_id},provinces=#{provinces},
-    	area=#{area},city=#{city},address=#{address},postcode=#{postcode},phone=#{phone},beds=#{beds},last_update=#{last_update}
+    	area=#{area},city=#{city},address=#{address},postcode=#{postcode},phone=#{phone},beds=#{beds},last_update=NOW()
     	where id = #{id}
     </update>
     
