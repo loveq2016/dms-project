@@ -14,12 +14,17 @@ import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.movestorage.MoveStorageDetailDao;
 import dms.yijava.entity.movestorage.MoveStorageDetail;
+import dms.yijava.entity.pullstorage.PullStorageDetail;
 @Service
 @Transactional
 public class MoveStorageDetailService{
 
 	@Autowired
 	private MoveStorageDetailDao moveStorageDetailDao;
+	@Autowired
+	private MoveStorageDetailService moveStorageDetailService;
+	@Autowired
+	private MoveStorageProDetailService moveStorageProDetailService;
 	
 	public JsonPage<MoveStorageDetail> paging(PageRequest pageRequest,List<PropertyFilter> filters) {
 		Map<String,String> parameters = new HashMap<String,String>();
@@ -42,19 +47,19 @@ public class MoveStorageDetailService{
 	public MoveStorageDetail getEntity(String id) {
 		return moveStorageDetailDao.get(id);
 	}
-	
 	public void saveEntity(MoveStorageDetail entity) {
 		moveStorageDetailDao.insert(entity);
 	}
-	
+	public void updateEntity(MoveStorageDetail entity) {
+		moveStorageDetailDao.update(entity);
+	}
 	public void removeByIdEntity(String id) {
+		moveStorageProDetailService.removeByMoveStorageDetailId(id);
 		moveStorageDetailDao.removeById(id);
 	}
 	public void removeByMoveStorageCode(String move_storage_code) {
+		moveStorageProDetailService.removeByMoveStorageCode(move_storage_code);
 		moveStorageDetailDao.removeObject(".deleteByMoveStorageCode",move_storage_code);
-	}
-	public void removeByStorageOrBatchNo(MoveStorageDetail entity) {
-		moveStorageDetailDao.removeObject(".deleteByStorageOrBatchNo",entity);
 	}
 	
 	/**
@@ -67,6 +72,10 @@ public class MoveStorageDetailService{
 	 */
 	public MoveStorageDetail getMoveStorageDetail(MoveStorageDetail entity) {
 		MoveStorageDetail d=moveStorageDetailDao.getObject(".selectMoveStorageDetail",entity);
+		return d;
+	}
+	public MoveStorageDetail getStorageProDetailMoveNumber(String id) {
+		MoveStorageDetail d=moveStorageDetailDao.getObject(".selectStorageProDetailMoveNumber",id);
 		return d;
 	}
 }

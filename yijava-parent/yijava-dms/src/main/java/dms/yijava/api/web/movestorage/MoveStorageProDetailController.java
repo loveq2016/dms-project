@@ -1,5 +1,6 @@
 package dms.yijava.api.web.movestorage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,14 +19,15 @@ import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.movestorage.MoveStorage;
 import dms.yijava.entity.movestorage.MoveStorageDetail;
+import dms.yijava.entity.movestorage.MoveStorageProDetail;
 import dms.yijava.service.movestorage.MoveStorageDetailService;
 import dms.yijava.service.movestorage.MoveStorageProDetailService;
 import dms.yijava.service.movestorage.MoveStorageService;
 import dms.yijava.service.storage.StorageDetailService;
 
 @Controller
-@RequestMapping("/api/movestoragedetail")
-public class MoveStorageDetailController {
+@RequestMapping("/api/pullstorageprodetail")
+public class MoveStorageProDetailController {
 	@Autowired
 	private MoveStorageService moveStorageService;
 	@Autowired
@@ -36,19 +38,25 @@ public class MoveStorageDetailController {
 	private StorageDetailService storageDetailService;
 	
 	@ResponseBody
-	@RequestMapping("detailpaging")
-	public JsonPage<MoveStorageDetail> paging(PageRequest pageRequest,HttpServletRequest request) {
+	@RequestMapping("paging")
+	public JsonPage<MoveStorageProDetail> paging(PageRequest pageRequest,HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
-		return moveStorageDetailService.paging(pageRequest,filters);
+		return moveStorageProDetailService.paging(pageRequest,filters);
 	}
 	
 	@ResponseBody
-	@RequestMapping("savedetail")
-	public Result<String> savedetail(@ModelAttribute("entity") MoveStorageDetail entity) {
-		//同一个移库、移入库下、批次 、移库code  不能重复添加
-		MoveStorageDetail psd= moveStorageDetailService.getMoveStorageDetail(entity);
+	@RequestMapping("save")
+	public Result<String> savedetail(@ModelAttribute("entity") MoveStorageProDetail entity) {
+		//同一个单据，同一个仓库下的，同一个批次，同一个序号   不能重复添加
+		MoveStorageProDetail psd= moveStorageProDetailService.getMoveStorageProDetail(entity);
 		if(null==psd){
-			moveStorageDetailService.saveEntity(entity);//保存产品
+			List<MoveStorageProDetail> list = new ArrayList<MoveStorageProDetail>();
+			list.add(entity);
+			moveStorageProDetailService.saveEntity(list);//保存SN
+			MoveStorageDetail moveStorageDetail=moveStorageDetailService.getStorageProDetailMoveNumber(entity.getFk_move_storage_detail_id());//查询SN总数
+			moveStorageDetailService.updateEntity(moveStorageDetail);//修改产品数量
+			MoveStorage moveStorage = moveStorageService.getStorageDetailTotalNumber(entity.getMove_storage_code());//查询产品总数
+			moveStorageService.updateEntity(moveStorage);//修改出库单据总数量
 			return new Result<String>(entity.getId(), 1);
 		}else{
 			return new Result<String>(entity.getId(), 2);
@@ -56,25 +64,24 @@ public class MoveStorageDetailController {
 	}
 	
 	/**
-	 * fk_move_storage_id=#{fk_move_storage_id} and 
-   		 move_storage_code=#{move_storage_code} and 
-   		 fk_move_to_storage_id=#{fk_move_to_storage_id} 
-   		 and batch_no=#{batch_no}
+	 * 删除SN
+	 * id
+	 * pull_storage_code
+	 * batch_no
+	 * fk_storage_id
 	 * @param entity
 	 * @param request
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("remove")
-	public Result<Integer> remove(@ModelAttribute("entity") MoveStorageDetail entity,HttpServletRequest request) {
-		moveStorageDetailService.removeByIdEntity(entity.getId());
+	public Result<Integer> remove(@ModelAttribute("entity") MoveStorageProDetail entity,HttpServletRequest request) {
+		moveStorageProDetailService.removeByIdEntity(entity.getId());
+		MoveStorageDetail moveStorageDetail=moveStorageDetailService.getStorageProDetailMoveNumber(entity.getFk_move_storage_detail_id());//查询SN总数
+		moveStorageDetail.setId(entity.getFk_move_storage_detail_id());
+		moveStorageDetailService.updateEntity(moveStorageDetail);//修改产品数量
 		//修改总数
 		MoveStorage moveStorage = moveStorageService.getStorageDetailTotalNumber(entity.getMove_storage_code());
-		if(null==moveStorage){
-			moveStorage=new MoveStorage();
-			moveStorage.setMove_storage_code(entity.getMove_storage_code());
-			moveStorage.setTotal_number("0");
-		}
 		moveStorageService.updateEntity(moveStorage);//修改单据总数
 		return new Result<Integer>(1, 1);
 	}

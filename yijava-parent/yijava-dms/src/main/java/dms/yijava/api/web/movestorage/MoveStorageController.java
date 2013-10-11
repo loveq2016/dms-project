@@ -186,7 +186,6 @@ public class MoveStorageController {
 	@ResponseBody
 	@RequestMapping("remove")
 	public Result<Integer> remove(HttpServletRequest request,@ModelAttribute("entity") MoveStorage entity) {
-		moveStorageDetailService.removeByMoveStorageCode(entity.getMove_storage_code());
 		moveStorageService.removeByMoveStorageCode(entity.getMove_storage_code());
 		return new Result<Integer>(1, 1);
 	}

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MoveStorageProDetail {
 	public String id;
+	public String fk_move_storage_detail_id;
 	public String fk_move_storage_id;
 	public String fk_move_to_storage_id;
 	public String move_storage_code;

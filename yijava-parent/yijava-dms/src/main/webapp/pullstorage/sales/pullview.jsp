@@ -401,7 +401,7 @@
 			pager.pagination();  
 		})
 		function formatterDetail(value, row, index){
-			return '<span style="color:red;cursor:pointer" onclick="openPullStorageDetail(\''+index+'\')">明细</span>'; 
+			return '<span style="color:red;cursor:pointer" onclick="onClickPullStorageDetail(\''+index+'\')">明细</span>'; 
 		}
 		function doSearch(){
 			$('#dg').datagrid({
@@ -496,10 +496,12 @@
 		function clearPullStorageDetailForm(){
 			$('#fm3').form('clear');
 		}
-		//open订单项
-		function openPullStorageDetail(index){
+		function onClickPullStorageDetail(index){
 			$('#dg').datagrid('selectRow',index);
-			var row = $('#dg').datagrid('getSelected');
+			openPullStorageDetail($('#dg').datagrid('getSelected'));
+		}
+		//open订单项
+		function openPullStorageDetail(row,type){
 			$('#ffPullStorageDetail').form('load',row);
 			$('#dlgPullStorageDetail').dialog('open');
             $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
