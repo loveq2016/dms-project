@@ -36,7 +36,7 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg"  title="查询结果" style="height: 330px" method="get"
+				<table id="dg"  title="查询结果" style="height: 500px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="dealer_id" sortOrder="desc">
 					<thead>
 						<tr>

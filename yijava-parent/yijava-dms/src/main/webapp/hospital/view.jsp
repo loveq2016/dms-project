@@ -20,7 +20,8 @@
 									</td>
 									<td>医院等级:</td>
 									<td>
-										<input class="easyui-combobox" name="level_id"  id="level_id"  style="width:150px" maxLength="100" class="easyui-validatebox" required="true"
+										<input class="easyui-combobox" name="level_id"  id="level_id"  style="width:150px" maxLength="100" 
+										class="easyui-validatebox" required="true"
 							             			data-options="
 								             			url:'${basePath}/api/hospitalLevel/list',
 									                    method:'get',
@@ -31,11 +32,17 @@
 							            			">
 							            			
 									</td>
-								</tr>
-								<tr>
+								
 									<td>省份:</td>
 									<td>
-										<input class="easyui-validatebox" type="text" name="provinces" id="hospital_name" data-options="required:false"></input>
+										<input class="easyui-combobox" type="text" name="provinces" id="provinces" data-options="
+								             			url:'${basePath}/api/hospital/getprovince_api',
+									                    method:'get',
+									                    valueField:'province',
+									                    textField:'province',
+									                    panelHeight:'auto',
+									                    required:false
+							            			"></input>
 									</td>
 									<td>地区:</td>
 									<td>
@@ -58,20 +65,23 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" title="查询结果" style="height: 330px" method="get"
+				<table id="dg" title="查询结果" style="height: 480px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
-							<th field="hospital_name" width="150" align="center" sortable="true">医院名称</th>
-							<th field="hostpital_category" width="200" align="center" sortable="true">客户分类</th>
-							<th field="level_name" width="200" align="center" sortable="true">等级</th>
-							<th field="provinces" width="200" align="center" sortable="true">省份</th>
-							<th field="area" width="200" align="center" sortable="true">地区</th>
-							<th field="city" width="200" align="center" sortable="true">县市(区)</th>
-							<th field="address" width="200" align="center" sortable="true">地址</th>
-							<th field="postcode" width="200" align="center" sortable="true">邮编</th>
-							<th field="phone" width="200" align="center" sortable="true">电话</th>
-							<th field="beds" width="200" align="center" sortable="true">床位数</th>
+							<th field="hospital_name" width="280" align="left" sortable="true">医院名称</th>
+							<th field="hostpital_category" width="50" align="left" sortable="true">客户分类</th>
+							<th field="level_name" width="50" align="left" sortable="true">等级</th>
+							<th field="provinces" width="120" align="left" sortable="true">省份</th>
+							<th field="area" width="80" align="left" sortable="true">地区</th>
+							<th field="city" width="80" align="left" sortable="true">县市(区)</th>
+							<th field="address" width="300" align="left" sortable="true">地址</th>
+							<th field="postcode" width="100" align="left" sortable="true">邮编</th>
+							<th field="last_update" width="150" align="left" sortable="true">最后修改时间</th>
+							<th field="phone" width="200" align="left" sortable="true" hidden="true">电话</th>
+							<th field="beds" width="200" align="left" sortable="true" hidden="true">床位数</th>
+							
+							<th data-options="field:'ids',width:50" sortable="true" formatter="formatterdesc">明细</th>	
 						</tr>
 					</thead>
 				</table>
@@ -90,23 +100,23 @@
 			<div style="margin: 10px 0;"></div>
 		</div>
 		
-	   <div id="dlg" class="easyui-dialog" style="width:460px;height:460px;padding:5px 5px 5px 5px;"
+	   <div id="dlg" class="easyui-dialog" style="width:560px;height:460px;padding:5px 5px 5px 5px;"
 	            modal="true" closed="true" buttons="#dlg-buttons">
 		        <form id="fm" method="post" novalidate enctype="multipart/form-data">
 		        	<input type="hidden" name="id">
 					         	  <table>
 					             	<tr>
 					             		<td>医院名称:</td>
-										<td><input name="hospital_name" style="width:150px" maxLength="50" class="easyui-validatebox"  required="true"></td>
+										<td><input name="hospital_name" style="width:300px" maxLength="50" class="easyui-validatebox"  required="true"></td>
 					             	</tr>       
 					             	<tr>
 					             		<td>客户分类:</td>
-										<td><input name="hostpital_category" style="width:150px" maxLength="20" class="easyui-validatebox" ></td>
+										<td><input name="hostpital_category" style="width:300px" maxLength="20" class="easyui-validatebox" ></td>
 					             	</tr>      	
 					             	<tr>
 					             		<td>等级:</td>
 					             		<td>
-					             		      <input class="easyui-combobox" name="level_id"  style="width:150px" maxLength="100" class="easyui-validatebox"
+					             		      <input class="easyui-combobox" name="level_id"  style="width:300px" maxLength="100" class="easyui-validatebox"
 							             			data-options="
 								             			url:'${basePath}/api/hospitalLevel/list',
 									                    method:'get',
@@ -118,19 +128,26 @@
 					             	</tr>
 					             	<tr>
 					             		<td>省份:</td>
-										<td><input name="provinces" style="width:150px" maxLength="50" class="easyui-validatebox" ></td>
+										<td><input name="provinces" style="width:300px" maxLength="50" class="easyui-combobox" data-options="
+								             			url:'${basePath}/api/hospital/getprovince_api',
+									                    method:'get',
+									                    valueField:'province',
+									                    textField:'province',
+									                    panelHeight:'auto',
+									                    required:false
+							            			"></td>
 					             	</tr>   
 					             	<tr>
 					             		<td>地区:</td>
-										<td><input name="area" style="width:150px" maxLength="20" class="easyui-validatebox" ></td>
+										<td><input name="area" style="width:300px" maxLength="20" class="easyui-validatebox" ></td>
 					             	</tr>   
 					             	<tr>
 					             		<td>县市（区）:</td>
-										<td><input name="city" style="width:150px" maxLength="20" class="easyui-validatebox" ></td>
+										<td><input name="city" style="width:300px" maxLength="20" class="easyui-validatebox" ></td>
 					             	</tr>   
 					             	<tr>
 					             		<td>地址:</td>
-										<td><input name="address" style="width:200px" maxLength="100" class="easyui-validatebox" ></td>
+										<td><input name="address" style="width:300px" maxLength="100" class="easyui-validatebox" ></td>
 					             	</tr>   
 					             	<tr>
 					             		<td>邮编:</td>
@@ -151,7 +168,7 @@
 		        </form>
 	    </div>
 	    <div id="dlg-buttons">
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveEntity();">保存</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" id="saveobject" iconCls="icon-ok" onclick="saveEntity();">保存</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
 	    </div>
 
@@ -161,6 +178,12 @@
 	
 	 	var url;
 
+	 	 function formatterdesc (value, row, index) { 
+				// v = "'"+ row.id + "','" + index+"'";
+				 	return '<a class="questionBtn" href="javascript:void(0)"  onclick="View_Entity('+index+')" ></a>';
+				 //return '<span><img src="'+basePath+'resource/themes/icons/detail.png" style="cursor:pointer" onclick="View_Entity(' + index + ');"></span>'; 
+			} 
+	 	 
 		$(function() {
 			//var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
 			//pager.pagination(); 
@@ -168,12 +191,16 @@
 
 		$('#dg').datagrid({
 			 url : basePath + "api/hospital/paging",
+			 onLoadSuccess:function(data){ 
+				  $(".questionBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
+			 }
 		});
 
 		 function newEntity(){
 			 $('#dlg').dialog('open').dialog('setTitle','医院信息添加');
 			 url = basePath + 'api/hospital/save';
 			 $('#fm').form('clear');
+			 $('#saveobject').linkbutton('enable');
 			 saveEntity();
 		  } 
 
@@ -184,6 +211,7 @@
 	        	$('#fm').form('clear');
 	            $('#dlg').dialog('open').dialog('setTitle','医院信息更新');
 	            $('#fm').form('load',row);
+	            $('#saveobject').linkbutton('enable');
 	            url = basePath + 'api/hospital/update';
 	          }else{
 					$.messager.alert('提示','请选中数据!','warning');				
@@ -243,13 +271,20 @@
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_hospital_name: $('#hospital_name').val(),
 		    	filter_ANDS_level_id: $('#level_id').combobox('getValue'),
-		    	filter_ANDS_provinces: $('#provinces').val(),
+		    	filter_ANDS_provinces: $('#provinces').combobox('getValue'),
 		    	filter_ANDS_area: $('#area').val(),
 		    	filter_ANDS_city: $('#city').val()
 		    });
 		}
 		
-		
+		function View_Entity(index){
+			 $('#dg').datagrid('selectRow', index);
+			 var row = $('#dg').datagrid('getSelected');
+			 $('#fm').form('load',row);
+			 $('#dlg').dialog('open').dialog('setTitle','医院信息明细');
+			 $('#saveobject').linkbutton('disable');
+			 
+		}
 
 
 		

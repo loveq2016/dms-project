@@ -18,7 +18,7 @@
 <script type="text/javascript" src="${resPath}resource/js/common.js"></script>
 </head>
 
-<body>
+<body  onkeydown="on_return();">
 <div class="top"><a href="#"><img src="images/logo.jpg"></a></div>
 <div class="page">
   <div class="main">
@@ -35,7 +35,7 @@
         </div>
         <div class="formline">
           <label>Validation Code/验证码：</label>
-          <input type="text" class="ipt code" value="" name="captcha">&nbsp;&nbsp;
+          <input type="text" class="ipt code" value="" name="captcha" onkeydown="on_return();">&nbsp;&nbsp;
           <img id="captchaImg" src="getCaptcha" width="84" height="32"  align="absmiddle" style="cursor:hand" onclick="javascript:reloadValidateCode();" title="看不请?点击刷新"/>
           <!-- <img src="images/code.gif" width="84" height="32"> <a href="javascript:reloadValidateCode();">看不请?</a>-->
         </div>
@@ -84,6 +84,14 @@
 		
 		function reloadValidateCode() {
 			$("#captchaImg").attr("src","getCaptcha?date = " + new Date() + Math.floor(Math.random()*24));
+		}
+		
+		function on_return(){
+			  if(window.event.keyCode == 13){
+			   if (document.all('loginbtn')!=null){
+			      document.all('loginbtn').click();
+			      }
+			  }
 		}
 	</script>
 </body>

@@ -20,6 +20,8 @@ public class Hospital {
 	private String postcode;
 	private String phone;
 	private Integer beds = 0;
+	private String create_date; //创建时间 
+	private String last_update;//最后修改时间
 	
 	
 }
