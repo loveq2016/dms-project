@@ -16,6 +16,7 @@ import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
+import com.yijava.web.vo.ErrorCode;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.dealer.DealerAuthHospital;
@@ -40,7 +41,7 @@ public class DealerAuthHospitalController {
 	}
 	
 	
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping("save")
 	public Result<String> save(@ModelAttribute("entity") DealerAuthHospital entity) {
 		try {
@@ -50,6 +51,41 @@ public class DealerAuthHospitalController {
 			e.printStackTrace();
 		}
 		return new Result<String>(entity.getDealer_id(), 0);
+	}*/
+	
+	@ResponseBody
+	@RequestMapping("save")
+	public Result<Integer> save(@RequestParam(value = "ids", required = true) String ids,
+			@RequestParam(value = "dealer_id", required = true) String dealer_id,
+			@RequestParam(value = "category_id", required = true) String category_id) {
+		
+		Result<Integer> result=new Result<Integer>(0, 0);
+		try {
+			if(ids!=null && !ids.equals(""))
+			{
+				String[] idArray=ids.split(",");
+				
+				for(String id:idArray)
+				{
+					DealerAuthHospital entity=new DealerAuthHospital();
+					entity.setCategory_id(category_id);
+					entity.setDealer_id(dealer_id);
+					entity.setHospital_id(id);
+					dealerAuthHospitalService.saveEntity(entity);
+				}
+				result.setData(1);
+				result.setState(1);
+			}else
+			{
+				result.setError(new ErrorCode("error,请选择数据"));
+			}
+			
+			
+			
+		} catch (Exception e) {
+			result.setError(new ErrorCode("error,请检查您的数据"));
+		}
+		return result;
 	}
 	
 	

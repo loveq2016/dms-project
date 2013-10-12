@@ -11,6 +11,7 @@
 	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(provinces)">and provinces like CONCAT('%','${provinces}','%' ) </if>
 	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(area)">and area like CONCAT('%','${area}','%' ) </if>
 	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(city)">and city like CONCAT('%','${city}','%' ) </if>	
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(address)">and address like CONCAT('%','${address}','%' ) </if>	
 </trim>
 </sql>
 
@@ -51,7 +52,7 @@
     
     <update id="update" parameterType="dms.yijava.entity.hospital.Hospital">
     	update tb_hospital set hospital_name=#{hospital_name},hostpital_category=#{hostpital_category},level_id=#{level_id},provinces=#{provinces},
-    	area=#{area},city=#{city},address=#{address},postcode=#{postcode},phone=#{phone},beds=#{beds},last_update=#{last_update}
+    	area=#{area},city=#{city},address=#{address},postcode=#{postcode},phone=#{phone},beds=#{beds},last_update=NOW()
     	where id = #{id}
     </update>
     

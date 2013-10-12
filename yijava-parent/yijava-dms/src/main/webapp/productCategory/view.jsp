@@ -44,14 +44,14 @@
         </div>
         <div title="包含产品" data-options="region:'center'">
 
-		  <table id="dg" class="easyui-datagrid" title="查询结果" style="height:420px"
+		  <table id="dg" class="easyui-datagrid" title="查询结果" style="height:420px;width=500px"
 		           rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="desc">
 		        <thead>
 		            <tr>
 							<th field="item_number" width="150" align="center">产品编号</th>
 							<th field="cname" width="200" align="center">中文名称</th>
 							<th field="ename" width="200" align="center">英文说明</th>
-							<th field="remark" width="400" align="center">描述</th>
+							<th field="remark" width="200" align="center">描述</th>
 							<th field="price" width="150" align="center">价格</th>
 							<th field="order_company" width="150" align="center">订购单位</th>
 		               		<th field="is_order" width="100" align="center" formatter="formatterIs_order">是否可订货</th>

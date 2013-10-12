@@ -22,8 +22,6 @@ public class MoveStorageDetailService{
 	@Autowired
 	private MoveStorageDetailDao moveStorageDetailDao;
 	@Autowired
-	private MoveStorageDetailService moveStorageDetailService;
-	@Autowired
 	private MoveStorageProDetailService moveStorageProDetailService;
 	
 	public JsonPage<MoveStorageDetail> paging(PageRequest pageRequest,List<PropertyFilter> filters) {

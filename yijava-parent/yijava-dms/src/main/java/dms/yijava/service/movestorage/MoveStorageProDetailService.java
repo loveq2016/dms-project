@@ -51,7 +51,7 @@ public class MoveStorageProDetailService{
 		moveStorageProDetailDao.removeObject(".deleteByMoveStorageCode",move_storage_code);
 	}
 	public void removeByMoveStorageDetailId(String fk_move_storage_detail_id) {
-		moveStorageProDetailDao.removeObject(".deleteByFullStorageDetailId",fk_move_storage_detail_id);
+		moveStorageProDetailDao.removeObject(".deleteByMoveStorageDetailId",fk_move_storage_detail_id);
 	}
 	/**
 	 * move_storage_code
