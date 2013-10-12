@@ -91,7 +91,7 @@
 			<div style="padding-left: 10px; padding-right: 10px">
 				<table id="dg" title="查询结果" style="height:370px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id"
-					iconCls="icon-search" sortOrder="asc" toolbar="#tbOrder">
+					iconCls="icon-search" sortOrder="desc" toolbar="#tbOrder">
 					<thead>
 						<tr>
 							<th data-options="field:'id',width:240,align:'center'" hidden="true">id</th>

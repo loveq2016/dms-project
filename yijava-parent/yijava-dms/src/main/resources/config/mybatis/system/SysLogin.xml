@@ -7,6 +7,6 @@
 		LEFT JOIN dms.tb_manager_menu_fun tmmf ON tmrf.fk_fun_id=tmmf.id  
 		LEFT JOIN dms.tb_manager_menu tmm ON tmmf.fk_menu_id=tmm.id and tmm.isdeleted=0 
 		LEFT JOIN dms.tb_manager_menu tmms ON tmms.id=tmm.fk_parent_id and tmms.isdeleted=0
-		WHERE fk_role_id =#{fk_role_id}
+		WHERE fk_role_id =#{fk_role_id} ORDER BY tmm.fk_parent_id,tmmf.fk_menu_id asc
 	</select>
 </mapper>
