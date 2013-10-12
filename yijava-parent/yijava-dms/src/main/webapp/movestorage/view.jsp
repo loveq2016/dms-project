@@ -177,7 +177,7 @@
 							<th data-options="field:'inventory_number',width:80,align:'center'" sortable="true">库存量</th>
 							<th data-options="field:'move_number',width:80,align:'center'" sortable="true">移动数量(EA)</th>
 							<th data-options="field:'move_to_storage_name',width:100,align:'center'" sortable="true">移入仓库</th>
-							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
+							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterProductSn">明细</th>
 						</tr>
 					</thead>
 				</table>
@@ -332,7 +332,6 @@
 							<form id="fffdetail" method="post">
 								<input type="hidden" name="batch_no" id="batch_no" value=""></input>
 								<input type="hidden" name="fk_storage_id" id="fk_storage_id" value=""></input>
-								<input type="hidden" name="move_storage_code" id="move_storage_code" value=""></input>
 								<input type="hidden" name="status" id="status" value="1"></input>
 								<table>
 									<tr>
@@ -504,7 +503,7 @@
 				    $.ajax({
 						type : "POST",
 						url :basePath+'api/movestoragedetail/remove',
-						data:{id:row.id,move_storage_code:move_storage_codex},
+						data:{id:row.id,move_storage_code:move_storage_code},
 						error : function(request) {
 							$.messager.alert('提示','抱歉,删除错误!','error');	
 						},
@@ -531,7 +530,7 @@
 			if(typeof(move_storage_code) != "undefined"){
 				$('#dlgProduct').dialog('open');
 				$('#dgProduct').datagrid({
-					 url:basePath+'api/storageDetail/paging',
+					 url:basePath+'api/storageDetail/api_paging',
 					 queryParams: {
 						filter_ANDS_fk_dealer_id : $('#fk_dealer_id').val()
 					 }
@@ -547,6 +546,8 @@
 			if(row){
 				$('#fm3').form('load',row);
 				$("#fm3 input[name=move_storage_code]").val(move_storage_code);
+				$("#fm3 input[name=fk_move_storage_id]").val(row.fk_storage_id);	
+				$("#fm3 input[name=move_storage_name]").val(row.storage_name);
 				$('#dlgProductAdd').dialog('open').dialog('setTitle','添加产品');
 			}else
 			{
@@ -568,6 +569,10 @@
 							 $('#dlgProductAdd').dialog('close');     
 		                     $('#dgDetail').datagrid('reload');
 		                     $('#dg').datagrid('reload');
+		                     $.messager.show({
+                                 title: '提示',
+                                 msg: "产品添加成功!"
+                             });
 				    	}else if(jsonobj.state==2){
 				    		$.messager.alert('提示','同一仓库相同产品相批次不可用重复移出!','error');	
 				    	}else{
@@ -611,6 +616,9 @@
 		function formatterIs_movestorage (value, row, index) { 
 			return value==1?"<span style='color:green'>是</span>":"<span style='color:red'>否</span>";
 		} 
+		function formatterProductSn (value, row, index) { 
+			return '<a class="productSnBtn" href="javascript:void(0)"  onclick="openProductSn('+index+')" ></a>';
+		}
 		function doSearchProductSn(){
 		    $('#dgStorageProductSn').datagrid('load',{
 		    	filter_ANDS_fk_storage_id: $("#fffdetail input[name=fk_storage_id]").val(),
@@ -627,13 +635,13 @@
 			$('#dlgProductSn').dialog('open').dialog('setTitle','产品下序列号');
 			fk_move_storage_detail_id = row.id;
 			batch_no = row.batch_no;
-			fk_storage_id = row.fk_storage_id;
+			fk_storage_id = row.fk_move_storage_id;
 			$('#dgProductSn').datagrid('loadData', {total: 0, rows: []});
 			$('#dgProductSn').datagrid({
 				url : basePath + "api/movestorageprodetail/paging",
 				queryParams: {
 					filter_ANDS_move_storage_code: move_storage_code,
-					filter_ANDS_fk_storage_id : fk_storage_id	,
+					filter_ANDS_fk_storage_id : fk_storage_id,
 					filter_ANDS_batch_no : batch_no
 				}
 			});
@@ -642,12 +650,10 @@
 			$('#dlgStorageProductSn').dialog('open');
 			$("#fffdetail input[name=batch_no]").val(batch_no);
 			$("#fffdetail input[name=fk_storage_id]").val(fk_storage_id);
-			$("#fffdetail input[name=move_storage_code]").val(move_storage_code);
 			$('#dgStorageProductSn').datagrid('loadData', {total: 0, rows: []});
 			$('#dgStorageProductSn').datagrid({
 				url : basePath + "api/storageProDetail/api_paging",
 				queryParams: {
-					filter_ANDS_move_storage_code: move_storage_code,
 					filter_ANDS_fk_storage_id: fk_storage_id,
 					filter_ANDS_batch_no : batch_no,
 					filter_ANDS_status : 1

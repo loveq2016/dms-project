@@ -1,11 +1,8 @@
 package dms.yijava.api.web.trial;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,7 +32,6 @@ import com.yijava.web.vo.Result;
 import dms.yijava.api.web.word.util.TheFreemarker;
 import dms.yijava.api.web.word.util.TrialProduct;
 import dms.yijava.entity.department.Department;
-import dms.yijava.entity.pullstorage.PullStorage;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.trial.Trial;
 import dms.yijava.entity.trial.TrialDetail;
@@ -160,10 +156,19 @@ public class TrialController {
 	public Result<Integer> update(@ModelAttribute("entity") Trial entity) {
 		Result<Integer> result=new Result<Integer>(0, 0);
 		try {
-			entity.setHospital_id(entity.getAddhospital_id());
-			trialService.updateEntity(entity);
-			result.setData(1);
-			result.setState(1);;
+			Trial saveentity=trialService.getEntity(entity.getTrial_id());
+			if(saveentity.getStatus()==0 || saveentity.getStatus()==2)
+			{
+				
+			
+				entity.setHospital_id(entity.getAddhospital_id());
+				trialService.updateEntity(entity);
+				result.setData(1);
+				result.setState(1);;
+			}else
+			{
+				result.setError(new ErrorCode("此单据不可修改"));
+			}
 		} catch (Exception e) {
 			logger.error("error" + e);
 		}

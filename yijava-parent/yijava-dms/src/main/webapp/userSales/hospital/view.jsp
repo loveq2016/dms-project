@@ -36,14 +36,14 @@
 		           rownumbers="true" singleSelect="true" pagination="true" sortName="dealer_id" sortOrder="desc" >
 		        <thead>
 		            <tr>
-		            		<th field="dealer_name" width="150" align="center" sortable="true">经销商名称</th>
-		            		<th field="category_name" width="150" align="center" sortable="true">分类名称</th>
-							<th field="hospital_name" width="150" align="center" sortable="true">医院名称</th>
-							<th field="hostpital_category" width="200" align="center" sortable="true">客户分类</th>
-							<th field="level_name" width="200" align="center" sortable="true">医院等级</th>
-							<th field="provinces" width="200" align="center" sortable="true">所属省份</th>
-							<th field="area" width="200" align="center" sortable="true">所属地区</th>
-							<th field="city" width="200" align="center" sortable="true">所属县市(区)</th>
+		            		<th field="dealer_name" width="150" align="left" sortable="true">经销商名称</th>
+		            		<th field="category_name" width="150" align="left" sortable="true">分类名称</th>
+							<th field="hospital_name" width="150" align="left" sortable="true">医院名称</th>
+							<th field="hostpital_category" width="200" align="left" sortable="true">客户分类</th>
+							<th field="level_name" width="200" align="left" sortable="true">医院等级</th>
+							<th field="provinces" width="200" align="left" sortable="true">所属省份</th>
+							<th field="area" width="200" align="left" sortable="true">所属地区</th>
+							<th field="city" width="200" align="left" sortable="true">所属县市(区)</th>
 		            </tr>
 		        </thead>
 		    </table>

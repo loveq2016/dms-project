@@ -41,9 +41,15 @@ public class HospitalController {
 	@RequestMapping("paging")
 	public JsonPage<Hospital> paging(PageRequest pageRequest,HttpServletRequest request,Model model) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
-		pageRequest.setPageSize(13);
-		model.addAttribute("pageSize", pageRequest.getPageSize());
-		return hospitalService.paging(pageRequest,filters);
+		try {
+			//pageRequest.setPageSize(13);
+			//model.addAttribute("pageSize", pageRequest.getPageSize());
+			return hospitalService.paging(pageRequest,filters);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	

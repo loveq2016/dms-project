@@ -21,6 +21,7 @@ public class DealerAuthHospital {
 	private String level_id;
 	private String level_name;
 	private String provinces;
+	private String address;
 	private String area;
 	private String city;
 	

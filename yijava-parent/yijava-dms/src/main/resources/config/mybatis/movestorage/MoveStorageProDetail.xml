@@ -57,9 +57,9 @@
     	delete from dms.tb_move_storage_pro_detail where id = #{id}
     </delete>
     <delete id="deleteByMoveStorageCode" parameterType="String">
-   		 delete from dms.tb_move_storage_pro_detail where move_storage_code=#{move_storage_code}
+   		 delete from dms.tb_move_storage_pro_detail where move_storage_code=#{value}
     </delete>
    <delete id="deleteByMoveStorageDetailId" parameterType="String">
-   		 delete from dms.tb_move_storage_pro_detail where fk_move_storage_detail_id=#{fk_move_storage_detail_id}
+   		 delete from dms.tb_move_storage_pro_detail where fk_move_storage_detail_id=#{value}
     </delete>
 </mapper>

@@ -11,6 +11,7 @@
 	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(provinces)">and provinces like CONCAT('%','${provinces}','%' ) </if>
 	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(area)">and area like CONCAT('%','${area}','%' ) </if>
 	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(city)">and city like CONCAT('%','${city}','%' ) </if>	
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(address)">and address like CONCAT('%','${address}','%' ) </if>	
 </trim>
 </sql>
 

@@ -207,7 +207,7 @@
 	
 	<!--dlgdetail start -->	
 	<div id="dlgdetail" class="easyui-dialog" title="申请试用" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
-	style="width:850px;height:500px;padding:10px;">
+	style="width:900px;height:530px;padding:10px;">
 	
 	
 	<div class="easyui-tabs" style="width:820px;height:380px">	
@@ -218,13 +218,13 @@
 										<td>试用医院:</td>
 										<td>
 										<input  style="width:260px;" class="easyui-validatebox" type="text" 
-										name="hospital_id" data-options="required:true"></input></td>								
+										name="hospital_name" data-options="required:true"></input></td>								
 									</tr>
 									<tr>
 										<td>经销商:</td>
 										<td>
 										<input  style="width:260px;" class="easyui-validatebox" type="text"
-										 name="dealer_user_id" data-options="required:true"></input></td>								
+										 name="dealer_name" data-options="required:true"></input></td>								
 									</tr>
 									<tr>
 										<td>试用时间:</td>
@@ -254,7 +254,7 @@
 					   		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="delOrderDetail" onclick="removeOrderDetailEntity();">删除产品</a>
 					    </restrict:function>
 					</div>
-				<table id="dgDetail" title="查询结果" style="width:650px;height: 320px">
+				<table id="dgDetail" title="查询结果" style="width:810px;height: 320px">
 					<thead>
 						<tr>
 							<th data-options="field:'trial_detail_id',width:10"  sortable="true" hidden="true">trial_detail_id</th>
@@ -302,13 +302,13 @@
 										<td>试用医院:</td>
 										<td>
 										<input  style="width:260px;" class="easyui-validatebox" type="text" 
-										name="hospital_id" data-options="required:true"></input></td>								
+										name="hospital_name" data-options="required:true"></input></td>								
 									</tr>
 									<tr>
 										<td>经销商:</td>
 										<td>
 										<input  style="width:260px;" class="easyui-validatebox" type="text"
-										 name="dealer_user_id" data-options="required:true"></input></td>								
+										 name="dealer_name" data-options="required:true"></input></td>								
 									</tr>
 									<tr>
 										<td>申请试用时间:</td>
@@ -331,7 +331,7 @@
 			<div title="产品明细行" >
 				
 					
-					<table id="dgflow" title="查询结果" style="width:650px;height: 320px">
+					<table id="dgflow" title="查询结果" style="width:800px;height: 320px">
 					<thead>
 						<tr>
 							<th data-options="field:'trial_detail_id',width:10"  sortable="true" hidden="true">trial_detail_id</th>
@@ -345,7 +345,7 @@
 			</div>
 			
 			<div title="流程记录" >
-				<table id="dgflow_record" title="查询结果" style="width:810px;height: 340px">
+				<table id="dgflow_record" title="查询结果" style="width:800px;height: 340px">
 					<thead>
 						<tr>
 							
@@ -388,7 +388,7 @@
 							<input type="hidden" name="bussiness_id" id="bussiness_id">
 							<input type="hidden" name="flow_id" id="flow_id" value="">
 							<div style="text-align: right; padding: 5px">
-									<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveFlowCheck()">提交</a>
+									<a href="javascript:void(0)" id="saveCheckbtn" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveFlowCheck()">提交</a>
 									<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="javascript:$('#dlgflowcheck').dialog('close')">取消</a>					   
 							</div>				
 							</td>
@@ -402,7 +402,7 @@
 	<!--flow end -->	
 	
 		<div id="dlgProduct" class="easyui-dialog" title="申请试用-审核" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
-			style="width:850px;height:500px;padding:10px;" buttons="#dlgProduct-buttons">
+			style="width:850px;height:510px;padding:10px;" buttons="#dlgProduct-buttons">
 						<div class="easyui-panel" title="查询条件" style="width:775px;">
 								<div style="padding: 10px 0 0 30px">
 									<form id="ffdetail" method="post">
@@ -445,7 +445,7 @@
 			    </div>	
 			    
 			    
-			    <div id="dlgProductSum" class="easyui-dialog" style="width:300px;height:300px;padding:5px 5px 5px 5px;"
+			    <div id="dlgProductSum" class="easyui-dialog" style="width:550px;height:350px;padding:5px 5px 5px 5px;"
 	            modal="true" closed="true" buttons="#dlgProductSum-buttons">
 		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
 					      <table> 
@@ -468,8 +468,11 @@
 					             </tr>
 					             <tr>
 					             	<td>备注:</td>
-					             	<td><input name="remark" id="remark" class="" style="width:150px" 
-									data-options="required:true"></td>
+					             	<td>
+					             	
+									<textarea name="remark" id="remark" style="height:120px;width:360px;"></textarea>
+									
+									</td>
 					             </tr>
 					      </table>        	
 		        </form>
@@ -482,7 +485,7 @@
 	    </div>
 		
 	<script type="text/javascript">
-	
+	var pagesize='12';
 	 	var url;
 	 	var trial_id;
 	 	var trial_code;
@@ -490,6 +493,9 @@
 	 	var dealer_id;
 		$('#dg').datagrid(
 				{
+					 pageSize:pagesize,
+					 
+					 pageList: [12, 20, 30], 
 					onLoadSuccess:function(data){ 
 					  $(".questionBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
 				 }
@@ -791,11 +797,11 @@
 			
 		}
 		
-		/*审核结果*/
+		/*提交审核结果*/
 		function saveFlowCheck()
 		{
-		
 			
+			$('#saveCheckbtn').linkbutton('disable');
 			$('#base_form_check').form('submit', {
 			    url:basePath+'/api/flowrecord/do_flow',
 			    method:"post",
@@ -815,6 +821,13 @@
 			    			var pager = $('#dg').datagrid().datagrid('getPager');
 			    			pager.pagination('select');	
 				   			
+			    		}else{
+			    			 $.messager.show({    // show error message
+		                            title: 'Error',
+		                            msg: jsonobj.error.msg
+		                        });
+			    	
+			    			$('#saveCheckbtn').linkbutton('enable');
 			    		}
 			    }		
 			});		
