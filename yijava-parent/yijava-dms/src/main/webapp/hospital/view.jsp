@@ -52,6 +52,11 @@
 									<td>
 										<input class="easyui-validatebox" type="text" name="city" id="city" data-options="required:false"></input>
 									</td>
+									
+									<td>地址:</td>
+									<td>
+										<input class="easyui-validatebox" type="text" name="address" id="address" style="width:300px" data-options="required:false"></input>
+									</td>
 								</tr>								
 							</table>
 						</form>
@@ -192,6 +197,10 @@
 
 		$('#dg').datagrid({
 			 url : basePath + "api/hospital/paging",
+			 queryParams: {
+					name: 'pageSize',
+					subject: pagesize
+				},
 			 pageSize:pagesize,
 			 
 			 pageList: [13, 20, 30], 
@@ -277,7 +286,8 @@
 		    	filter_ANDS_level_id: $('#level_id').combobox('getValue'),
 		    	filter_ANDS_provinces: $('#provinces').combobox('getValue'),
 		    	filter_ANDS_area: $('#area').val(),
-		    	filter_ANDS_city: $('#city').val()
+		    	filter_ANDS_city: $('#city').val(),
+		    	filter_ANDS_address: $('#address').val()
 		    });
 		}
 		

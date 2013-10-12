@@ -37,7 +37,7 @@
 
 			<div style="padding-left: 10px; padding-right: 10px">
 
-				<table id="dg" title="查询结果" style="height: 330px"  method="get"
+				<table id="dg" title="查询结果" style="height: 500px"  method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
@@ -72,15 +72,15 @@
              <table>
              	<tr>
              		<td>中文名称:</td>
-             		<td><input name="cname" class="easyui-validatebox" required="true"></td>
+             		<td><input name="cname" class="easyui-validatebox" required="true"  style="width:250px"></td>
              	</tr>
               	<tr>
              		<td>英文说明:</td>
-             		<td><input name="ename" class="easyui-validatebox" required="true"></td>
+             		<td><input name="ename" class="easyui-validatebox" required="true"  style="width:250px"></td>
              	</tr>            	
              	<tr>
              		<td>描述:</td>
-             		<td><input name="remark"></td>
+             		<td><input name="remark" style="width:250px"></td>
              	</tr>             	
               	<tr>
              		<td>价格:</td>

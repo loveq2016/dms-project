@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.eventbus.EventBus;
 import com.yijava.common.utils.DateUtils;
+import com.yijava.web.vo.ErrorCode;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.api.web.model.flow.ProcFlowModel;
@@ -105,7 +106,7 @@ public class FlowRecordController {
 	@ResponseBody
 	@RequestMapping("do_flow")
 	public Result<Integer> doFlow(@ModelAttribute("entity") ProcFlowModel entity,HttpServletRequest request){
-		Result<Integer> result=new Result<Integer>(1, 1);
+		Result<Integer> result=new Result<Integer>(0, 0);
 		
 		if (entity!=null)
 		{
@@ -129,6 +130,8 @@ public class FlowRecordController {
 				flowLog.setSign("1");
 				flowLogService.saveEntity(flowLog);*/
 				//更新状态
+				result.setData(1);
+				result.setState(1);
 				return result;
 			}
 			
@@ -140,7 +143,15 @@ public class FlowRecordController {
 				flowRecord=flowRecords.get(0);			
 				if(flowRecord!=null)
 				{
+					//先检查当前用户是否有权限审核，如无，直接 返回error
+					
+					if(!flowRecord.getCheck_id().equals(currentUserId))
+					{
+						result.setError(new ErrorCode("您无权审核该单据！"));
+						return result;
+					}
 					//查找该业务的流程配置步骤
+					
 					
 					Step step=null;
 					int currentStepNo= Integer.parseInt(flowRecord.getStep_order_no());
@@ -232,10 +243,15 @@ public class FlowRecordController {
 						
 					}
 				}
-			}	
+			}else
+			{
+				result.setError(new ErrorCode("您已经审核过该单据，或没有为您找到待审核的记录"));
+				return result;
+			}
 		}
 		
-		
+		result.setData(1);
+		result.setState(1);
 		
 		return result;
 	}

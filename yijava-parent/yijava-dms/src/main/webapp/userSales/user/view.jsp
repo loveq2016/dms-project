@@ -36,10 +36,10 @@
 		           rownumbers="true" singleSelect="true" pagination="true" sortName="dealer_id" sortOrder="desc" toolbar="#tb">
 		        <thead>
 		            <tr>
-							<th field="dealer_name" width="150" align="center" sortable="true">中文名称</th>
-							<th field="dealer_code" width="200" align="center" sortable="true">经销商代码</th>
-							<th field="business_contacts" width="200" align="center" sortable="true">商务联系人</th>
-							<th field="business_phone" width="200" align="center" sortable="true">商务联系人电话</th>
+							<th field="dealer_name" width="150" align="left" sortable="true">中文名称</th>
+							<th field="dealer_code" width="200" align="left" sortable="true">经销商代码</th>
+							<th field="business_contacts" width="200" align="left" sortable="true">商务联系人</th>
+							<th field="business_phone" width="200" align="left" sortable="true">商务联系人电话</th>
 		            </tr>
 		        </thead>
 		    </table>
