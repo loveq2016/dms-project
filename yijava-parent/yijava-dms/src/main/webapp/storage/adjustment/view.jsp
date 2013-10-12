@@ -903,7 +903,7 @@
 	                            } else {
 	                                $.messager.show({    // show error message
 	                                    title: 'Error',
-	                                    msg: result.errorMsg
+	                                    msg: '提交审核失败,请检查单据'
 	                                });
 	                            } 
 	                        },'json');
