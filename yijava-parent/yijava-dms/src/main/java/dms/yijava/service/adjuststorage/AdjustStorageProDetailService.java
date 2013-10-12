@@ -50,6 +50,10 @@ public class AdjustStorageProDetailService{
 	public PullStorageProDetail getEntity(String id) {
 		return adjustStorageProDetailDao.get(id);
 	}
+	
+	public List<AdjustStorageProDetail> getAdjustStorageProDetailList(String adjust_storage_code) {
+		return adjustStorageProDetailDao.find(".selectAdjustStorageProDetailMap",adjust_storage_code);
+	}
 
 	public void saveEntity(AdjustStorageProDetail entity) {
 		adjustStorageProDetailDao.insert(entity);

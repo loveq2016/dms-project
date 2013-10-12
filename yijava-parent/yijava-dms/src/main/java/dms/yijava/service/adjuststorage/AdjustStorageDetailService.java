@@ -53,6 +53,11 @@ public class AdjustStorageDetailService {
 			adjustStorageDao.updateObject(".updateTotalNumber", adjustStorage);
 		}
 	}
+	
+	public List<AdjustStorageDetail> getAdjustStorageDetailList(String adjust_storage_code) {
+		return adjustStorageDetailDao.findObject(".selectAdjustStorageDetailMap",adjust_storage_code);
+	}
+	
 
 	public void removeByIdEntity(String id,String adjust_storage_code) {
 		adjustStorageDetailDao.removeById(id);

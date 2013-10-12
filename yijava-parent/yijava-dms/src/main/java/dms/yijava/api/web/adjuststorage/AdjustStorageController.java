@@ -19,19 +19,32 @@ import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
+import com.yijava.web.vo.ErrorCode;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.adjuststorage.AdjustStorage;
+import dms.yijava.entity.storage.StorageDetail;
+import dms.yijava.entity.storage.StorageProDetail;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.user.UserDealer;
+import dms.yijava.service.adjuststorage.AdjustStorageDetailService;
+import dms.yijava.service.adjuststorage.AdjustStorageProDetailService;
 import dms.yijava.service.adjuststorage.AdjustStorageService;
 import dms.yijava.service.flow.FlowBussService;
+import dms.yijava.service.storage.StorageDetailService;
+import dms.yijava.service.storage.StorageDetailService.PullStorageOpt;
 @Controller
 @RequestMapping("/api/adjuststorage")
 public class AdjustStorageController {
 
 	@Autowired
 	private AdjustStorageService adjustStorageService;
+	@Autowired
+	private AdjustStorageDetailService adjustStorageDetailService;
+	@Autowired
+	private AdjustStorageProDetailService adjustStorageProDetailService;
+	@Autowired
+	private StorageDetailService storageDetailService;
 	@Autowired
 	private FlowBussService flowBussService;
 	@Value("#{properties['adjustStorageflow_identifier_num']}")   	
@@ -108,9 +121,6 @@ public class AdjustStorageController {
 	public Result<String> submitAdjustStorage(@ModelAttribute("entity") AdjustStorage entity,HttpServletRequest request) {
 		try {
 			adjustStorageService.submitAdjustStorage(entity);
-			///以下开始走流程处理
-			SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
-			flowBussService.processFlow(Integer.parseInt(entity.getId()),sysUser,flowIdentifierNumber);
 			return new Result<String>("1", 1);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,9 +129,36 @@ public class AdjustStorageController {
 	}
 	
 	
+	@ResponseBody
+	@RequestMapping("updatetocheck")
+	public Result<Integer> updatetocheck(Integer adjust_id,HttpServletRequest request) {
+		Result<Integer> result = new Result<Integer>(0, 0);
+		try {				
+				List<Object> list = adjustStorageService.processAdjustStorage(String.valueOf(adjust_id));
+				PullStorageOpt pullStorageOpt = storageDetailService.updateStorageLockSn((List<StorageDetail>)list.get(0),(List<StorageProDetail>)list.get(1));
+				if(pullStorageOpt!=null && "success".equals(pullStorageOpt.getStatus()) 
+						&& pullStorageOpt.getList().size() > 0){//库存减少、锁定sn 返回状态
+					//以下开始走流程处理
+					SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
+					if(flowBussService.processFlow(adjust_id,sysUser,flowIdentifierNumber)){//提交流程
+					//更新状态
+						adjustStorageService.updateAdjustStorageStatus(String.valueOf(adjust_id), "1");//流程成功、更新业务的状态为提交审核
+						result.setData(1);
+						result.setState(1);;
+					}else{
+						storageDetailService.rollBackStorageUnLockSn((List<StorageDetail>)list.get(0),(List<StorageProDetail>)list.get(1));//流程失败，回滚库存与sn
+						result.setError(new ErrorCode("出现系统错误，处理流程节点"));
+					}
+				}else{
+					result.setError(new ErrorCode("出现系统错误，处理流程节点"));
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 
-	
-	
 	/**
 	 * 把一个list转换为String返回过去
 	 */
