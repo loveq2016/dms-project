@@ -121,7 +121,7 @@ public class StorageDetailService {
 			}
 		}
 		//锁定Sn记录
-		for (StorageProDetail storageProDetail : lockSnList) {
+		for (StorageProDetail storageProDetail : StorageProDetailList) {
 			StorageProDetail  tempStorageProDetail = storageProDetailDao.getObject(".selectStorageProDetailBySn",storageProDetail);
 			if(tempStorageProDetail ==null ){
 				try {
@@ -131,7 +131,7 @@ public class StorageDetailService {
 					e.printStackTrace();
 				}
 			}else{
-				int lockIdex = storageProDetailDao.updateObject(".lockSn", storageProDetail);
+				int lockIdex = storageProDetailDao.updateObject(".lockSn", tempStorageProDetail);
 				//返回锁定Sn记录List
 				lockSnList.add(storageProDetail);
 				

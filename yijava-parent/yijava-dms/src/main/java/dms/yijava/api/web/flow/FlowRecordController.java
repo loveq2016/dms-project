@@ -452,7 +452,7 @@ public class FlowRecordController {
 			flowDescibe="发货单审核"+"(<font color='red'>"+item_number+"</font>)";
 		}else if(flow_id.equals(adjustStorageflow_identifier_num))
 		{
-			flowDescibe="挑货单审核"+"(<font color='red'>"+item_number+"</font>)";
+			flowDescibe="调整单审核"+"(<font color='red'>"+item_number+"</font>)";
 		}
 		
 		
