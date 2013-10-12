@@ -53,7 +53,7 @@
 		</div>
 		
 
-        <div id="dlgAddress" class="easyui-dialog" style="width:800px;height:450px;padding: 5px 5px 5px 5px;"
+        <div id="dlgAddress" class="easyui-dialog" style="width:800px;height:550px;padding: 5px 5px 5px 5px;"
             modal="true" closed="true">
             <div id="p1" class="easyui-panel" title="基础信息"  height="200px">
  				<table>
@@ -98,7 +98,7 @@
 			    </div>  
             </div>          
             <div style="margin: 5px 0;"></div>
-				<table id="dgAddress" class="easyui-datagrid" title="查询结果" style="height: 330px" url="${basePath}api/dealerAddress/paging" method="get"
+				<table id="dgAddress" class="easyui-datagrid" title="查询结果" style="height: 300px" url="${basePath}api/dealerAddress/paging" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc">
 					<thead>
 						<tr>
