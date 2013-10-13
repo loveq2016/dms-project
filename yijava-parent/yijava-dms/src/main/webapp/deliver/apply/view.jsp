@@ -91,7 +91,7 @@
         			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity()">删除</a>
         		</restrict:function>
         		<restrict:function funId="161">
-<!--         			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="ToCheckEntity()">提交审核</a> -->
+        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="ToCheckEntity()">提交审核</a>
         		</restrict:function>
         		<restrict:function funId="160">
         			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="CheckEntity()">审核</a>
@@ -242,6 +242,10 @@
 														]" />
 									  </td>
 								</tr>
+								<tr>
+										<td>特殊说明:</td>
+							             <td colspan="4"><textarea name="remark" cols="65" style="height:30px;"></textarea></td>
+								</tr>
 							</table>
 					</form>
 			</div>
@@ -314,7 +318,7 @@
 		</div>
 		<div id="dlg-buttons">
 			<restrict:function funId="144">
-	        	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" id="submitDeliver" onclick="submitDeliver();">提交</a>
+<!-- 	        	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" id="submitDeliver" onclick="submitDeliver();">提交</a> -->
 	        </restrict:function>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgDeliverDetail').dialog('close')">取消</a>
 	    </div>
@@ -757,14 +761,39 @@
 					 openDeliverDetail($('#dg').datagrid('getRowIndex'));
 					 $('#tabs').tabs('enableTab', '审核'); 
 					 $('#tabs').tabs('select', '审核');
-					 
-					 
 					 //$('#dlgDeliverDetail').dialog('open').dialog('setTitle', '审核');
 				 });
 			}else{
 				$.messager.alert('提示','请选中数据!','warning');
 			}
 			 
+		}
+		
+		
+		/**
+		提交审核
+		*/
+		function ToCheckEntity(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row && (row.check_status ==0 || row.check_status ==2) ){			
+				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
+					 if (r){
+	                        $.post(basePath+'api/deliverApply/updatetocheck',{deliver_id:row.deliver_id},function(result){
+	        			    	if(result.state==1){
+	        			    		$('#dg').datagrid('reload');
+	                            } else {
+	                                $.messager.show({    // show error message
+	                                    title: 'Error',
+	                                    msg: '提交审核失败,请检查单据'
+	                                });
+	                            } 
+	                        },'json');
+	                    }
+				 });
+			}else
+			{
+				$.messager.alert('提示---数据已经提交不能修改','请选中数据!','warning');
+			}
 		}
 		
 		function  LoadCheckFlowRecord(bussinessId){
@@ -785,22 +814,18 @@
 		 }
 		 
 		function saveFlowCheck(){
-			
-				
+
 				$('#base_form_check').form('submit', {
 				    url:basePath+'/api/flowrecord/do_flow',
 				    method:"post",
-				   
 				    onSubmit: function(){
 				        // do some check
 				        // return false to prevent submit;
 				    	return $(this).form('validate');;
 				    },
 				    success:function(msg){
-				    	
 				    	var jsonobj= eval('('+msg+')');  
-				    	if(jsonobj.state==1)
-				    		{
+				    	if(jsonobj.state==1){
 				    			//clearForm();			    			
 				    			$('#dlgDeliverDetail').dialog('close');
 				    			//var pager = $('#dg').datagrid().datagrid('getPager');
