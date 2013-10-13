@@ -17,15 +17,20 @@ import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
+import com.yijava.web.vo.ErrorCode;
 import com.yijava.web.vo.Result;
 
+import dms.yijava.entity.adjuststorage.AdjustStorage;
 import dms.yijava.entity.deliver.Deliver;
 import dms.yijava.entity.deliver.DeliverDetail;
+import dms.yijava.entity.storage.StorageDetail;
+import dms.yijava.entity.storage.StorageProDetail;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.deliver.DeliverDetailService;
 import dms.yijava.service.deliver.DeliverService;
 import dms.yijava.service.flow.FlowBussService;
+import dms.yijava.service.storage.StorageDetailService.PullStorageOpt;
 
 @Controller
 @RequestMapping("/api/deliverApply")
@@ -54,6 +59,7 @@ public class DeliverApplyController {
 		}else if (null != sysUser && StringUtils.isNotEmpty(sysUser.getTeams())) {
 			filters.add(PropertyFilters.build("ANDS_statuses", "1,2,3,4,5,6"));
 			filters.add(PropertyFilters.build("ANDS_check_id", currentUserId));
+			filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
 		}
 		filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
 		
@@ -124,25 +130,44 @@ public class DeliverApplyController {
 		return new Result<String>(id, 0);
 	}
 	
-	
+
 	@ResponseBody
 	@RequestMapping("submit")
 	public Result<String> submit(
 			@RequestParam(value = "deliver_code", required = true) String deliver_code,
-			@RequestParam(value = "deliver_id", required = true) String deliver_id,
 			HttpServletRequest request) {
 		try {
-			//deliverService.deleteEntity(id);
 			deliverService.submitDeliver(deliver_code);
-			///以下开始走流程处理
-			SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
-			flowBussService.processFlow(Integer.parseInt(deliver_id),sysUser,flowIdentifierNumber);
 			return new Result<String>(deliver_code, 1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return new Result<String>(deliver_code, 0);
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping("updatetocheck")
+	public Result<Integer> updatetocheck(Integer deliver_id,HttpServletRequest request) {
+		Result<Integer> result = new Result<Integer>(0, 0);
+		try {				
+				SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
+				if(flowBussService.processFlow(deliver_id,sysUser,flowIdentifierNumber)){//提交流程
+					//更新状态
+					deliverService.updateDeliverStatus(String.valueOf(deliver_id),"1");
+					//adjustStorageService.updateAdjustStorageStatus(String.valueOf(adjust_id), "1");//流程成功、更新业务的状态为提交审核
+					result.setData(1);
+					result.setState(1);;
+				}else{
+						result.setError(new ErrorCode("出现系统错误，处理流程节点"));
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+
 	
 	public String listString(List<UserDealer> list) {
 		String listString = "";
