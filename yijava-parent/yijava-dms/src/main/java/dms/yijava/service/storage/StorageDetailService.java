@@ -117,6 +117,7 @@ public class StorageDetailService {
 					e.printStackTrace();
 				}
 			}else{
+				storageDetail.setInventory_number("-"+storageDetail.getInventory_number());
 				int upIdex = storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
 			}
 		}

@@ -35,7 +35,7 @@
 	
 	
 	
-	
+	<bean class="com.yijava.common.spring.SpringContextHolder" lazy-init="false"/>
 	<bean id="jacksonObjectMapper" class="com.yijava.common.JacksonObjectMapperFactory"/>
 	
 </beans>

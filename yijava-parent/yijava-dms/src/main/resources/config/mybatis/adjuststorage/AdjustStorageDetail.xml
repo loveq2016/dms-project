@@ -43,6 +43,10 @@
 		select * from dms.tb_adjust_storage_detail 
 		<include refid="adsWhere"/>
 	</select>
+	
+	<select id="selectAdjustStorageDetailMap" resultType="dms.yijava.entity.adjuststorage.AdjustStorageDetail">
+		select * from dms.tb_adjust_storage_detail  where adjust_storage_code=#{adjust_storage_code}
+	</select>
 
 
 	<select id="selectAdjustStorageProDetailTotalNumber" resultType="dms.yijava.entity.adjuststorage.AdjustStorageDetail">

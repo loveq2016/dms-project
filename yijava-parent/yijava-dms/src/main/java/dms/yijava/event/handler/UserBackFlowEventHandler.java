@@ -74,7 +74,7 @@ public class UserBackFlowEventHandler {
 		}else if(flow_check.getFlow_id().equals(adjustStorageflow_identifier_num)){
 			//库存调整
 			logger.debug("库存调整流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());
-			adjustStorageService.updateAdjustStorageStatus(flow_check.getBussiness_id(),"2");//驳回
+			adjustStorageService.backFlow(flow_check.getBussiness_id());//驳回
 		}
 		
 	}

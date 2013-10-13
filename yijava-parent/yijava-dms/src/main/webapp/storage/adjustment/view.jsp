@@ -93,6 +93,9 @@
 	        		<restrict:function funId="174">
 	        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="CheckEntity()">审核</a>
 	        		</restrict:function>
+	        		<restrict:function funId="178">
+        				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="ToCheckEntity()">提交审核</a>
+        			</restrict:function>
 				</div> 
 			</div>
 			<div style="margin: 10px 0;"></div>
@@ -128,7 +131,6 @@
             modal="true" closed="true" buttons="#dlg-buttons">
             <div class="easyui-panel" style="width:925px;" style="margin: 10px 0;">
 					<form id="fm" method="post" enctype="multipart/form-data">
-						<input type="hidden" name="id" id="id"></input>
 							<table>
 								<tr>
 									<td>经销商:</td>
@@ -658,7 +660,6 @@
 		
 		var dealer_id ; 
 		var adjust_storage_code ;
-		var status;
 		function openAdjustDetail(index){
 			$('#dg').datagrid('selectRow',index);
 			var row = $('#dg').datagrid('getSelected');
@@ -676,7 +677,6 @@
 			$('#dlgAdjustDetail').dialog('open');
 			adjust_storage_code = row.adjust_storage_code;
 			dealer_id = row.dealer_id;
-			status = row.status;
             $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
 			$('#dgDetail').datagrid({
 				url : basePath + "api/adjuststoragedetail/paging",
@@ -705,7 +705,8 @@
 		    $('#dgProductSn').datagrid('load',{
 		    	filter_ANDS_fk_storage_id: $("#fffdetail input[name=fk_storage_id]").val(),
 		    	filter_ANDS_batch_no: $("#fffdetail input[name=batch_no]").val(),
-		    	filter_ANDS_product_sn: $("#fffdetail input[name=product_sn]").val()
+		    	filter_ANDS_product_sn: $("#fffdetail input[name=product_sn]").val(),
+				filter_ANDS_status : 1
 		    });
 		}
 		
@@ -724,7 +725,7 @@
 			batch_no = row.batch_no;
 			fk_storage_id = row.fk_storage_id;
 			
-			if(status==0 || status==2){
+			if($('#status').combobox('getValue')==0 || $('#status').combobox('getValue')==2){
 				$("#selectProductSn").linkbutton('enable');
 				$("#deleteAdjustSn").linkbutton('enable');
 			}else{
@@ -739,8 +740,7 @@
 				queryParams: {
 					filter_ANDS_adjust_storage_code: adjust_storage_code,
 					filter_ANDS_fk_storage_id : fk_storage_id	,
-					filter_ANDS_batch_no : batch_no,
-					filter_ANDS_status : 1
+					filter_ANDS_batch_no : batch_no
 				}
 			});
 		}
@@ -748,11 +748,12 @@
 		function selectProductSn(){
 			$('#dlgProductSn').dialog('open');
 			$("#fffdetail input[name=batch_no]").val(batch_no);
+			$("#fffdetail input[name=fk_storage_id]").val(fk_storage_id);
 			$('#dgProductSn').datagrid('loadData', {total: 0, rows: []});
 			$('#dgProductSn').datagrid({
 				url : basePath + "api/storageProDetail/api_paging",
 				queryParams: {
-					filter_ANDS_fk_storage_id: fk_storage_id,
+					filter_ANDS_fk_storage_id : fk_storage_id	,
 					filter_ANDS_batch_no : batch_no,
 					filter_ANDS_status : 1
 				}
@@ -841,8 +842,8 @@
 		
 		
 		function submitAdjustStorage(){
-            $.messager.confirm('Confirm','提交后不能修改,是否确定提交?',function(r){
-                if (r){
+            //$.messager.confirm('Confirm','提交后不能修改,是否确定提交?',function(r){
+            //    if (r){
         			$('#fm').form('submit', {
         				url :basePath+'api/adjuststorage/submit',
         			    method:"post",
@@ -859,8 +860,8 @@
         			    	}
         			    }
         			});
-                }
-            });
+               // }
+            //});
 		}
 		
 		/**
@@ -868,9 +869,9 @@
 		*/
 		function CheckEntity(){
 			var row = $('#dg').datagrid('getSelected');
-			if (row && row.check_status ==1){				
+			if (row && row.status ==1){				
 				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){
-					 $('#bussiness_id').val(row.deliver_id);
+					 $('#bussiness_id').val(row.id);
 					 $("#flow_id").val(adjustStorageflow_identifier_num);
 					 //填充基本信息
 					  $('#base_form_flowcheck').form('load', row);
@@ -886,7 +887,32 @@
 			}else{
 				$.messager.alert('提示','请选中数据!','warning');
 			}
-			 
+		}
+		
+		/**
+		提交审核
+		*/
+		function ToCheckEntity(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row && (row.status ==0 || row.status ==2) ){			
+				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
+					 if (r){
+	                        $.post(basePath+'api/adjuststorage/updatetocheck',{adjust_id:row.id},function(result){
+	        			    	if(result.state==1){
+	        			    		$('#dg').datagrid('reload');
+	                            } else {
+	                                $.messager.show({    // show error message
+	                                    title: 'Error',
+	                                    msg: '提交审核失败,请检查单据'
+	                                });
+	                            } 
+	                        },'json');
+	                    }
+				 });
+			}else
+			{
+				$.messager.alert('提示---数据已经提交不能修改','请选中数据!','warning');
+			}
 		}
 		
 		function  LoadCheckFlowRecord(bussinessId){
