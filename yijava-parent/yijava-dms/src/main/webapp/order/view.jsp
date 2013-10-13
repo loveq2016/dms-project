@@ -94,14 +94,14 @@
 					iconCls="icon-search" sortOrder="desc" toolbar="#tbOrder">
 					<thead>
 						<tr>
-							<th data-options="field:'id',width:240,align:'center'" hidden="true">id</th>
-							<th data-options="field:'order_code',width:200,align:'center'" sortable="true">订单号</th>
-							<th data-options="field:'dealer_name',width:240,align:'center'" sortable="true">经销商</th>
-							<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">总数量</th>
-							<th data-options="field:'order_money_sum',width:80,align:'center'" sortable="true">总金额</th>
-							<th data-options="field:'order_status',width:80,align:'center'" formatter="formatterStatus" sortable="true">状态</th>
-							<th data-options="field:'order_date',width:150,align:'center'" sortable="true">订单时间</th>
-							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
+							<th data-options="field:'id',width:240,align:'left'" hidden="true">id</th>
+							<th data-options="field:'order_code',width:200,align:'left'" sortable="true">订单号</th>
+							<th data-options="field:'dealer_name',width:240,align:'left'" sortable="true">经销商</th>
+							<th data-options="field:'order_number_sum',width:80,align:'left'" sortable="true">总数量</th>
+							<th data-options="field:'order_money_sum',width:80,align:'left'" sortable="true">总金额</th>
+							<th data-options="field:'order_status',width:80,align:'left'" formatter="formatterStatus" sortable="true">状态</th>
+							<th data-options="field:'order_date',width:150,align:'left'" sortable="true">订单时间</th>
+							<th data-options="field:'custom',width:80,align:'left'" formatter="formatterDetail">明细</th>
 							<th data-options="field:'dealer_address_id',width:60" hidden="true"></th>
 							<th data-options="field:'receive_linkman',width:60" hidden="true"></th>
 							<th data-options="field:'receive_linkphone',width:60" hidden="true"></th>
