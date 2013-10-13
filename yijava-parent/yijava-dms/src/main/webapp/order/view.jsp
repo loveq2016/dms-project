@@ -101,7 +101,7 @@
 							<th data-options="field:'order_money_sum',width:80,align:'left'" sortable="true">总金额</th>
 							<th data-options="field:'order_status',width:80,align:'left'" formatter="formatterStatus" sortable="true">状态</th>
 							<th data-options="field:'order_date',width:150,align:'left'" sortable="true">订单时间</th>
-							<th data-options="field:'custom',width:80,align:'left'" formatter="formatterDetail">明细</th>
+							<th data-options="field:'custom',width:100,align:'center'" sortable="false" formatter="formatterDetail">明细</th>
 							<th data-options="field:'dealer_address_id',width:60" hidden="true"></th>
 							<th data-options="field:'receive_linkman',width:60" hidden="true"></th>
 							<th data-options="field:'receive_linkphone',width:60" hidden="true"></th>
@@ -487,7 +487,12 @@
 		var order_code;
 		var dealer_id=${user.fk_dealer_id};
 		$(function() {  
-			$('#dg').datagrid({url : basePath +"api/order/paging"});
+			$('#dg').datagrid({
+				url : basePath +"api/order/paging",
+				onLoadSuccess:function(data){ 
+					$(".infoBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
+			    }
+			});
 			//计算订单项小计
 			$("#order_number_sum").keyup(function(){
 		    	var order_price= $('input[name=order_price]').val();
@@ -500,7 +505,7 @@
 		    });
 		})
 		function formatterDetail(value, row, index){
-			return '<span style="color:red;cursor:pointer" onclick="onClickOrderDetail('+index+')">明细</span>'; 
+			return '<a class="infoBtn" href="javascript:void(0)" onclick="onClickOrderDetail('+index+')"></a>'; 
 		}
 		function doSearch(){
 		    $('#dg').datagrid('load',{
@@ -557,10 +562,14 @@
 		{
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
-				$('#w').dialog('open').dialog('setTitle','更新订单信息');
-			    $('#ffadd').form('load', row);
-				url = basePath+'api/order/updateAddress';
-				$('#w').window('open');
+				if(row.order_status=='0'){
+					$('#w').dialog('open').dialog('setTitle','更新订单信息');
+				    $('#ffadd').form('load', row);
+					url = basePath+'api/order/updateAddress';
+					$('#w').window('open');
+				}else{
+					$.messager.alert('提示','无法编辑已处理的订单!','error');
+				}
 			}else
 			{
 				$.messager.alert('提示','请选中某个订单!','warning');
@@ -571,28 +580,30 @@
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
 				if(row.order_status=='0'){
-				    $.ajax({
-						type : "POST",
-						url :basePath+'api/order/remove?id='+row.order_code,
-						error : function(request) {
-							$.messager.alert('提示','抱歉,删除错误!','error');	
-						},
-						success:function(msg){
-						    var jsonobj = $.parseJSON(msg);
-        					if (jsonobj.state == 1) {
-        						 order_code=undefined;
-        	                     $('#dg').datagrid('reload');
-        	                     $('#dgDetail').datagrid('loadData', {total: 0, rows: [] });
-        	                     $('#dgDetail').datagrid({
-        	         				title:'包含产品'
-        	         			 });
-        					}else{
-        						$.messager.alert('提示','抱歉,删除错误!','error');	
-        					}
-						}	
+					$.messager.confirm('Confirm','是否确定删除?',function(r){
+					    $.ajax({
+							type : "POST",
+							url :basePath+'api/order/remove?id='+row.order_code,
+							error : function(request) {
+								$.messager.alert('提示','抱歉,删除错误!','error');	
+							},
+							success:function(msg){
+							    var jsonobj = $.parseJSON(msg);
+	        					if (jsonobj.state == 1) {
+	        						 order_code=undefined;
+	        	                     $('#dg').datagrid('reload');
+	        	                     $('#dgDetail').datagrid('loadData', {total: 0, rows: [] });
+	        	                     $('#dgDetail').datagrid({
+	        	         				title:'包含产品'
+	        	         			 });
+	        					}else{
+	        						$.messager.alert('提示','抱歉,删除错误!','error');	
+	        					}
+							}	
+						});
 					});
 				}else{
-					$.messager.alert('提示','无法删除已提交的订单!','error');
+					$.messager.alert('提示','无法删除已处理的订单!','error');
 				}
 			}else
 			{
@@ -630,9 +641,11 @@
 			if(order_status=='0'|| order_status=='2'){
 				$('#saveOrderDetail').linkbutton('enable');
 				$('#delOrderDetail').linkbutton('enable');
+				$('#saveEntityBtn').linkbutton('enable');
 			}else{
 				$('#saveOrderDetail').linkbutton('disable');
 				$('#delOrderDetail').linkbutton('disable');
+				$('#saveEntityBtn').linkbutton('disable');
 			}
 			if(typeof(type) != "undefined"){
 				$('#dlgOrderDetailtabs').tabs('enableTab', '审核'); 
@@ -648,21 +661,23 @@
 			var row = $('#dgDetail').datagrid('getSelected');
 			if (row){
 				if(order_status=='0'){
-				    $.ajax({
-						type : "POST",
-						url :basePath+'api/orderdetail/remove?oc='+row.order_code+'&id='+row.id,
-						error : function(request) {
-							$.messager.alert('提示','抱歉,删除错误!','error');	
-						},
-						success:function(msg){
-						    var jsonobj = $.parseJSON(msg);
-        					if (jsonobj.state == 1) {
-        	                     $('#dgDetail').datagrid('reload');
-        	                     $('#dg').datagrid('reload');
-        					}else{
-        						$.messager.alert('提示','抱歉,删除错误!','error');	
-        					}
-						}
+					$.messager.confirm('Confirm','是否确定删除?',function(r){
+					    $.ajax({
+							type : "POST",
+							url :basePath+'api/orderdetail/remove?oc='+row.order_code+'&id='+row.id,
+							error : function(request) {
+								$.messager.alert('提示','抱歉,删除错误!','error');	
+							},
+							success:function(msg){
+							    var jsonobj = $.parseJSON(msg);
+	        					if (jsonobj.state == 1) {
+	        	                     $('#dgDetail').datagrid('reload');
+	        	                     $('#dg').datagrid('reload');
+	        					}else{
+	        						$.messager.alert('提示','抱歉,删除错误!','error');	
+	        					}
+							}
+						});
 					});
 				}else{
 					$.messager.alert('提示','无法删除已提交的订单!','error');
@@ -747,12 +762,14 @@
 		*/
 		function ToCheckEntity(){
 			var row = $('#dg').datagrid('getSelected');
+			//无产品 不能提交
 			if (row && (row.order_status ==0 || row.order_status ==2) ){			
 				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
 					 if (r){
 	                        $.post(basePath+'api/order/updatetocheck',{order_id:row.id},function(result){
 	        			    	if(result.state==1){
 	        			    		$('#dg').datagrid('reload');
+	        			    		$('#dlgOrderDetail').dialog('close');
 	                            } else {
 	                                $.messager.show({
 	                                    title: 'Error',

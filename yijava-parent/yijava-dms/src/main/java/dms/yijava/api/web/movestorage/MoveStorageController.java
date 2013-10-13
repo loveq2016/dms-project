@@ -18,11 +18,13 @@ import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
+import com.yijava.web.vo.ErrorCode;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.movestorage.MoveStorage;
 import dms.yijava.entity.movestorage.MoveStorageDetail;
 import dms.yijava.entity.movestorage.MoveStorageProDetail;
+import dms.yijava.entity.pullstorage.PullStorage;
 import dms.yijava.entity.pullstorage.PullStorageDetail;
 import dms.yijava.entity.pullstorage.PullStorageProDetail;
 import dms.yijava.entity.storage.StorageDetail;
@@ -88,98 +90,39 @@ public class MoveStorageController {
 			return new Result<Integer>(1, 0);
 		}
 	}
-		
+	
+	/**
+	 * 提交单据，处理库存，(无流程)
+	 * @param entity
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping("submit")
-	public Result<Integer> submitMoveStorage(@ModelAttribute("entity") MoveStorage entity,HttpServletRequest request) {
-		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
-		/**
-		 * 添加产品SN明细
-		 */
-		List<PropertyFilter> filters = PropertyFilters.build(request);
-		List<MoveStorageDetail> listMoveStorageDetail = moveStorageDetailService.getList(filters);
-		if(null!=listMoveStorageDetail){
-			List<StorageDetail> storageDetailList  = new ArrayList<StorageDetail>();
-			for(int i=0;i<listMoveStorageDetail.size();i++){
-				MoveStorageDetail psd=listMoveStorageDetail.get(i);
-				StorageDetail sd = new StorageDetail();
-				sd.setFk_dealer_id(sysUser.getFk_dealer_id());
-				sd.setFk_storage_id(psd.getFk_move_storage_id());
-				sd.setProduct_item_number(psd.getProduct_item_number());
-				sd.setBatch_no(psd.getBatch_no());
-				sd.setInventory_number("-"+psd.getMove_number());
-				storageDetailList.add(sd);
-			}
-			PullStorageOpt moveStorageOpt=storageDetailService.updateStorageLockSn(storageDetailList,null); //获取sn（根据 批次，仓库，数量），更新仓库
-			List<MoveStorageProDetail> listMoveStorageProDetail=new ArrayList<MoveStorageProDetail>();
-			if(moveStorageOpt.getStatus().equals("success")){
-				for(int i=0;i<moveStorageOpt.getList().size();i++){
-					MoveStorageProDetail pspd=new MoveStorageProDetail();
-					StorageProDetail spd=moveStorageOpt.getList().get(i);
-					
-					for(int j=0;j<listMoveStorageDetail.size();j++){
-						MoveStorageDetail psd=listMoveStorageDetail.get(j);
-						if(psd.getFk_move_storage_id().equals(spd.getFk_storage_id())&&
-								psd.getBatch_no().equals(spd.getBatch_no())){
-							///问题
-						}
-					}
-					pspd.setBatch_no(spd.getBatch_no());
-					pspd.setFk_move_storage_id(spd.getFk_storage_id());
-					pspd.setProduct_sn(spd.getProduct_sn());
-					pspd.setMove_storage_code(entity.getMove_storage_code());
-					listMoveStorageProDetail.add(pspd);
+	@RequestMapping("submitMoveStorage")
+	public Result<Integer> submitPullStorage(@ModelAttribute("entity") MoveStorage entity,HttpServletRequest request) {
+		Result<Integer> result=new Result<Integer>(0, 0);
+		//移除
+		List<Object> list = moveStorageService.processMoveStorage(entity.getId());//获取SN
+		PullStorageOpt pullStorageOpt = storageDetailService.updateStorageLockSn((List<StorageDetail>)list.get(0),(List<StorageProDetail>)list.get(1));//锁定库存
+		if(pullStorageOpt!=null && "success".equals(pullStorageOpt.getStatus()) 
+				&& pullStorageOpt.getList().size() > 0){
+				//移入
+				boolean s =moveStorageService.processMoveToStorage(entity.getId());
+				if(s){
+					/**
+					 * 处理订单状态
+					 */
+					SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+					entity.setStatus("1");
+					entity.setMove_storage_date(time.format(new Date()));
+					moveStorageService.updateEntity(entity);
+					result.setData(1);
+					result.setState(1);
 				}
-				//同一个仓库下的，同一个批次，同一个序号   不能重复添加
-				moveStorageProDetailService.saveEntity(listMoveStorageProDetail);
-			}
+		}else{
+			result.setError(new ErrorCode("出现库存错误，库存不足!"));
+			return new Result<Integer>(1, 2);
 		}
-		
-//			/**
-//			 * 出库明细
-//			 */
-//			List<PropertyFilter> filters = PropertyFilters.build(request);
-//			List<MoveStorageDetail> listMoveStorageDetail = moveStorageDetailService.getList(filters);
-//			List<StorageDetail> storageDetailList  = new ArrayList<StorageDetail>();
-//			for(int i=0;i<listMoveStorageDetail.size();i++){
-//				MoveStorageDetail psd=listMoveStorageDetail.get(i);
-//				StorageDetail sd = new StorageDetail();
-//				sd.setFk_dealer_id(sysUser.getFk_dealer_id());
-//				sd.setFk_storage_id(psd.getFk_move_to_storage_id());
-//				sd.setProduct_item_number(psd.getProduct_item_number());
-//				sd.setBatch_no(psd.getBatch_no());
-//				sd.setInventory_number(psd.getMove_number());
-//				sd.setValid_date(psd.getValid_date());
-//				storageDetailList.add(sd);
-//			}
-//			/**
-//			 * 出库产品SN明细
-//			 */
-//			List<PropertyFilter> filters2 = PropertyFilters.build(request);
-//			List<MoveStorageProDetail>  listMoveStorageProDetail = moveStorageProDetailService.getList(filters2); //sn list 需要回滚库存
-//			List<StorageProDetail> storageProDetailList = new ArrayList<StorageProDetail>(); 
-//			if(null!=listMoveStorageProDetail){
-//				for(int i=0;i<listMoveStorageProDetail.size();i++){
-//					MoveStorageProDetail pspd=(MoveStorageProDetail)listMoveStorageProDetail.get(i);
-//					StorageProDetail spd = new StorageProDetail();
-//					spd.setFk_dealer_id(sysUser.getFk_dealer_id());
-//					spd.setFk_storage_id(pspd.getFk_move_to_storage_id());
-//					spd.setBatch_no(pspd.getBatch_no());
-//					spd.setProduct_sn(pspd.getProduct_sn());
-//					storageProDetailList.add(spd);
-//				}
-//			}
-//			boolean s =storageDetailService.updateStorageAndSnSub(null,storageDetailList,storageProDetailList);
-//			if(s){
-//				/**
-//				 * 处理订单状态
-//				 */
-//				SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
-//				entity.setStatus("1");//成功
-//				entity.setMove_storage_date(time.format(new Date()));
-//				moveStorageService.updateEntity(entity);
-//				return new Result<Integer>(1, 1);
-//			}
 		return new Result<Integer>(1, 1);
 	}
 

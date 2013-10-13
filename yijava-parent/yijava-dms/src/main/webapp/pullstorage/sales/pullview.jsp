@@ -330,8 +330,12 @@
 		        </form>
 	    </div>
 	    <div id="dlgProductAdd-buttons">
+	    <restrict:function funId="191">
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="savePullStorageDetailEntity();">保存</a>
+	    </restrict:function>
+	    <restrict:function funId="192">
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProductAdd').dialog('close')">取消</a>
+	    </restrict:function>
 	    </div>
 	    <div id="dlgProductSn" class="easyui-dialog" style="width:475px;height:415px;padding: 5px 5px 5px 5px;"
             modal="true" closed="true">
@@ -396,24 +400,28 @@
 		var batch_no;
 		var fk_storage_id;
 		$(function() {
-			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
-			pager.pagination();  
+			$('#dg').datagrid({
+				 url : basePath +"api/pullstorage/paging",
+				 queryParams: {
+					 filter_ANDS_type : $('#ff input[name=type]').val()
+				 },
+				 onLoadSuccess:function(data){ 
+					$(".infoBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
+				 }
+			});
 		})
 		function formatterDetail(value, row, index){
-			return '<span style="color:red;cursor:pointer" onclick="onClickPullStorageDetail(\''+index+'\')">明细</span>'; 
+			return '<a class="infoBtn" href="javascript:void(0)" onclick="onClickPullStorageDetail(\''+index+'\')"></span>'; 
 		}
 		function doSearch(){
-			$('#dg').datagrid({
-				  url : basePath +"api/pullstorage/paging",
-				  queryParams: {
-					    filter_ANDS_pull_storage_code:$('#ff input[name=pull_storage_code]').val(),
-				    	filter_ANDS_fk_pull_storage_party_id: $('#ff input[name=fk_pull_storage_party_id]').val(),
-				    	filter_ANDS_fk_put_storage_party_id: $('#ff input[name=fk_put_storage_party_id]').val(),
-				    	filter_ANDS_status: $('#ff input[name=status]').val(),
-				    	filter_ANDS_type: $('#ff input[name=type]').val(),
-				    	filter_ANDS_pull_start_date: $('#ff input[name=pull_start_date]').val(),
-				    	filter_ANDS_pull_end_date: $('#ff input[name=pull_end_date]').val(),
-				  }
+			$('#dg').datagrid('load',{
+				filter_ANDS_pull_storage_code:$('#ff input[name=pull_storage_code]').val(),
+				filter_ANDS_fk_pull_storage_party_id: $('#ff input[name=fk_pull_storage_party_id]').val(),
+				filter_ANDS_fk_put_storage_party_id: $('#ff input[name=fk_put_storage_party_id]').val(),
+				filter_ANDS_status: $('#ff input[name=status]').val(),
+				filter_ANDS_type: $('#ff input[name=type]').val(),
+				filter_ANDS_pull_start_date: $('#ff input[name=pull_start_date]').val(),
+				filter_ANDS_pull_end_date: $('#ff input[name=pull_end_date]').val()
 			});
 		}
 		function formatterStatus(value, row, index){
@@ -463,27 +471,29 @@
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
 				if(row.status=='0'){
-				    $.ajax({
-						type : "POST",
-						url :basePath+'api/pullstorage/remove',
-						data:{pull_storage_code:row.pull_storage_code,filter_ANDS_pull_storage_code:row.pull_storage_code},
-						error : function(request) {
-							$.messager.alert('提示','抱歉,删除错误!','error');	
-						},
-						success:function(msg){
-						    var jsonobj = $.parseJSON(msg);
-        					if (jsonobj.state == 1) {
-        						 pull_storage_code=undefined;
-        						 put_storage_code=undefined;
-        	                     $('#dg').datagrid('reload');
-        	                     $('#dgDetail').datagrid('loadData', {total: 0, rows: [] });
-        	                     $('#dgDetail').datagrid({
-        	         				title:'包含产品'
-        	         			 });
-        					}else{
-        						$.messager.alert('提示','抱歉,删除错误!','error');	
-        					}
-						}
+					$.messager.confirm('Confirm','是否确定删除?',function(r){
+					    $.ajax({
+							type : "POST",
+							url :basePath+'api/pullstorage/remove',
+							data:{pull_storage_code:row.pull_storage_code,filter_ANDS_pull_storage_code:row.pull_storage_code},
+							error : function(request) {
+								$.messager.alert('提示','抱歉,删除错误!','error');	
+							},
+							success:function(msg){
+							    var jsonobj = $.parseJSON(msg);
+	        					if (jsonobj.state == 1) {
+	        						 pull_storage_code=undefined;
+	        						 put_storage_code=undefined;
+	        	                     $('#dg').datagrid('reload');
+	        	                     $('#dgDetail').datagrid('loadData', {total: 0, rows: [] });
+	        	                     $('#dgDetail').datagrid({
+	        	         				title:'包含产品'
+	        	         			 });
+	        					}else{
+	        						$.messager.alert('提示','抱歉,删除错误!','error');	
+	        					}
+							}
+						});
 					});
 				}else{
 					$.messager.alert('提示','无法删除已提交的单据!','error');
@@ -538,22 +548,24 @@
 			var row = $('#dgDetail').datagrid('getSelected');
 			if (row){
 				if(status=='0'){
-				    $.ajax({
-						type : "POST",
-						url :basePath+'api/pullstoragedetail/remove',
-						data:{id:row.id,pull_storage_code:pull_storage_code},
-						error : function(request) {
-							$.messager.alert('提示','抱歉,删除错误!','error');	
-						},
-						success:function(msg){
-						    var jsonobj = $.parseJSON(msg);
-        					if (jsonobj.state == 1) {
-        	                     $('#dgDetail').datagrid('reload');
-        	                     $('#dg').datagrid('reload');
-        					}else{
-        						$.messager.alert('提示','抱歉,删除错误!','error');	
-        					}
-						}
+					$.messager.confirm('Confirm','是否确定删除?',function(r){
+					    $.ajax({
+							type : "POST",
+							url :basePath+'api/pullstoragedetail/remove',
+							data:{id:row.id,pull_storage_code:pull_storage_code},
+							error : function(request) {
+								$.messager.alert('提示','抱歉,删除错误!','error');	
+							},
+							success:function(msg){
+							    var jsonobj = $.parseJSON(msg);
+	        					if (jsonobj.state == 1) {
+	        	                     $('#dgDetail').datagrid('reload');
+	        	                     $('#dg').datagrid('reload');
+	        					}else{
+	        						$.messager.alert('提示','抱歉,删除错误!','error');	
+	        					}
+							}
+						});
 					});
 				}else{
 					$.messager.alert('提示','无法删除已提交的单据!','error');
