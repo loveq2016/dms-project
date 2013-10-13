@@ -86,27 +86,27 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" title="查询结果" style="height:330px" method="get"
+				<table id="dg" title="查询结果" style="height:500px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" pagination="true" iconCls="icon-search" sortOrder="asc" toolbar="#tb">
 					<thead>
 						<tr>
-							<th data-options="field:'account',width:100,align:'center'" sortable="true">账户</th>
-							<th data-options="field:'realname',width:100,align:'center'" sortable="true">姓名</th>
+							<th data-options="field:'account',width:100,align:'left'" sortable="true">账户</th>
+							<th data-options="field:'realname',width:100,align:'left'" sortable="true">姓名</th>
 							<th data-options="field:'email',width:150">邮箱</th>
-							<th data-options="field:'birthday',width:70,align:'center'" hidden="true">生日</th>
-							<th data-options="field:'sex',width:55,align:'center'" formatter="formatter" sortable="true">性别</th>
-							<th data-options="field:'phone',width:100,align:'center'">手机号</th>
-							<th data-options="field:'province',width:55,align:'center'" hidden="true">省份</th>
+							<th data-options="field:'birthday',width:70,align:'left'" hidden="true">生日</th>
+							<th data-options="field:'sex',width:55,align:'left'" formatter="formatter" sortable="true">性别</th>
+							<th data-options="field:'phone',width:100,align:'left'">手机号</th>
+							<th data-options="field:'province',width:55,align:'left'" hidden="true">省份</th>
 							<th data-options="field:'address',width:80" hidden="true">地址</th>
-							<th data-options="field:'postcode',width:55,align:'center'" hidden="true">邮编</th>
-							<th data-options="field:'fk_role_id',width:80,align:'center'" hidden="true"></th>
-							<th data-options="field:'isdeleted',width:55,align:'center'" formatter="formatterStatus" sortable="true">状态</th>
-							<th data-options="field:'role_name',width:80,align:'center'" sortable="true">角色</th>
-							<th data-options="field:'department_name',width:100,align:'center'">部门</th>
-							<th data-options="field:'fk_department_id',width:60,align:'center'" hidden="true"></th>
-							<th data-options="field:'dealer_name',width:100,align:'center'">经销商</th>
-							<th data-options="field:'fk_dealer_id',width:60,align:'center'" hidden="true"></th>
-							<th data-options="field:'last_time',width:150,align:'center'">更新时间</th>
+							<th data-options="field:'postcode',width:55,align:'left'" hidden="true">邮编</th>
+							<th data-options="field:'fk_role_id',width:80,align:'left'" hidden="true"></th>
+							<th data-options="field:'isdeleted',width:55,align:'left'" formatter="formatterStatus" sortable="true">状态</th>
+							<th data-options="field:'role_name',width:80,align:'left'" sortable="true">角色</th>
+							<th data-options="field:'department_name',width:100,align:'left'">部门</th>
+							<th data-options="field:'fk_department_id',width:60,align:'left'" hidden="true"></th>
+							<th data-options="field:'dealer_name',width:100,align:'left'">经销商</th>
+							<th data-options="field:'fk_dealer_id',width:60,align:'left'" hidden="true"></th>
+							<th data-options="field:'last_time',width:150,align:'left'">更新时间</th>
 						</tr>
 					</thead>
 				</table>
@@ -249,9 +249,17 @@
 		</div>
 	<script type="text/javascript">
  		var url;
+ 		var pagesize='15';
 		$(function() {
-			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
+			var pager = $('#dg').datagrid(
+					{
+						 pageSize:pagesize,						 
+						 pageList: [15, 20, 30]						
+					
+					}).datagrid('getPager');
 			pager.pagination();
+			//var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
+			//pager.pagination();
 			$.ajax({
 				type : "POST",
 				url :basePath+'api/sysrole/list',

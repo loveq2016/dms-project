@@ -100,6 +100,13 @@ function openwind(obj)
 	//addTab(tabTitle,url);
 }
 
+function formatterdate(val, row) {
+    var date = new Date(val);
+    return date.format("yyyy-MM-dd hh:mm:ss");
+  
+}
+
+
 Date.prototype.format=function(fmt) {        
     var o = {        
     "M+" : this.getMonth()+1, //月份        
