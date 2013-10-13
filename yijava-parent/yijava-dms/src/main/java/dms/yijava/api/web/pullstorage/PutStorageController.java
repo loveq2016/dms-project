@@ -57,7 +57,7 @@ public class PutStorageController {
 			}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
 				filters.add(PropertyFilters.build("ANDS_fk_put_storage_party_ids", this.listString(sysUser.getUserDealerList())));
 			}
-			//filters.add(PropertyFilters.build("ANDS_status","3,4"));
+			filters.add(PropertyFilters.build("ANDS_statuses","3,4"));
 			return pullStorageService.paging(pageRequest,filters);
 		}
 		return null;
@@ -66,40 +66,7 @@ public class PutStorageController {
 	@ResponseBody
 	@RequestMapping("submit")
 	public Result<Integer> submitPutStorage(@ModelAttribute("entity") PullStorage entity,HttpServletRequest request) {
-		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
-		/**
-		 * 出库明细
-		 */
-		List<PropertyFilter> filters = PropertyFilters.build(request);
-		List<PullStorageDetail> listPullStorageDetail = pullStorageDetailService.getList(filters);
-		List<StorageDetail> storageDetailList  = new ArrayList<StorageDetail>();
-		for(int i=0;i<listPullStorageDetail.size();i++){
-			PullStorageDetail psd=listPullStorageDetail.get(i);
-			StorageDetail sd = new StorageDetail();
-			sd.setFk_dealer_id(sysUser.getFk_dealer_id());
-			sd.setProduct_item_number(psd.getProduct_item_number());
-			sd.setBatch_no(psd.getBatch_no());
-			sd.setInventory_number(psd.getSales_number());
-			sd.setValid_date(psd.getValid_date());
-			storageDetailList.add(sd);
-		}
-		/**
-		 * 出库产品SN明细
-		 */
-		List<PropertyFilter> filters2 = PropertyFilters.build(request);
-		List<PullStorageProDetail>  listPullStorageProDetail = pullStorageProDetailService.getList(filters2); //sn list 需要回滚库存
-		List<StorageProDetail> storageProDetailList = new ArrayList<StorageProDetail>(); 
-		if(null!=listPullStorageProDetail){
-			for(int i=0;i<listPullStorageProDetail.size();i++){
-				PullStorageProDetail pspd=(PullStorageProDetail)listPullStorageProDetail.get(i);
-				StorageProDetail spd = new StorageProDetail();
-				spd.setFk_dealer_id(sysUser.getFk_dealer_id());
-				spd.setBatch_no(pspd.getBatch_no());
-				spd.setProduct_sn(pspd.getProduct_sn());
-				storageProDetailList.add(spd);
-			}
-		}
-		boolean s =storageDetailService.updateStorageAndSnSub(sysUser.getFk_dealer_id(),storageDetailList,storageProDetailList);
+		boolean s =pullStorageService.processPutStorage(entity.getId());
 		if(s){
 			/**
 			 * 处理订单状态

@@ -473,6 +473,7 @@
 		var fk_pull_storage_detail_id;
 		var batch_no;
 		var fk_storage_id;
+		var index;
 		
 		$(function() {
 			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
@@ -578,8 +579,9 @@
 		function clearPullStorageDetailForm(){
 			$('#fm3').form('clear');
 		}
-		function onClickPullStorageDetail(index){
-			$('#dg').datagrid('selectRow',index);
+		function onClickPullStorageDetail(i){
+			$('#dg').datagrid('selectRow',i);
+			index=i;
 			openPullStorageDetail($('#dg').datagrid('getSelected'));
 		}
 		//open订单项
@@ -791,6 +793,7 @@
 		            	            $('#dgProductSn').datagrid('reload');
 		            	            $('#dgDetail').datagrid('reload');
 		            	            $('#dg').datagrid('reload');
+		            	            $('#dg').datagrid('selectRow',index);
 		            	            $.messager.show({
 	                                    title: '提示',
 	                                    msg: "序列号添加成功!"
@@ -844,8 +847,8 @@
 		function ToCheckEntity(){
 			var row = $('#dg').datagrid('getSelected');
 			if(typeof(pull_storage_code) != "undefined")
-			if (row && (row.status ==0 || row.status ==2) ){
-				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
+			if (status ==0 || status ==2){
+				 $.messager.confirm('提示','提交后将不能修改 ,确定要提交审核吗  ?',function(r){
 					 if (r){
 	                        $.post(basePath+'api/pullstorage/updatetocheck',{id:row.id,
 	                        	pull_storage_code:pull_storage_code,
