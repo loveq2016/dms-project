@@ -369,7 +369,7 @@
 		<div style="margin: 10px 0;"></div>
 	    <div id="dlgProduct-buttons">
 	     <restrict:function funId="194">
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductSnEntity()">添加</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductAddEntity()">添加</a>
 	     </restrict:function>
 	     <restrict:function funId="195">
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
@@ -478,16 +478,20 @@
 		</div>
 	<script type="text/javascript">
 		var status;
+		var pull_storage_id;
 		var pull_storage_code;
-		var dealer_id=${user.fk_dealer_id};
 		var fk_pull_storage_detail_id;
 		var batch_no;
 		var fk_storage_id;
+		var dealer_id=${user.fk_dealer_id};
 		$(function() {
 			$('#dg').datagrid({
 				  url : basePath +"api/salesstorage/paging" ,
 					queryParams: {
 						filter_ANDS_type : $('#ff input[name=type]').val()
+					},
+					 onLoadSuccess:function(data){
+							$(".infoBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
 					}
 			});
 		})
@@ -597,6 +601,7 @@
 			$('#dlgPullStorageDetail').dialog('open');
             $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
             pull_storage_code = row.pull_storage_code;
+            pull_storage_id = row.id; 
 			status=row.status;
 			$('#dgDetail').datagrid({
 				url : basePath + "api/pullstoragedetail/detailpaging",
@@ -677,7 +682,7 @@
 				$.messager.alert('提示','请选中某个单据!','warning');
 			}
 		}
-		function newProductSnEntity() {
+		function newProductAddEntity() {
 			clearPullStorageDetailForm();
 			var row = $('#dgProduct').datagrid('getSelected');
 			if(row){
@@ -849,12 +854,11 @@
 		提交订单
 		*/
 		function ToCheckEntity(){
-			var row = $('#dg').datagrid('getSelected');
 			if(typeof(pull_storage_code) != "undefined")
-			if (row && (row.status ==0 || row.status ==2) ){
+			if(status=='0'|| status=='2'){
 				 $.messager.confirm('提示','提交后将不能修改 ,确定要提交审核吗  ?',function(r){
 					 if (r){
-	                        $.post(basePath+'api/salesstorage/updatetocheck',{id:row.id,
+	                        $.post(basePath+'api/salesstorage/updatetocheck',{id:pull_storage_id,
 	                        	pull_storage_code:pull_storage_code},function(result){
 	        			    	if(result.state==1){
 	        			    		$('#dg').datagrid('reload');

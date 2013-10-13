@@ -287,7 +287,7 @@
 		</div>
 		<div style="margin: 10px 0;"></div>
 	    <div id="dlgProduct-buttons">
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductSnEntity()">添加</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductAddEntity()">添加</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
 	    </div>
 		<div id="dlgProductAdd" class="easyui-dialog" style="width:300px;height:320px;padding:5px 5px 5px 5px;"
@@ -393,12 +393,13 @@
 		</div>
 	<script type="text/javascript">
 		var status;
+		var pull_storage_id;
 		var pull_storage_code;
 		var put_storage_code;
-		var dealer_id=${user.fk_dealer_id};
 		var fk_pull_storage_detail_id;
 		var batch_no;
 		var fk_storage_id;
+		var dealer_id=${user.fk_dealer_id};
 		$(function() {
 			$('#dg').datagrid({
 				 url : basePath +"api/pullstorage/paging",
@@ -520,6 +521,7 @@
             $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
             pull_storage_code = row.pull_storage_code;
             put_storage_code = row.put_storage_code;
+            pull_storage_id=row.id;
 			status=row.status;
 			$('#dgDetail').datagrid({
 				url : basePath + "api/pullstoragedetail/detailpaging",
@@ -590,7 +592,7 @@
 				$.messager.alert('提示','请选中某个单据!','warning');
 			}
 		}
-		function newProductSnEntity() {
+		function newProductAddEntity() {
 			clearPullStorageDetailForm();
 			var row = $('#dgProduct').datagrid('getSelected');
 			if(row){
@@ -636,12 +638,11 @@
 		}
 		function submitPullStorage(){
 			if(typeof(pull_storage_code) != "undefined")
-			var row = $('#dg').datagrid('getSelected');
-			if (row){
+			if (status="0"){
 		 		$.ajax({
 					type : "POST",
 					url :basePath+'api/pullstorage/submitPullStorage',
-					data:{id:row.id,pull_storage_code:pull_storage_code,put_storage_code:put_storage_code},
+					data:{id:pull_storage_id,pull_storage_code:pull_storage_code,put_storage_code:put_storage_code},
 					error : function(request) {
 						$.messager.alert('提示','抱歉,提交错误!','error');	
 					},

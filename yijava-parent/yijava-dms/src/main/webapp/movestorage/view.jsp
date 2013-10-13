@@ -244,7 +244,7 @@
 		</div>
 		<div style="margin: 10px 0;"></div>
 	    <div id="dlgProduct-buttons">
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductEntity()">添加</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductAddEntity()">添加</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
 	    </div>
 		<div id="dlgProductAdd" class="easyui-dialog" style="width:300px;height:350px;padding:5px 5px 5px 5px;"
@@ -364,12 +364,13 @@
 		</div>
 	<script type="text/javascript">
 		var status;
+		var move_storage_id;
 		var move_storage_code;
-		var dealer_id=${user.fk_dealer_id};
 		var fk_move_storage_detail_id;
 		var batch_no;
 		var fk_move_storage_id;
 		var fk_move_to_storage_id;
+		var dealer_id=${user.fk_dealer_id};
 		$(function() {
 			$('#dg').datagrid({
 				url : basePath +"api/movestorage/paging",
@@ -474,6 +475,7 @@
 			$('#dlgMoveStorageDetail').dialog('open');
             $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
             move_storage_code = row.move_storage_code;
+            move_storage_id=rows.id;
 			status=row.status;
 			$('#dgDetail').datagrid({
 				url : basePath + "api/movestoragedetail/detailpaging",
@@ -544,7 +546,7 @@
 				$.messager.alert('提示','请选中某个单据!','warning');
 			}
 		}
-		function newProductEntity() {
+		function newProductAddEntity() {
 			clearMoveStorageDetailForm();
 			var row = $('#dgProduct').datagrid('getSelected');
 			if(row){
@@ -590,13 +592,12 @@
 			}
 		}
 		function submitMoveStorage(){
-			var row = $('#dg').datagrid('getSelected');
 			if(typeof(move_storage_code) != "undefined")
-			if (row){
+			if (status=="0"){
 		 		$.ajax({
 					type : "POST",
 					url :basePath+'api/movestorage/submitMoveStorage',
-					data:{id:row.id,move_storage_code:move_storage_code},
+					data:{id:move_storage_id,move_storage_code:move_storage_code},
 					error : function(request) {
 						$.messager.alert('提示','抱歉,提交错误!','error');	
 					},
@@ -612,6 +613,8 @@
 		 				}
 					}
 				});
+			}else{
+				$.messager.alert('提示','抱歉,无法提交已处理数据!','error');	
 			}
 		}
 		function doSearchProduct(){
@@ -673,8 +676,6 @@
 		}
 		function addProductSn(){
 	           var row = $('#dgStorageProductSn').datagrid('getSelected');
-	           alert(fk_move_storage_id);
-	           alert(fk_move_to_storage_id);
 	            if (row){
 		            	$.ajax({
 		            	type : "POST",
@@ -692,7 +693,7 @@
 		            		},
 		            		success : function(data) {
 		            			var jsonobj = $.parseJSON(data);
-		            			if (jsonobj.state == 1) {  
+		            			if (jsonobj.state == 1) {
 		            	            $('#dgProductSn').datagrid('reload');
 		            	            $('#dgDetail').datagrid('reload');
 		            	            $('#dg').datagrid('reload');

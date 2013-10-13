@@ -365,7 +365,7 @@
 		</div>
 		<div style="margin: 10px 0;"></div>
 	    <div id="dlgProduct-buttons">
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductSnEntity()">添加</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductAddEntity()">添加</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
 	    </div>
 		<div id="dlgProductAdd" class="easyui-dialog" style="width:300px;height:320px;padding:5px 5px 5px 5px;"
@@ -471,13 +471,13 @@
 		</div>
 	<script type="text/javascript">
 		var status;
+		var pull_storage_id;
 		var pull_storage_code;
 		var put_storage_code;
 		var dealer_id=${user.fk_dealer_id};
 		var fk_pull_storage_detail_id;
 		var batch_no;
 		var fk_storage_id;
-		var index;
 		$(function() {
 			$('#dg').datagrid({
 				 url : basePath +"api/pullstorage/paging",
@@ -590,7 +590,6 @@
 		}
 		function onClickPullStorageDetail(i){
 			$('#dg').datagrid('selectRow',i);
-			index=i;
 			openPullStorageDetail($('#dg').datagrid('getSelected'));
 		}
 		//open订单项
@@ -600,13 +599,14 @@
             $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
             pull_storage_code = row.pull_storage_code;
             put_storage_code = row.put_storage_code;
+            pull_storage_id =  row.id;
 			status=row.status;
 			$('#dgDetail').datagrid({
 				url : basePath + "api/pullstoragedetail/detailpaging",
 				queryParams: {
-					filter_ANDS_pull_storage_code : pull_storage_code
+					filter_ANDS_pull_storage_code : row.pull_storage_code
 				},
-				onLoadSuccess:function(data){ 
+				onLoadSuccess:function(data){
 					  $(".productSnBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
 				}
 			});
@@ -681,7 +681,7 @@
 				$.messager.alert('提示','请选中某个单据!','warning');
 			}
 		}
-		function newProductSnEntity() {
+		function newProductAddEntity() {
 			clearPullStorageDetailForm();
 			var row = $('#dgProduct').datagrid('getSelected');
 			if(row){
@@ -856,12 +856,11 @@
 		提交订单
 		*/
 		function ToCheckEntity(){
-			var row = $('#dg').datagrid('getSelected');
 			if(typeof(pull_storage_code) != "undefined")
-			if (status ==0 || status ==2){
+				if(status=='0'|| status=='2'){
 				 $.messager.confirm('提示','提交后将不能修改 ,确定要提交审核吗  ?',function(r){
 					 if (r){
-	                        $.post(basePath+'api/pullstorage/updatetocheck',{id:row.id,
+	                        $.post(basePath+'api/pullstorage/updatetocheck',{id:pull_storage_id,
 	                        	pull_storage_code:pull_storage_code,
 	                        	put_storage_code:put_storage_code},function(result){
 	        			    	if(result.state==1){
