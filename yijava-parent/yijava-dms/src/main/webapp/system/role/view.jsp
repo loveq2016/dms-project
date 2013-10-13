@@ -32,14 +32,14 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" title="查询结果" style="height:330px" method="get"
+				<table id="dg" title="查询结果" style="height:500px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" pagination="true" iconCls="icon-search" sortOrder="asc" toolbar="#tb">
 					<thead>
 						<tr>
-							<th data-options="field:'role_name',width:100,align:'center'" sortable="true">角色名称</th>
-							<th data-options="field:'remark',width:160,align:'center'" sortable="true">备注</th>
-							<th data-options="field:'last_time',width:180,align:'center'" sortable="true">更新时间</th>
-							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterAuthoriz">授权</th>
+							<th data-options="field:'role_name',width:100,align:'left'" sortable="true">角色名称</th>
+							<th data-options="field:'remark',width:160,align:'left'" sortable="true">备注</th>
+							<th data-options="field:'last_time',width:180,align:'left'" sortable="true">更新时间</th>
+							<th data-options="field:'custom',width:80,align:'left'" formatter="formatterAuthoriz">授权</th>
 						</tr>
 					</thead>
 				</table>
@@ -81,8 +81,17 @@
 		<div id="authorizW" class="easyui-window" data-options="title:'授权列表',minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:705px;height:500px;padding:5px;"></div>  
 		<script type="text/javascript">
  		var url;
+ 		var pagesize='12';
 		$(function() {
-			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
+			//var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid pageSize:pagesize,pageList: [12, 20, 30], 
+			//pager.pagination();
+			
+			var pager = $('#dg').datagrid(
+					{
+						 pageSize:pagesize,						 
+						 pageList: [12, 20, 30]						
+					
+					}).datagrid('getPager');
 			pager.pagination();
 		})
 		function doSearch(){
