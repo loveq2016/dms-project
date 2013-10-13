@@ -77,7 +77,7 @@
 							<th data-options="field:'dealer_name',width:200"  sortable="true">经销商名称</th>
 							<th data-options="field:'hospital_name',width:200"  sortable="true">医院名称</th>									
 							<th data-options="field:'reason',width:300" sortable="true">试用理由</th>							
-							<th data-options="field:'create_time',width:200">申请日期</th>	
+							<th data-options="field:'create_time',width:200" formatter="formatterdate">申请日期</th>	
 							<th data-options="field:'status',width:90" sortable="true" formatter="formatterstatus">单据状态</th>
 							<th data-options="field:'id',width:90" sortable="true" formatter="formatterdesc">明细</th>							
 						</tr>
@@ -210,7 +210,7 @@
 	style="width:900px;height:530px;padding:10px;">
 	
 	
-	<div class="easyui-tabs" style="width:820px;height:380px">	
+	<div class="easyui-tabs" style="width:820px;height:430px">	
 		<div title="基本信息" >
 				<form id="base_form_detail" action="" method="post" enctype="multipart/form-data">
 								<table>
@@ -254,7 +254,7 @@
 					   		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="delOrderDetail" onclick="removeOrderDetailEntity();">删除产品</a>
 					    </restrict:function>
 					</div>
-				<table id="dgDetail" title="查询结果" style="width:810px;height: 320px">
+				<table id="dgDetail" title="查询结果" style="width:780px;height: 330px">
 					<thead>
 						<tr>
 							<th data-options="field:'trial_detail_id',width:10"  sortable="true" hidden="true">trial_detail_id</th>
@@ -268,7 +268,7 @@
 			</div>
 			
 			<div title="流程记录" >
-				<table id="dgdescflow_record" title="查询结果" style="width:810px;height: 340px">
+				<table id="dgdescflow_record" title="查询结果" style="width:790px;height: 380px">
 					<thead>
 						<tr>
 							
@@ -276,7 +276,7 @@
 							<th data-options="field:'user_name',width:80"  sortable="true">修改人</th>							
 							<th data-options="field:'create_date',width:120" sortable="true">日期</th>
 							<th data-options="field:'action_name',width:120"  sortable="true">动作</th>
-							<th data-options="field:'content',width:220"  sortable="true" formatter="FormatFlowlog" >内容</th>
+							<th data-options="field:'content',width:210"  sortable="true" formatter="FormatFlowlog" >内容</th>
 							<th data-options="field:'check_user_id',width:10"  sortable="true" hidden="true">修改人id</th>	
 							<th data-options="field:'check_user_name',width:10"  sortable="true" hidden="true">修改人</th>						
 							<th data-options="field:'check_reason',width:150">处理意见</th>	
@@ -501,7 +501,11 @@
 				 }
 		});
 		
-
+		function formatterdate(val, row) {
+            var date = new Date(val);
+            return date.format("yyyy-MM-dd hh:mm:ss");
+          
+		}
 		
 		 function formatterInfo (value, row, index) { 
 			 return '<span style="color:red" onclick="openview(' + row.flow_id + ');">查看详细流程 </span>'; 
@@ -714,6 +718,7 @@
 		*/
 		function CheckEntity(){
 			var row = $('#dg').datagrid('getSelected');
+			
 			if (row && row.status ==1){				
 				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){
 					
