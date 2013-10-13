@@ -843,7 +843,7 @@
 			var row = $('#dg').datagrid('getSelected');
 			if(typeof(pull_storage_code) != "undefined")
 			if (row && (row.status ==0 || row.status ==2) ){
-				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
+				 $.messager.confirm('提示','提交后将不能修改 ,确定要提交审核吗  ?',function(r){
 					 if (r){
 	                        $.post(basePath+'api/salesstorage/updatetocheck',{id:row.id,
 	                        	pull_storage_code:pull_storage_code},function(result){

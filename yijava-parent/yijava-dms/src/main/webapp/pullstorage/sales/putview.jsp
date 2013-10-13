@@ -233,7 +233,7 @@
 					  $(".productSnBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
 				}
 			});
-			if(status=='1'){
+			if(status=='3'){
 				$('#submitPutStorage').linkbutton('enable');
 			}else{
 				$('#submitPutStorage').linkbutton('disable');
@@ -241,11 +241,12 @@
 		}
 		function submitPutStorage(){
 			if(typeof(pull_storage_code) != "undefined")
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
 				$.ajax({
 					type : "POST",
 					url :basePath+'api/putstorage/submit',
-					data:{filter_ANDS_pull_storage_code:pull_storage_code,filter_ANDS_put_storage_code:put_storage_code,
-						pull_storage_code:pull_storage_code,put_storage_code:put_storage_code},
+					data:{pull_storage_code:pull_storage_code,put_storage_code:put_storage_code,id:row.id},
 					error : function(request) {
 						$.messager.alert('提示','抱歉,提交错误!','error');	
 					},
@@ -259,6 +260,7 @@
 			 			}
 					}
 				});
+			}
 		}
 		function formatterIs_pullstorage (value, row, index) { 
 			return value==1?"<span style='color:green'>是</span>":"<span style='color:red'>否</span>";

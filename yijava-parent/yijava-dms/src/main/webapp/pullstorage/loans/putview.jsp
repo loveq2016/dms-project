@@ -249,7 +249,7 @@
 					  $(".productSnBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
 				}
 			});
-			if(status=='1'){
+			if(status=='3'){
 				$('#submitPutStorage').linkbutton('enable');
 			}else{
 				$('#submitPutStorage').linkbutton('disable');
@@ -258,12 +258,11 @@
 		function submitPutStorage(){
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
-				if(row.status=='1'){
+				if(row.status=='3'){
 					 $.ajax({
 							type : "POST",
 							url :basePath+'api/putstorage/submit',
-							data:{filter_ANDS_pull_storage_code:pull_storage_code,filter_ANDS_put_storage_code:put_storage_code,
-								pull_storage_code:pull_storage_code,put_storage_code:put_storage_code},
+							data:{pull_storage_code:pull_storage_code,put_storage_code:put_storage_code,id:row.id},
 							error : function(request) {
 								$.messager.alert('提示','抱歉,提交错误!','error');	
 							},

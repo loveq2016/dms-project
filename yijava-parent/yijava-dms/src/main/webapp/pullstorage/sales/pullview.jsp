@@ -419,6 +419,10 @@
 		function formatterStatus(value, row, index){
 			if(value=='0')
 				return '<span>未提交</span>'; 
+			else if(value=='1')
+				return '<span>已提交</span>'; 
+			else if(value=='2')
+				return '<span>驳回</span>'; 
 			else if(value=='3')
 				return '<span>在途</span>'; 
 			else if(value=='4')
@@ -620,11 +624,12 @@
 		}
 		function submitPullStorage(){
 			if(typeof(pull_storage_code) != "undefined")
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
 		 		$.ajax({
 					type : "POST",
-					url :basePath+'api/pullstorage/submit',
-					data:{filter_ANDS_pull_storage_code:pull_storage_code,filter_ANDS_put_storage_code:put_storage_code,
-						pull_storage_code:pull_storage_code,put_storage_code:put_storage_code},
+					url :basePath+'api/pullstorage/submitPullStorage',
+					data:{id:row.id,pull_storage_code:pull_storage_code,put_storage_code:put_storage_code},
 					error : function(request) {
 						$.messager.alert('提示','抱歉,提交错误!','error');	
 					},
@@ -638,6 +643,7 @@
 			 			}
 					}
 				});
+			}
 		}
 		function doSearchProduct(){
 		    $('#dgProduct').datagrid('load',{
