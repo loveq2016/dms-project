@@ -38,7 +38,7 @@
 						<tr>
 							<th data-options="field:'role_name',width:100,align:'left'" sortable="true">角色名称</th>
 							<th data-options="field:'remark',width:160,align:'left'" sortable="true">备注</th>
-							<th data-options="field:'last_time',width:180,align:'left'" sortable="true">更新时间</th>
+							<th data-options="field:'last_time',width:180,align:'left'" formatter="formatterdate" sortable="true">更新时间</th>
 							<th data-options="field:'custom',width:80,align:'left'" formatter="formatterAuthoriz">授权</th>
 						</tr>
 					</thead>

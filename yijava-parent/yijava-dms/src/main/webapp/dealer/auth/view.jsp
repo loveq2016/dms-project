@@ -42,7 +42,7 @@
 						<tr>
 							<th field="dealer_name" width="150" align="center" sortable="true">经销商名称</th>
 							<th field="dealer_code" width="200" align="center" sortable="true">经销商代码</th>
-							<th field="create_date" width="150" align="center" sortable="true">创建时间</th>
+							<th field="create_date" width="150" align="center" sortable="true" formatter="formatterdate">创建时间</th>
 							<restrict:function funId="32">
 								<th field="authList" width="200" align="center" sortable="true" formatter="formatterAuth">授权列表</th>
 							</restrict:function>

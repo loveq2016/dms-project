@@ -80,9 +80,10 @@
 							<th data-options="field:'id',width:10,align:'center'" hidden="true">id</th>
 							<th data-options="field:'move_storage_party_name',width:200,align:'center'" sortable="true">经销商</th>
 							<th data-options="field:'move_storage_code',width:150,align:'center'" sortable="true">移库单号</th>
-							<th data-options="field:'move_storage_date',width:150,align:'center'" sortable="true">移库时间</th>
+							<th data-options="field:'move_storage_date',width:150,align:'center'" formatter="formatterdate" sortable="true">移库时间</th>
 							<th data-options="field:'total_number',width:100,align:'center'" sortable="true">总数量</th>
 							<th data-options="field:'status',width:80,align:'center'" formatter="formatterStatus" sortable="true">单据状态</th>
+							<th data-options="field:'last_time',width:80,align:'center'" formatter="formatterdate" sortable="true">创建时间</th>
 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
 						</tr>
 					</thead>
@@ -173,7 +174,7 @@
 							<th data-options="field:'move_storage_name',width:100,align:'center'" sortable="true">移出仓库</th>
 							<th data-options="field:'product_item_number',width:100,align:'center'" sortable="true">产品编码</th>
 							<th data-options="field:'batch_no',width:200,align:'center'" sortable="true">产品批次</th>
-							<th data-options="field:'valid_date',width:100,align:'center'" sortable="true">有效日期</th>
+							<th data-options="field:'valid_date',width:100,align:'center'" formatter="formatterdate" sortable="true">有效日期</th>
 							<th data-options="field:'inventory_number',width:80,align:'center'" sortable="true">库存量</th>
 							<th data-options="field:'move_number',width:80,align:'center'" sortable="true">移动数量(EA)</th>
 							<th data-options="field:'move_to_storage_name',width:100,align:'center'" sortable="true">移入仓库</th>
@@ -236,7 +237,7 @@
 								<th field="product_item_number" width="120" align="center" sortable="true">产品编号</th>
 								<th field="product_cname" width="120" align="center" sortable="true">产品中文名称</th>
 								<th field="batch_no" width="100" align="center" sortable="true">批号/序列号</th>
-								<th field="valid_date" width="100" align="center" sortable="true">有效期</th>
+								<th field="valid_date" width="100" align="center" formatter="formatterdate" sortable="true">有效期</th>
 								<th field="inventory_number" width="100" align="center" sortable="true">产品数量（EA）</th>
 							</tr>
 						</thead>
@@ -316,7 +317,7 @@
 					<thead>
 						<tr>
 							<th data-options="field:'product_sn',width:200,align:'center'" sortable="true">序列号</th>
-							<th data-options="field:'last_time',width:200,align:'center'" sortable="true">更新时间</th>
+							<th data-options="field:'last_time',width:200,align:'center'" formatter="formatterdate" sortable="true">更新时间</th>
 						</tr>
 					</thead>
 				</table>
@@ -347,7 +348,7 @@
 					</div>
 				<div style="margin: 10px 0;"></div>
 					<table id="dgStorageProductSn" class="easyui-datagrid" title="查询结果" style="height:300px" method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbProduct">
+					rownumbers="true" singleSelect="false" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbProduct">
 						<thead>
 							<tr>
 								<th field="storage_name" width="120" align="center" sortable="true">仓库</th>
@@ -593,8 +594,6 @@
 		}
 		function submitMoveStorage(){
 			if(typeof(move_storage_code) != "undefined")
-				alert(move_storage_id)
-				alert(status)
 			if (status=="0"){
 		 		$.ajax({
 					type : "POST",
@@ -651,7 +650,6 @@
 			batch_no = row.batch_no;
 			fk_move_storage_id = row.fk_move_storage_id;
 			fk_move_to_storage_id = row.fk_move_to_storage_id;
-
 			$('#dgProductSn').datagrid('loadData', {total: 0, rows: []});
 			$('#dgProductSn').datagrid({
 				url : basePath + "api/movestorageprodetail/paging",
@@ -677,15 +675,21 @@
 			});
 		}
 		function addProductSn(){
-	           var row = $('#dgStorageProductSn').datagrid('getSelected');
-	            if (row){
+				var product_sns = [];
+				var batch_nos = [];
+	        	var rows = $('#dgStorageProductSn').datagrid('getSelections');
+	        	for(var i=0; i<rows.length; i++){
+	        		product_sns.push(rows[i].product_sn);
+	        		batch_nos.push(rows[i].batch_no);
+	        	}
+	            if (rows.length>0){
 		            	$.ajax({
 		            	type : "POST",
 		            	url : basePath + 'api/movestorageprodetail/save',
 		            		data : {
 		            				fk_move_storage_detail_id : fk_move_storage_detail_id,
-		            				batch_no : row.batch_no,
-		            				product_sn : row.product_sn,
+		            				batch_nos : batch_nos.join(','),
+		            				product_sns : product_sns.join(','),
 		            				move_storage_code:move_storage_code,
 		            				fk_move_storage_id:fk_move_storage_id,
 		            				fk_move_to_storage_id:fk_move_to_storage_id

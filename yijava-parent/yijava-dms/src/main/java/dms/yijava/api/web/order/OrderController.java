@@ -1,10 +1,17 @@
 package dms.yijava.api.web.order;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -24,14 +31,14 @@ import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.ErrorCode;
 import com.yijava.web.vo.Result;
 
+import dms.yijava.api.web.word.util.OrderProdcut;
+import dms.yijava.api.web.word.util.TheFreemarker;
 import dms.yijava.entity.order.Order;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.flow.FlowBussService;
 import dms.yijava.service.order.OrderDetailService;
 import dms.yijava.service.order.OrderService;
-import dms.yijava.service.teamlayou.UserLayouService;
-import dms.yijava.service.user.UserDealerFunService;
 
 @Controller
 @RequestMapping("/api/order")
@@ -46,6 +53,10 @@ public class OrderController {
 	private OrderDetailService orderDetailService;
 	@Autowired
 	private FlowBussService flowBussService;
+	
+	@Value("#{properties['document_filepath']}")   	
+	private String document_filepath;
+	
 	
 	@ResponseBody
 	@RequestMapping("paging")
@@ -137,6 +148,48 @@ public class OrderController {
 		return result;
 	}
 	
+	
+	@ResponseBody
+	@RequestMapping("viewdocument")
+	public Result<String> viewdocument (Integer order_id,HttpServletRequest request,HttpServletResponse response) {
+		Result<String> result=new Result<String>("0", 0);
+		
+		try {
+			String filePath=document_filepath;
+			String fileName="order"+File.separator+"order-"+order_id+".doc";
+			File outFile = new File(filePath+fileName);		
+			
+			TheFreemarker freemarker = new TheFreemarker();		
+			Map<String,Object> dataMap = new HashMap<String, Object>();			
+			dataMap.put("order_number", "订单号");
+			dataMap.put("order_date","日期");
+			dataMap.put("order_region", "供货区域");
+			dataMap.put("dealer_name", "经销商名字");
+			dataMap.put("contact_name", "联系人名字");
+			dataMap.put("contact_phone", "联系人电话");			
+			dataMap.put("accept_address", "收货人地址");
+			dataMap.put("accept_name", "收货人名字");
+			dataMap.put("accept_phone", "收货人电话");			
+			List<OrderProdcut> list = new ArrayList<OrderProdcut>();
+			for (int j = 0; j < 2; j++) {
+				OrderProdcut order=new OrderProdcut();
+				order.setProductname("dd");
+				order.setProductmodel("ee");
+				order.setPrice("price");
+				order.setSumnumber("10");
+				order.setSumprice("1100");
+				order.setRemark("beizhu");
+				list.add(order);
+			}			
+			dataMap.put("table", list);
+			freemarker.createOrderWord(new FileOutputStream(outFile),dataMap);
+		} catch (FileNotFoundException e) {
+			logger.error("生成单据文件错误"+e.toString());
+			result.setError(new ErrorCode(e.toString()));
+		}
+		
+		return result;
+	}
 	/**
 	 * 把一个list转换为String返回过去
 	 */

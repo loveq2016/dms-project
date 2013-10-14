@@ -49,7 +49,7 @@
 							<th field="product_item_number" width="120" align="center" sortable="true">Item Number</th>
 							<th field="product_cname" width="120" align="center" sortable="true">产品中文名称</th>
 							<th field="batch_no" width="100" align="center" sortable="true">批号/序列号</th>
-							<th field="valid_date" width="100" align="center" sortable="true">有效期</th>
+							<th field="valid_date" width="100" align="center" sortable="true" formatter="formatterdate">有效期</th>
 							<th field="inventory_number" width="100" align="center" sortable="true">产品数量（EA）</th>
 							
 							<th data-options="field:'product_sn',width:100,align:'center',editor:'datebox'" formatter="formatterProductSn">序列号</th>

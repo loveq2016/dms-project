@@ -35,14 +35,7 @@ public class TheFreemarker {
 			configuration.setClassForTemplateLoading(this.getClass(), File.separator + "word" + File.separator + "ftl");
 			// 获取模板
 			Template temp = configuration.getTemplate("trialtemplete.ftl");
-			temp.setEncoding("utf-8");
-			
-			
-			
-			
-			
-			
-			
+			temp.setEncoding("utf-8");			
 			Writer out = null;
 			out = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));
 			temp.process(dataMap, out);
@@ -54,6 +47,25 @@ public class TheFreemarker {
 		return null;
 	}
 	
+	
+	public Writer createOrderWord(OutputStream outputStream,Map<String ,Object> dataMap) {
+		try {
+			String classPath = new File(getClass().getResource("/").getFile()).getCanonicalPath();
+			classPath += File.separator + "word" + File.separator + "ftl";
+			configuration.setClassForTemplateLoading(this.getClass(), File.separator + "word" + File.separator + "ftl");
+			// 获取模板
+			Template temp = configuration.getTemplate("ordertemplete.ftl");
+			temp.setEncoding("utf-8");			
+			Writer out = null;
+			out = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));
+			temp.process(dataMap, out);
+			
+			return out ;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	public Writer createWord(OutputStream outputStream) {
 		try {

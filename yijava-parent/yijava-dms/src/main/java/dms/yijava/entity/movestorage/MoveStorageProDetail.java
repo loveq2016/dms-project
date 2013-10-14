@@ -13,5 +13,7 @@ public class MoveStorageProDetail {
 	public String move_storage_code;
 	public String product_sn;
 	public String batch_no;
+	public String[] product_sns;
+	public String[] batch_nos;
 	public String last_time;
 }

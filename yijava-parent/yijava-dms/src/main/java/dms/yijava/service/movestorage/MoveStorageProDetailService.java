@@ -62,8 +62,10 @@ public class MoveStorageProDetailService{
 	 * @param entity
 	 * @return
 	 */
-	public MoveStorageProDetail getMoveStorageProDetail(MoveStorageProDetail entity) {
-		MoveStorageProDetail d=moveStorageProDetailDao.getObject(".selectMoveStorageProDetail",entity);
+	public List<MoveStorageProDetail> getMoveStorageProDetail(MoveStorageProDetail entity) {
+		entity.setBatch_nos(entity.getBatch_nos()[0].split(","));
+		entity.setProduct_sns(entity.getProduct_sns()[0].split(","));
+		List<MoveStorageProDetail> d=moveStorageProDetailDao.find(".selectMoveStorageProDetail",entity);
 		return d;
 	}
 }

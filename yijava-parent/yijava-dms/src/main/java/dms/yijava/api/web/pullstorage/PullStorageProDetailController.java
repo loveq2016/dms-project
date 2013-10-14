@@ -48,10 +48,21 @@ public class PullStorageProDetailController {
 	@RequestMapping("save")
 	public Result<String> savedetail(@ModelAttribute("entity") PullStorageProDetail entity) {
 		//同一个单据，同一个仓库下的，同一个批次，同一个序号   不能重复添加
-		PullStorageProDetail psd= pullStorageProDetailService.getPullStorageProDetail(entity);
-		if(null==psd){
+		List<PullStorageProDetail> psd= pullStorageProDetailService.getPullStorageProDetail(entity);
+		if(null==psd || psd.size()<=0){			
+			String [] product_sns=entity.getProduct_sns();
+			String [] batch_nos=entity.getBatch_nos();
 			List<PullStorageProDetail> list = new ArrayList<PullStorageProDetail>();
-			list.add(entity);
+			for (int i=0;i<product_sns.length;i++) {
+				PullStorageProDetail mp=new PullStorageProDetail();
+				mp.setBatch_no(batch_nos[i]);
+				mp.setProduct_sn(product_sns[i]);
+				mp.setFk_pull_storage_detail_id(entity.getFk_pull_storage_detail_id());
+				mp.setFk_storage_id(entity.getFk_storage_id());
+				mp.setPull_storage_code(entity.getPull_storage_code());
+				mp.setPut_storage_code(entity.getPut_storage_code());
+				list.add(mp);
+			}
 			pullStorageProDetailService.saveEntity(list);//保存SN
 			PullStorageDetail pullStorageDetail=pullStorageDetailService.getStorageProDetailSalesNumber(entity.getFk_pull_storage_detail_id());//查询SN总数
 			pullStorageDetailService.updateEntity(pullStorageDetail);//修改产品数量

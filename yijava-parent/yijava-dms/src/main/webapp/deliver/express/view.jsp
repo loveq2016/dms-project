@@ -53,8 +53,8 @@
 							<th data-options="field:'deliver_code',width:150,align:'center'" sortable="true">出货单号</th>
 							<th data-options="field:'dealer_name',width:150,align:'center'" sortable="true">经销商</th>
 							<th data-options="field:'order_code',width:150,align:'center'" sortable="true">订单号</th>
-							<th data-options="field:'order_date',width:150,align:'center'" sortable="true">下单时间</th>
-							<th data-options="field:'create_date',width:150,align:'center'" sortable="true">编制时间</th>
+							<th data-options="field:'order_date',width:150,align:'center'" sortable="true" formatter="formatterdate">下单时间</th>
+							<th data-options="field:'create_date',width:150,align:'center'" sortable="true" formatter="formatterdate">编制时间</th>
 <!-- 							<th data-options="field:'express_number',width:150,align:'center'" sortable="true">快递号</th> -->
 							<th data-options="field:'deliver_status',width:80,align:'center'" formatter="formatterDeliverStatus" sortable="true">发货类型</th>
 							<th data-options="field:'check_status',width:80,align:'center'"  formatter="formatterCheckStatus">审核状态</th>
@@ -147,8 +147,8 @@
 							<th data-options="field:'models',width:65,align:'center'" sortable="true">产品规格</th>
 							<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">订单数量</th>
 							<th data-options="field:'deliver_number_sum',width:80,align:'center',editor:'numberbox'">发货数量</th>
-							<th data-options="field:'deliver_date',width:100,align:'center',editor:'datebox'">预计发货日期</th>
-							<th data-options="field:'arrival_date',width:100,align:'center',editor:'datebox'">预计到货日期</th>
+							<th data-options="field:'deliver_date',width:100,align:'center',editor:'datebox'" formatter="formatterdate">预计发货日期</th>
+							<th data-options="field:'arrival_date',width:100,align:'center',editor:'datebox'" formatter="formatterdate">预计到货日期</th>
 							<th data-options="field:'deliver_remark',width:150,align:'center',editor:'text'">备注</th>
 							</tr>
 						</thead>
@@ -168,7 +168,7 @@
 							<th data-options="field:'models',width:65,align:'center'" sortable="true">产品规格</th>
 							<th data-options="field:'express_num',width:80,align:'center'">出货数量</th>
 							<th data-options="field:'express_sn',width:100,align:'center'">规格、批号</th>
-							<th data-options="field:'validity_date',width:100,align:'center'">有效期</th>
+							<th data-options="field:'validity_date',width:100,align:'center'" formatter="formatterdate">有效期</th>
 							<th data-options="field:'remark',width:100,align:'center'">备注</th>
 							<restrict:function funId="151">
 								<th data-options="field:'product_sn',width:100,align:'center'" formatter="formatterProductSn">序列号</th>
