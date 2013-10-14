@@ -126,6 +126,9 @@
         		<restrict:function funId="157">
         		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="CheckEntity()">审核</a>
         		</restrict:function>
+        		<restrict:function funId="203">
+        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="VidwDocument()">查看单据</a>
+        		</restrict:function>
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:300px;height:200px;padding:10px;">
@@ -429,6 +432,7 @@
 								<th data-options="field:'discount',width:80,align:'center'" sortable="true">折扣</th>
 								<th data-options="field:'order_company',width:80,align:'center'">订购单位</th>
 								<th data-options="field:'is_order',width:80" formatter="formatterIs_order">是否可订货</th>
+								<th data-options="field:'remark',width:80" hidden="true">备注</th>
 							</tr>
 						</thead>
 					</table>
@@ -440,7 +444,7 @@
 	        </restrict:function>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
 	    </div>
-		<div id="dlgProductSum" class="easyui-dialog" style="width:300px;height:300px;padding:5px 5px 5px 5px;"
+		<div id="dlgProductSum" class="easyui-dialog" style="width:300px;height:360px;padding:5px 5px 5px 5px;"
 	            modal="true" closed="true" buttons="#dlgProductSum-buttons">
 		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
 					      <table> 
@@ -472,7 +476,13 @@
 					             	<td>数量:</td>
 					             	<td><input name="order_number_sum" id="order_number_sum" class="easyui-numberbox" style="width:150px" 
 									data-options="required:true"></td>
-					             </tr>
+					            </tr>
+					            <tr>
+					             	<td>备注:</td>
+					             	<td>
+					             		<textarea name="remark" id="remark" style="width:150px;height:60px;"></textarea> 
+					             	</td>
+					            </tr>
 					      </table>        	
 		        </form>
 	    </div>
@@ -838,6 +848,32 @@
 			 if(row.sign && row.sign!="")
 			 	return '<span><img src="'+basePath+'resource/signimg/'+value+'" width="50" height="50"></span>'; 
 		 }
+		/**
+		查看单据
+		*/
+		function VidwDocument () 
+		{
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+				$.post(basePath+'api/order/viewdocument',{order_id:row.id},function(result){
+			    	if(result.state==1){
+			    		var tabTitle = "订单管理单据 "+result.data;
+						var url = "generate\\"+result.data;
+						alert(url);
+						addTabByChild(tabTitle,url);
+                    } else {
+                        $.messager.show({
+                            title: 'Error',
+                            msg: result.error.msg
+                        });
+                    }
+                },'json');
+			}else
+			{
+				$.messager.alert('提示','审核结束才能查看单据!','warning');
+			}
+			
+		}
 	</script>
 </body>
 </html>

@@ -48,6 +48,9 @@
     <select id="selectByMap" resultType="dms.yijava.entity.order.OrderDetail">
 		select * from dms.tb_order_detail where order_code = #{order_code}
 	</select>
+	<select id="selectOrderDetailList" resultType="dms.yijava.entity.order.OrderDetail">
+		select * from dms.tb_order_detail where order_code = #{value}
+	</select>
 	<select id="selectOrderDetail" resultType="dms.yijava.entity.order.OrderDetail">
 		select * from dms.tb_order_detail where order_code = #{order_code} and product_item_number = #{product_item_number}
 	</select>
