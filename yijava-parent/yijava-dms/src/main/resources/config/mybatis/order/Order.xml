@@ -77,6 +77,9 @@
     <update id="updateStatus" parameterType="dms.yijava.entity.order.Order">
     	update dms.tb_order set order_status=#{order_status},last_time=NOW() where id=#{id}
     </update>
+     <update id="updateStatusByCode" parameterType="dms.yijava.entity.order.Order">
+    	update dms.tb_order set order_status=#{order_status},last_time=NOW() where order_code=#{order_code}
+    </update>
      <update id="updateMoneyNum" parameterType="dms.yijava.entity.order.Order">
     	update dms.tb_order set order_money_sum=#{order_money_sum},order_number_sum=#{order_number_sum},last_time=NOW() where order_code=#{order_code}
     </update>
