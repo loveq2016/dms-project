@@ -79,6 +79,7 @@
 							<th data-options="field:'reason',width:300" sortable="true">试用理由</th>							
 							<th data-options="field:'create_time',width:200" formatter="formatterdate">申请日期</th>	
 							<th data-options="field:'status',width:90" sortable="true" formatter="formatterstatus">单据状态</th>
+							<th data-options="field:'notice',width:90"  hidden="true">单据状态</th>
 							<th data-options="field:'id',width:90" sortable="true" formatter="formatterdesc">明细</th>							
 						</tr>
 					</thead>
@@ -529,7 +530,13 @@
 			 if(value=='0')
 				 return '<span style="color:green" >未提交</span>'; 
 				else if(value=='1')
-					return '<span style="color:red">已提交</span>'; 
+					{
+						if(row.notice=='1')
+							return '<span style="color:red">已提交-待处理</span>'; 
+						else
+							return '<span style="color:red">已提交</span>'; 	
+					}
+					
 				else if(value=='2')
 					return '<span style="color:red">驳回</span>'; 
 				else if(value=='3')
