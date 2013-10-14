@@ -7,7 +7,7 @@ public class JsonPage<T>  implements Serializable {
 
 	protected List<T> rows = null;
 	protected long total = -1;
-	
+	protected long notice = 0;
 	
 	
 	public JsonPage() {
@@ -31,6 +31,16 @@ public class JsonPage<T>  implements Serializable {
 	}
 	public void setTotal(long total) {
 		this.total = total;
+	}
+
+
+	public long getNotice() {
+		return notice;
+	}
+
+
+	public void setNotice(long notice) {
+		this.notice = notice;
 	}
 	
 	
