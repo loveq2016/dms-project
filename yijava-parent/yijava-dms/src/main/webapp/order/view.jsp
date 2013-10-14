@@ -485,6 +485,7 @@
 	<script type="text/javascript">
 		var order_status;
 		var order_code;
+		var order_id;
 		var dealer_id=${user.fk_dealer_id};
 		$(function() {  
 			$('#dg').datagrid({
@@ -562,7 +563,7 @@
 		{
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
-				if(row.order_status=='0'){
+				if(row.order_status=='0'||row.order_status=='2'){
 					$('#w').dialog('open').dialog('setTitle','更新订单信息');
 				    $('#ffadd').form('load', row);
 					url = basePath+'api/order/updateAddress';
@@ -629,6 +630,7 @@
             $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
 			order_code = row.order_code;
 			order_status=row.order_status;
+			order_id=row.id;
 			$('#dgDetail').datagrid({
 				url : basePath + "api/orderdetail/paging",
 				queryParams: {
@@ -761,12 +763,10 @@
 		提交订单
 		*/
 		function ToCheckEntity(){
-			var row = $('#dg').datagrid('getSelected');
-			//无产品 不能提交
-			if (row && (row.order_status ==0 || row.order_status ==2) ){			
+			if (order_status ==0 || order_status ==2){			
 				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
 					 if (r){
-	                        $.post(basePath+'api/order/updatetocheck',{order_id:row.id},function(result){
+	                        $.post(basePath+'api/order/updatetocheck',{order_id:order_id},function(result){
 	        			    	if(result.state==1){
 	        			    		$('#dg').datagrid('reload');
 	        			    		$('#dlgOrderDetail').dialog('close');
@@ -807,7 +807,7 @@
 				url:basePath+'/api/flowrecord/do_flow',
 				method:"post",	
 				onSubmit: function(){
-				   return $(this).form('validate');;
+				   return $(this).form('validate');
 				},
 				success:function(msg){
 				   var jsonobj= eval('('+msg+')');  
