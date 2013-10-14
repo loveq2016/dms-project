@@ -77,6 +77,8 @@ public class FlowRecordController {
 	@Value("#{properties['adjustStorageflow_identifier_num']}")   	
 	private String adjustStorageflow_identifier_num;
 	
+	@Value("#{properties['exchangedflow_identifier_num']}")   	
+	private String exchangedflow_identifier_num;
 	
 	/**
 	 * 查询流程处理记录
@@ -465,13 +467,16 @@ public class FlowRecordController {
 			flowDescibe="销售出库审核"+"(<font color='red'>"+item_number+"</font>)";
 		}else if(flow_id.equals(deliverflow_identifier_num))
 		{
-			flowDescibe="发货单审核"+"(<font color='red'>"+item_number+"</font>)";
+			flowDescibe="发货审核"+"(<font color='red'>"+item_number+"</font>)";
 		}else if(flow_id.equals(adjustStorageflow_identifier_num))
 		{
-			flowDescibe="调整单审核"+"(<font color='red'>"+item_number+"</font>)";
+			flowDescibe="调整审核"+"(<font color='red'>"+item_number+"</font>)";
+		}else if(flow_id.equals(exchangedflow_identifier_num))
+		{
+			flowDescibe="退换审核"+"(<font color='red'>"+item_number+"</font>)";
 		}
 		
-		
+	
 		
 		
 		return flowDescibe;

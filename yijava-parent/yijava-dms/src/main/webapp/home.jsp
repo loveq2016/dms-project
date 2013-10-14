@@ -138,13 +138,18 @@ $('#tochecktree').tree({
 			addTabByChild(tabTitle,url);
 		}else if(node.id==deliverflow_identifier_num)
 		{
-			var tabTitle = "发货单管理";
+			var tabTitle = "发货管理";
 			var url = "deliver/apply/view.jsp";
 			addTabByChild(tabTitle,url);
 		}else if(node.id==adjustStorageflow_identifier_num)
 		{
-			var tabTitle = "调整单管理";
+			var tabTitle = "调整管理";
 			var url = "storage/adjustment/view.jsp";
+			addTabByChild(tabTitle,url);
+		}else if(node.id==exchangedflow_identifier_num)
+		{
+			var tabTitle = "退换管理";
+			var url = "exchanged/view.jsp";
 			addTabByChild(tabTitle,url);
 		}
 	}

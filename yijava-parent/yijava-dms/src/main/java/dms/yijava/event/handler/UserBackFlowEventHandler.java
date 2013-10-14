@@ -11,6 +11,7 @@ import dms.yijava.event.EventDriven;
 import dms.yijava.event.UserBackFlowEvent;
 import dms.yijava.service.adjuststorage.AdjustStorageService;
 import dms.yijava.service.deliver.DeliverService;
+import dms.yijava.service.exchanged.ExchangedService;
 import dms.yijava.service.order.OrderService;
 import dms.yijava.service.pullstorage.PullStorageService;
 import dms.yijava.service.pullstorage.SalesStorageService;
@@ -34,6 +35,8 @@ public class UserBackFlowEventHandler {
 	private SalesStorageService salesStorageService;
 	@Autowired
 	private AdjustStorageService adjustStorageService;
+	@Autowired
+	private ExchangedService exchangedService;
 	
 	@Value("#{properties['trialflow_identifier_num']}")   	
 	private String flowIdentifierNumber;
@@ -47,6 +50,8 @@ public class UserBackFlowEventHandler {
 	private String salesStorageflow_identifier_num;
 	@Value("#{properties['adjustStorageflow_identifier_num']}")   	
 	private String adjustStorageflow_identifier_num;
+	@Value("#{properties['exchangedflow_identifier_num']}")   	
+	private String exchangedflow_identifier_num;
 	
 	@Subscribe
 	public void onUserBackFlow(UserBackFlowEvent flow_check) {
@@ -75,6 +80,10 @@ public class UserBackFlowEventHandler {
 			//库存调整
 			logger.debug("库存调整流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());
 			adjustStorageService.backFlow(flow_check.getBussiness_id());//驳回
+		}else if(flow_check.getFlow_id().equals(exchangedflow_identifier_num)){
+			//退换货
+			logger.debug("退换货流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());
+			exchangedService.backFlow(flow_check.getBussiness_id());//驳回
 		}
 		
 	}

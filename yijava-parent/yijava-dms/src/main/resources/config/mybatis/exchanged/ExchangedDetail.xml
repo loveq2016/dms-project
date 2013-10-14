@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ExchangedDetail">
+	<sql id="adsWhere">
+	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(exchanged_code)"> and exchanged_code = #{exchanged_code}</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(batch_no)">and batch_no=#{batch_no}</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(product_item_number)"> and product_item_number=#{product_item_number}</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_storage_id)">and fk_storage_id=#{fk_storage_id}</if>
+	</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>  
+	       <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
+	            order by ${orderSql}
+	       </when>
+	   </choose>
+	</sql>
+    <select id="selectByObjectcount" resultType="long"> 
+		SELECT COUNT(*) FROM(
+			select t1.*,t2.storage_name,t3.inventory_number from dms.tb_exchanged_detail t1 
+			left join dms.tb_storage t2 ON t2.id = t1.fk_storage_id
+			LEFT JOIN dms.tb_storage_detail t3 ON t2.id = t3.fk_storage_id
+			WHERE t1.batch_no = t3.batch_no AND t1.product_item_number=t3.product_item_number
+		) t
+		<include refid="adsWhere"/>
+	</select>
+ 	<select id="selectByObject" resultType="dms.yijava.entity.exchanged.ExchangedDetail">
+		SELECT * FROM(
+			select t1.*,t2.storage_name,t3.inventory_number from dms.tb_exchanged_detail t1 
+			left join dms.tb_storage t2 ON t2.id = t1.fk_storage_id
+			LEFT JOIN dms.tb_storage_detail t3 ON t2.id = t3.fk_storage_id
+			WHERE t1.batch_no = t3.batch_no AND t1.product_item_number=t3.product_item_number
+		) t
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}
+	</select>
+	
+	<select id="selectExchangedDetail" resultType="dms.yijava.entity.exchanged.ExchangedDetail">
+		select * from dms.tb_exchanged_detail 
+		<include refid="adsWhere"/>
+	</select>
+	
+	<select id="selectExchangedDetailMap" resultType="dms.yijava.entity.exchanged.ExchangedDetail">
+		select * from dms.tb_exchanged_detail  where exchanged_code = #{exchanged_code}
+	</select>
+
+
+	<select id="selectExchangedProDetailTotalNumber" resultType="dms.yijava.entity.exchanged.ExchangedDetail">
+		SELECT exchanged_detail_id as id,COUNT(1) as exchanged_number 
+		FROM tb_exchanged_pro_detail WHERE exchanged_detail_id = #{id}
+	</select>
+	
+	<update id="updateTotalNumber" parameterType="dms.yijava.entity.exchanged.ExchangedDetail">
+		update dms.tb_exchanged_detail set exchanged_number = #{exchanged_number} WHERE id=#{id}
+	</update>
+	
+	
+	<insert id="insert" parameterType="dms.yijava.entity.exchanged.ExchangedDetail">
+		insert into dms.tb_exchanged_detail (fk_storage_id,exchanged_code,product_item_number,batch_no,exchanged_number,valid_date) 
+    	values(#{fk_storage_id},#{exchanged_code},#{product_item_number},#{batch_no},0,#{valid_date})
+    </insert>
+	
+	<delete id="deleteByPrimaryKey" parameterType="int">
+    	delete from dms.tb_exchanged_detail where id = #{id}
+    </delete>
+    
+    <delete id="deleteByExchangedCode" parameterType="String">
+   		 delete from dms.tb_exchanged_detail where exchanged_code = #{exchanged_code}
+    </delete>
+
+</mapper>

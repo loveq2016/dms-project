@@ -51,6 +51,7 @@
 							<th field="batch_no" width="100" align="center" sortable="true">批号/序列号</th>
 							<th field="valid_date" width="100" align="center" sortable="true">有效期</th>
 							<th field="inventory_number" width="100" align="center" sortable="true">产品数量（EA）</th>
+							
 							<th data-options="field:'product_sn',width:100,align:'center',editor:'datebox'" formatter="formatterProductSn">序列号</th>
 						</tr>
 					</thead>

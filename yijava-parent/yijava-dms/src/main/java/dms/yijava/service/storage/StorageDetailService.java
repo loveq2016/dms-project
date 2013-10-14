@@ -110,12 +110,8 @@ public class StorageDetailService {
 			if(tempStorageDetail ==null || 
 					 (Math.abs(Integer.parseInt(storageDetail.getInventory_number())) > Integer.parseInt(tempStorageDetail.getInventory_number()))){
 				//库存量不够修改的
-				try {
-					isError = true ;
-					throw new Exception("更新库存错误！库存量不足");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				isError = true ;
+				throw new RuntimeException("更新库存错误！库存量不足");
 			}else{
 				storageDetail.setInventory_number("-"+storageDetail.getInventory_number());
 				int upIdex = storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
@@ -125,17 +121,12 @@ public class StorageDetailService {
 		for (StorageProDetail storageProDetail : StorageProDetailList) {
 			StorageProDetail  tempStorageProDetail = storageProDetailDao.getObject(".selectStorageProDetailBySn",storageProDetail);
 			if(tempStorageProDetail ==null ){
-				try {
-					isError = true ;
-					throw new Exception("更新库存错误！库存量Sn记录已经被锁定");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				isError = true;
+				throw new RuntimeException("更新库存错误！库存量Sn记录已经被锁定");
 			}else{
 				int lockIdex = storageProDetailDao.updateObject(".lockSn", tempStorageProDetail);
 				//返回锁定Sn记录List
 				lockSnList.add(storageProDetail);
-				
 			}
 		}
 		
