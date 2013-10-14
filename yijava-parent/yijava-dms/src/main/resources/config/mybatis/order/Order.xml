@@ -61,6 +61,12 @@
 	<select id="selectByMap" resultType="dms.yijava.entity.order.Order">
 		select * from dms.tb_order where dealer_id = #{dealer_id}
 	</select>
+	<select id="select" resultType="dms.yijava.entity.order.Order">
+		SELECT * FROM(select t.*,d.dealer_name,d.business_contacts,d.business_phone,d.addess,
+		da.linkman as receive_linkman,da.linkphone as receive_linkphone,da.postcode as receive_postcode,da.address as receive_addess from tb_order t 
+		LEFT JOIN tb_dealer d ON t.dealer_id=d.dealer_id 
+		LEFT JOIN tb_dealer_address da ON t.dealer_address_id=da.id) t where id = #{id}
+	</select>
 	<select id="selectOrderNum" resultType="dms.yijava.entity.order.Order">
 		select LPAD(max(order_no)+1,3,0) as order_no from dms.tb_order WHERE order_date between CURDATE() AND CONCAT(CURDATE(),' 23:59:59') AND dealer_id=#{dear_id}
 	</select>

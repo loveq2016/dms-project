@@ -34,6 +34,7 @@ import com.yijava.web.vo.Result;
 import dms.yijava.api.web.word.util.OrderProdcut;
 import dms.yijava.api.web.word.util.TheFreemarker;
 import dms.yijava.entity.order.Order;
+import dms.yijava.entity.order.OrderDetail;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.flow.FlowBussService;
@@ -158,31 +159,35 @@ public class OrderController {
 			String filePath=document_filepath;
 			String fileName="order"+File.separator+"order-"+order_id+".doc";
 			File outFile = new File(filePath+fileName);		
-			
+			Order order = orderService.getEntity(Integer.toString(order_id));
 			TheFreemarker freemarker = new TheFreemarker();		
 			Map<String,Object> dataMap = new HashMap<String, Object>();			
-			dataMap.put("order_number", "订单号");
-			dataMap.put("order_date","日期");
-			dataMap.put("order_region", "供货区域");
-			dataMap.put("dealer_name", "经销商名字");
-			dataMap.put("contact_name", "联系人名字");
-			dataMap.put("contact_phone", "联系人电话");			
-			dataMap.put("accept_address", "收货人地址");
-			dataMap.put("accept_name", "收货人名字");
-			dataMap.put("accept_phone", "收货人电话");			
+			dataMap.put("order_number", order.getOrder_code());
+			dataMap.put("order_date",order.getOrder_date());
+			dataMap.put("order_region", "");
+			dataMap.put("dealer_name", order.getDealer_name());
+			dataMap.put("contact_name", order.getBusiness_contacts());
+			dataMap.put("contact_phone", order.getBusiness_phone());			
+			dataMap.put("accept_address", order.getReceive_addess());
+			dataMap.put("accept_name", order.getReceive_linkman());
+			dataMap.put("accept_phone",order.getReceive_linkphone());		
+			List<OrderDetail> listOrderDetail=orderDetailService.getOrderDetailList(order.getOrder_code());
 			List<OrderProdcut> list = new ArrayList<OrderProdcut>();
-			for (int j = 0; j < 2; j++) {
-				OrderProdcut order=new OrderProdcut();
-				order.setProductname("dd");
-				order.setProductmodel("ee");
-				order.setPrice("price");
-				order.setSumnumber("10");
-				order.setSumprice("1100");
-				order.setRemark("beizhu");
-				list.add(order);
-			}			
+			for (int j = 0; j<listOrderDetail.size(); j++) {
+				OrderDetail orderDetail = listOrderDetail.get(j);
+				OrderProdcut orderpro=new OrderProdcut();
+				orderpro.setProductname(orderDetail.getProduct_name());
+				orderpro.setProductmodel(orderDetail.getModels());
+				orderpro.setPrice(orderDetail.getOrder_price());
+				orderpro.setSumnumber(orderDetail.getOrder_number_sum());
+				orderpro.setSumprice(orderDetail.getOrder_money_sum());
+				orderpro.setRemark(orderDetail.getRemark());
+				list.add(orderpro);
+			}
 			dataMap.put("table", list);
 			freemarker.createOrderWord(new FileOutputStream(outFile),dataMap);
+			result.setData(fileName);
+			result.setState(1);
 		} catch (FileNotFoundException e) {
 			logger.error("生成单据文件错误"+e.toString());
 			result.setError(new ErrorCode(e.toString()));

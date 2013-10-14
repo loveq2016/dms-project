@@ -35,7 +35,6 @@ public class OrderDetailService {
 				pageRequest.getPageSize(), pageRequest.getOrderBy(),
 				pageRequest.getOrderDir());
 	}
-	
 	public List<OrderDetail> getList(List<PropertyFilter> filters){
 		Map<String,String> parameters = new HashMap<String,String>();
 		for (PropertyFilter propertyFilter : filters) {
@@ -44,7 +43,6 @@ public class OrderDetailService {
 		}
 		return orderDetailDao.find(parameters);
 	}
-	
 	public OrderDetail getEntity(String id) {
 		return orderDetailDao.get(id);
 	}
@@ -61,6 +59,10 @@ public class OrderDetailService {
 	}
 	public OrderDetail getOrderDetail(OrderDetail entity) {
 		OrderDetail order=orderDetailDao.getObject(".selectOrderDetail",entity);
+		return order;
+	}
+	public List<OrderDetail> getOrderDetailList(String code) {
+		List<OrderDetail> order=orderDetailDao.find(".selectOrderDetailList",code);
 		return order;
 	}
 }
