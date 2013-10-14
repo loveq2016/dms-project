@@ -199,23 +199,27 @@
 		var pull_storage_code;
 		var put_storage_code;
 		$(function() {
-			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
-			pager.pagination();
+			$('#dg').datagrid({
+				 url : basePath +"api/putstorage/paging",
+				 queryParams: {
+					filter_ANDS_type : $('#ff input[name=type]').val()
+				 },
+				 onLoadSuccess:function(data){
+					$(".infoBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
+				 }
+			});
 		})
 		function formatterDetail(value, row, index){
-			return '<span style="color:red;cursor:pointer" onclick="openPullStorageDetail(\''+index+'\')">明细</span>'; 
+			return '<a class="infoBtn" href="javascript:void(0)" onclick="openPullStorageDetail(\''+index+'\')"></span>'; 
 		}
 		function doSearch(){
-		    $('#dg').datagrid({
-				  url : basePath +"api/putstorage/paging",
-				  queryParams: {
-					    filter_ANDS_pull_storage_code:$('#ff input[name=pull_storage_code]').val(),
-				    	filter_ANDS_fk_put_storage_party_id: $('#ff input[name=fk_put_storage_party_id]').val(),
-				    	filter_ANDS_status: $('#ff input[name=status]').val(),
-				    	filter_ANDS_type: $('#ff input[name=type]').val(),
-				    	filter_ANDS_put_start_date: $('#ff input[name=put_start_date]').val(),
-				    	filter_ANDS_put_end_date: $('#ff input[name=put_end_date]').val(),
-				  }
+			$('#dg').datagrid('load',{
+				filter_ANDS_pull_storage_code:$('#ff input[name=pull_storage_code]').val(),
+				filter_ANDS_fk_put_storage_party_id: $('#ff input[name=fk_put_storage_party_id]').val(),
+				filter_ANDS_status: $('#ff input[name=status]').val(),
+				filter_ANDS_type: $('#ff input[name=type]').val(),
+				filter_ANDS_put_start_date: $('#ff input[name=put_start_date]').val(),
+				filter_ANDS_put_end_date: $('#ff input[name=put_end_date]').val()
 			});
 		}
 		function formatterStatus(value, row, index){
@@ -249,7 +253,7 @@
 					  $(".productSnBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
 				}
 			});
-			if(status=='1'){
+			if(status=='3'){
 				$('#submitPutStorage').linkbutton('enable');
 			}else{
 				$('#submitPutStorage').linkbutton('disable');
@@ -258,12 +262,11 @@
 		function submitPutStorage(){
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
-				if(row.status=='1'){
+				if(row.status=='3'){
 					 $.ajax({
 							type : "POST",
 							url :basePath+'api/putstorage/submit',
-							data:{filter_ANDS_pull_storage_code:pull_storage_code,filter_ANDS_put_storage_code:put_storage_code,
-								pull_storage_code:pull_storage_code,put_storage_code:put_storage_code},
+							data:{pull_storage_code:pull_storage_code,put_storage_code:put_storage_code,id:row.id},
 							error : function(request) {
 								$.messager.alert('提示','抱歉,提交错误!','error');	
 							},

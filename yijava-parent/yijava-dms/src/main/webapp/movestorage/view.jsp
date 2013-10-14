@@ -244,7 +244,7 @@
 		</div>
 		<div style="margin: 10px 0;"></div>
 	    <div id="dlgProduct-buttons">
-	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductSnEntity()">添加</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductAddEntity()">添加</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
 	    </div>
 		<div id="dlgProductAdd" class="easyui-dialog" style="width:300px;height:350px;padding:5px 5px 5px 5px;"
@@ -364,29 +364,32 @@
 		</div>
 	<script type="text/javascript">
 		var status;
+		var move_storage_id;
 		var move_storage_code;
-		var dealer_id=${user.fk_dealer_id};
 		var fk_move_storage_detail_id;
 		var batch_no;
-		var fk_storage_id;
+		var fk_move_storage_id;
+		var fk_move_to_storage_id;
+		var dealer_id=${user.fk_dealer_id};
 		$(function() {
-			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
-			pager.pagination();
+			$('#dg').datagrid({
+				url : basePath +"api/movestorage/paging",
+				onLoadSuccess:function(data){ 
+					$(".infoBtn").linkbutton({ plain:true, iconCls:'icon-manage'});
+				}
+			});
 			$('#type').combobox('setValue','1');
 		})
 		function formatterDetail(value, row, index){
-			return '<span style="color:red;cursor:pointer" onclick="onClickMoveStorageDetail(\''+index+'\')">明细</span>'; 
+			return '<a class="infoBtn" href="javascript:void(0)" onclick="onClickMoveStorageDetail(\''+index+'\')"></span>'; 
 		}
 		function doSearch(){
-			$('#dg').datagrid({
-				  url : basePath +"api/movestorage/paging",
-				  queryParams: {
-					    filter_ANDS_move_storage_code:$('#ff input[name=move_storage_code]').val(),
-				    	filter_ANDS_fk_move_storage_party_id: $('#ff input[name=fk_move_storage_party_id]').val(),
-				    	filter_ANDS_status: $('#ff input[name=status]').val(),
-				    	filter_ANDS_move_start_date: $('#ff input[name=move_start_date]').val(),
-				    	filter_ANDS_move_end_date: $('#ff input[name=move_end_date]').val(),
-				  }
+			 $('#dg').datagrid('load',{
+				  filter_ANDS_move_storage_code:$('#ff input[name=move_storage_code]').val(),
+				  filter_ANDS_fk_move_storage_party_id: $('#ff input[name=fk_move_storage_party_id]').val(),
+				  filter_ANDS_status: $('#ff input[name=status]').val(),
+				  filter_ANDS_move_start_date: $('#ff input[name=move_start_date]').val(),
+				  filter_ANDS_move_end_date: $('#ff input[name=move_end_date]').val()
 			});
 		}
 		function formatterStatus(value, row, index){
@@ -472,6 +475,7 @@
 			$('#dlgMoveStorageDetail').dialog('open');
             $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
             move_storage_code = row.move_storage_code;
+            move_storage_id=row.id;
 			status=row.status;
 			$('#dgDetail').datagrid({
 				url : basePath + "api/movestoragedetail/detailpaging",
@@ -500,22 +504,24 @@
 			var row = $('#dgDetail').datagrid('getSelected');
 			if (row){
 				if(status=='0'){
-				    $.ajax({
-						type : "POST",
-						url :basePath+'api/movestoragedetail/remove',
-						data:{id:row.id,move_storage_code:move_storage_code},
-						error : function(request) {
-							$.messager.alert('提示','抱歉,删除错误!','error');	
-						},
-						success:function(msg){
-						    var jsonobj = $.parseJSON(msg);
-        					if (jsonobj.state == 1) {
-        	                     $('#dgDetail').datagrid('reload');
-        	                     $('#dg').datagrid('reload');
-        					}else{
-        						$.messager.alert('提示','抱歉,删除错误!','error');	
-        					}
-						}
+					$.messager.confirm('Confirm','是否确定删除?',function(r){
+					    $.ajax({
+							type : "POST",
+							url :basePath+'api/movestoragedetail/remove',
+							data:{id:row.id,move_storage_code:move_storage_code},
+							error : function(request) {
+								$.messager.alert('提示','抱歉,删除错误!','error');	
+							},
+							success:function(msg){
+							    var jsonobj = $.parseJSON(msg);
+	        					if (jsonobj.state == 1) {
+	        	                     $('#dgDetail').datagrid('reload');
+	        	                     $('#dg').datagrid('reload');
+	        					}else{
+	        						$.messager.alert('提示','抱歉,删除错误!','error');	
+	        					}
+							}
+						});
 					});
 				}else{
 					$.messager.alert('提示','无法删除已成功的单据!','error');
@@ -532,7 +538,7 @@
 				$('#dgProduct').datagrid({
 					 url:basePath+'api/storageDetail/api_paging',
 					 queryParams: {
-						filter_ANDS_fk_dealer_id : $('#fk_dealer_id').val()
+						filter_ANDS_fk_dealer_id :dealer_id
 					 }
 				});
 			}else
@@ -540,7 +546,7 @@
 				$.messager.alert('提示','请选中某个单据!','warning');
 			}
 		}
-		function newProductSnEntity() {
+		function newProductAddEntity() {
 			clearMoveStorageDetailForm();
 			var row = $('#dgProduct').datagrid('getSelected');
 			if(row){
@@ -587,10 +593,13 @@
 		}
 		function submitMoveStorage(){
 			if(typeof(move_storage_code) != "undefined")
+				alert(move_storage_id)
+				alert(status)
+			if (status=="0"){
 		 		$.ajax({
 					type : "POST",
-					url :basePath+'api/movestorage/submit',
-					data:{filter_ANDS_move_storage_code:move_storage_code,move_storage_code:move_storage_code},
+					url :basePath+'api/movestorage/submitMoveStorage',
+					data:{id:move_storage_id,move_storage_code:move_storage_code},
 					error : function(request) {
 						$.messager.alert('提示','抱歉,提交错误!','error');	
 					},
@@ -599,11 +608,16 @@
 			 			if (jsonobj.state == 1) {
 			 	            $('#dg').datagrid('reload');
 			 	            $('#dlgMoveStorageDetail').dialog('close')
+			 			}else if (jsonobj.state == 2) {
+			 				$.messager.alert('提示','抱歉,库存不足!','error');	
 			 			}else{
 			 				$.messager.alert('提示','抱歉,提交错误!','error');	
-			 			}
+		 				}
 					}
 				});
+			}else{
+				$.messager.alert('提示','抱歉,无法提交已处理数据!','error');	
+			}
 		}
 		function doSearchProduct(){
 		    $('#dgProduct').datagrid('load',{
@@ -635,13 +649,15 @@
 			$('#dlgProductSn').dialog('open').dialog('setTitle','产品下序列号');
 			fk_move_storage_detail_id = row.id;
 			batch_no = row.batch_no;
-			fk_storage_id = row.fk_move_storage_id;
+			fk_move_storage_id = row.fk_move_storage_id;
+			fk_move_to_storage_id = row.fk_move_to_storage_id;
+
 			$('#dgProductSn').datagrid('loadData', {total: 0, rows: []});
 			$('#dgProductSn').datagrid({
 				url : basePath + "api/movestorageprodetail/paging",
 				queryParams: {
 					filter_ANDS_move_storage_code: move_storage_code,
-					filter_ANDS_fk_storage_id : fk_storage_id,
+					filter_ANDS_fk_storage_id : fk_move_storage_id,
 					filter_ANDS_batch_no : batch_no
 				}
 			});
@@ -649,12 +665,12 @@
 		function selectProductSn(){
 			$('#dlgStorageProductSn').dialog('open');
 			$("#fffdetail input[name=batch_no]").val(batch_no);
-			$("#fffdetail input[name=fk_storage_id]").val(fk_storage_id);
+			$("#fffdetail input[name=fk_storage_id]").val(fk_move_storage_id);
 			$('#dgStorageProductSn').datagrid('loadData', {total: 0, rows: []});
 			$('#dgStorageProductSn').datagrid({
 				url : basePath + "api/storageProDetail/api_paging",
 				queryParams: {
-					filter_ANDS_fk_storage_id: fk_storage_id,
+					filter_ANDS_fk_storage_id: fk_move_storage_id,
 					filter_ANDS_batch_no : batch_no,
 					filter_ANDS_status : 1
 				}
@@ -668,17 +684,18 @@
 		            	url : basePath + 'api/movestorageprodetail/save',
 		            		data : {
 		            				fk_move_storage_detail_id : fk_move_storage_detail_id,
-		            				fk_storage_id:row.fk_storage_id,
 		            				batch_no : row.batch_no,
 		            				product_sn : row.product_sn,
-		            				move_storage_code:move_storage_code
+		            				move_storage_code:move_storage_code,
+		            				fk_move_storage_id:fk_move_storage_id,
+		            				fk_move_to_storage_id:fk_move_to_storage_id
 		            		},
 		            		error : function(request) {
 		            			$.messager.alert('提示','Error!','error');	
 		            		},
 		            		success : function(data) {
 		            			var jsonobj = $.parseJSON(data);
-		            			if (jsonobj.state == 1) {  
+		            			if (jsonobj.state == 1) {
 		            	            $('#dgProductSn').datagrid('reload');
 		            	            $('#dgDetail').datagrid('reload');
 		            	            $('#dg').datagrid('reload');

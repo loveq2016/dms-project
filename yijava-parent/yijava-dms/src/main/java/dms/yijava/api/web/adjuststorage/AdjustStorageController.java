@@ -141,7 +141,7 @@ public class AdjustStorageController {
 					//以下开始走流程处理
 					SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
 					if(flowBussService.processFlow(adjust_id,sysUser,flowIdentifierNumber)){//提交流程
-					//更新状态
+						//更新状态
 						adjustStorageService.updateAdjustStorageStatus(String.valueOf(adjust_id), "1");//流程成功、更新业务的状态为提交审核
 						result.setData(1);
 						result.setState(1);;

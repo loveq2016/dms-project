@@ -160,7 +160,7 @@
 			}
 		});
 		function formatterCM(value, row, index){
-			return '<span>Bard</span>'; 
+			return '<span>海利欧斯</span>'; 
 		}
 		function formatterConsigneeStatus(value, row, index){
 			if(value=='0')
@@ -185,7 +185,7 @@
 		            $('#dlgDeliverDetail').dialog('open').dialog('setTitle','收货单明细');
 					$('#ffDeliverDetail').form('clear');
 					$('#ffDeliverDetail').form('load', row);
-					$('#ffDeliverDetail').form('load', {"cm":"Bard"});
+					$('#ffDeliverDetail').form('load', {"cm":"海利欧斯"});
 					if(row.consignee_status== 1){
 						$("#submitConsignee").linkbutton('disable');
 					}else{

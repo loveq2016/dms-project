@@ -78,7 +78,8 @@ function tabClose()
 	/*双击关闭TAB选项卡*/
 	$(".tabs-inner").dblclick(function(){
 		var subtitle = $(this).children("span").text();
-		$('#tabs').tabs('close',subtitle);
+		if(subtitle!="首页")
+			$('#tabs').tabs('close',subtitle);
 	})
 
 	$(".tabs-inner").bind('contextmenu',function(e){
@@ -100,6 +101,13 @@ function openwind(obj)
 	//var url = obj.attr("url");
 	//addTab(tabTitle,url);
 }
+
+function formatterdate(val, row) {
+    var date = new Date(val);
+    return date.format("yyyy-MM-dd hh:mm:ss");
+  
+}
+
 
 Date.prototype.format=function(fmt) {        
     var o = {        

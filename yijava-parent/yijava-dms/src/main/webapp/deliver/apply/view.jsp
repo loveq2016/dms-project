@@ -101,13 +101,13 @@
 		</div>
 		
 		
-   	<div id="dlgOrder" class="easyui-dialog" style="width:703px;height:450px;padding: 5px 5px 5px 5px;"
+   	<div id="dlgOrder" class="easyui-dialog" style="width:710px;height:450px;padding: 5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlg-buttonsOrder">
 				<table id="dgOrder" title="订单查询结果" style="height:365px;width:680px;" method="get" toolbar="#dgOrder-tb"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" pagination="true" iconCls="icon-search" sortOrder="asc">
 					<thead>
 						<tr>
-							<th data-options="field:'dealer_name',width:240,align:'center'" sortable="true">经销商</th>
+							<th data-options="field:'dealer_name',width:200,align:'center'" sortable="true">经销商</th>
 							<th data-options="field:'order_code',width:200,align:'center'" sortable="true">订单号</th>
 							<th data-options="field:'order_status',width:80,align:'center'"  formatter="formatterStatus" sortable="true">状态</th>
 							<th data-options="field:'order_date',width:150,align:'center'" sortable="true">下单时间</th>
@@ -125,7 +125,7 @@
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgOrder').dialog('close')">取消</a>
     </div>
     
-    <div id="dlgOneSetp" class="easyui-dialog" style="width:803px;height:450px;padding: 5px 5px 5px 5px;"
+    <div id="dlgOneSetp" class="easyui-dialog" style="width:803px;height:550px;padding: 5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlg-buttonsOneSetp">
 	        <form id="fm" method="post" novalidate enctype="multipart/form-data">
 	        	<input type="hidden" name="deliver_id" id="deliver_id">
@@ -148,7 +148,7 @@
 					<td></td>
 					<td>发货类型:</td>
 					<td>
-						<input name="deliver_status" class="easyui-combobox" id="deliver_status"
+						<input name="deliver_status" width="200px" class="easyui-combobox" id="deliver_status"
 							data-options="
 								required:true,
 								valueField: 'id',

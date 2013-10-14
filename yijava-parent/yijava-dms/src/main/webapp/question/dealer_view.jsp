@@ -37,10 +37,10 @@
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
-							<th field="id" width="150" align="center" sortable="true">序号</th>
-							<th field="q_text" width="400" align="center" sortable="true">问题</th>
-							<th field="a_text" width="400" align="center" sortable="true">回答</th>
-							<th field="info" width="100" align="center" formatter="formatterInfo">明细</th>
+							<th field="id" width="150" align="left" sortable="true">序号</th>
+							<th field="q_text" width="400" align="left" sortable="true">问题</th>
+							<th field="a_text" width="400" align="left" sortable="true">回答</th>
+							<th field="info" width="100" align="left" formatter="formatterInfo">明细</th>
 						</tr>
 					</thead>
 				</table>

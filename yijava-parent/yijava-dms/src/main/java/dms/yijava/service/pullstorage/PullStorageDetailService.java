@@ -13,9 +13,7 @@ import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.pullstorage.PullStorageDetailDao;
-import dms.yijava.entity.order.OrderDetail;
 import dms.yijava.entity.pullstorage.PullStorageDetail;
-import dms.yijava.entity.pullstorage.PullStorageProDetail;
 @Service
 @Transactional
 public class PullStorageDetailService{
@@ -67,9 +65,7 @@ public class PullStorageDetailService{
 	public PullStorageDetail getStorageProDetailSalesNumber(String id) {
 		PullStorageDetail d=pullStorageDetailDao.getObject(".selectStorageProDetailSalesNumber",id);
 		return d;
-	}
-	
-	
+	}	
 }
 
 

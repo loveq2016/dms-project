@@ -128,12 +128,12 @@ $('#tochecktree').tree({
 			addTabByChild(tabTitle,url);
 		}else if(node.id==pullStorageflow_identifier_num)
 		{
-			var tabTitle = "借贷出库管理";
+			var tabTitle = "经销商借贷出库";
 			var url = "pullstorage/loans/pullview.jsp";
 			addTabByChild(tabTitle,url);
 		}else if(node.id==salesStorageflow_identifier_num)
 		{
-			var tabTitle = "销售出库管理";
+			var tabTitle = "经销商医院销售出库";
 			var url = "pullstorage/sales/salesview.jsp";
 			addTabByChild(tabTitle,url);
 		}else if(node.id==deliverflow_identifier_num)
@@ -147,10 +147,6 @@ $('#tochecktree').tree({
 			var url = "storage/adjustment/view.jsp";
 			addTabByChild(tabTitle,url);
 		}
-		
-		
-		
-		
 	}
 });
 function checkReload()

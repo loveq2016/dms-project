@@ -31,4 +31,6 @@ public class Trial {
 	private Integer status;
 	private Integer last_update;	
 	private List<TrialDetail> trialDetails;
+	
+	protected long notice = 0;//仅用于页面显示
 }

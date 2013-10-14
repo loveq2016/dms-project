@@ -59,6 +59,9 @@
 		) t
 		<include refid="adsWhere" />
 	</select>
+	<select id="select" resultType="dms.yijava.entity.movestorage.MoveStorage">
+		select * from dms.tb_move_storage WHERE id=#{id}
+	</select>
 	<select id="selectMoveStorageCode" resultType="dms.yijava.entity.movestorage.MoveStorage">
 		select LPAD(max(move_storage_no)+1,3,0) as move_storage_no from dms.tb_move_storage WHERE 
 		create_date between CURDATE() AND CONCAT(CURDATE(),' 23:59:59') AND fk_move_storage_party_id=#{fk_move_storage_party_id}
@@ -80,6 +83,14 @@
             last_time=NOW()
         </trim>
 		WHERE move_storage_code=#{move_storage_code}
+	</update>
+	<update id="updateStatus" parameterType="dms.yijava.entity.movestorage.MoveStorage">
+		update dms.tb_move_storage
+		<trim prefix="SET" suffixOverrides=",">
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">status=#{status},</if>  
+            last_time=NOW()
+        </trim>
+		WHERE id=#{id}
 	</update>
 	<delete id="deleteByPrimaryKey" parameterType="int">
 		delete from dms.tb_move_storage where id = #{id}

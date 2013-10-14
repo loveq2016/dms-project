@@ -66,11 +66,11 @@ public class UserBackFlowEventHandler {
 		}else if(flow_check.getFlow_id().equals(pullStorageflow_identifier_num)){
 			//借贷出货
 			logger.debug("借贷出库流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());
-			pullStorageService.updateStatus(flow_check.getBussiness_id(),"2");//驳回
+			pullStorageService.backFlow(flow_check.getBussiness_id());//驳回
 		}else if(flow_check.getFlow_id().equals(salesStorageflow_identifier_num)){
 			//销售出货
 			logger.debug("销售出库流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());
-			salesStorageService.updateStatus(flow_check.getBussiness_id(),"2");//驳回
+			salesStorageService.backFlow(flow_check.getBussiness_id());//驳回
 		}else if(flow_check.getFlow_id().equals(adjustStorageflow_identifier_num)){
 			//库存调整
 			logger.debug("库存调整流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());

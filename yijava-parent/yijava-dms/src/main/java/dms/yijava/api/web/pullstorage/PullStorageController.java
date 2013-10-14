@@ -117,7 +117,7 @@ public class PullStorageController {
 	}
 	
 	/**
-	 * 修改状态 提交审核
+	 * 提交审核 修改状态 (处理流程)
 	 * @param trial_id
 	 * @param request
 	 * @return
@@ -127,25 +127,26 @@ public class PullStorageController {
 	public Result<Integer> updatetocheck(PullStorage entity,HttpServletRequest request) {
 		Result<Integer> result=new Result<Integer>(0, 0);
 		try {
-			///以下开始走流程处理
-			SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
-			if(flowBussService.processFlow(Integer.parseInt(entity.getId()),sysUser,flowIdentifierNumber))
-			{
-				//更新库存
-				/**
-				 * 
-				 * 
-				 * 方法实现
-				 * 
-				 * 
-				 */
-				//更新状态
-				pullStorageService.updateStatus(entity.getId(),"1");
-				result.setData(1);
-				result.setState(1);;
-			}else
-			{
-				result.setError(new ErrorCode("出现系统错误，处理流程节点"));
+			//出库
+			List<Object> list = pullStorageService.processPullStorage(entity.getId());//获取SN
+			PullStorageOpt pullStorageOpt = storageDetailService.updateStorageLockSn((List<StorageDetail>)list.get(0),(List<StorageProDetail>)list.get(1));//锁定库存
+			if(pullStorageOpt!=null && "success".equals(pullStorageOpt.getStatus()) 
+					&& pullStorageOpt.getList().size() > 0){
+				//以下开始走流程处理
+				SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
+				if(flowBussService.processFlow(Integer.parseInt(entity.getId()),sysUser,flowIdentifierNumber))
+				{
+					//更新状态
+					pullStorageService.updateStatus(entity.getId(),"1");
+					result.setData(1);
+					result.setState(1);;
+				}else
+				{
+					storageDetailService.rollBackStorageUnLockSn((List<StorageDetail>)list.get(0),(List<StorageProDetail>)list.get(1));//流程失败，回滚库存与sn
+					result.setError(new ErrorCode("出现系统错误，处理流程节点"));
+				}
+			}else{
+				result.setError(new ErrorCode("出现库存错误，库存不足!"));
 			}
 		} catch (Exception e) {
 			logger.error("error" + e);
@@ -153,112 +154,38 @@ public class PullStorageController {
 		return result;
 	}
 	
-	
-	@ResponseBody
-	@RequestMapping("submitPullStorage")
-	public Result<Integer> submitPullStorage(@ModelAttribute("entity") PullStorage entity,HttpServletRequest request) {
-		/**
-		 * 添加产品SN明细
-		 */
-		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
-		List<PropertyFilter> filters = PropertyFilters.build(request);
-		List<PullStorageDetail> listPullStorageDetail = pullStorageDetailService.getList(filters);
-		if(null!=listPullStorageDetail){
-			List<StorageDetail> storageDetailList  = new ArrayList<StorageDetail>();
-			for(int i=0;i<listPullStorageDetail.size();i++){
-				PullStorageDetail psd=listPullStorageDetail.get(i);
-				StorageDetail sd = new StorageDetail();
-				sd.setFk_dealer_id(sysUser.getFk_dealer_id());
-				sd.setFk_storage_id(psd.getFk_storage_id());
-				sd.setProduct_item_number(psd.getProduct_item_number());
-				sd.setBatch_no(psd.getBatch_no());
-				sd.setInventory_number("-"+psd.getSales_number());
-				storageDetailList.add(sd);
-			}
-			PullStorageOpt pullStorageOpt=storageDetailService.updateStorageLockSn(storageDetailList,null); //获取sn（根据 批次，仓库，数量），更新仓库
-			List<PullStorageProDetail> listPullStorageProDetail=new ArrayList<PullStorageProDetail>();
-			if(pullStorageOpt.getStatus().equals("success")){
-				for(int i=0;i<pullStorageOpt.getList().size();i++){
-					PullStorageProDetail pspd=new PullStorageProDetail();
-					StorageProDetail spd=pullStorageOpt.getList().get(i);
-					pspd.setBatch_no(spd.getBatch_no());
-					pspd.setFk_storage_id(spd.getFk_storage_id());
-					pspd.setProduct_sn(spd.getProduct_sn());
-					pspd.setPull_storage_code(entity.getPull_storage_code());
-					pspd.setPut_storage_code(entity.getPut_storage_code());
-					listPullStorageProDetail.add(pspd);
-				}
-				//同一个仓库下的，同一个批次，同一个序号   不能重复添加
-				pullStorageProDetailService.saveEntity(listPullStorageProDetail);
-				
-				/**
-				 * 处理订单状态
-				 */
-				SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
-				entity.setStatus("1");//在途中
-				entity.setPull_storage_date(time.format(new Date()));
-				pullStorageService.updateEntity(entity);
-			}
-		}
-		return new Result<Integer>(1, 1);
-	}
-	
 	/**
-	 * 需要的参数，如果需要改为方法，封装下面2个参数
-	 * pull_storage_code:pull_storage_code,
-	 * filter_ANDS_pull_storage_code:pull_storage_code
-	 * @param request
+	 * 提交单据，处理库存，(无流程)
 	 * @param entity
+	 * @param request
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("storageRollBack")
-	public Result<Integer> storageRollBack(HttpServletRequest request,@ModelAttribute("entity") PullStorage entity) {
-		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
-		/**
-		 * 出库明细
-		 */
-		List<PropertyFilter> filters = PropertyFilters.build(request);
-		List<PullStorageDetail> listPullStorageDetail = pullStorageDetailService.getList(filters);
-		List<StorageDetail> storageDetailList  = new ArrayList<StorageDetail>();
-		for(int i=0;i<listPullStorageDetail.size();i++){
-			PullStorageDetail psd=listPullStorageDetail.get(i);
-			StorageDetail sd = new StorageDetail();
-			sd.setFk_dealer_id(sysUser.getFk_dealer_id());
-			sd.setFk_storage_id(psd.getFk_storage_id());
-			sd.setProduct_item_number(psd.getProduct_item_number());
-			sd.setBatch_no(psd.getBatch_no());
-			sd.setInventory_number(psd.getSales_number());
-			storageDetailList.add(sd);
-		}
-		/**
-		 * 出库产品SN明细
-		 */
-		List<PropertyFilter> filters2 = PropertyFilters.build(request);
-		List<PullStorageProDetail>  listPullStorageProDetail = pullStorageProDetailService.getList(filters2); //sn list 需要回滚库存
-		List<StorageProDetail> storageProDetailList = new ArrayList<StorageProDetail>(); 
-		if(null!=listPullStorageProDetail){
-			for(int i=0;i<listPullStorageProDetail.size();i++){
-				PullStorageProDetail pspd=(PullStorageProDetail)listPullStorageProDetail.get(i);
-				StorageProDetail spd = new StorageProDetail();
-				spd.setFk_dealer_id(sysUser.getFk_dealer_id());
-				spd.setFk_storage_id(pspd.getFk_storage_id());
-				spd.setBatch_no(pspd.getBatch_no());
-				spd.setProduct_sn(pspd.getProduct_sn());
-				storageProDetailList.add(spd);
-			}
-		}
-		boolean s=storageDetailService.rollBackStorageUnLockSn(storageDetailList,storageProDetailList);
-		//回滚成功
-		if(s){
-			PullStorage pullStorage=new PullStorage();
-			pullStorage.setStatus("3");//取消状态
-			pullStorage.setPull_storage_code(entity.getPull_storage_code());
-			pullStorageService.updateEntity(pullStorage);
-			return new Result<Integer>(1, 1);
+	@RequestMapping("submitPullStorage")
+	public Result<Integer> submitPullStorage(@ModelAttribute("entity") PullStorage entity,HttpServletRequest request) {
+		Result<Integer> result=new Result<Integer>(0, 0);
+		//出库
+		List<Object> list = pullStorageService.processPullStorage(entity.getId());//获取SN
+		PullStorageOpt pullStorageOpt = storageDetailService.updateStorageLockSn((List<StorageDetail>)list.get(0),(List<StorageProDetail>)list.get(1));//锁定库存
+		if(pullStorageOpt!=null && "success".equals(pullStorageOpt.getStatus()) 
+				&& pullStorageOpt.getList().size() > 0){
+				//入库操作
+				boolean s =pullStorageService.processPutStorage(entity.getId());
+				if(s){
+					/**
+					 * 处理订单状态
+					 */
+					SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+					entity.setStatus("3");//在途中
+					entity.setPull_storage_date(time.format(new Date()));
+					pullStorageService.updateEntity(entity);
+					result.setData(1);
+					result.setState(1);
+				}				
 		}else{
-			return new Result<Integer>(1, 2);
+			result.setError(new ErrorCode("出现库存错误，库存不足!"));
 		}
+		return new Result<Integer>(1, 1);
 	}
 	
 	@ResponseBody
