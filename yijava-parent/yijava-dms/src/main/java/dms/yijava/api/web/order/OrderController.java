@@ -80,6 +80,29 @@ public class OrderController {
 	}
 	
 	@ResponseBody
+	@RequestMapping("api_paging")
+	public JsonPage<Order> api_paging(PageRequest pageRequest,HttpServletRequest request) {
+		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+		//String currentUserId=sysUser.getId();
+		List<PropertyFilter> filters = PropertyFilters.build(request);
+		if(null!=sysUser){
+			//经销商
+			if(!StringUtils.equals("0",sysUser.getFk_dealer_id())){
+				//filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
+				return null;
+			}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
+				filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
+				filters.add(PropertyFilters.build("ANDS_statuses","3,5"));
+				return orderService.paging(pageRequest,filters);
+			}
+			
+		}
+		return null;
+	}
+	
+	
+	
+	@ResponseBody
 	@RequestMapping("list")
 	public List<Order> getList(){
 		return orderService.getList();

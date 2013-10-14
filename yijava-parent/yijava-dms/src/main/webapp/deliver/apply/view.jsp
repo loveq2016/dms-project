@@ -384,10 +384,7 @@
 			$('#dlgOneSetp').dialog('close');
 			$('#dlgOrder').dialog('open').dialog('setTitle', '发货申请第一部');
 			$('#dgOrder').datagrid({
-				  url : basePath +"api/order/paging" ,
-					queryParams: {
-						filter_ANDS_order_status : 3 //审核通过的订单
-					}
+				  url : basePath +"api/order/api_paging" 
 			});		
 		}		
 		
@@ -395,7 +392,6 @@
 		    $('#dgOrder').datagrid('load',{
 		    	filter_ANDS_order_code: $('input[name=dg_order_code]').val(),
 		    	filter_ANDS_dealer_name: $('input[name=dg_dealer_name]').val()
-		    	
 		    });
 		}
 		
