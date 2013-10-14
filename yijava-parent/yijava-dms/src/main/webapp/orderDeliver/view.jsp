@@ -128,6 +128,7 @@
 						 rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc">
 						<thead>
 							<tr>
+							<th data-options="field:'product_name',width:100,align:'center'" sortable="true">产品名称</th>
 							<th data-options="field:'express_sn',width:100,align:'center'" sortable="true">产品批号</th>
 							<th data-options="field:'validity_date',width:100,align:'center'" sortable="true" formatter="formatterdate">有效期</th>
 							<th data-options="field:'abc',width:100,align:'center'">销售单位</th>
