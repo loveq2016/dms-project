@@ -120,10 +120,11 @@ public class MoveStorageController {
 					result.setState(1);
 				}
 		}else{
+			if(pullStorageOpt.getList().size() <= 0)
+				result.setState(2);
 			result.setError(new ErrorCode("出现库存错误，库存不足!"));
-			return new Result<Integer>(1, 2);
 		}
-		return new Result<Integer>(1, 1);
+		return result;
 	}
 
 	@ResponseBody

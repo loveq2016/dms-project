@@ -776,26 +776,34 @@
 		提交订单
 		*/
 		function ToCheckEntity(){
-			if (order_status ==0 || order_status ==2){			
-				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
-					 if (r){
-	                        $.post(basePath+'api/order/updatetocheck',{order_id:order_id},function(result){
-	        			    	if(result.state==1){
-	        			    		$('#dg').datagrid('reload');
-	        			    		$('#dlgOrderDetail').dialog('close');
-	                            } else {
-	                                $.messager.show({
-	                                    title: 'Error',
-	                                    msg: "订单提交失败!"
-	                                });
-	                            }
-	                        },'json');
-	                    }
-				 });
-			}else
-			{
-	    		$.messager.alert('提示','无法提交已处理订单!','error');
-			}
+			if (order_status ==0 || order_status ==2){
+				//var options  = $('#dgProduct').datagrid('getPager').data("pagination").options;  
+			    //if(options.total>0){
+					 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
+						 if (r){
+							   $('#saveEntityBtn').linkbutton('disable');
+		                        $.post(basePath+'api/order/updatetocheck',{order_id:order_id},function(result){
+		        			    	if(result.state==1){
+		        			    		$('#dg').datagrid('reload');
+		        			    		$('#dlgOrderDetail').dialog('close');
+		                            } else {
+		                                $.messager.show({
+		                                    title: 'Error',
+		                                    msg: "订单提交失败!"
+		                                });
+		                            }
+		        			    	$('#saveEntityBtn').linkbutton('enable');
+		                        },'json');
+		                    }
+					 });
+			    }else
+				{
+		    		$.messager.alert('提示','请添加订单明细!','error');
+				}
+			//}else
+			//{
+	    		//$.messager.alert('提示','无法提交已处理订单!','error');
+			//}
 		}
 		/**
 		审核
