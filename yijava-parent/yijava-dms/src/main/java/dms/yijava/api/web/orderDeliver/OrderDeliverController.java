@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,8 @@ import com.yijava.web.vo.Result;
 import dms.yijava.entity.deliver.DeliverExpressDetail;
 import dms.yijava.entity.deliver.DeliverExpressSn;
 import dms.yijava.entity.orderDeliver.OrderDeliver;
+import dms.yijava.entity.system.SysUser;
+import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.deliver.DeliverExpressDetailService;
 import dms.yijava.service.deliver.DeliverExpressSnService;
 import dms.yijava.service.orderDeliver.OrderDeliverService;
@@ -44,11 +47,43 @@ public class OrderDeliverController {
 	@RequestMapping("paging")
 	public JsonPage<OrderDeliver> paging(PageRequest pageRequest,
 			HttpServletRequest request) {
+		
+		//zhjt2013年1013日修改
+		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+		String currentUserId=sysUser.getId();
 		List<PropertyFilter> filters = PropertyFilters.build(request);
+		if(null!=sysUser){
+			//经销商
+			if(!StringUtils.equals("0",sysUser.getFk_dealer_id())){
+				filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
+			}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
+				filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
+				filters.add(PropertyFilters.build("ANDS_statuses","0,1"));				
+			}
+			
+		}
 		return orderDeliverService.paging(pageRequest, filters);
 	}
 	
-	
+	/**
+	 * 把一个list转换为String返回过去
+	 */
+	public String listString(List<UserDealer> list) {
+		String listString = "";
+		for (int i = 0; i < list.size(); i++) {
+			try {
+				if (i == list.size() - 1) {
+					UserDealer ud=list.get(i);
+					listString += ud.getDealer_id();
+				} else {
+					UserDealer ud=list.get(i);
+					listString += ud.getDealer_id() + ",";
+				}
+			} catch (Exception e) {
+			}
+		}
+		return listString;
+	}
 
 	@ResponseBody
 	@RequestMapping("consignee")

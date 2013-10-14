@@ -68,6 +68,24 @@ public class DeliverApplyController {
 	
 	
 	@ResponseBody
+	@RequestMapping("pagingtodelver")
+	public JsonPage<Deliver> pagingtodelver(PageRequest pageRequest,HttpServletRequest request) {
+		List<PropertyFilter> filters = PropertyFilters.build(request);
+		/*SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
+		String currentUserId = sysUser.getId();
+		if (null != sysUser && "84".equals(sysUser.getFk_department_id())){
+			filters.add(PropertyFilters.build("ANDS_statuses", "0,1,2,3,4,5,6"));
+		}else if (null != sysUser && StringUtils.isNotEmpty(sysUser.getTeams())) {
+			filters.add(PropertyFilters.build("ANDS_statuses", "1,2,3,4,5,6"));
+			filters.add(PropertyFilters.build("ANDS_check_id", currentUserId));
+			filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
+		}
+		filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));*/
+		
+		return deliverService.paging(pageRequest,filters);
+	}
+	
+	@ResponseBody
 	@RequestMapping("detailList")
 	public List<DeliverDetail> getList(HttpServletRequest request){
 		List<PropertyFilter> filters = PropertyFilters.build(request);
