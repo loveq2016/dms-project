@@ -77,7 +77,8 @@ function tabClose()
 	/*双击关闭TAB选项卡*/
 	$(".tabs-inner").dblclick(function(){
 		var subtitle = $(this).children("span").text();
-		$('#tabs').tabs('close',subtitle);
+		if(subtitle!="首页")
+			$('#tabs').tabs('close',subtitle);
 	})
 
 	$(".tabs-inner").bind('contextmenu',function(e){
