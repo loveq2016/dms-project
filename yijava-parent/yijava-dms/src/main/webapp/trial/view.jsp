@@ -275,7 +275,7 @@
 							
 							<th data-options="field:'user_id',width:80"  sortable="true" hidden="true">修改人id</th>	
 							<th data-options="field:'user_name',width:80"  sortable="true">修改人</th>							
-							<th data-options="field:'create_date',width:120" sortable="true">日期</th>
+							<th data-options="field:'create_date',width:120" sortable="true" formatter="formatterdate">日期</th>
 							<th data-options="field:'action_name',width:120"  sortable="true">动作</th>
 							<th data-options="field:'content',width:210"  sortable="true" formatter="FormatFlowlog" >内容</th>
 							<th data-options="field:'check_user_id',width:10"  sortable="true" hidden="true">修改人id</th>	
@@ -352,7 +352,7 @@
 							
 							<th data-options="field:'user_id',width:80"  sortable="true" hidden="true">修改人id</th>	
 							<th data-options="field:'user_name',width:80"  sortable="true">修改人</th>							
-							<th data-options="field:'create_date',width:120" sortable="true">日期</th>
+							<th data-options="field:'create_date',width:120" sortable="true" formatter="formatterdate">日期</th>
 							<th data-options="field:'action_name',width:120"  sortable="true">动作</th>
 							<th data-options="field:'content',width:220"  sortable="true" formatter="FormatFlowlog" >内容</th>
 							<th data-options="field:'check_user_id',width:10"  sortable="true" hidden="true">修改人id</th>	

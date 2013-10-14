@@ -106,7 +106,7 @@
 							<th data-options="field:'fk_department_id',width:60,align:'left'" hidden="true"></th>
 							<th data-options="field:'dealer_name',width:100,align:'left'">经销商</th>
 							<th data-options="field:'fk_dealer_id',width:60,align:'left'" hidden="true"></th>
-							<th data-options="field:'last_time',width:150,align:'left'">更新时间</th>
+							<th data-options="field:'last_time',width:150,align:'left'" formatter="formatterdate">更新时间</th>
 						</tr>
 					</thead>
 				</table>

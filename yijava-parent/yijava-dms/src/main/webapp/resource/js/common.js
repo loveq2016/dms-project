@@ -103,9 +103,14 @@ function openwind(obj)
 }
 
 function formatterdate(val, row) {
-    var date = new Date(val);
-    return date.format("yyyy-MM-dd hh:mm:ss");
-  
+	try{
+		if(val!=null && val!=''){
+			var date = new Date(val);
+	    	return date.format("yyyy-MM-dd hh:mm:ss");
+		}
+	}catch(e){
+		return '';
+	}
 }
 
 

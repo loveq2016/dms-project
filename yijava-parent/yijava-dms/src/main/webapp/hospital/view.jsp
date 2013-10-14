@@ -82,7 +82,7 @@
 							<th field="city" width="80" align="left" sortable="true">县市(区)</th>
 							<th field="address" width="300" align="left" sortable="true">地址</th>
 							<th field="postcode" width="100" align="left" sortable="true">邮编</th>
-							<th field="last_update" width="150" align="left" sortable="true">最后修改时间</th>
+							<th field="last_update" width="150" align="left" sortable="true" formatter="formatterdate">最后修改时间</th>
 							<th field="phone" width="200" align="left" sortable="true" hidden="true">电话</th>
 							<th field="beds" width="200" align="left" sortable="true" hidden="true">床位数</th>
 							

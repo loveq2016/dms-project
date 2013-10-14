@@ -108,7 +108,7 @@
 							<th data-options="field:'put_storage_party_name',width:200,align:'center'" sortable="true">借入经销商</th>
 							<th data-options="field:'put_storage_code',width:100,align:'center'" hidden="true">分销入库单号</th>
 							<th data-options="field:'total_number',width:80,align:'center'" sortable="true">总数量</th>
-							<th data-options="field:'pull_storage_date',width:100,align:'center'" sortable="true">出库时间</th>
+							<th data-options="field:'pull_storage_date',width:100,align:'center'" formatter="formatterdate" sortable="true">出库时间</th>
 							<th data-options="field:'status',width:80,align:'center'" formatter="formatterStatus" sortable="true">单据状态</th>
 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
 						</tr>
@@ -231,7 +231,7 @@
 							<th data-options="field:'storage_name',width:100,align:'center'" sortable="true">仓库</th>
 							<th data-options="field:'product_item_number',width:100,align:'center'" sortable="true">产品编码</th>
 							<th data-options="field:'batch_no',width:200,align:'center'" sortable="true">产品批次</th>
-							<th data-options="field:'valid_date',width:100,align:'center'" sortable="true">有效日期</th>
+							<th data-options="field:'valid_date',width:100,align:'center'" formatter="formatterdate" sortable="true">有效日期</th>
 							<th data-options="field:'inventory_number',width:80,align:'center'" sortable="true">库存量</th>
 							<th data-options="field:'sales_number',width:80,align:'center'" sortable="true">借出数量(EA)</th>
 							<th data-options="field:'product_sn',width:100,align:'center',editor:'datebox'" formatter="formatterProductSn">序列号</th>
@@ -254,7 +254,7 @@
 							<tr>
 								<th data-options="field:'user_id',width:80"  sortable="true" hidden="true">修改人id</th>	
 								<th data-options="field:'user_name',width:80"  sortable="true">修改人</th>							
-								<th data-options="field:'create_date',width:120" sortable="true">日期</th>
+								<th data-options="field:'create_date',width:120" formatter="formatterdate" sortable="true">日期</th>
 								<th data-options="field:'action_name',width:120"  sortable="true">动作</th>
 								<th data-options="field:'content',width:220"  sortable="true" formatter="FormatFlowlog" >内容</th>
 								<th data-options="field:'check_user_id',width:10"  sortable="true" hidden="true">修改人id</th>	
@@ -357,7 +357,7 @@
 								<th field="product_item_number" width="120" align="center" sortable="true">产品编号</th>
 								<th field="product_cname" width="120" align="center" sortable="true">产品中文名称</th>
 								<th field="batch_no" width="100" align="center" sortable="true">批号/序列号</th>
-								<th field="valid_date" width="100" align="center" sortable="true">有效期</th>
+								<th field="valid_date" width="100" align="center" formatter="formatterdate" sortable="true">有效期</th>
 								<th field="inventory_number" width="100" align="center" sortable="true">产品数量（EA）</th>
 							</tr>
 						</thead>
@@ -419,7 +419,7 @@
 					<thead>
 						<tr>
 							<th data-options="field:'product_sn',width:200,align:'center'" sortable="true">序列号</th>
-							<th data-options="field:'last_time',width:200,align:'center'" sortable="true">更新时间</th>
+							<th data-options="field:'last_time',width:200,align:'center'" formatter="formatterdate" sortable="true">更新时间</th>
 						</tr>
 					</thead>
 				</table>

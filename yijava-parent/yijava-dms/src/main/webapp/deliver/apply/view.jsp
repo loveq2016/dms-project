@@ -68,8 +68,8 @@
 							<th data-options="field:'deliver_code',width:150,align:'center'" sortable="true">出货单号</th>
 							<th data-options="field:'dealer_name',width:150,align:'center'" sortable="true">经销商</th>
 							<th data-options="field:'order_code',width:150,align:'center'" sortable="true">订单号</th>
-							<th data-options="field:'order_date',width:150,align:'center'" sortable="true">下单时间</th>
-							<th data-options="field:'create_date',width:150,align:'center'" sortable="true">编制时间</th>
+							<th data-options="field:'order_date',width:150,align:'center'" sortable="true" formatter="formatterdate">下单时间</th>
+							<th data-options="field:'create_date',width:150,align:'center'" sortable="true" formatter="formatterdate">编制时间</th>
 <!-- 							<th data-options="field:'express_number',width:150,align:'center'" sortable="true">快递号</th> -->
 							<th data-options="field:'deliver_status',width:80,align:'center'" formatter="formatterDeliverStatus" sortable="true">发货类型</th>
 							<th data-options="field:'check_status',width:80,align:'center'"  formatter="formatterCheckStatus">审核状态</th>
@@ -110,7 +110,7 @@
 							<th data-options="field:'dealer_name',width:200,align:'center'" sortable="true">经销商</th>
 							<th data-options="field:'order_code',width:200,align:'center'" sortable="true">订单号</th>
 							<th data-options="field:'order_status',width:80,align:'center'"  formatter="formatterStatus" sortable="true">状态</th>
-							<th data-options="field:'order_date',width:150,align:'center'" sortable="true">下单时间</th>
+							<th data-options="field:'order_date',width:150,align:'center'" sortable="true" formatter="formatterdate">下单时间</th>
 						</tr>
 					</thead>
 				</table>
@@ -182,8 +182,8 @@
 							<th data-options="field:'models',width:65,align:'center'" sortable="true">产品规格</th>
 							<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">数量</th>
 							<th data-options="field:'deliver_number_sum',width:80,align:'center',editor:'numberbox'">发货数量</th>
-							<th data-options="field:'deliver_date',width:100,align:'center',editor:'datebox'">预计发货日期</th>
-							<th data-options="field:'arrival_date',width:100,align:'center',editor:'datebox'">预计到货日期</th>
+							<th data-options="field:'deliver_date',width:100,align:'center',editor:'datebox'" formatter="formatterdate">预计发货日期</th>
+							<th data-options="field:'arrival_date',width:100,align:'center',editor:'datebox'" formatter="formatterdate">预计到货日期</th>
 							<th data-options="field:'deliver_remark',width:150,align:'center',editor:'text'">备注</th>
 							</tr>
 						</thead>
@@ -260,8 +260,8 @@
 							<th data-options="field:'models',width:65,align:'center'" sortable="true">产品规格</th>
 							<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">数量</th>
 							<th data-options="field:'deliver_number_sum',width:80,align:'center',editor:'numberbox'">发货数量</th>
-							<th data-options="field:'deliver_date',width:100,align:'center',editor:'datebox'">预计发货日期</th>
-							<th data-options="field:'arrival_date',width:100,align:'center',editor:'datebox'">预计到货日期</th>
+							<th data-options="field:'deliver_date',width:100,align:'center',editor:'datebox'" formatter="formatterdate">预计发货日期</th>
+							<th data-options="field:'arrival_date',width:100,align:'center',editor:'datebox'" formatter="formatterdate">预计到货日期</th>
 							<th data-options="field:'deliver_remark',width:150,align:'center',editor:'text'">备注</th>
 							</tr>
 						</thead>
@@ -273,7 +273,7 @@
 							<tr>
 								<th data-options="field:'user_id',width:80"  sortable="true" hidden="true">修改人id</th>	
 								<th data-options="field:'user_name',width:80"  sortable="true">修改人</th>							
-								<th data-options="field:'create_date',width:120" sortable="true">日期</th>
+								<th data-options="field:'create_date',width:120" sortable="true" formatter="formatterdate">日期</th>
 								<th data-options="field:'action_name',width:120"  sortable="true">动作</th>
 								<th data-options="field:'content',width:220"  sortable="true" formatter="FormatFlowlog" >内容</th>
 								<th data-options="field:'check_user_id',width:10"  sortable="true" hidden="true">修改人id</th>	

@@ -100,7 +100,7 @@
 							<th data-options="field:'order_number_sum',width:80,align:'left'" sortable="true">总数量</th>
 							<th data-options="field:'order_money_sum',width:80,align:'left'" sortable="true">总金额</th>
 							<th data-options="field:'order_status',width:80,align:'left'" formatter="formatterStatus" sortable="true">状态</th>
-							<th data-options="field:'order_date',width:150,align:'left'" sortable="true">订单时间</th>
+							<th data-options="field:'order_date',width:150,align:'left'" formatter="formatterdate" sortable="true">订单时间</th>
 							<th data-options="field:'custom',width:100,align:'center'" sortable="false" formatter="formatterDetail">明细</th>
 							<th data-options="field:'dealer_address_id',width:60" hidden="true"></th>
 							<th data-options="field:'receive_linkman',width:60" hidden="true"></th>
@@ -309,7 +309,7 @@
 								<th data-options="field:'order_money_sum',width:80,align:'center'" sortable="true">小计</th>
 								<th data-options="field:'discount',width:80,align:'center'" sortable="true">折扣</th>
 								<th data-options="field:'delivery_sum',width:80,align:'center'" sortable="true">发货数量</th>
-								<th data-options="field:'plan_send_date',width:100,align:'center'" sortable="true">预计发货日期</th>
+								<th data-options="field:'plan_send_date',width:100,align:'center'" formatter="formatterdate" sortable="true">预计发货日期</th>
 							</tr>
 						</thead>
 					</table>
@@ -329,7 +329,7 @@
 							<tr>
 								<th data-options="field:'user_id',width:80"  sortable="true" hidden="true">修改人id</th>	
 								<th data-options="field:'user_name',width:80"  sortable="true">修改人</th>							
-								<th data-options="field:'create_date',width:120" sortable="true">日期</th>
+								<th data-options="field:'create_date',width:120" formatter="formatterdate" sortable="true">日期</th>
 								<th data-options="field:'action_name',width:120"  sortable="true">动作</th>
 								<th data-options="field:'content',width:220"  sortable="true" formatter="FormatFlowlog" >内容</th>
 								<th data-options="field:'check_user_id',width:10"  sortable="true" hidden="true">修改人id</th>	
