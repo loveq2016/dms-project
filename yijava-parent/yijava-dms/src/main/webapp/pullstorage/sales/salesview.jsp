@@ -461,7 +461,7 @@
 					</div>
 				<div style="margin: 10px 0;"></div>
 					<table id="dgStorageProductSn" class="easyui-datagrid" title="查询结果" style="height:300px" method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbProduct">
+					rownumbers="true" singleSelect="false" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbProduct">
 						<thead>
 							<tr>
 								<th field="storage_name" width="120" align="center" sortable="true">仓库</th>
@@ -782,16 +782,22 @@
 			});
 		}
 		function addProductSn(){
-	           var row = $('#dgStorageProductSn').datagrid('getSelected');
-	            if (row){
+				var product_sns = [];
+				var batch_nos = [];
+	        	var rows = $('#dgStorageProductSn').datagrid('getSelections');
+	        	for(var i=0; i<rows.length; i++){
+	        		product_sns.push(rows[i].product_sn);
+	        		batch_nos.push(rows[i].batch_no);
+	        	}
+	        	if (rows.length>0){
 		            	$.ajax({
 		            	type : "POST",
 		            	url : basePath + 'api/pullstorageprodetail/save',
 		            		data : {
 		            				fk_pull_storage_detail_id : fk_pull_storage_detail_id,
-		            				fk_storage_id:row.fk_storage_id,
-		            				batch_no : row.batch_no,
-		            				product_sn : row.product_sn,
+		            				fk_storage_id:fk_storage_id,
+		            				batch_nos : batch_nos.join(','),
+		            				product_sns : product_sns.join(','),
 		            				pull_storage_code:pull_storage_code
 		            		},
 		            		error : function(request) {

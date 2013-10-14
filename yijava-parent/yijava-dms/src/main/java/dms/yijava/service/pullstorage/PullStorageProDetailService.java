@@ -62,8 +62,10 @@ public class PullStorageProDetailService{
 	 * @param entity
 	 * @return
 	 */
-	public PullStorageProDetail getPullStorageProDetail(PullStorageProDetail entity) {
-		PullStorageProDetail d=pullStorageProDetailDao.getObject(".selectPullStorageProDetail",entity);
+	public List<PullStorageProDetail> getPullStorageProDetail(PullStorageProDetail entity) {
+		entity.setBatch_nos(entity.getBatch_nos()[0].split(","));
+		entity.setProduct_sns(entity.getProduct_sns()[0].split(","));
+		List<PullStorageProDetail> d=pullStorageProDetailDao.getObject(".selectPullStorageProDetail",entity);
 		return d;
 	}
 }

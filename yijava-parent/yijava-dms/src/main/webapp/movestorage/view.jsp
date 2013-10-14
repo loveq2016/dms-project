@@ -83,6 +83,7 @@
 							<th data-options="field:'move_storage_date',width:150,align:'center'" sortable="true">移库时间</th>
 							<th data-options="field:'total_number',width:100,align:'center'" sortable="true">总数量</th>
 							<th data-options="field:'status',width:80,align:'center'" formatter="formatterStatus" sortable="true">单据状态</th>
+							<th data-options="field:'last_time',width:80,align:'center'" sortable="true">创建时间</th>
 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
 						</tr>
 					</thead>
@@ -347,7 +348,7 @@
 					</div>
 				<div style="margin: 10px 0;"></div>
 					<table id="dgStorageProductSn" class="easyui-datagrid" title="查询结果" style="height:300px" method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbProduct">
+					rownumbers="true" singleSelect="false" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbProduct">
 						<thead>
 							<tr>
 								<th field="storage_name" width="120" align="center" sortable="true">仓库</th>
@@ -593,8 +594,6 @@
 		}
 		function submitMoveStorage(){
 			if(typeof(move_storage_code) != "undefined")
-				alert(move_storage_id)
-				alert(status)
 			if (status=="0"){
 		 		$.ajax({
 					type : "POST",
@@ -651,7 +650,6 @@
 			batch_no = row.batch_no;
 			fk_move_storage_id = row.fk_move_storage_id;
 			fk_move_to_storage_id = row.fk_move_to_storage_id;
-
 			$('#dgProductSn').datagrid('loadData', {total: 0, rows: []});
 			$('#dgProductSn').datagrid({
 				url : basePath + "api/movestorageprodetail/paging",
@@ -677,15 +675,21 @@
 			});
 		}
 		function addProductSn(){
-	           var row = $('#dgStorageProductSn').datagrid('getSelected');
-	            if (row){
+				var product_sns = [];
+				var batch_nos = [];
+	        	var rows = $('#dgStorageProductSn').datagrid('getSelections');
+	        	for(var i=0; i<rows.length; i++){
+	        		product_sns.push(rows[i].product_sn);
+	        		batch_nos.push(rows[i].batch_no);
+	        	}
+	            if (rows.length>0){
 		            	$.ajax({
 		            	type : "POST",
 		            	url : basePath + 'api/movestorageprodetail/save',
 		            		data : {
 		            				fk_move_storage_detail_id : fk_move_storage_detail_id,
-		            				batch_no : row.batch_no,
-		            				product_sn : row.product_sn,
+		            				batch_nos : batch_nos.join(','),
+		            				product_sns : product_sns.join(','),
 		            				move_storage_code:move_storage_code,
 		            				fk_move_storage_id:fk_move_storage_id,
 		            				fk_move_to_storage_id:fk_move_to_storage_id

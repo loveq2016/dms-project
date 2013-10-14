@@ -600,7 +600,7 @@
 	        					}else{
 	        						$.messager.alert('提示','抱歉,删除错误!','error');	
 	        					}
-							}	
+							}
 						});
 					});
 				}else{
@@ -735,7 +735,10 @@
 							 $('#dlgProductSum').dialog('close');     
 		                     $('#dgDetail').datagrid('reload');
 		                     $('#dg').datagrid('reload');
-		                     $.messager.alert('提示','添加成功!','error');	
+		                     $.messager.show({
+                                 title: '提示',
+                                 msg: "添加成功!"
+                             });
 				    	}else if(jsonobj.state==2){
 				    		$.messager.alert('提示','不可重复添加一个产品!','error');	
 				    	}else{

@@ -17,6 +17,18 @@
 		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(product_sn)">
 			  and product_sn=#{product_sn}
 		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(batch_nos)">
+			 and batch_no in
+			<foreach collection="batch_nos" index="index" item="item" open="(" separator="," close=")">  
+			   #{item}
+   			</foreach>
+   		</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(product_sns)">
+		  	and product_sn in
+			<foreach collection="product_sns" index="index" item="item" open="(" separator="," close=")">  
+			  #{item}
+   			</foreach> 
+		</if>
 		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_storage_id)">
 			  and fk_storage_id=#{fk_storage_id}
 		</if>

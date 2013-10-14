@@ -20,6 +20,7 @@ import com.yijava.web.vo.Result;
 import dms.yijava.entity.movestorage.MoveStorage;
 import dms.yijava.entity.movestorage.MoveStorageDetail;
 import dms.yijava.entity.movestorage.MoveStorageProDetail;
+import dms.yijava.entity.pullstorage.PullStorageDetail;
 import dms.yijava.service.movestorage.MoveStorageDetailService;
 import dms.yijava.service.movestorage.MoveStorageProDetailService;
 import dms.yijava.service.movestorage.MoveStorageService;
@@ -48,10 +49,21 @@ public class MoveStorageProDetailController {
 	@RequestMapping("save")
 	public Result<String> savedetail(@ModelAttribute("entity") MoveStorageProDetail entity) {
 		//同一个单据，同一个仓库下的，同一个批次，同一个序号   不能重复添加
-		MoveStorageProDetail psd= moveStorageProDetailService.getMoveStorageProDetail(entity);
-		if(null==psd){
+		List<MoveStorageProDetail> psd= moveStorageProDetailService.getMoveStorageProDetail(entity);
+		if(null==psd || psd.size()<=0){
+			String [] product_sns=entity.getProduct_sns();
+			String [] batch_nos=entity.getBatch_nos();
 			List<MoveStorageProDetail> list = new ArrayList<MoveStorageProDetail>();
-			list.add(entity);
+			for (int i=0;i<product_sns.length;i++) {
+				MoveStorageProDetail mp=new MoveStorageProDetail();
+				mp.setBatch_no(batch_nos[i]);
+				mp.setProduct_sn(product_sns[i]);
+				mp.setFk_move_storage_detail_id(entity.getFk_move_storage_detail_id());
+				mp.setFk_move_storage_id(entity.getFk_move_storage_id());
+				mp.setFk_move_to_storage_id(entity.getFk_move_to_storage_id());
+				mp.setMove_storage_code(entity.getMove_storage_code());
+				list.add(mp);
+			}
 			moveStorageProDetailService.saveEntity(list);//保存SN
 			MoveStorageDetail moveStorageDetail=moveStorageDetailService.getStorageProDetailMoveNumber(entity.getFk_move_storage_detail_id());//查询SN总数
 			moveStorageDetailService.updateEntity(moveStorageDetail);//修改产品数量

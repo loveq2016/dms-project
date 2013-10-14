@@ -13,5 +13,8 @@ public class PullStorageProDetail {
 	public String put_storage_code;
 	public String product_sn;
 	public String batch_no;
+
+	public String[] product_sns;
+	public String[] batch_nos;
 	public String last_time;
 }
