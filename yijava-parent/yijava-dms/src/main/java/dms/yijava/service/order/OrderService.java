@@ -71,6 +71,12 @@ public class OrderService {
 		entity.setOrder_status(status);
 		orderDao.updateObject(".updateStatus",entity);
 	}
+	public void updateStatusByOrderCode(String order_code,String status) {
+		Order entity =new Order();
+		entity.setOrder_code(order_code);
+		entity.setOrder_status(status);
+		orderDao.updateObject(".updateStatusByOrderCode",entity);
+	}
 	public void updateMoneyNum(Order entity) {
 		orderDao.updateObject(".updateMoneyNum",entity);
 	}

@@ -61,8 +61,8 @@
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
 				<table id="dg" title="查询结果" style="height:330px"  method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="deliver_id" pagination="true" iconCls="icon-search" 
-					sortOrder="asc" toolbar="#tb">
+					rownumbers="true" singleSelect="true" pagination="true" sortName="create_date" pagination="true" iconCls="icon-search" 
+					sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
 							<th data-options="field:'deliver_code',width:150,align:'center'" sortable="true">出货单号</th>
@@ -384,10 +384,7 @@
 			$('#dlgOneSetp').dialog('close');
 			$('#dlgOrder').dialog('open').dialog('setTitle', '发货申请第一部');
 			$('#dgOrder').datagrid({
-				  url : basePath +"api/order/paging" ,
-					queryParams: {
-						filter_ANDS_order_status : 3 //审核通过的订单
-					}
+				  url : basePath +"api/order/api_paging" 
 			});		
 		}		
 		
@@ -395,7 +392,6 @@
 		    $('#dgOrder').datagrid('load',{
 		    	filter_ANDS_order_code: $('input[name=dg_order_code]').val(),
 		    	filter_ANDS_dealer_name: $('input[name=dg_dealer_name]').val()
-		    	
 		    });
 		}
 		

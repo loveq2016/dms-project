@@ -241,7 +241,7 @@
 	<div id="dlgProductSn" class="easyui-dialog" style="width:403px;height:413px;padding: 5px 5px 5px 5px;"
             modal="true" closed="true">
 				<table id="dgProductSn"  class="easyui-datagrid" title="查询结果" style="height:365px;width:380px;" method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="deliver_express_detail_id"  toolbar="#tb3"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="last_date"  toolbar="#tb3"
 						pagination="true" iconCls="icon-search" sortOrder="asc">
 					<thead>
 						<tr>

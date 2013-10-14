@@ -24,6 +24,7 @@ import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.deliver.DeliverExpressDetailService;
 import dms.yijava.service.deliver.DeliverExpressSnService;
+import dms.yijava.service.order.OrderService;
 import dms.yijava.service.orderDeliver.OrderDeliverService;
 import dms.yijava.service.storage.StorageDetailService;
 
@@ -39,7 +40,8 @@ public class OrderDeliverController {
 	private DeliverExpressDetailService deliverExpressDetailService;
 	@Autowired
 	private DeliverExpressSnService deliverExpressSnService;
-	
+	@Autowired
+	private OrderService orderService;
 	
 	
 
@@ -104,6 +106,9 @@ public class OrderDeliverController {
 					entity.setDeliver_code(deliver_code);
 					entity.setConsignee_user_id("1");
 					orderDeliverService.submitConsignee(entity);
+					if ("4".equals(orderDeliver.getDeliver_status())) {//全部发货
+						orderService.updateStatusByOrderCode(orderDeliver.getOrder_code(), "6");
+					}
 					return new Result<String>(deliver_code, 1);
 				}
 				return new Result<String>(deliver_code, 0);
