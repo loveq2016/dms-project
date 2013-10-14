@@ -7,7 +7,7 @@
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_storage_id)">and fk_storage_id = #{fk_storage_id}</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">and fk_dealer_id = #{dealer_id}</if>
-			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)">and fk_dealer_id in(#{dealer_ids})</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)">and fk_dealer_id in(${dealer_ids})</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(product_item_number)">and product_item_number = #{product_item_number}</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(batch_no)">and batch_no like CONCAT('%','${batch_no}','%' ) </if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">and dealer_name like CONCAT('%','${dealer_name}','%' ) </if>
