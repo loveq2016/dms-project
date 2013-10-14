@@ -475,7 +475,7 @@
 			$('#dlgMoveStorageDetail').dialog('open');
             $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
             move_storage_code = row.move_storage_code;
-            move_storage_id=rows.id;
+            move_storage_id=row.id;
 			status=row.status;
 			$('#dgDetail').datagrid({
 				url : basePath + "api/movestoragedetail/detailpaging",
@@ -593,6 +593,8 @@
 		}
 		function submitMoveStorage(){
 			if(typeof(move_storage_code) != "undefined")
+				alert(move_storage_id)
+				alert(status)
 			if (status=="0"){
 		 		$.ajax({
 					type : "POST",
