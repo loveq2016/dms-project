@@ -115,7 +115,7 @@ public class OrderController {
 		//必须是经销商才可以添加订单
 		if(StringUtils.isNotEmpty(sysUser.getFk_dealer_id())){
 			Order order=orderService.getOrderNum(sysUser.getFk_dealer_id());
-			entity.setOrder_code("JRKL-"+formatter.format(new Date())+"-"+order.getOrder_no());
+			entity.setOrder_code("JRKL-"+sysUser.getDealer_code()+formatter.format(new Date())+"-"+order.getOrder_no());
 			entity.setOrder_no(String.valueOf((Integer.parseInt(order.getOrder_no()))));
 			entity.setDealer_name(sysUser.getDealer_name());
 			entity.setDealer_id(sysUser.getFk_dealer_id());
