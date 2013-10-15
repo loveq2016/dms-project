@@ -502,11 +502,7 @@
 				 }
 		});
 		
-		function formatterdate(val, row) {
-            var date = new Date(val);
-            return date.format("yyyy-MM-dd hh:mm:ss");
-          
-		}
+		
 		
 		 function formatterInfo (value, row, index) { 
 			 return '<span style="color:red" onclick="openview(' + row.flow_id + ');">查看详细流程 </span>'; 
