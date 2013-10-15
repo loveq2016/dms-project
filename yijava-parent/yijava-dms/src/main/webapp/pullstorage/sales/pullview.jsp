@@ -639,23 +639,41 @@
 		function submitPullStorage(){
 			if(typeof(pull_storage_code) != "undefined")
 			if (status="0"){
-		 		$.ajax({
-					type : "POST",
-					url :basePath+'api/pullstorage/submitPullStorage',
-					data:{id:pull_storage_id,pull_storage_code:pull_storage_code,put_storage_code:put_storage_code},
-					error : function(request) {
-						$.messager.alert('提示','抱歉,提交错误!','error');	
-					},
-					success:function(msg){
-						var jsonobj = $.parseJSON(msg);
-			 			if (jsonobj.state == 1) {
-			 	            $('#dg').datagrid('reload');
-			 	            $('#dlgPullStorageDetail').dialog('close')
-			 			}else{
-			 				$.messager.alert('提示','抱歉,提交错误!','error');	
-			 			}
-					}
-				});
+				 //var item = $('#dgProduct').datagrid('getRows');
+				// if(item.length>0){
+			    	$.messager.confirm('提示','提交后将不能修改 ,确定要提交吗  ?',function(r){
+						 if (r){
+							 	$('#submitPullStorage').linkbutton('disable');
+						 		$.ajax({
+									type : "POST",
+									url :basePath+'api/pullstorage/submitPullStorage',
+									data:{id:pull_storage_id,pull_storage_code:pull_storage_code,put_storage_code:put_storage_code},
+									error : function(request) {
+										$.messager.alert('提示','抱歉,提交错误!','error');	
+										$('#submitPullStorage').linkbutton('enable');
+									},
+									success:function(msg){
+										var jsonobj = $.parseJSON(msg);
+							 			if (jsonobj.state == 1) {
+							 	            $('#dg').datagrid('reload');
+							 	            $('#dlgPullStorageDetail').dialog('close')
+							 			}else if (jsonobj.state == 2) {
+							 				$.messager.alert('提示','抱歉,请添加产品序列号!','error');
+							 			}else {
+			                                $.messager.show({
+			                                    title: 'Error',
+			                                    msg: "提交失败!"
+			                                });
+			                            }
+							 			$('#submitPullStorage').linkbutton('enable');
+									}
+								});
+						 }
+					 });
+			   // }else
+				//{
+		    	//	$.messager.alert('提示','请添加产品!','error');
+				//}
 			}
 		}
 		function doSearchProduct(){

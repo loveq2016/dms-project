@@ -810,7 +810,6 @@
 		            	            $('#dgProductSn').datagrid('reload');
 		            	            $('#dgDetail').datagrid('reload');
 		            	            $('#dg').datagrid('reload');
-		            	            $('#dg').datagrid('selectRow',index);
 		            	            $.messager.show({
 	                                    title: '提示',
 	                                    msg: "序列号添加成功!"
@@ -859,28 +858,38 @@
 		  }	
 	  }
 		/**
-		提交订单
+		提交订单 
 		*/
 		function ToCheckEntity(){
 			if(typeof(pull_storage_code) != "undefined")
 				if(status=='0'|| status=='2'){
-				 $.messager.confirm('提示','提交后将不能修改 ,确定要提交审核吗  ?',function(r){
-					 if (r){
-	                        $.post(basePath+'api/pullstorage/updatetocheck',{id:pull_storage_id,
-	                        	pull_storage_code:pull_storage_code,
-	                        	put_storage_code:put_storage_code},function(result){
-	        			    	if(result.state==1){
-	        			    		$('#dg').datagrid('reload');
-	    			 	            $('#dlgPullStorageDetail').dialog('close');
-	                            } else {
-	                                $.messager.show({
-	                                    title: 'Error',
-	                                    msg: "提交失败!"
-	                                });
-	                            }
-	                        },'json');
-	                    }
-				 });
+		           // var item = $('#dgProduct').datagrid('getRows');
+				    //if(item.length>0){
+						 $.messager.confirm('提示','提交后将不能修改 ,确定要提交审核吗  ?',function(r){
+							 if (r){
+								 	$('#submitPullStorage').linkbutton('disable');
+			                        $.post(basePath+'api/pullstorage/updatetocheck',{id:pull_storage_id,
+			                        	pull_storage_code:pull_storage_code,
+			                        	put_storage_code:put_storage_code},function(result){
+			        			    	if(result.state==1){
+			        			    		$('#dg').datagrid('reload');
+			    			 	            $('#dlgPullStorageDetail').dialog('close');
+			                            }else if(result.state == 2) {
+							 				$.messager.alert('提示','抱歉,请添加产品序列号!','error');
+							 			}else {
+			                                $.messager.show({
+			                                    title: 'Error',
+			                                    msg: "提交失败!"
+			                                });
+			                            }
+			        			    	$('#submitPullStorage').linkbutton('enable');
+			                        },'json');
+			                    }
+						 });
+				    //}else
+					//{
+			    		//$.messager.alert('提示','请添加产品!','error');
+					//}
 			}else
 			{
 	    		$.messager.alert('提示','无法提交已处理订单!','error');

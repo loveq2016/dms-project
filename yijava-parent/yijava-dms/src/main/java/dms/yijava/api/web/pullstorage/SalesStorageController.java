@@ -127,6 +127,8 @@ public class SalesStorageController {
 					result.setError(new ErrorCode("出现系统错误，处理流程节点"));
 				}
 			}else{
+				if(pullStorageOpt.getList().size() <= 0)
+					result.setState(2);
 				result.setError(new ErrorCode("出现库存错误，库存不足!"));
 			}
 		} catch (Exception e) {

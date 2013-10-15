@@ -595,25 +595,41 @@
 		function submitMoveStorage(){
 			if(typeof(move_storage_code) != "undefined")
 			if (status=="0"){
-		 		$.ajax({
-					type : "POST",
-					url :basePath+'api/movestorage/submitMoveStorage',
-					data:{id:move_storage_id,move_storage_code:move_storage_code},
-					error : function(request) {
-						$.messager.alert('提示','抱歉,提交错误!','error');	
-					},
-					success:function(msg){
-						var jsonobj = $.parseJSON(msg);
-			 			if (jsonobj.state == 1) {
-			 	            $('#dg').datagrid('reload');
-			 	            $('#dlgMoveStorageDetail').dialog('close')
-			 			}else if (jsonobj.state == 2) {
-			 				$.messager.alert('提示','抱歉,库存不足!','error');	
-			 			}else{
-			 				$.messager.alert('提示','抱歉,提交错误!','error');	
-		 				}
-					}
-				});
+				///var item = $('#dgProduct').datagrid('getRows');
+				//if(item.length>0){
+			    	$.messager.confirm('提示','提交后将不能修改 ,确定要提交吗  ?',function(r){
+			    		if (r){
+			    			$('#submitMoveStorage').linkbutton('disable');
+					 		$.ajax({
+								type : "POST",
+								url :basePath+'api/movestorage/submitMoveStorage',
+								data:{id:move_storage_id,move_storage_code:move_storage_code},
+								error : function(request) {
+									$.messager.alert('提示','抱歉,提交错误!','error');
+									$('#submitMoveStorage').linkbutton('enable');
+								},
+								success:function(msg){
+									var jsonobj = $.parseJSON(msg);
+						 			if (jsonobj.state == 1) {
+						 	            $('#dg').datagrid('reload');
+						 	            $('#dlgMoveStorageDetail').dialog('close')
+						 			}else if (jsonobj.state == 2) {
+						 				$.messager.alert('提示','抱歉,请添加产品序列号!','error');	
+						 			}else{
+						 				$.messager.show({
+		                                    title: 'Error',
+		                                    msg: "提交失败!"
+		                                });
+					 				}
+						 			$('#submitMoveStorage').linkbutton('enable');
+								}
+							});
+			    		}
+			    	});
+			    //}else
+				//{
+		    		//$.messager.alert('提示','请添加产品!','error');
+				//}
 			}else{
 				$.messager.alert('提示','抱歉,无法提交已处理数据!','error');	
 			}
