@@ -147,6 +147,9 @@ public class PullStorageService{
 		List<StorageDetail> storageDetailList = new ArrayList<StorageDetail>();//库存明细表
 		List<StorageProDetail> storageProDetailList =  new ArrayList<StorageProDetail>();//sn表
 		if (pullStorage != null) {
+			//状态是否被修改
+			if(pullStorage.getStatus().equals("0"))
+				return null;
 			List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
 			filters.add(PropertyFilters.build("ANDS_pull_storage_code",pullStorage.getPull_storage_code()));
 			filters.add(PropertyFilters.build("ANDS_put_storage_code",pullStorage.getPut_storage_code()));
@@ -184,7 +187,7 @@ public class PullStorageService{
 		PullStorage pullStorage = this.getEntity(id);//库存单据
 		List<StorageDetail> storageDetailList = new ArrayList<StorageDetail>();//库存明细表
 		List<StorageProDetail> storageProDetailList =  new ArrayList<StorageProDetail>();//sn表
-		if (pullStorage != null) {
+		if (pullStorage != null && pullStorage.getStatus().equals("3")) {
 			List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
 			filters.add(PropertyFilters.build("ANDS_pull_storage_code",pullStorage.getPull_storage_code()));
 			filters.add(PropertyFilters.build("ANDS_put_storage_code",pullStorage.getPut_storage_code()));

@@ -639,7 +639,7 @@
 		{
 			var row = $('#dgDetail').datagrid('getSelected');
 			if (row){
-				if(status=='0'){
+				if(status=='0'|| status=='2'){
 					$.messager.confirm('Confirm','是否确定删除?',function(r){
 					    $.ajax({
 							type : "POST",
@@ -874,7 +874,11 @@
 			     			 	    $('#dlgPullStorageDetail').dialog('close')
 			        			}else if (result.state == 2) {
 			        				$.messager.alert('提示','抱歉,请添加产品序列号!','error');
-						 		}else {
+						 		}else if(result.state == 3) {
+					 				$.messager.alert('提示','抱歉,请添加产品!','error');
+					 			}else if(result.state == 4) {
+					 				$.messager.alert('提示','抱歉,库存不足!','error');
+					 			}else{
 		                            $.messager.show({
 		                                title: 'Error',
 		                                msg: "提交失败!"

@@ -106,6 +106,9 @@ public class MoveStorageService{
 		List<StorageDetail> storageDetailList = new ArrayList<StorageDetail>();//库存明细表
 		List<StorageProDetail> storageProDetailList =  new ArrayList<StorageProDetail>();//sn表
 		if (moveStorage != null) {
+			//状态是否被修改
+			if(moveStorage.getStatus().equals("0"))
+				return null;
 			List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
 			filters.add(PropertyFilters.build("ANDS_move_storage_code",moveStorage.getMove_storage_code()));
 			List<MoveStorageDetail> listMoveStorageDetail = moveStorageDetailService.getList(filters);
@@ -142,7 +145,7 @@ public class MoveStorageService{
 		MoveStorage moveStorage = this.getEntity(id);//库存单据
 		List<StorageDetail> storageDetailList = new ArrayList<StorageDetail>();//库存明细表
 		List<StorageProDetail> storageProDetailList =  new ArrayList<StorageProDetail>();//sn表
-		if (moveStorage != null) {
+		if (moveStorage != null && moveStorage.getStatus().equals("0")) {
 			List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
 			filters.add(PropertyFilters.build("ANDS_move_storage_code",moveStorage.getMove_storage_code()));
 			List<MoveStorageDetail> listMoveStorageDetail = moveStorageDetailService.getList(filters);

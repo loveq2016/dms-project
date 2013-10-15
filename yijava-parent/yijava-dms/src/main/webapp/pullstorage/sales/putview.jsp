@@ -247,6 +247,7 @@
 			if(typeof(pull_storage_code) != "undefined")
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
+				$('#submitPutStorage').linkbutton('disable');
 				$.ajax({
 					type : "POST",
 					url :basePath+'api/putstorage/submit',
@@ -262,6 +263,9 @@
 			 			}else{
 			 				$.messager.alert('提示','抱歉,提交错误!','error');	
 			 			}
+					},
+					complete:function(request){
+						$('#submitPutStorage').linkbutton('enable');
 					}
 				});
 			}

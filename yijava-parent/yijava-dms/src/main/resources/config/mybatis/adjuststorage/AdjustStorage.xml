@@ -9,8 +9,12 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">and status=#{status}</if>
 			<!-- 单据 -->
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(adjust_storage_code)">and adjust_storage_code=#{adjust_storage_code}</if>
-			
-			<if test="dealer_ids != null and dealer_ids != '' ">AND dealer_id in (${dealer_ids})</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
+				  and dealer_id=#{dealer_id}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)">
+				  and dealer_id in (${dealer_ids})
+			</if>
 			<if test="statuses != null and statuses != '' ">AND status  in (${statuses})</if>
 			<if test="check_id != null and check_id != '' ">AND id in (select bussiness_id from tb_flow_record  where check_id= #{check_id} and flow_id=#{flow_id})</if>
 			

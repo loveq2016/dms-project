@@ -263,21 +263,25 @@
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
 				if(row.status=='3'){
+					 $('#submitPutStorage').linkbutton('disable');
 					 $.ajax({
 							type : "POST",
 							url :basePath+'api/putstorage/submit',
 							data:{pull_storage_code:pull_storage_code,put_storage_code:put_storage_code,id:row.id},
 							error : function(request) {
-								$.messager.alert('提示','抱歉,提交错误!','error');	
+								$.messager.alert('提示','抱歉,提交错误!','error');
 							},
 							success:function(msg){
 							    var jsonobj = $.parseJSON(msg);
 			 					if (jsonobj.state == 1) {
 			 	                   $('#dg').datagrid('reload');
-			 	                   $('#dlgPullStorageDetail').dialog('close')
+			 	                   $('#dlgPullStorageDetail').dialog('close');
 			 					}else{
-			 						$.messager.alert('提示','抱歉,提交错误!','error');	
+			 						$.messager.alert('提示','抱歉,提交错误!','error');
 			 					}
+							},
+							complete:function(request){
+								$('#submitPutStorage').linkbutton('enable');
 							}
 					});
 				}else{

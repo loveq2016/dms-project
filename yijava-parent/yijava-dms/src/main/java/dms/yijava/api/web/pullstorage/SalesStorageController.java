@@ -108,28 +108,37 @@ public class SalesStorageController {
 	public Result<Integer> updatetocheck(PullStorage entity,HttpServletRequest request) {
 		Result<Integer> result=new Result<Integer>(0, 0);
 		try {
-			
-			List<Object> list = salesStorageService.processSalesStorage(entity.getId());//获取SN
-			PullStorageOpt pullStorageOpt = storageDetailService.updateStorageLockSn((List<StorageDetail>)list.get(0),(List<StorageProDetail>)list.get(1));//锁定库存
-			if(pullStorageOpt!=null && "success".equals(pullStorageOpt.getStatus()) 
-					&& pullStorageOpt.getList().size() > 0){
-				//以下开始走流程处理
-				SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
-				if(flowBussService.processFlow(Integer.parseInt(entity.getId()),sysUser,flowIdentifierNumber))
-				{
-					//更新状态
-					salesStorageService.updateStatus(entity.getId(),"1");
-					result.setData(1);
-					result.setState(1);;
-				}else
-				{
-					storageDetailService.rollBackStorageUnLockSn((List<StorageDetail>)list.get(0),(List<StorageProDetail>)list.get(1));//流程失败，回滚库存与sn
-					result.setError(new ErrorCode("出现系统错误，处理流程节点"));
+			//出库
+			List<Object> list = salesStorageService.processSalesStorage(entity.getId());//获取产品明细，SN明显
+			if(((List<StorageDetail>)list.get(0)).size()>0 &&
+					((List<StorageProDetail>)list.get(1)).size()>0){
+				PullStorageOpt pullStorageOpt = storageDetailService.updateStorageLockSn((List<StorageDetail>)list.get(0),(List<StorageProDetail>)list.get(1));//锁定库存
+				if(pullStorageOpt!=null && "success".equals(pullStorageOpt.getStatus()) 
+						&& pullStorageOpt.getList().size() > 0){
+					//以下开始走流程处理
+					SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
+					if(flowBussService.processFlow(Integer.parseInt(entity.getId()),sysUser,flowIdentifierNumber))
+					{
+						//更新状态
+						salesStorageService.updateStatus(entity.getId(),"1");
+						result.setData(1);
+						result.setState(1);;
+					}else
+					{
+						storageDetailService.rollBackStorageUnLockSn((List<StorageDetail>)list.get(0),(List<StorageProDetail>)list.get(1));//流程失败，回滚库存与sn
+						result.setError(new ErrorCode("出现系统错误，处理流程节点"));
+					}
+				}else{
+					result.setState(4);
+					result.setError(new ErrorCode("出现库存错误，库存不足!"));
 				}
 			}else{
-				if(pullStorageOpt.getList().size() <= 0)
+				if(((List<StorageProDetail>)list.get(1)).size()<=0){
 					result.setState(2);
-				result.setError(new ErrorCode("出现库存错误，库存不足!"));
+				}
+				if(((List<StorageDetail>)list.get(0)).size()<=0){
+					result.setState(3);
+				} 
 			}
 		} catch (Exception e) {
 			logger.error("error" + e);

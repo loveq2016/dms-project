@@ -129,6 +129,9 @@ public class SalesStorageService{
 		List<StorageDetail> storageDetailList = new ArrayList<StorageDetail>();//库存明细表
 		List<StorageProDetail> storageProDetailList =  new ArrayList<StorageProDetail>();//sn表
 		if (pullStorage != null) {
+			//状态被修改
+			if(pullStorage.getStatus().equals("0"))
+				return null;
 			List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
 			filters.add(PropertyFilters.build("ANDS_pull_storage_code",pullStorage.getPull_storage_code()));
 			List<PullStorageDetail> listPullStorageDetail = pullStorageDetailService.getList(filters);

@@ -149,20 +149,25 @@ public class OrderController {
 	 */
 	@ResponseBody
 	@RequestMapping("updatetocheck")
-	public Result<Integer> updatetocheck(Integer order_id,HttpServletRequest request) {
+	public Result<Integer> updatetocheck(@ModelAttribute("entity") Order entity,HttpServletRequest request) {
 		Result<Integer> result=new Result<Integer>(0, 0);
 		try {
-			///以下开始走流程处理
-			SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
-			if(flowBussService.processFlow(order_id,sysUser,flowIdentifierNumber))
-			{
-				//更新状态
-				orderService.updateStatus(order_id.toString(),"1");
-				result.setData(1);
-				result.setState(1);;
-			}else
-			{
-				result.setError(new ErrorCode("出现系统错误，处理流程节点"));
+			List<OrderDetail> list=orderDetailService.getOrderDetailList(entity.getOrder_code());
+			if(null!=list && list.size()>0){
+				///以下开始走流程处理
+				SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+				if(flowBussService.processFlow(Integer.parseInt(entity.getId()),sysUser,flowIdentifierNumber))
+				{
+					//更新状态
+					orderService.updateStatus(entity.getId(),"1");
+					result.setData(1);
+					result.setState(1);;
+				}else
+				{
+					return new Result<Integer>(1, 3);
+				}
+			}else{
+				return new Result<Integer>(1, 2);
 			}
 		} catch (Exception e) {
 			logger.error("error" + e);
@@ -181,6 +186,11 @@ public class OrderController {
 			String fileName="order"+File.separator+"order-"+order_id+".doc";
 			File outFile = new File(filePath+fileName);		
 			Order order = orderService.getEntity(Integer.toString(order_id));
+			if(Integer.parseInt(order.getOrder_status())<3)
+			{
+				result.setError(new ErrorCode("单据不正确，无法生成文档"));
+				return result;
+			}
 			TheFreemarker freemarker = new TheFreemarker();		
 			Map<String,Object> dataMap = new HashMap<String, Object>();			
 			dataMap.put("order_number", order.getOrder_code());
@@ -213,7 +223,6 @@ public class OrderController {
 			logger.error("生成单据文件错误"+e.toString());
 			result.setError(new ErrorCode(e.toString()));
 		}
-		
 		return result;
 	}
 	/**

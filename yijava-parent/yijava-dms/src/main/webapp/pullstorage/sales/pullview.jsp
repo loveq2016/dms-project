@@ -649,8 +649,7 @@
 									url :basePath+'api/pullstorage/submitPullStorage',
 									data:{id:pull_storage_id,pull_storage_code:pull_storage_code,put_storage_code:put_storage_code},
 									error : function(request) {
-										$.messager.alert('提示','抱歉,提交错误!','error');	
-										$('#submitPullStorage').linkbutton('enable');
+										$.messager.alert('提示','抱歉,提交错误!','error');
 									},
 									success:function(msg){
 										var jsonobj = $.parseJSON(msg);
@@ -659,13 +658,19 @@
 							 	            $('#dlgPullStorageDetail').dialog('close')
 							 			}else if (jsonobj.state == 2) {
 							 				$.messager.alert('提示','抱歉,请添加产品序列号!','error');
-							 			}else {
+							 			}else if(jsonobj.state == 3) {
+							 				$.messager.alert('提示','抱歉,请添加产品!','error');
+							 			}else if(jsonobj.state == 4) {
+							 				$.messager.alert('提示','抱歉,库存不足!','error');
+							 			}else{
 			                                $.messager.show({
 			                                    title: 'Error',
 			                                    msg: "提交失败!"
 			                                });
 			                            }
-							 			$('#submitPullStorage').linkbutton('enable');
+									},
+									complete:function(request){
+										$('#submitPullStorage').linkbutton('enable');
 									}
 								});
 						 }

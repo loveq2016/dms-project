@@ -8,6 +8,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,6 +23,7 @@ import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.ErrorCode;
 import com.yijava.web.vo.Result;
 
+import dms.yijava.api.web.pullstorage.SalesStorageController;
 import dms.yijava.entity.movestorage.MoveStorage;
 import dms.yijava.entity.movestorage.MoveStorageDetail;
 import dms.yijava.entity.movestorage.MoveStorageProDetail;
@@ -39,6 +42,7 @@ import dms.yijava.service.storage.StorageDetailService.PullStorageOpt;
 @Controller
 @RequestMapping("/api/movestorage")
 public class MoveStorageController {
+	private static final Logger logger = LoggerFactory.getLogger(MoveStorageController.class);
 	@Autowired
 	private MoveStorageService moveStorageService;
 	@Autowired
@@ -101,28 +105,41 @@ public class MoveStorageController {
 	@RequestMapping("submitMoveStorage")
 	public Result<Integer> submitPullStorage(@ModelAttribute("entity") MoveStorage entity,HttpServletRequest request) {
 		Result<Integer> result=new Result<Integer>(0, 0);
-		//移除
-		List<Object> list = moveStorageService.processMoveStorage(entity.getId());//获取SN
-		PullStorageOpt pullStorageOpt = storageDetailService.updateStorageLockSn((List<StorageDetail>)list.get(0),(List<StorageProDetail>)list.get(1));//锁定库存
-		if(pullStorageOpt!=null && "success".equals(pullStorageOpt.getStatus()) 
-				&& pullStorageOpt.getList().size() > 0){
-				//移入
-				boolean s =moveStorageService.processMoveToStorage(entity.getId());
-				if(s){
-					/**
-					 * 处理订单状态
-					 */
-					SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
-					entity.setStatus("1");
-					entity.setMove_storage_date(time.format(new Date()));
-					moveStorageService.updateEntity(entity);
-					result.setData(1);
-					result.setState(1);
+		try{
+			//移除
+			List<Object> list = moveStorageService.processMoveStorage(entity.getId());//获取产品明细，SN明显
+			if(((List<StorageDetail>)list.get(0)).size()>0 &&
+					((List<StorageProDetail>)list.get(1)).size()>0){
+				PullStorageOpt pullStorageOpt = storageDetailService.updateStorageLockSn((List<StorageDetail>)list.get(0),(List<StorageProDetail>)list.get(1));//锁定库存
+				if(pullStorageOpt!=null && "success".equals(pullStorageOpt.getStatus()) 
+						&& pullStorageOpt.getList().size() > 0){
+						//移入
+						boolean s =moveStorageService.processMoveToStorage(entity.getId());
+						if(s){
+							/**
+							 * 处理订单状态
+							 */
+							SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+							entity.setStatus("1");
+							entity.setMove_storage_date(time.format(new Date()));
+							moveStorageService.updateEntity(entity);
+							result.setData(1);
+							result.setState(1);
+						}
+				}else{
+					result.setState(4);
+					result.setError(new ErrorCode("出现库存错误，库存不足!"));
 				}
-		}else{
-			if(pullStorageOpt.getList().size() <= 0)
-				result.setState(2);
-			result.setError(new ErrorCode("出现库存错误，库存不足!"));
+			}else{
+				if(((List<StorageProDetail>)list.get(1)).size()<=0){
+					result.setState(2);
+				}
+				if(((List<StorageDetail>)list.get(0)).size()<=0){
+					result.setState(3);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("error" + e);
 		}
 		return result;
 	}

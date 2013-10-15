@@ -672,7 +672,7 @@
 		{
 			var row = $('#dgDetail').datagrid('getSelected');
 			if (row){
-				if(order_status=='0'){
+				if(order_status=='0' || order_status=='2'){
 					$.messager.confirm('Confirm','是否确定删除?',function(r){
 					    $.ajax({
 							type : "POST",
@@ -778,14 +778,16 @@
 		function ToCheckEntity(){
 			if (order_status ==0 || order_status ==2){
 				//var options  = $('#dgProduct').datagrid('getPager').data("pagination").options;  
-			    //if(options.total>0){
+			    //if(true){
 					 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
 						 if (r){
 							   $('#saveEntityBtn').linkbutton('disable');
-		                        $.post(basePath+'api/order/updatetocheck',{order_id:order_id},function(result){
+		                        $.post(basePath+'api/order/updatetocheck',{id:order_id,order_code:order_code},function(result){
 		        			    	if(result.state==1){
 		        			    		$('#dg').datagrid('reload');
 		        			    		$('#dlgOrderDetail').dialog('close');
+		                            } else if(result.state==2){
+		                            	$.messager.alert('提示','请添加订单产品!','error');
 		                            } else {
 		                                $.messager.show({
 		                                    title: 'Error',
@@ -796,14 +798,12 @@
 		                        },'json');
 		                    }
 					 });
-			    }else
-				{
-		    		$.messager.alert('提示','请添加订单明细!','error');
-				}
-			//}else
-			//{
-	    		//$.messager.alert('提示','无法提交已处理订单!','error');
-			//}
+			  //  }else{
+		    	//	$.messager.alert('提示','请添加订单产品!','error');
+				//}
+			}else{
+	    		$.messager.alert('提示','无法提交已处理订单!','error');
+			}
 		}
 		/**
 		审核
