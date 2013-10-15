@@ -206,13 +206,14 @@
     
     
     
-     <div id="dlgDiscount" class="easyui-dialog" style="width:460px;height:460px;padding:5px 5px 5px 5px;"
+     <div id="dlgDiscount" class="easyui-dialog" style="width:660px;height:460px;padding:5px 5px 5px 5px;"
             modal="true" closed="true">
 				<table id="dgDiscount" class="easyui-datagrid" title="" style="height: 400px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbDiscount">
 					<thead>
 						<tr>
 							<th field="cname" width="250" align="center" sortable="true">产品名称</th>
+							<th field="models" width="250" align="center" sortable="true">规格型号</th>
 							<th field="discount" width="100" align="center" sortable="true">折扣</th>
 						</tr>
 					</thead>
@@ -238,7 +239,7 @@
 				             	</tr>  
 					             <tr>
 				             		<td>折扣:</td>
-				             		<td><input name="discount" class="easyui-numberbox" style="width:150px" min="1" max="10" precision="1" required="true"></td>
+				             		<td><input name="discount" class="easyui-numberbox" style="width:150px" min="1" max="99999999" precision="2" required="true"></td>
 				             	</tr>  			             					             	
 				        </table>        	
 	        </form>
@@ -314,6 +315,8 @@
 			    	if(jsonobj.state==1){
 						$('#dlgDiscountForm').dialog('close');     
 	                    $('#dgDiscount').datagrid('reload');
+			    	}else if(jsonobj.state==2){
+			    		$.messager.alert('提示','产品重复!','warning');				
 			    	}else{
 			    		$.messager.alert('提示','Error!','error');	
 			    	}

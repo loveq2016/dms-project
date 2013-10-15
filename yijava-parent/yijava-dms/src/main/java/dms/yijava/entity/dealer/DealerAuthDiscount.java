@@ -11,6 +11,7 @@ public class DealerAuthDiscount {
 	private String dealer_id;// 经销商id
 	private String item_number;
 	private String cname;
+	private String models;
 	private String discount;
 
 }

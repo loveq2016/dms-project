@@ -70,7 +70,7 @@
 	
 	
 	<select id="selectByMap" resultType="dms.yijava.entity.product.Product">
-		select item_number,cname,ename from tb_product where category_id = #{category_id}
+		select item_number,cname,ename,models from tb_product where category_id = #{category_id}
 	</select>
 	
 	<select id="select"  parameterType="int" resultType="dms.yijava.entity.product.Product">
@@ -78,12 +78,12 @@
     </select>
 	
 	<insert id="insert" parameterType="dms.yijava.entity.product.Product" useGeneratedKeys="true" keyProperty="item_number">     
-    	  insert into tb_product (cname,ename,remark,price,order_company,is_order,category_id,column1,column2,column3) 
-    	  values(#{cname},#{ename},#{remark},#{price},#{order_company},#{is_order},#{category_id},#{column1},#{column2},#{column3})
+    	  insert into tb_product (cname,ename,models,remark,price,order_company,is_order,category_id,column1,column2,column3) 
+    	  values(#{cname},#{ename},#{models},#{remark},#{price},#{order_company},#{is_order},#{category_id},#{column1},#{column2},#{column3})
     </insert>
     
     <update id="update" parameterType="dms.yijava.entity.product.Product">
-    	update tb_product set cname=#{cname},ename=#{ename},remark=#{remark},price=#{price},order_company=#{order_company},is_order=#{is_order},category_id=#{category_id},
+    	update tb_product set cname=#{cname},ename=#{ename},models=#{models},remark=#{remark},price=#{price},order_company=#{order_company},is_order=#{is_order},category_id=#{category_id},
     	column1=#{column1},column2=#{column2},column3=#{column3} 
     	where item_number = #{item_number}
     </update>
