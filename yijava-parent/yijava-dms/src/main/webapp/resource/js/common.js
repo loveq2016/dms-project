@@ -105,7 +105,11 @@ function openwind(obj)
 function formatterdate(val, row) {
 	try{
 		if(val!=null && val!=''){
-			var date = new Date(val);
+			
+			var a=val.split(" ");
+            var d=a[0].split("-");
+            var t=a[1].split(":");
+            var date = new Date(d[0],(d[1]-1),d[2],t[0],t[1],t[2]);
 	    	return date.format("yyyy-MM-dd hh:mm:ss");
 		}
 	}catch(e){
