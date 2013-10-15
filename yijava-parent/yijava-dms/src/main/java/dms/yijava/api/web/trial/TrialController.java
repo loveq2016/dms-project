@@ -1,14 +1,18 @@
 package dms.yijava.api.web.trial;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import sun.misc.BASE64Encoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -306,7 +310,8 @@ public class TrialController {
 			dataMap.put("principalsign", "车海波");
 			dataMap.put("trialSumNum", trialSumNum);
 			
-			dataMap.put("table", list);
+			//dataMap.put("image", getImageStr("d:/10073_qz.jpg"));
+			//dataMap.put("image2", getImageStr("d:/10049_qz.jpg"));
 			
 			
 			
@@ -320,6 +325,22 @@ public class TrialController {
 	    
 		return result;
 	}
+	
+	private String getImageStr(String imagename) {
+        String imgFile = imagename;//"d:/10049_qz.jpg";
+        InputStream in = null;
+        byte[] data = null;
+        try {
+            in = new FileInputStream(imgFile);
+            data = new byte[in.available()];
+            in.read(data);
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BASE64Encoder encoder = new BASE64Encoder();
+        return encoder.encode(data);
+    }
 	
 	public String listString(List<UserDealer> list) {
 		String listString = "";
