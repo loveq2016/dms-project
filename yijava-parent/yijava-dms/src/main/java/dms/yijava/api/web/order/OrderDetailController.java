@@ -57,16 +57,16 @@ public class OrderDetailController {
 		double discount=(double) (Double.parseDouble(entity.getDiscount()));
 		double m=Integer.parseInt(entity.getOrder_number_sum())*discount;
 		entity.setOrder_money_sum(df.format(m));
-		OrderDetail d=orderDetailService.getOrderDetail(entity);
-		if(d==null){
+		//OrderDetail d=orderDetailService.getOrderDetail(entity);
+		//if(d==null){
 			orderDetailService.saveEntity(entity);
 			//修改订单总数，共计
 			Order moneyAndNumberObj=orderService.getOrderDetailMoneyAndNumber(entity.getOrder_code());
 			orderService.updateMoneyNum(moneyAndNumberObj);
 			return new Result<Integer>(1, 1);
-		}else{
-			return new Result<Integer>(1, 2);
-		}
+		//}else{
+			//return new Result<Integer>(1, 2);
+		//}
 	}
 	
 	@ResponseBody

@@ -14,6 +14,7 @@ public class Order {
 	public String order_money_sum;
 	public String order_date;
 	public String order_status;
+	public String type;
 	public String dealer_address_id;
 	public String express_code;
 	public String last_time;

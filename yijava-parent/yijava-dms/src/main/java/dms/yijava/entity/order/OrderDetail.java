@@ -19,4 +19,5 @@ public class OrderDetail {
 	public String last_time;
 	public String discount;
 	public String delivery_sum;
+	public String type;
 }

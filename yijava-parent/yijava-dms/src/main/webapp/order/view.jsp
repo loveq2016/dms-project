@@ -97,10 +97,11 @@
 							<th data-options="field:'id',width:240,align:'left'" hidden="true">id</th>
 							<th data-options="field:'order_code',width:200,align:'left'" sortable="true">订单号</th>
 							<th data-options="field:'dealer_name',width:240,align:'left'" sortable="true">经销商</th>
-							<th data-options="field:'order_number_sum',width:80,align:'left'" sortable="true">总数量</th>
-							<th data-options="field:'order_money_sum',width:80,align:'left'" sortable="true">总金额</th>
-							<th data-options="field:'order_status',width:80,align:'left'" formatter="formatterStatus" sortable="true">状态</th>
-							<th data-options="field:'order_date',width:150,align:'left'" formatter="formatterdate" sortable="true">订单时间</th>
+							<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">总数量</th>
+							<th data-options="field:'order_money_sum',width:80,align:'center'" sortable="true">总金额</th>
+							<th data-options="field:'type',width:80,align:'center'" formatter="formatterType" sortable="true">订单类型</th>
+							<th data-options="field:'order_status',width:80,align:'center'" formatter="formatterStatus" sortable="true">状态</th>
+							<th data-options="field:'order_date',width:150,align:'center'" formatter="formatterdate" sortable="true">订单时间</th>
 							<th data-options="field:'custom',width:100,align:'center'" sortable="false" formatter="formatterDetail">明细</th>
 							<th data-options="field:'dealer_address_id',width:60" hidden="true"></th>
 							<th data-options="field:'receive_linkman',width:60" hidden="true"></th>
@@ -131,9 +132,19 @@
         		</restrict:function>
 			</div>
 			<div style="margin: 10px 0;"></div>
-			<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:300px;height:200px;padding:10px;">
+			<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:300px;height:220px;padding:10px;">
 			<form id="ffadd" action="" method="post" enctype="multipart/form-data">
 				<table>
+					<tr>
+						<td>选择类型:</td>
+						<td>
+							<select class="easyui-combobox" name="type" style="width:100px;" required="true">
+								<option value="0">正常</option>
+								<option value="1">试用</option>
+								<option value="2">退换货</option>
+							</select>
+						</td>
+					</tr>
 					<tr>
 						<td>收货地址:</td>
 						<td>
@@ -304,13 +315,14 @@
 						 rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbOrderDetail">
 						<thead>
 							<tr>
-								<th data-options="field:'product_item_number',width:100,align:'center'" sortable="true">产品编码</th>
-								<th data-options="field:'product_name',width:200,align:'center'" sortable="true">产品名称</th>
-								<th data-options="field:'models',width:60,align:'center'" sortable="true">规格型号</th>
+								<th data-options="field:'product_item_number',width:80,align:'center'" sortable="true">产品编码</th>
+								<th data-options="field:'product_name',width:180,align:'left'" sortable="true">产品名称</th>
+								<th data-options="field:'models',width:90,align:'center'" sortable="true">规格型号</th>
 								<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">数量</th>
-								<th data-options="field:'order_price',width:80,align:'center'" sortable="true">订购价格</th>
+								<th data-options="field:'order_price',width:60,align:'center'" sortable="true">订购价格</th>
 								<th data-options="field:'order_money_sum',width:80,align:'center'" sortable="true">小计</th>
-								<th data-options="field:'discount',width:80,align:'center'" sortable="true">成交价格</th>
+								<th data-options="field:'discount',width:60,align:'center'" sortable="true">成交价格</th>
+								<th data-options="field:'type',width:60,align:'center'" sortable="true" formatter="formatterDetailType">类型</th>
 								<th data-options="field:'delivery_sum',width:80,align:'center'" sortable="true">发货数量</th>
 								<th data-options="field:'plan_send_date',width:100,align:'center'" formatter="formatterdate" sortable="true">预计发货日期</th>
 							</tr>
@@ -392,9 +404,9 @@
 	        </restrict:function>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgOrderDetail').dialog('close')">取消</a>
 	    </div>
-		<div id="dlgProduct" class="easyui-dialog" style="width:800px;height:495px;padding:5px 5px 5px 5px;"
+		<div id="dlgProduct" class="easyui-dialog" style="width:850px;height:495px;padding:5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlgProduct-buttons">
-				<div class="easyui-panel" title="查询条件" style="width:775px;">
+				<div class="easyui-panel" title="查询条件" style="width:825px;">
 						<div style="padding: 10px 0 0 30px">
 							<form id="ffdetail" method="post">
 								<table>
@@ -427,8 +439,8 @@
 							<tr>
 								<th data-options="field:'item_number',width:100,align:'center'" sortable="true">产品编号</th>
 								<th data-options="field:'cname',width:150,align:'center'" sortable="true">中文名称</th>
-								<th data-options="field:'ename',width:150,align:'center'" sortable="true">英文说明</th>
-								<th data-options="field:'models',width:60,align:'center'" sortable="true">规格型号</th>
+								<th data-options="field:'ename',width:120,align:'center'" sortable="true">英文名称</th>
+								<th data-options="field:'models',width:100,align:'center'" sortable="true">规格型号</th>
 								<th data-options="field:'price',width:80,align:'center'" sortable="true">价格</th>
 								<th data-options="field:'discount',width:80,align:'center'" sortable="true">成交价格</th>
 								<th data-options="field:'order_company',width:80,align:'center'">订购单位</th>
@@ -445,47 +457,87 @@
 	        </restrict:function>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
 	    </div>
-		<div id="dlgProductSum" class="easyui-dialog" style="width:300px;height:390px;padding:5px 5px 5px 5px;"
+		<div id="dlgProductSum" class="easyui-dialog" style="width:330px;height:430px;padding:5px 5px 5px 5px;"
 	            modal="true" closed="true" buttons="#dlgProductSum-buttons">
 		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
 					      <table> 
 					    		<tr>
 					             	<td>订单号:</td>
-					             	<td><input name="order_code" readonly="true" class="easyui-validatebox" style="width:150px;"></td>
+					             	<td><input name="order_code" readonly="true" class="easyui-validatebox" style="width:200px;"></td>
 					            </tr>
 					            <tr>
 					             	<td>产品编码:</td>
-					             	<td><input name="product_item_number" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					             	<td><input name="product_item_number" readonly="true" class="easyui-validatebox" style="width:200px"></td>
 					            </tr>
 					            <tr>
 					             	<td>产品名称</td>
-					             	<td><input name="product_name" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					             	<td><input name="product_name" readonly="true" class="easyui-validatebox" style="width:200px"></td>
 					            </tr>
 					            <tr>
 					             	<td>规格型号</td>
-					             	<td><input name="models" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					             	<td><input name="models" readonly="true" class="easyui-validatebox" style="width:200px"></td>
 					            </tr>
 					            <tr>
 					             	<td>订购价格</td>
-					             	<td><input name="order_price" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					             	<td><input name="order_price" readonly="true" class="easyui-validatebox" style="width:200px"></td>
 					            </tr>
 					            <tr>
 					             	<td>成交价格</td>
-					             	<td><input name="discount" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					             	<td><input name="discount" readonly="true" class="easyui-validatebox" style="width:200px"></td>
 					            </tr>
 					            <tr>
 					             	<td>小计</td>
-					             	<td><input name="order_money_sum" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					             	<td><input name="order_money_sum" readonly="true" class="easyui-validatebox" style="width:200px"></td>
 					            </tr>
 						        <tr>
 					             	<td>数量:</td>
-					             	<td><input name="order_number_sum" id="order_number_sum" class="easyui-numberbox" style="width:150px" 
+					             	<td><input name="order_number_sum" min="1" max="99999999" id="order_number_sum" class="easyui-numberbox" style="width:200px" 
 									data-options="required:true"></td>
+					            </tr>
+					            <tr>
+					             	<td>选择类型:</td>
+					             	<td>
+					             		<input type="hidden" id="temp_price" value="">
+					             		<input type="hidden" id="temp_discount" value="">
+					             		<input type="hidden" id="temp_money_sum" value="">
+										<input name="type" class="easyui-combobox" style="width:200px;" data-options="
+											required:true,
+											valueField: 'id',
+											textField: 'value',
+											data: [{
+												id: '0',
+												value: '正常'
+											},{
+												id: '1',
+												value: '其他(不计费)'
+											}],
+											onSelect:function(record){
+								                    	if(record.id==0){
+								                    		if(!$('#temp_price').val()==''){
+								                    			$('input[name=order_price]').val($('#temp_price').val());
+								                    			$('input[name=discount]').val($('#temp_discount').val());
+								                    			$('input[name=order_money_sum]').val($('#temp_money_sum').val());
+								                
+								                    			$('#temp_price').val('');
+								                    			$('#temp_discount').val('');
+								                    			$('#temp_money_sum').val('');
+								                    		}
+								                 		}else{
+								                 			$('#temp_price').val($('input[name=order_price]').val());
+								                 			$('#temp_discount').val($('input[name=discount]').val());
+								                 			$('#temp_money_sum').val($('input[name=order_money_sum]').val());
+								                 			
+								                    		$('input[name=discount]').val('0.00');
+								                    		$('input[name=order_price]').val('0.00');
+								                    		$('input[name=order_money_sum]').val('0.00');
+								                 		}
+								                    }" />
+					             	</td>
 					            </tr>
 					            <tr>
 					             	<td>备注:</td>
 					             	<td>
-					             		<textarea name="remark" id="remark" style="width:150px;height:60px;"></textarea> 
+					             		<textarea name="remark" id="remark" style="width:200px;height:60px;"></textarea> 
 					             	</td>
 					            </tr>
 					      </table>        	
@@ -547,6 +599,20 @@
 				return '<span style="color:red">部分发货</span>'; 
 			else if(value=='6')
 				return '<span style="color:red">已完成</span>'; 
+		}
+		function formatterType(value, row, index){
+			if(value=='0')
+				return '<span>正常</span>'; 
+			else if(value=='1')
+				return '<span>试用</span>'; 
+			else if(value=='2')
+				return '<span>退换货</span>'; 
+		}
+		function formatterDetailType(value, row, index){
+			if(value=='0')
+				return '<span>正常</span>'; 
+			else if(value=='1')
+				return '<span>其他</span>'; 
 		}
 		function newEntity()
 		{

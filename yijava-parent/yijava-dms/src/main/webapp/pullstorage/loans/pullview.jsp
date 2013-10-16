@@ -370,45 +370,45 @@
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductAddEntity()">添加</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
 	    </div>
-		<div id="dlgProductAdd" class="easyui-dialog" style="width:300px;height:330px;padding:5px 5px 5px 5px;"
+		<div id="dlgProductAdd" class="easyui-dialog" style="width:350px;height:330px;padding:5px 5px 5px 5px;"
 	            modal="true" closed="true" buttons="#dlgProductAdd-buttons">
 		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
 					      <table>
 					      	     <tr>
 					             	<td>仓库:</td>
-					             	<input name="fk_storage_id" type="hidden" class="easyui-validatebox" style="width:150px;">
-					             	<td><input name="storage_name" readonly="true" class="easyui-validatebox" style="width:150px;"></td>
+					             	<input name="fk_storage_id" type="hidden" class="easyui-validatebox" style="width:200px;">
+					             	<td><input name="storage_name" readonly="true" class="easyui-validatebox" style="width:200px;"></td>
 					            </tr>
 					    		<tr>
 					             	<td>借贷出库单号:</td>
 					             	<td>
-					             		<input name="pull_storage_code" readonly="true" class="easyui-validatebox" style="width:150px;">
-					             		<input name="put_storage_code" type="hidden" class="easyui-validatebox" style="width:150px;">
+					             		<input name="pull_storage_code" readonly="true" class="easyui-validatebox" style="width:200px;">
+					             		<input name="put_storage_code" type="hidden" class="easyui-validatebox" style="width:200px;">
 					             	</td>
 					            </tr>
 					            <tr>
 					             	<td>产品编码:</td>
-					             	<td><input name="product_item_number" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					             	<td><input name="product_item_number" readonly="true" class="easyui-validatebox" style="width:200px"></td>
 					            </tr>
 					            <tr>
 					             	<td>规格型号:</td>
-					             	<td><input name="models" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					             	<td><input name="models" readonly="true" class="easyui-validatebox" style="width:200px"></td>
 					            </tr>
 					            <tr>
 					             	<td>产品名称</td>
-					             	<td><input name="product_cname" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					             	<td><input name="product_cname" readonly="true" class="easyui-validatebox" style="width:200px"></td>
 					            </tr>
 					            <tr>
 					             	<td>批次</td>
-					             	<td><input name="batch_no" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					             	<td><input name="batch_no" readonly="true" class="easyui-validatebox" style="width:200px"></td>
 					            </tr>
 					            <tr>
 					             	<td>有效期</td>
-					             	<td><input name="valid_date" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					             	<td><input name="valid_date" readonly="true" class="easyui-validatebox" style="width:200px"></td>
 					            </tr>
 					            <tr>
 					             	<td>库存量:</td>
-					             	<td><input name="inventory_number" readonly="true" class="easyui-numberbox" style="width:150px"></td>
+					             	<td><input name="inventory_number" readonly="true" class="easyui-numberbox" style="width:200px"></td>
 					             </tr>
 					      </table>    	
 		        </form>

@@ -107,7 +107,7 @@ public class MoveStorageService{
 		List<StorageProDetail> storageProDetailList =  new ArrayList<StorageProDetail>();//sn表
 		if (moveStorage != null) {
 			//状态是否被修改
-			if(moveStorage.getStatus().equals("0"))
+			if(!moveStorage.getStatus().equals("0"))
 				return null;
 			List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
 			filters.add(PropertyFilters.build("ANDS_move_storage_code",moveStorage.getMove_storage_code()));

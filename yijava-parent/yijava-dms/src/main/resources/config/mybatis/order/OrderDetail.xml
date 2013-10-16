@@ -29,13 +29,6 @@
 		  ) t 
 		<include refid="adsWhere"/>
 	</select>
- 	<!-- select * from (
-		select t1.*,t2.delivery_sum,t2.plan_send_date from tb_order_detail t1 
-		left join (
-		  select order_detail_id,sum(deliver_number_sum) as delivery_sum ,max(deliver_date) as plan_send_date 
-		  from dms.tb_delivery_detail  group by order_detail_id) t2 
-		  on t1.id = t2.order_detail_id 
-		  ) t  -->
 	<select id="selectByObject" resultType="dms.yijava.entity.order.OrderDetail">
 		select * from (
 		SELECT tod.*,sum(tdd.deliver_number_sum) as delivery_sum ,max(tdd.deliver_date) as plan_send_date 
@@ -55,8 +48,8 @@
 		select * from dms.tb_order_detail where order_code = #{order_code} and product_item_number = #{product_item_number}
 	</select>
 	<insert id="insert" parameterType="dms.yijava.entity.order.OrderDetail">     
-    	  insert into dms.tb_order_detail(order_code,product_item_number,product_name,models,order_number_sum,order_price,order_money_sum,discount,remark,last_time)
-    	  values(#{order_code},#{product_item_number},#{product_name},#{models},#{order_number_sum},#{order_price},#{order_money_sum},#{discount},#{remark},NOW())
+    	  insert into dms.tb_order_detail(order_code,product_item_number,product_name,models,order_number_sum,order_price,order_money_sum,discount,type,remark,last_time)
+    	  values(#{order_code},#{product_item_number},#{product_name},#{models},#{order_number_sum},#{order_price},#{order_money_sum},#{discount},#{type},#{remark},NOW())
     </insert>
 	<delete id="deleteByPrimaryKey" parameterType="String">
    		 delete from dms.tb_order_detail where id=#{id}
