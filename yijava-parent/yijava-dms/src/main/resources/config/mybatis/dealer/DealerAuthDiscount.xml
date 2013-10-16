@@ -28,7 +28,7 @@
     
 <select id="selectByObjectcount" resultType="long">
 	select count(1) from (
-			select t1.id,t1.dealer_id,t1.discount,t2.item_number,t2.cname,t2.category_id 
+			select t1.id,t1.dealer_id,t1.discount,t2.item_number,t2.cname,t2.models,t2.category_id 
 		from tb_dealer_auth_discount t1 inner join tb_product t2 on t1.item_number = t2.item_number 
 	) t
 	<include refid="adsWhere" />
@@ -36,7 +36,7 @@
 
 <select id="selectByObject" resultType="dms.yijava.entity.dealer.DealerAuthDiscount">
 	select * from (
-			select t1.id,t1.dealer_id,t1.discount,t2.item_number,t2.cname,t2.category_id 
+			select t1.id,t1.dealer_id,t1.discount,t2.item_number,t2.cname,t2.models,t2.category_id 
 		from tb_dealer_auth_discount t1 inner join tb_product t2 on t1.item_number = t2.item_number 
 	) t
 	<include refid="adsWhere" />

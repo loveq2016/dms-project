@@ -310,7 +310,7 @@
 								<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">数量</th>
 								<th data-options="field:'order_price',width:80,align:'center'" sortable="true">订购价格</th>
 								<th data-options="field:'order_money_sum',width:80,align:'center'" sortable="true">小计</th>
-								<th data-options="field:'discount',width:80,align:'center'" sortable="true">折扣</th>
+								<th data-options="field:'discount',width:80,align:'center'" sortable="true">成交价格</th>
 								<th data-options="field:'delivery_sum',width:80,align:'center'" sortable="true">发货数量</th>
 								<th data-options="field:'plan_send_date',width:100,align:'center'" formatter="formatterdate" sortable="true">预计发货日期</th>
 							</tr>
@@ -429,7 +429,7 @@
 								<th data-options="field:'cname',width:150,align:'center'" sortable="true">中文名称</th>
 								<th data-options="field:'ename',width:150,align:'center'" sortable="true">英文说明</th>
 								<th data-options="field:'price',width:80,align:'center'" sortable="true">价格</th>
-								<th data-options="field:'discount',width:80,align:'center'" sortable="true">折扣</th>
+								<th data-options="field:'discount',width:80,align:'center'" sortable="true">成交价格</th>
 								<th data-options="field:'order_company',width:80,align:'center'">订购单位</th>
 								<th data-options="field:'is_order',width:80" formatter="formatterIs_order">是否可订货</th>
 								<th data-options="field:'remark',width:80" hidden="true">备注</th>
@@ -465,8 +465,8 @@
 					             	<td><input name="order_price" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
 					            <tr>
-					             	<td>折扣</td>
-					             	<td><input name="discount" readonly="true" class="easyui-validatebox" value="10" style="width:150px"></td>
+					             	<td>成交价格</td>
+					             	<td><input name="discount" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
 					            <tr>
 					             	<td>小计</td>
@@ -509,9 +509,9 @@
 		    	var order_price= $('input[name=order_price]').val();
 				var discount= $('input[name=discount]').val();
 				if (typeof(discount) == "undefined"||discount=='')
-					discount=10;
+					discount=order_price;
 				var order_number_sum= $('#order_number_sum').val();
-				var m=order_price*order_number_sum*(discount*0.1);
+				var m=discount*order_number_sum;
 				$('input[name=order_money_sum]').val(m.toFixed(2));
 		    });
 		})
@@ -777,8 +777,8 @@
 		*/
 		function ToCheckEntity(){
 			if (order_status ==0 || order_status ==2){
-				//var options  = $('#dgProduct').datagrid('getPager').data("pagination").options;  
-			    //if(true){
+				//var item = $('#dgProduct').datagrid('getRows');
+			    //if(item.length>0){
 					 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
 						 if (r){
 							   $('#saveEntityBtn').linkbutton('disable');
@@ -862,7 +862,7 @@
 		function VidwDocument () 
 		{
 			var row = $('#dg').datagrid('getSelected');
-			if (row){
+			if (row && row.status ==3){
 				$.post(basePath+'api/order/viewdocument',{order_id:row.id},function(result){
 			    	if(result.state==1){
 			    		var tabTitle = "订单管理单据 "+result.data;
