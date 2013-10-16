@@ -12,8 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sun.misc.BASE64Encoder;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,6 +24,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import sun.misc.BASE64Encoder;
+
 import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
@@ -36,6 +36,7 @@ import com.yijava.web.vo.Result;
 import dms.yijava.api.web.word.util.TheFreemarker;
 import dms.yijava.api.web.word.util.TrialProduct;
 import dms.yijava.entity.department.Department;
+import dms.yijava.entity.flow.FlowLog;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.trial.Trial;
 import dms.yijava.entity.trial.TrialDetail;
@@ -61,6 +62,8 @@ public class TrialController {
 	@Value("#{properties['document_filepath']}")   	
 	private String document_filepath;
 	
+	@Value("#{properties['sign_filepath']}")   	
+	private String sign_filepath;
 	
 	
 	@Autowired
@@ -310,11 +313,30 @@ public class TrialController {
 			dataMap.put("principalsign", "车海波");
 			dataMap.put("trialSumNum", trialSumNum);
 			
-			//dataMap.put("image", getImageStr("d:/10073_qz.jpg"));
-			//dataMap.put("image2", getImageStr("d:/10049_qz.jpg"));
+			
+			//查找该流程的处理记录,找到签名文件
+			List<FlowLog> flowlogs=flowLogService.getLogByFlowAndBusIdSq(flowIdentifierNumber, trial_id.toString());
+			String regionsign=null,principalsign=null;
+			for (FlowLog flowLog:flowlogs)
+			{
+				
+				if(flowLog.getSign()!=null  && !"".equals(flowLog.getSign()))
+				{
+					if(flowLog.action_name.indexOf("区域负责人")>-1)
+					{
+						regionsign=sign_filepath+flowLog.getSign();
+					}if(flowLog.action_name.indexOf("公司负责人")>-1)
+					{
+						principalsign=sign_filepath+flowLog.getSign();
+					}
+					
+				}
+			}
+			dataMap.put("image", getImageStr(regionsign));
+			dataMap.put("image2", getImageStr(principalsign));
 			
 			
-			
+			dataMap.put("table", list);
 			freemarker.createTrialWord(new FileOutputStream(outFile),dataMap);	
 			result.setData(fileName);
 			result.setState(1);
