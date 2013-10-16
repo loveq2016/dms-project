@@ -229,11 +229,12 @@
 						    <th data-options="field:'id',width:100,align:'center'" hidden="true"></th>
 							<th data-options="field:'fk_storage_id',width:100,align:'center'" hidden="true"></th>
 							<th data-options="field:'storage_name',width:100,align:'center'" sortable="true">仓库</th>
-							<th data-options="field:'product_item_number',width:100,align:'center'" sortable="true">产品编码</th>
-							<th data-options="field:'batch_no',width:200,align:'center'" sortable="true">产品批次</th>
-							<th data-options="field:'valid_date',width:100,align:'center'" formatter="formatterdate" sortable="true">有效日期</th>
+							<th data-options="field:'product_item_number',width:120,align:'center'" sortable="true">产品编码</th>
+							<th data-options="field:'models',width:100,align:'center'" sortable="true">规格型号</th>
+							<th data-options="field:'batch_no',width:100,align:'center'" sortable="true">产品批次</th>
+							<th data-options="field:'valid_date',width:120,align:'center'" formatter="formatterdate" sortable="true">有效日期</th>
 							<th data-options="field:'inventory_number',width:80,align:'center'" sortable="true">库存量</th>
-							<th data-options="field:'sales_number',width:80,align:'center'" sortable="true">借出数量(EA)</th>
+							<th data-options="field:'sales_number',width:100,align:'center'" sortable="true">借出数量(EA)</th>
 							<th data-options="field:'product_sn',width:100,align:'center',editor:'datebox'" formatter="formatterProductSn">序列号</th>
 						</tr>
 					</thead>
@@ -354,7 +355,8 @@
 								<th field="dealer_name" width="100" align="center" hidden="true">经销商</th>
 								<th field="fk_storage_id" width="120" align="center" hidden="true"></th>
 								<th field="storage_name" width="120" align="center" sortable="true">仓库</th>
-								<th field="product_item_number" width="120" align="center" sortable="true">产品编号</th>
+								<th field="product_item_number" width="80" align="center" sortable="true">产品编号</th>
+								<th field="models" width="120" align="center" sortable="true">规格型号</th>
 								<th field="product_cname" width="120" align="center" sortable="true">产品中文名称</th>
 								<th field="batch_no" width="100" align="center" sortable="true">批号/序列号</th>
 								<th field="valid_date" width="100" align="center" formatter="formatterdate" sortable="true">有效期</th>
@@ -368,7 +370,7 @@
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductAddEntity()">添加</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
 	    </div>
-		<div id="dlgProductAdd" class="easyui-dialog" style="width:300px;height:320px;padding:5px 5px 5px 5px;"
+		<div id="dlgProductAdd" class="easyui-dialog" style="width:300px;height:330px;padding:5px 5px 5px 5px;"
 	            modal="true" closed="true" buttons="#dlgProductAdd-buttons">
 		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
 					      <table>
@@ -387,6 +389,10 @@
 					            <tr>
 					             	<td>产品编码:</td>
 					             	<td><input name="product_item_number" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					            </tr>
+					            <tr>
+					             	<td>规格型号:</td>
+					             	<td><input name="models" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
 					            <tr>
 					             	<td>产品名称</td>

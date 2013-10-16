@@ -306,7 +306,7 @@
 							<tr>
 								<th data-options="field:'product_item_number',width:100,align:'center'" sortable="true">产品编码</th>
 								<th data-options="field:'product_name',width:200,align:'center'" sortable="true">产品名称</th>
-								<th data-options="field:'models',width:60,align:'center'" sortable="true">产品规格</th>
+								<th data-options="field:'models',width:60,align:'center'" sortable="true">规格型号</th>
 								<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">数量</th>
 								<th data-options="field:'order_price',width:80,align:'center'" sortable="true">订购价格</th>
 								<th data-options="field:'order_money_sum',width:80,align:'center'" sortable="true">小计</th>
@@ -428,6 +428,7 @@
 								<th data-options="field:'item_number',width:100,align:'center'" sortable="true">产品编号</th>
 								<th data-options="field:'cname',width:150,align:'center'" sortable="true">中文名称</th>
 								<th data-options="field:'ename',width:150,align:'center'" sortable="true">英文说明</th>
+								<th data-options="field:'models',width:60,align:'center'" sortable="true">规格型号</th>
 								<th data-options="field:'price',width:80,align:'center'" sortable="true">价格</th>
 								<th data-options="field:'discount',width:80,align:'center'" sortable="true">成交价格</th>
 								<th data-options="field:'order_company',width:80,align:'center'">订购单位</th>
@@ -444,7 +445,7 @@
 	        </restrict:function>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
 	    </div>
-		<div id="dlgProductSum" class="easyui-dialog" style="width:300px;height:360px;padding:5px 5px 5px 5px;"
+		<div id="dlgProductSum" class="easyui-dialog" style="width:300px;height:390px;padding:5px 5px 5px 5px;"
 	            modal="true" closed="true" buttons="#dlgProductSum-buttons">
 		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
 					      <table> 
@@ -459,6 +460,10 @@
 					            <tr>
 					             	<td>产品名称</td>
 					             	<td><input name="product_name" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					            </tr>
+					            <tr>
+					             	<td>规格型号</td>
+					             	<td><input name="models" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
 					            <tr>
 					             	<td>订购价格</td>
@@ -720,10 +725,10 @@
 			if(row){
 				$("#fm3 input[name=order_code]").val(order_code);
 				$("#fm3 input[name=product_item_number]").val(row.item_number);
+				$("#fm3 input[name=models]").val(row.models);
 				$("#fm3 input[name=product_name]").val(row.cname);
 				$("#fm3 input[name=order_price]").val(row.price);
 				$("#fm3 input[name=discount]").val(row.discount);
-				
 				$('#dlgProductSum').dialog('open').dialog('setTitle','添加产品');
 			}else
 			{
