@@ -933,7 +933,7 @@
 		function VidwDocument () 
 		{
 			var row = $('#dg').datagrid('getSelected');
-			if (row && row.status ==3){
+			if (row && parseInt(row.order_status) >=3){
 				$.post(basePath+'api/order/viewdocument',{order_id:row.id},function(result){
 			    	if(result.state==1){
 			    		var tabTitle = "订单管理单据 "+result.data;
