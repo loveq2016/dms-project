@@ -29,6 +29,14 @@ public class FlowLogService {
 		
 		return flowLogDao.find(parameters);
 	}
+	//按照正序得到审核记录
+	public List<FlowLog> getLogByFlowAndBusIdSq(String flow_id,String bussiness_id) {
+		HashMap<String,String> parameters = new HashMap<String,String>();
+		parameters.put("bussiness_id", bussiness_id);
+		parameters.put("flow_id", flow_id);
+		
+		return flowLogDao.find(".selectByMapSq",parameters);
+	}
 	
 	public int saveEntity(FlowLog entity) {
 		return flowLogDao.insert(entity);
