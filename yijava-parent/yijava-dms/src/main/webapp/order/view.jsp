@@ -18,16 +18,16 @@
 							<table>
 								<tr>
 									<td>订单号:</td>	
-									<td><input class="easyui-validatebox" type="text" name="order_code"></input></td>
+									<td><input class="easyui-validatebox" style="width:200px" type="text" name="order_code"></input></td>
 									<td width="100">经销商:</td>
 									<td>
 										<c:choose>
 										       <c:when test="${user.fk_dealer_id!='0'}">
-													<input class="easyui-validatebox" disabled="disabled" id="dealer_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
-													<input class="easyui-validatebox" type="hidden" name="dealer_id" id="dealer_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">					       	
+													<input class="easyui-validatebox" disabled="disabled" id="dealer_name" value="${user.dealer_name}" style="width:200px" maxLength="100">
+													<input class="easyui-validatebox" type="hidden" name="dealer_id" id="dealer_id" value="${user.fk_dealer_id}" style="width:200px" maxLength="100">					       	
 										       </c:when>
 										       <c:otherwise>
-										       		<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+										       		<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:200px" maxLength="100" class="easyui-validatebox"
 							             			data-options="
 								             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
 									                    method:'get',
@@ -192,10 +192,10 @@
 							<table>
 								<tr>
 									<td>订单号:</td>	
-									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="order_code"></input></td>
-									<td width="100">经销商:</td>
-									<td>
-						            	<input class="easyui-validatebox" readonly="readonly" type="text" name="dealer_name"></input>
+									<td width="230"><input class="easyui-validatebox" style="width:200px" readonly="readonly" type="text" name="order_code"></input></td>
+									<td>经销商:</td>
+									<td width="230">
+						            	<input class="easyui-validatebox" style="width:200px" readonly="readonly" type="text" name="dealer_name"></input>
 									</td>
 									<td width="50">状态:</td>
 									<td width="270">				
@@ -228,7 +228,7 @@
 								</tr>
 								<tr>
 									<td>订单日期:</td>	
-									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="order_date"></input></td>
+									<td><input class="easyui-validatebox" style="width:200px" maxlength="18" readonly="readonly" type="text" name="order_date"></input></td>
 								</tr>
 							</table>
 					</form>
@@ -262,7 +262,7 @@
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="business_contacts"></input></td>
 									<td>收货地址:</td>	
 									<td>
-										<input class="easyui-combobox" readonly="readonly" name="dealer_address_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+										<input class="easyui-combobox" readonly="readonly" name="dealer_address_id"  maxLength="100" class="easyui-validatebox"
 							             			data-options="
 								             			url:'${basePath}api/dealerAddress/list?id=${user.fk_dealer_id}',
 									                    method:'get',
@@ -316,7 +316,7 @@
 						<thead>
 							<tr>
 								<th data-options="field:'product_item_number',width:80,align:'center'" sortable="true">产品编码</th>
-								<th data-options="field:'product_name',width:180,align:'left'" sortable="true">产品名称</th>
+								<th data-options="field:'product_name',width:100,align:'left'" sortable="true">产品名称</th>
 								<th data-options="field:'models',width:90,align:'center'" sortable="true">规格型号</th>
 								<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">数量</th>
 								<th data-options="field:'order_price',width:60,align:'center'" sortable="true">订购价格</th>
@@ -325,6 +325,7 @@
 								<th data-options="field:'type',width:60,align:'center'" sortable="true" formatter="formatterDetailType">类型</th>
 								<th data-options="field:'delivery_sum',width:80,align:'center'" sortable="true">发货数量</th>
 								<th data-options="field:'plan_send_date',width:100,align:'center'" formatter="formatterdate" sortable="true">预计发货日期</th>
+								<th data-options="field:'remark',width:80,align:'center'" sortable="true">备注</th>
 							</tr>
 						</thead>
 					</table>
@@ -412,7 +413,7 @@
 								<table>
 									<tr>
 										<td>产品编号:</td>	
-										<td width="100px"><input class="easyui-validatebox" type="text" name="item_number" id="item_number" ></input></td>
+										<td width="150px"><input class="easyui-validatebox" type="text" name="item_number" id="item_number" ></input></td>
 										<td>选择分类:</td>
 										<td>
 							            	<input class="easyui-combobox" name="category_id" id="category_id" style="width:150px" maxLength="100" class="easyui-validatebox"
