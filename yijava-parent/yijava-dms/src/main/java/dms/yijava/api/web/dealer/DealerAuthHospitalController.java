@@ -104,14 +104,14 @@ public class DealerAuthHospitalController {
 	
 	@ResponseBody
 	@RequestMapping("delete")
-	public Result<String> delete(@RequestParam(value = "id", required = true) String id) {
+	public Result<String> delete(@RequestParam(value = "ids", required = true) String ids) {
 		try {
-			dealerAuthHospitalService.deleteEntity(id);
-			return new Result<String>(id, 1);
+			dealerAuthHospitalService.deleteEntity(ids);
+			return new Result<String>(ids, 1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new Result<String>(id, 0);
+		return new Result<String>(ids, 0);
 	}
 	
 	@ResponseBody

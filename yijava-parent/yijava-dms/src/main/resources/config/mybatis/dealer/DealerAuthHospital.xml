@@ -63,6 +63,11 @@
 	delete from tb_dealer_auth_hospital where id = #{id}
 </delete>
 
+<delete id="deletebyids">
+	delete from tb_dealer_auth_hospital where id in (#{ids})
+</delete>
+
+
 <delete id="deleteAll" parameterType="dms.yijava.entity.dealer.DealerAuthHospital">
 	delete from tb_dealer_auth_hospital where dealer_id = #{dealer_id} and category_id=#{category_id}
 </delete>
