@@ -9,7 +9,6 @@
 	<artifactId>yijava-dms</artifactId>
 	<packaging>war</packaging>
 	<dependencies>
-
 		<dependency>
 			<groupId>com.yijava</groupId>
 			<artifactId>yijava-common</artifactId>
