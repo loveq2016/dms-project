@@ -30,6 +30,7 @@ public class Order {
 	public String receive_postcode;
 	public String receive_addess;
 	
-	
-	
+	public String record_id;
+	public String record_status;
+	public String check_id;	
 }

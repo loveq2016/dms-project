@@ -99,6 +99,9 @@
 							<th data-options="field:'dealer_name',width:240,align:'left'" sortable="true">经销商</th>
 							<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">总数量</th>
 							<th data-options="field:'order_money_sum',width:80,align:'center'" sortable="true">总金额</th>
+							<th data-options="field:'record_id',width:80,align:'center'" sortable="true">流程记录</th>
+							<th data-options="field:'check_id',width:80,align:'center'" sortable="true">check_id</th>
+							<th data-options="field:'record_status',width:80,align:'center'" sortable="true">流程状态</th>
 							<th data-options="field:'type',width:80,align:'center'" formatter="formatterType" sortable="true">订单类型</th>
 							<th data-options="field:'order_status',width:80,align:'center'" formatter="formatterStatus" sortable="true">状态</th>
 							<th data-options="field:'order_date',width:150,align:'center'" formatter="formatterdate" sortable="true">订单时间</th>
