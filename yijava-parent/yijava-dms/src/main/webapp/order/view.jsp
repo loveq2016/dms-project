@@ -99,13 +99,16 @@
 							<th data-options="field:'dealer_name',width:240,align:'left'" sortable="true">经销商</th>
 							<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">总数量</th>
 							<th data-options="field:'order_money_sum',width:80,align:'center'" sortable="true">总金额</th>
-							<th data-options="field:'record_id',width:80,align:'center'" sortable="true">流程记录</th>
-							<th data-options="field:'check_id',width:80,align:'center'" sortable="true">check_id</th>
-							<th data-options="field:'record_status',width:80,align:'center'" sortable="true">流程状态</th>
+							<th data-options="field:'record_id',width:80,align:'center'" hidden="true"></th>
+							<th data-options="field:'record_status',width:80,align:'center'" hidden="true"></th>
+							<th data-options="field:'check_id',width:80,align:'center'" hidden="true"></th>
 							<th data-options="field:'type',width:80,align:'center'" formatter="formatterType" sortable="true">订单类型</th>
 							<th data-options="field:'order_status',width:80,align:'center'" formatter="formatterStatus" sortable="true">状态</th>
 							<th data-options="field:'order_date',width:150,align:'center'" formatter="formatterdate" sortable="true">订单时间</th>
 							<th data-options="field:'custom',width:100,align:'center'" sortable="false" formatter="formatterDetail">明细</th>
+							<restrict:function funId="157">
+								<th data-options="field:'custom2',width:80,align:'center'" formatter="formatterCheck">审核</th>
+							</restrict:function>
 							<th data-options="field:'dealer_address_id',width:60" hidden="true"></th>
 							<th data-options="field:'receive_linkman',width:60" hidden="true"></th>
 							<th data-options="field:'receive_linkphone',width:60" hidden="true"></th>
@@ -126,9 +129,6 @@
 				</restrict:function>
 				<restrict:function funId="27">
         			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
-        		</restrict:function>
-        		<restrict:function funId="157">
-        		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="CheckEntity()">审核</a>
         		</restrict:function>
         		<restrict:function funId="203">
         			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="VidwDocument()">查看单据</a>
@@ -327,7 +327,7 @@
 								<th data-options="field:'discount',width:60,align:'center'" sortable="true">成交价格</th>
 								<th data-options="field:'type',width:60,align:'center'" sortable="true" formatter="formatterDetailType">类型</th>
 								<th data-options="field:'delivery_sum',width:80,align:'center'" sortable="true">发货数量</th>
-								<th data-options="field:'plan_send_date',width:100,align:'center'" formatter="formatterdate" sortable="true">预计发货日期</th>
+								<th data-options="field:'plan_send_date',width:100,align:'center'" sortable="true">预计发货日期</th>
 								<th data-options="field:'remark',width:80,align:'center'" sortable="true">备注</th>
 							</tr>
 						</thead>
@@ -383,7 +383,7 @@
 									<input type="hidden" name="bussiness_id" id="bussiness_id">
 									<input type="hidden" name="flow_id" id="flow_id" value="">
 									<div style="text-align: right; padding: 5px">
-											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveFlowCheck()">提交</a>
+										<a href="javascript:void(0)" class="easyui-linkbutton" id="saveCheckbtn" data-options="iconCls:'icon-save'" onclick="saveFlowCheck()">提交</a>
 									</div>
 								</td>
 								</tr>	
@@ -563,6 +563,7 @@
 				url : basePath +"api/order/paging",
 				onLoadSuccess:function(data){ 
 					$(".infoBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
+					$(".checkBtn").linkbutton({ plain:true, iconCls:'icon-check' });
 			    }
 			});
 			//计算订单项小计
@@ -846,7 +847,10 @@
 		function formatterIs_order (value, row, index) { 
 			return value==1?"<span style='color:green'>是</span>":"<span style='color:red'>否</span>";
 		}
-		
+		function formatterCheck (value, row, index) {
+			var d=(typeof(row.check_id) != "undefined" && row.record_status=='0') ?'':'disabled';
+			return '<a class="checkBtn" '+d+' href="javascript:void(0)" onclick="CheckEntity('+index+')">审核</a>'; 
+		}
 		/**
 		提交订单
 		*/
@@ -883,7 +887,8 @@
 		/**
 		审核
 		*/
-		function CheckEntity(){
+		function CheckEntity(index){
+			$('#dg').datagrid('selectRow',index);
 			var row = $('#dg').datagrid('getSelected');
 			if (row && row.order_status==1){
 				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){
@@ -899,6 +904,7 @@
 		/*保存审核*/
 		function saveFlowCheck()
 		{
+			$('#saveCheckbtn').linkbutton('disable');
 			$('#base_form_check').form('submit', {
 				url:basePath+'/api/flowrecord/do_flow',
 				method:"post",	
@@ -912,6 +918,12 @@
 					    clearForm();
 					    $('#dlgOrderDetail').dialog('close');
 					    $('#dg').datagrid('reload');			
+				   }else{
+					   $.messager.show({
+                           title: 'Error',
+                           msg: jsonobj.error.msg
+                       });
+	    			   $('#saveCheckbtn').linkbutton('enable');
 				   }
 				}
 			});
@@ -942,7 +954,6 @@
 			    	if(result.state==1){
 			    		var tabTitle = "订单管理单据 "+result.data;
 						var url = "generate\\"+result.data;
-						alert(url);
 						addTabByChild(tabTitle,url);
                     } else {
                         $.messager.show({
