@@ -23,17 +23,29 @@
 	    </choose>
 	</sql>
     <select id="selectByObjectcount" resultType="long">
-		select COUNT(*) from (
-		SELECT tod.*,sum(tdd.deliver_number_sum) as delivery_sum ,max(tdd.deliver_date) as plan_send_date 
-		FROM tb_order_detail tod LEFT JOIN tb_delivery_detail tdd ON tod.id=tdd.order_detail_id GROUP BY tod.id
-		  ) t 
+		select COUNT(*) from ( 
+		SELECT tod.*,tdd.*
+		FROM tb_order_detail tod 
+		LEFT JOIN 
+		(select order_detail_id,sum(deliver_number_sum) AS delivery_sum,
+		max(deliver_date) AS plan_send_date
+		from dms.tb_deliver a inner join dms.tb_delivery_detail b 
+		on a.deliver_id = b.deliver_id and a.check_status = 3 
+		group by order_detail_id) AS tdd on tod.id = tdd.order_detail_id
+		) t
 		<include refid="adsWhere"/>
 	</select>
 	<select id="selectByObject" resultType="dms.yijava.entity.order.OrderDetail">
 		select * from (
-		SELECT tod.*,sum(tdd.deliver_number_sum) as delivery_sum ,max(tdd.deliver_date) as plan_send_date 
-		FROM tb_order_detail tod LEFT JOIN tb_delivery_detail tdd ON tod.id=tdd.order_detail_id GROUP BY tod.id
-		  ) t 
+		SELECT tod.*,tdd.*
+		FROM tb_order_detail tod 
+		LEFT JOIN 
+		(select order_detail_id,sum(deliver_number_sum) AS delivery_sum,
+		max(deliver_date) AS plan_send_date
+		from dms.tb_deliver a inner join dms.tb_delivery_detail b 
+		on a.deliver_id = b.deliver_id and a.check_status = 3 
+		group by order_detail_id) AS tdd on tod.id = tdd.order_detail_id
+		) t
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
 	    limit #{offset},#{pagesize}

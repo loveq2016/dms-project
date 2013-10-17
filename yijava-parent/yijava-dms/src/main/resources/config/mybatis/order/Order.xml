@@ -23,13 +23,8 @@
 				  <![CDATA[ and order_date < #{end_date}]]>
 			</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">and dealer_name like CONCAT('%','${dealer_name}','%' ) </if>
-			
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(statuses)">
 				  and order_status in (${statuses})
-			</if>
-			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(check_id) and
-				@com.yijava.orm.core.OgnlUtils@isNotEmpty(flow_id)">
-				  and id in (select bussiness_id from tb_flow_record where check_id= #{check_id} and flow_id=#{flow_id})
 			</if>
 		</trim>
 	</sql>
@@ -47,15 +42,15 @@
 		da.linkman as receive_linkman,da.linkphone as receive_linkphone,da.postcode as receive_postcode,da.address as receive_addess from tb_order t 
 		LEFT JOIN tb_dealer d ON t.dealer_id=d.dealer_id 
 		LEFT JOIN tb_dealer_address da ON t.dealer_address_id=da.id
-	    LEFT JOIN tb_flow_record tfr ON t.id=tfr.bussiness_id AND check_id= #{check_id} AND flow_id=#{flow_id}) t 
+	    LEFT JOIN tb_flow_record tfr ON t.id=tfr.bussiness_id AND tfr.check_id= #{check_id} AND flow_id=#{flow_id}) t 
 		<include refid="adsWhere"/>
 	</select>
  	<select id="selectByObject" resultType="dms.yijava.entity.order.Order">
-		SELECT * FROM(select tfr.record_id, t.*,d.dealer_name,d.business_contacts,d.business_phone,d.addess,
+		SELECT * FROM(select tfr.record_id,tfr.status as record_status,tfr.check_id as check_id, t.*,d.dealer_name,d.business_contacts,d.business_phone,d.addess,
 		da.linkman as receive_linkman,da.linkphone as receive_linkphone,da.postcode as receive_postcode,da.address as receive_addess from tb_order t 
 		LEFT JOIN tb_dealer d ON t.dealer_id=d.dealer_id 
 		LEFT JOIN tb_dealer_address da ON t.dealer_address_id=da.id
-	    LEFT JOIN tb_flow_record tfr ON t.id=tfr.bussiness_id AND check_id= #{check_id} AND flow_id=#{flow_id}) t 
+	    LEFT JOIN tb_flow_record tfr ON t.id=tfr.bussiness_id AND check_id=#{check_id} AND flow_id=#{flow_id}) t 
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
 	    limit #{offset},#{pagesize}

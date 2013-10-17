@@ -38,6 +38,7 @@ import dms.yijava.entity.order.OrderDetail;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.flow.FlowBussService;
+import dms.yijava.service.flow.FlowRecordService;
 import dms.yijava.service.order.OrderDetailService;
 import dms.yijava.service.order.OrderService;
 
@@ -57,8 +58,6 @@ public class OrderController {
 	
 	@Value("#{properties['document_filepath']}")   	
 	private String document_filepath;
-	
-	
 	@ResponseBody
 	@RequestMapping("paging")
 	public JsonPage<Order> paging(PageRequest pageRequest,HttpServletRequest request) {

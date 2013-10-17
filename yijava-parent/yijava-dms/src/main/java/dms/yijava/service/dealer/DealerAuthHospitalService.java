@@ -1,5 +1,6 @@
 package dms.yijava.service.dealer;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,11 @@ public class DealerAuthHospitalService {
 	
 	public void deleteEntity(String id) {
 		dealerAuthHospitalDao.remove(id);
+	}
+	
+	public void deleteEntityByIds(String id) {
+		
+		dealerAuthHospitalDao.remove(Arrays.asList(id.split(",")));
 	}
 	
 	
