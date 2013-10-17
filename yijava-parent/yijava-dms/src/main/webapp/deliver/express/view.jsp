@@ -22,16 +22,26 @@
 									<td>出货单号:</td>	
 									<td><input class="easyui-validatebox" type="text" name="deliver_code"></input></td>
 								</tr>
-<!-- 								<tr> -->
-<!-- 									<td width="100">开始时间:</td> -->
-<!-- 									<td width="270"> -->
-<!-- 										<input name="start_date" id="start_date" class="easyui-datebox"></input> -->
-<!-- 									</td> -->
-<!-- 									<td width="100">结束时间:</td> -->
-<!-- 									<td width="270"> -->
-<!-- 										 <input name="end_date" id="end_date" class="easyui-datebox"></input> -->
-<!-- 									</td> -->
-<!-- 								</tr> -->
+								<tr>
+									<td width="100">订单开始时间:</td>
+									<td width="270">
+										<input name="start_date_order" id="start_date_order" class="easyui-datebox"></input>
+									</td>
+									<td width="100">订单结束时间:</td>
+									<td width="270">
+										 <input name="end_date_order" id="end_date_order" class="easyui-datebox"></input>
+									</td>
+								</tr>
+								<tr>
+									<td width="100">编制开始时间:</td>
+									<td width="270">
+										<input name="start_date" id="start_date" class="easyui-datebox"></input>
+									</td>
+									<td width="100">编制结束时间:</td>
+									<td width="270">
+										 <input name="end_date" id="end_date" class="easyui-datebox"></input>
+									</td>
+								</tr>
 							</table>
 						</form>
 					</div>
@@ -299,7 +309,7 @@
 	<script type="text/javascript">
 		$(function() {
 			$('#dg').datagrid({
-				  url : basePath +"api/deliverApply/pagingtodelver" ,
+				  url : basePath +"api/deliverApply/paging" ,
 					queryParams: {
 						filter_ANDS_check_status : 3
 					}
@@ -310,6 +320,10 @@
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_order_code: $('input[name=order_code]').val(),
 		    	filter_ANDS_deliver_code: $('input[name=deliver_code]').val(),
+		    	filter_ANDS_start_date: $('input[name=start_date]').val(),
+		    	filter_ANDS_end_date: $('input[name=end_date]').val(),
+		    	filter_ANDS_start_date_order: $('input[name=start_date_order]').val(),
+		    	filter_ANDS_end_date_order: $('input[name=end_date_order]').val(),
 		    	filter_ANDS_check_status : 3
 		    });
 		}

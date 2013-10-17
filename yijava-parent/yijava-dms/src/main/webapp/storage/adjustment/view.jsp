@@ -16,14 +16,31 @@
 							<table>
 								<tr>
 									<td>经销商:</td>
-									<td><input class="easyui-validatebox" type="text" name="dealer_name" data-options="required:false"></input></td>
+									<td>
+										<c:choose>
+										       <c:when test="${user.fk_dealer_id!='0'}">
+													<input class="easyui-validatebox" disabled="disabled" id="dealer_name" value="${user.dealer_name}" style="width:200px" maxLength="100">
+													<input class="easyui-validatebox" type="hidden" name="dealer_id" id="dealer_id" value="${user.fk_dealer_id}" style="width:200px" maxLength="100">					       	
+										       </c:when>
+										       <c:otherwise>
+										       		<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:200px" maxLength="100" class="easyui-validatebox"
+							             			data-options="
+								             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
+									                    method:'get',
+									                    valueField:'dealer_id',
+									                    textField:'dealer_name',
+									                    panelHeight:'auto'
+							            			"/>
+										       </c:otherwise>
+										</c:choose>
+									</td>
 									<td></td>
 									<td>调整单号:</td>
-									<td><input class="easyui-validatebox" type="text" name="dealer_name" data-options="required:false"></input></td>
+									<td><input class="easyui-validatebox" type="text" name="adjust_storage_code" data-options="required:false"></input></td>
 								</tr>
 								<tr>
 									<td>类型:</td>
-									<td><input name="consignee_status" class="easyui-combobox" 
+									<td><input name="type" class="easyui-combobox" 
 												data-options="
 													valueField: 'id',
 													textField: 'value',
@@ -36,20 +53,29 @@
 									</td>
 									<td></td>
 									<td>状态:</td>
-									<td><input name="consignee_status" class="easyui-combobox" 
+									<td><input name="status" class="easyui-combobox" 
 												data-options="
 													valueField: 'id',
 													textField: 'value',
 													panelHeight:'auto',
 													data: [
-														{id: '1',value: '未提交'},
-														{id: '2',value: '提交'},
-														{id: '3',value: '驳回'},
-														{id: '4',value: '已经审核'},
-														{id: '5',value: '完成'}
+														{id: '0',value: '未提交'},
+														{id: '1',value: '提交'},
+														{id: '2',value: '驳回'},
+														{id: '3',value: '已经审核'},
+														{id: '4',value: '完成'}
 														]" />
 									</td>
-									
+								</tr>
+								<tr>
+									<td width="100">开始时间:</td>
+									<td width="270">
+										<input name="start_date" id="start_date" class="easyui-datebox"></input>
+									</td>
+									<td width="100">结束时间:</td>
+									<td width="270">
+										 <input name="end_date" id="end_date" class="easyui-datebox"></input>
+									</td>
 								</tr>
 							</table>
 						</form>
@@ -73,7 +99,7 @@
 							<th field="adjust_storage_code" width="120" align="center" sortable="true">调整单号</th>
 							<th field="type" width="120" align="center" sortable="true" formatter="formatterType">类型</th>
 							<th field="total_number" width="120" align="center" sortable="true">总数量</th>
-							<th field="adjust_storage_date" width="100" align="center" sortable="true" formatter="formatterdate">调整日期</th>
+							<th field="adjust_storage_date" width="100" align="center" sortable="true">调整日期</th>
 							<th field="dealer_name" width="100" align="center" sortable="true">调整人</th>
 							<th field="status" width="100" align="center" sortable="true" formatter="formatterStatus">状态</th>
 							<th field="info" width="100" align="center" sortable="false" formatter="formatterInfo">明细</th>
@@ -190,8 +216,9 @@
 							<tr>
 							<th data-options="field:'storage_name',width:100,align:'center'" sortable="true">仓库</th>
 							<th data-options="field:'product_item_number',width:65,align:'center'" sortable="true">产品编码</th>
+							<th data-options="field:'models',width:65,align:'center'" sortable="true">产品规格</th>
 							<th data-options="field:'batch_no',width:80,align:'center'" sortable="true">批次</th>
-							<th data-options="field:'valid_date',width:80,align:'center',editor:'numberbox'" formatter="formatterdate">有效期</th>
+							<th data-options="field:'valid_date',width:80,align:'center',editor:'numberbox'">有效期</th>
 							<th data-options="field:'inventory_number',width:100,align:'center',editor:'datebox'">库存量</th>
 							<th data-options="field:'adjust_number',width:100,align:'center',editor:'datebox'">调整量</th>
 							<th data-options="field:'product_sn',width:100,align:'center',editor:'datebox'" formatter="formatterProductSn">序列号</th>
@@ -303,8 +330,9 @@
 								<th field="storage_name" width="120" align="center" sortable="true">仓库</th>
 								<th field="product_item_number" width="120" align="center" sortable="true">产品编号</th>
 								<th field="product_cname" width="120" align="center" sortable="true">产品中文名称</th>
+								<th field="models" width="120" align="center" sortable="true">产品规格</th>
 								<th field="batch_no" width="100" align="center" sortable="true">产品批次</th>
-								<th field="valid_date" width="100" align="center" sortable="true" formatter="formatterdate">有效期</th>
+								<th field="valid_date" width="100" align="center" sortable="true">有效期</th>
 								<th field="inventory_number" width="100" align="center" sortable="true">产品数量（EA）</th>
 							</tr>
 						</thead>
@@ -334,6 +362,10 @@
 					            <tr>
 					             	<td>产品名称</td>
 					             	<td><input name="product_cname" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					            </tr>
+					         	<tr>
+					             	<td>产品规格</td>
+					             	<td><input name="models" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
 					            <tr>
 					             	<td>批次</td>
@@ -459,8 +491,12 @@
 
 		function doSearch(){
 		    $('#dg').datagrid('load',{
-		    	filter_ANDS_dealer_name: $('#dealer_name').val(),
-		    	filter_ANDS_dealer_code: $('#dealer_code').val()
+		    	filter_ANDS_adjust_storage_code:$('#ffquery input[name=adjust_storage_code]').val(),
+		    	filter_ANDS_dealer_id: $('#ffquery input[name=dealer_id]').val(),
+		    	filter_ANDS_type: $('#ffquery input[name=type]').val(),
+		    	filter_ANDS_status: $('#ffquery input[name=status]').val(),
+		    	filter_ANDS_start_date: $('#ffquery input[name=start_date]').val(),
+		    	filter_ANDS_end_date: $('#ffquery input[name=end_date]').val(),
 		    });
 		}
 		
