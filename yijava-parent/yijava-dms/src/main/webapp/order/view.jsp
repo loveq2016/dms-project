@@ -912,7 +912,14 @@
 					    clearForm();
 					    $('#dlgOrderDetail').dialog('close');
 					    $('#dg').datagrid('reload');			
-				   }
+				   }else
+					   {
+						   $.messager.show({    // show error message
+	                           title: 'Error',
+	                           msg: jsonobj.error.msg
+	                       });
+	    	
+					   }
 				}
 			});
 		}

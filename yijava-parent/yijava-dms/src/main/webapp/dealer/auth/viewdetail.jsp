@@ -191,8 +191,8 @@
 										rownumbers="true" singleSelect="false" pagination="true" sortName="id" sortOrder="desc" toolbar="">
 											<thead>
 												<tr>
-												
-												<th field="id" width="280" align="left" sortable="true" hidden="true">id</th>	
+												<th field="id" checkBox="true">选择</th>
+												<!-- <th field="id" width="280" align="left" sortable="true" hidden="true">id</th>	 -->
 												<th field="hospital_name" width="280" align="left" sortable="true">医院名称</th>										
 												<th field="level_name" width="50" align="left" sortable="true">等级</th>
 												<th field="provinces" width="120" align="left" sortable="true">省份</th>										
@@ -203,7 +203,7 @@
 	        </form>
     </div>
     <div id="dlgProducr-buttons">
-    	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveHospitalAllEntity();">保存查询到的所有</a>
+    	<!-- <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveHospitalAllEntity();">保存查询到的所有</a> -->
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveHospitalEntity();">保存</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgHospital').dialog('close')">取消</a>
     </div>
@@ -511,7 +511,7 @@
         
         //保存所有查询到的 
         function saveHospitalAllEntity(){
-        	
+        	//
         }
         function removeHospitalEntity(){
 	           //var row = $('#dgHospital').datagrid('getSelected');
@@ -540,7 +540,7 @@
 	            					if (jsonobj.state == 1) {  
 	            	                     $('#dgHospital').datagrid('reload');
 	            					}else{
-	            						$.messager.alert('提示','Error!','error');	
+	            						$.messager.alert('提示',jsonobj.error.msg,'error');	
 	            					}
 	            				}
 	            			});                    	

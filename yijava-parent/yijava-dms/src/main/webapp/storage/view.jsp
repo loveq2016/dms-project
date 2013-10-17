@@ -43,19 +43,19 @@
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
-							<th field="id" width="200" align="center" hidden="true"></th>
-							<th field="storage_name" width="200" align="center" sortable="true">仓库名称</th>
-							<th field="province" width="100" align="center" sortable="true">省份</th>
-							<th field="city" width="100" align="center" sortable="true">城市</th>
-							<th field="category_id" width="100" align="center" hidden="true"></th>
-							<th field="category_name" width="100" align="center" sortable="true">仓库类型</th>
-							<th field="hospital_name" width="100" align="center" hidden="true">医院名称</th>
-							<th field="status" width="100" align="center"  formatter="formatterStatus" sortable="true">状态</th>
-							<th field="postcode" width="100" align="center" sortable="true">邮编</th>
-							<th field="address" width="200" align="center" sortable="true">地址</th>
-							<th field="area" width="200" align="center" sortable="true">区或乡</th>
-							<th field="phone" width="100" align="center" sortable="true">电话</th>
-							<th field="tex" width="100" align="center" sortable="true">传真</th>
+							<th field="id" width="200" align="left" hidden="true"></th>
+							<th field="storage_name" width="200" align="left" sortable="true">仓库名称</th>
+							<th field="province" width="100" align="left" sortable="true">省份</th>
+							<th field="city" width="100" align="left" sortable="true">城市</th>
+							<th field="category_id" width="100" align="left" hidden="true"></th>
+							<th field="category_name" width="100" align="left" sortable="true">仓库类型</th>
+							<th field="hospital_name" width="100" align="left" hidden="true">医院名称</th>
+							<th field="status" width="100" align="left"  formatter="formatterStatus" sortable="true">状态</th>
+							<th field="postcode" width="100" align="left" sortable="true">邮编</th>
+							<th field="address" width="200" align="left" sortable="true">地址</th>
+							<th field="area" width="200" align="left" sortable="true">区或乡</th>
+							<th field="phone" width="100" align="left" sortable="true">电话</th>
+							<th field="tex" width="100" align="left" sortable="true">传真</th>
 						</tr>
 					</thead>
 				</table>
@@ -73,7 +73,7 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
-   <div id="dlg" class="easyui-dialog" style="width:360px;height:480px;padding:5px 5px 5px 5px;"
+   <div id="dlg" class="easyui-dialog" style="width:480px;height:480px;padding:5px 5px 5px 5px;"
             modal="true" closed="true" buttons="#dlg-buttons">
 		<form id="ffadd" action="" method="post" enctype="multipart/form-data">
 	        				  <input type="hidden" name="id">
@@ -81,7 +81,7 @@
 				             	<tr>
 				             		<td>仓库名称:</td>
 				             		<td>
-				             		    <input class="easyui-validatebox" type="text" name="storage_name" id="storage_name" data-options="required:true"></input>
+				             		    <input class="easyui-validatebox" type="text" style="width:300px" name="storage_name" id="storage_name" data-options="required:true"></input>
 				             		</td>
 				             	</tr>
 				             	<tr>

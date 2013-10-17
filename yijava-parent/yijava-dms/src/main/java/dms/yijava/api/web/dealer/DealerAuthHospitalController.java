@@ -88,6 +88,16 @@ public class DealerAuthHospitalController {
 		return result;
 	}
 	
+	@ResponseBody
+	@RequestMapping("savebyhospital")
+	public Result<Integer> savebyhospital(@RequestParam(value = "ids", required = true) String ids,
+			@RequestParam(value = "dealer_id", required = true) String dealer_id,
+			@RequestParam(value = "category_id", required = true) String category_id) {
+		Result<Integer> result=new Result<Integer>(0, 0);
+		
+		return result;
+	}
+	
 	
 	@ResponseBody
 	@RequestMapping("update")
@@ -104,14 +114,18 @@ public class DealerAuthHospitalController {
 	
 	@ResponseBody
 	@RequestMapping("delete")
-	public Result<String> delete(@RequestParam(value = "ids", required = true) String ids) {
+	public Result<Integer> delete(@RequestParam(value = "ids", required = true) String ids) {
+		Result<Integer> result=new Result<Integer>(0, 0);
 		try {
-			dealerAuthHospitalService.deleteEntity(ids);
-			return new Result<String>(ids, 1);
+			dealerAuthHospitalService.deleteEntityByIds(ids);
+			result.setData(1);
+			result.setState(1);
+			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
+			result.setError(new ErrorCode(e.toString()));
 		}
-		return new Result<String>(ids, 0);
+		return result;
 	}
 	
 	@ResponseBody

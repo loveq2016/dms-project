@@ -48,16 +48,16 @@
 					rownumbers="true" singleSelect="true" pagination="true" sortName="dealer_id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
-							<th field="dealer_name" width="200" align="center" sortable="true">经销商</th>
-							<th field="storage_name" width="200" align="center" sortable="true">仓库名称</th>
-							<th field="province" width="100" align="center" sortable="true">省份</th>
-							<th field="city" width="100" align="center" sortable="true">城市</th>
-							<th field="category_name" width="100" align="center" sortable="true">仓库类型</th>
-							<th field="postcode" width="100" align="center" sortable="true">邮编</th>
-							<th field="address" width="200" align="center" sortable="true">地址</th>
-							<th field="area" width="200" align="center" sortable="true">区或乡</th>
-							<th field="phone" width="100" align="center" sortable="true">电话</th>
-							<th field="tex" width="100" align="center" sortable="true">邮编</th>
+							<th field="dealer_name" width="200" align="left" sortable="true">经销商</th>
+							<th field="storage_name" width="200" align="left" sortable="true">仓库名称</th>
+							<th field="province" width="100" align="left" sortable="true">省份</th>
+							<th field="city" width="100" align="left" sortable="true">城市</th>
+							<th field="category_name" width="100" align="left" sortable="true">仓库类型</th>
+							<th field="postcode" width="100" align="left" sortable="true">邮编</th>
+							<th field="address" width="200" align="left" sortable="true">地址</th>
+							<th field="area" width="200" align="left" sortable="true">区或乡</th>
+							<th field="phone" width="100" align="left" sortable="true">电话</th>
+							<th field="tex" width="100" align="left" sortable="true">邮编</th>
 						</tr>
 					</thead>
 				</table>
