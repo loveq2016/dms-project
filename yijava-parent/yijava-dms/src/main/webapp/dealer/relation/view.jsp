@@ -29,7 +29,9 @@
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>			   
+						<restrict:function funId="204">
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>	
+						</restrict:function>		   
 					</div>
 				</div>
 			</div>
@@ -69,9 +71,15 @@
 					</thead>
 				</table>
 				<div id="tb1">
-					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addRelation()">添加</a>
-					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editRelation()">编辑</a>
-					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteRelation()">删除</a>
+					<restrict:function funId="205">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addRelation()">添加</a>
+					</restrict:function>
+					<restrict:function funId="206">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editRelation()">编辑</a>
+					</restrict:function>
+					<restrict:function funId="207">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteRelation()">删除</a>
+					</restrict:function>
 				</div>
     	</div>
 	
