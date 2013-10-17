@@ -52,22 +52,21 @@ public class OrderDetailController {
 	@RequestMapping("save")
 	public Result<Integer> save(@ModelAttribute("entity") OrderDetail entity) {
         DecimalFormat df = new DecimalFormat("#.00");
-		double price=Double.parseDouble(entity.getOrder_price());
 		if(StringUtils.isEmpty(entity.getDiscount()))
-			entity.setDiscount("10");
-		double discount=(double) (Double.parseDouble(entity.getDiscount()) * 0.1);
-		double m=price*(Integer.parseInt(entity.getOrder_number_sum()))*discount;
+			entity.setDiscount(entity.getOrder_price());
+		double discount=(double) (Double.parseDouble(entity.getDiscount()));
+		double m=Integer.parseInt(entity.getOrder_number_sum())*discount;
 		entity.setOrder_money_sum(df.format(m));
-		OrderDetail d=orderDetailService.getOrderDetail(entity);
-		if(d==null){
+		//OrderDetail d=orderDetailService.getOrderDetail(entity);
+		//if(d==null){
 			orderDetailService.saveEntity(entity);
 			//修改订单总数，共计
 			Order moneyAndNumberObj=orderService.getOrderDetailMoneyAndNumber(entity.getOrder_code());
 			orderService.updateMoneyNum(moneyAndNumberObj);
 			return new Result<Integer>(1, 1);
-		}else{
-			return new Result<Integer>(1, 2);
-		}
+		//}else{
+			//return new Result<Integer>(1, 2);
+		//}
 	}
 	
 	@ResponseBody

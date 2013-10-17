@@ -43,7 +43,9 @@ public class DealerAuthDiscountController {
 		try {
 			dealerAuthDiscountService.saveEntity(entity);
 			return new Result<String>(entity.getDealer_id(), 1);
-		} catch (Exception e) {
+		}catch (org.springframework.dao.DuplicateKeyException e){
+			return new Result<String>(entity.getDealer_id(), 2);
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		return new Result<String>(entity.getDealer_id(), 0);
@@ -56,6 +58,8 @@ public class DealerAuthDiscountController {
 		try {
 			dealerAuthDiscountService.updateEntity(entity);
 			return new Result<String>(entity.getDealer_id(), 1);
+		}catch (org.springframework.dao.DuplicateKeyException e){
+			return new Result<String>(entity.getDealer_id(), 2);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

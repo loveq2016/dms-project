@@ -41,13 +41,14 @@
 					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
-							<th field="item_number" width="150" align="center" sortable="true">产品编号</th>
-							<th field="cname" width="200" align="center" sortable="true">中文名称</th>
-							<th field="ename" width="200" align="center" sortable="true">英文说明</th>
-							<th field="remark" width="400" align="center">描述</th>
-							<th field="price" width="150" align="center">价格</th>
-							<th field="order_company" width="150" align="center">订购单位</th>
-							<th field="is_order" width="100" align="center" formatter="formatterIs_order">是否可订货</th>
+							<th field="item_number" width="50" align="center" sortable="true">产品编号</th>
+							<th field="cname" width="150" align="center" sortable="true">中文名称</th>
+							<th field="ename" width="150" align="center" sortable="true">英文说明</th>
+							<th field="models" width="150" align="center" sortable="true">规格型号</th>
+							<th field="remark" width="100" align="center">描述</th>
+							<th field="price" width="100" align="center">价格</th>
+							<th field="order_company" width="50" align="center">订购单位</th>
+							<th field="is_order" width="90" align="center" formatter="formatterIs_order">是否可订货</th>
 						</tr>
 					</thead>
 				</table>
@@ -77,7 +78,11 @@
               	<tr>
              		<td>英文说明:</td>
              		<td><input name="ename" class="easyui-validatebox" required="true"  style="width:250px"></td>
-             	</tr>            	
+             	</tr>     
+               	<tr>
+             		<td>规格型号:</td>
+             		<td><input name="models" class="easyui-validatebox" required="true"  style="width:250px"></td>
+             	</tr>                	
              	<tr>
              		<td>描述:</td>
              		<td><input name="remark" style="width:250px"></td>
@@ -96,7 +101,7 @@
              			<input type="radio" name="is_order"  value="1"> 是
                 		<input type="radio" name="is_order"  value="0"> 否
                 	</td>
-             	</tr>                	
+             	</tr>              	
               	<tr>
              		<td>产品分类:</td>
              		<td>

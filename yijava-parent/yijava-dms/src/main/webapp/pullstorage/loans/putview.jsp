@@ -164,6 +164,7 @@
 							<th data-options="field:'fk_storage_id',width:100,align:'center'" hidden="true"></th>
 							<th data-options="field:'storage_name',width:100,align:'center'" sortable="true">仓库</th>
 							<th data-options="field:'product_item_number',width:100,align:'center'" sortable="true">产品编码</th>
+							<th data-options="field:'models',width:60,align:'center'" sortable="true">规格型号</th>
 							<th data-options="field:'batch_no',width:200,align:'center'" sortable="true">产品批次</th>
 							<th data-options="field:'valid_date',width:100,align:'center'" formatter="formatterdate" sortable="true">有效日期</th>
 							<th data-options="field:'inventory_number',width:80,align:'center'" sortable="true">库存量</th>
