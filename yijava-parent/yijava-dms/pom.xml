@@ -14,8 +14,6 @@
 			<artifactId>yijava-common</artifactId>
 			<version>1.0.0</version>
 		</dependency>
-
-
 		<dependency>
 			<groupId>com.yijava</groupId>
 			<artifactId>yijava-orm</artifactId>

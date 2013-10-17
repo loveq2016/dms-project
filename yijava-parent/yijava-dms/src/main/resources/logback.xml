@@ -25,12 +25,6 @@
 	        <user>root</user>
 	        <password>8490d5357b</password>
 	      </dataSource>
-	       <!--  <dataSource class="com.mchange.v2.c3p0.ComboPooledDataSource">
-	        <driverClass>${jdbc.driver}</driverClass>
-	        <jdbcUrl>${jdbc.url}</jdbcUrl>
-	        <user>${jdbc.username}</user>
-	        <password>${jdbc.password}</password>
-	      </dataSource> -->
 	    </connectionSource>
 	 </appender>
 	 
