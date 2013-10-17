@@ -12,6 +12,7 @@ public class DeliverDetail {
 	private String deliver_code;
 	private String order_code;
 	private String order_detail_id;
+	private String type;
 	private String product_item_number;
 	private String product_name;
 	private String models;

@@ -54,8 +54,8 @@
 							<th field="express_code" width="120" align="center" sortable="true">快递号</th>
 							<th field="deliver_code" width="120" align="center" sortable="true">收货单号</th>
 							<th field="cm" width="50" align="center" formatter="formatterCM">发货方</th>
-							<th field="express_date" width="100" align="center" sortable="true" formatter="formatterdate">发货日期</th>
-							<th field="consignee_date" width="100" align="center" sortable="true" formatter="formatterdate">收货日期</th>
+							<th field="express_date" width="100" align="center" sortable="true">发货日期</th>
+							<th field="consignee_date" width="100" align="center" sortable="true">收货日期</th>
 							<th field="totalMoney" width="100" align="center" sortable="true" >金额</th>
 							<th field="consignee_status" width="100" align="center" sortable="true" formatter="formatterConsigneeStatus">单据状态</th>
 							<restrict:function funId="138">
@@ -129,9 +129,10 @@
 						<thead>
 							<tr>
 							<th data-options="field:'product_name',width:100,align:'center'" sortable="true">产品名称</th>
+							<th data-options="field:'models',width:100,align:'center'" sortable="true">规格型号</th>
 							<th data-options="field:'express_sn',width:100,align:'center'" sortable="true">产品批号</th>
-							<th data-options="field:'validity_date',width:100,align:'center'" sortable="true" formatter="formatterdate">有效期</th>
-							<th data-options="field:'abc',width:100,align:'center'">销售单位</th>
+							<th data-options="field:'validity_date',width:100,align:'center'" sortable="true">有效期</th>
+							<th data-options="field:'order_company',width:100,align:'center'">销售单位</th>
 							<th data-options="field:'express_num',width:100,align:'center'">销售数量</th>
 							<th data-options="field:'totalMoney',width:100,align:'center'">含税销售价格</th>
 							</tr>
@@ -228,6 +229,8 @@
 					if (jsonobj.state == 1) {  
 						 $('#dg').datagrid('reload');
 						 $('#dlgDeliverDetail').dialog('close');
+					}else if (jsonobj.state == 2) {  
+						$.messager.alert('提示','Sn重复，请联系客服','error');	
 					}else{
 						$("#submitConsignee").linkbutton('enable');
 						$.messager.alert('提示','Error!','error');	

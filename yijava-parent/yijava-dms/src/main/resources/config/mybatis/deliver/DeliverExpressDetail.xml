@@ -24,7 +24,10 @@
 	</select>
  	<select id="selectByObject" resultType="dms.yijava.entity.deliver.DeliverExpressDetail">
  		select * from (
-			select *,(express_num * order_price * discount) AS totalMoney from dms.tb_deliver_express_detail 
+			select t1.*,t2.order_company,
+			if(discount=0.00,express_num * order_price,express_num * discount) AS totalMoney 
+			from dms.tb_deliver_express_detail t1 
+			left join dms.tb_product t2 on t1.product_item_number = t2.item_number
 		)t	
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>

@@ -95,6 +95,21 @@
 									<td></td>
 									<td>订单日期:</td>	
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="order_date"></input></td>
+									<td></td>
+									<td>订单类型</td>
+									<td>
+										<input name="order_type" width="200px" class="easyui-combobox" id="order_type" readonly="readonly"
+											data-options="
+												valueField: 'id',
+												textField: 'value',
+												panelHeight:'auto',
+												data: [
+													{id: '0',value: '普通订单'},
+													{id: '1',value: '试用订单'},
+													{id: '2',value: '退换货订单'},
+													]" />
+									</td>	
+								
 								</tr>
 								<tr>
 									<td>出货单号:</td>	
@@ -145,10 +160,11 @@
 							<tr>
 							<th data-options="field:'product_name',width:100,align:'center'" sortable="true">产品名称</th>
 							<th data-options="field:'models',width:65,align:'center'" sortable="true">产品规格</th>
+							<th data-options="field:'type',width:80,align:'center'" sortable="true" formatter="formattertype">类型</th>
 							<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">订单数量</th>
 							<th data-options="field:'deliver_number_sum',width:80,align:'center',editor:'numberbox'">发货数量</th>
-							<th data-options="field:'deliver_date',width:100,align:'center',editor:'datebox'" formatter="formatterdate">预计发货日期</th>
-							<th data-options="field:'arrival_date',width:100,align:'center',editor:'datebox'" formatter="formatterdate">预计到货日期</th>
+							<th data-options="field:'deliver_date',width:100,align:'center',editor:'datebox'">预计发货日期</th>
+							<th data-options="field:'arrival_date',width:100,align:'center',editor:'datebox'">预计到货日期</th>
 							<th data-options="field:'deliver_remark',width:150,align:'center',editor:'text'">备注</th>
 							</tr>
 						</thead>
@@ -168,7 +184,7 @@
 							<th data-options="field:'models',width:65,align:'center'" sortable="true">产品规格</th>
 							<th data-options="field:'express_num',width:80,align:'center'">出货数量</th>
 							<th data-options="field:'express_sn',width:100,align:'center'">规格、批号</th>
-							<th data-options="field:'validity_date',width:100,align:'center'" formatter="formatterdate">有效期</th>
+							<th data-options="field:'validity_date',width:100,align:'center'">有效期</th>
 							<th data-options="field:'remark',width:100,align:'center'">备注</th>
 							<restrict:function funId="151">
 								<th data-options="field:'product_sn',width:100,align:'center'" formatter="formatterProductSn">序列号</th>
@@ -303,6 +319,14 @@
 				return '<span>全部出货</span>'; 
 			else if(value=='5')
 				return '<span>部分出货</span>'; 
+		}
+		
+		
+		function formattertype(value, row, index){
+			if(value=='0')
+				return '<span>正常</span>'; 
+			else if(value=='1')
+				return '<span>其他</span>'; 
 		}
 		
 		function formatterCheckStatus(value, row, index){

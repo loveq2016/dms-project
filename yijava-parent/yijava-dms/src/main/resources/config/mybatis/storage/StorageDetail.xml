@@ -51,12 +51,12 @@
 	
 	
 	<insert id="saveStorageDetail" parameterType="dms.yijava.entity.storage.StorageDetail">
-		insert into dms.tb_storage_detail(fk_storage_id,fk_dealer_id,product_item_number,batch_no,inventory_number,valid_date)
-		values(#{fk_storage_id},#{fk_dealer_id},#{product_item_number},#{batch_no},#{inventory_number},#{valid_date})
+		insert into dms.tb_storage_detail(fk_storage_id,fk_dealer_id,product_item_number,models,batch_no,inventory_number,valid_date)
+		values(#{fk_storage_id},#{fk_dealer_id},#{product_item_number},#{models},#{batch_no},#{inventory_number},#{valid_date})
 	</insert>
 	
 	<update id="updateStorageDetail" parameterType="dms.yijava.entity.storage.StorageDetail">
-    	update dms.tb_storage_detail set inventory_number=inventory_number+#{inventory_number}
+    	update dms.tb_storage_detail set inventory_number=inventory_number+#{inventory_number},models=#{models}
     	where fk_storage_id=#{fk_storage_id} and fk_dealer_id=#{fk_dealer_id} 
     	and product_item_number=#{product_item_number} and batch_no =#{batch_no}
     </update>

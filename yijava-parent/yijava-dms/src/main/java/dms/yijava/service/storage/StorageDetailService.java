@@ -70,6 +70,7 @@ public class StorageDetailService {
 			storageDetail.setProduct_item_number(deliverExpressDetail.getProduct_item_number());
 			storageDetail.setInventory_number(deliverExpressDetail.getExpress_num());
 			storageDetail.setBatch_no(deliverExpressDetail.getExpress_sn());
+			storageDetail.setModels(deliverExpressDetail.getModels());
 			storageDetail.setValid_date(deliverExpressDetail.getValidity_date());
 			StorageDetail  tempStorageDetail = storageDetailDao.getObject(".queryStorageDetail",storageDetail);
 			if (tempStorageDetail == null) {

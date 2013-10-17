@@ -114,6 +114,8 @@ public class OrderDeliverController {
 				return new Result<String>(deliver_code, 0);
 			}
 			return new Result<String>(deliver_code, 0);
+		}catch (org.springframework.dao.DuplicateKeyException e){
+			return new Result<String>(deliver_code, 2);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
