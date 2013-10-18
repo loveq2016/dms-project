@@ -267,7 +267,7 @@
 	            }else{
 	            	$("input[name='status']:eq(1)").attr("checked", "checked"); 
 	            }
-	            
+	            loadProvince();
 	            url = basePath + 'api/dealer/update';
 	          }else{
 					$.messager.alert('提示','请选中数据!','warning');				

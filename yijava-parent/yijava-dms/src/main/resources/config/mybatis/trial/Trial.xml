@@ -12,9 +12,9 @@
 				AND tb_trial.status  in (${statuses})
 			</if>
 			<!-- 增加是否提交给当前用户审核的过滤 start -->
-			<if test="check_id != null and check_id != '' ">
+			<!-- if test="check_id != null and check_id != '' ">
 				AND trial_id in (select bussiness_id from tb_flow_record  where check_id= #{check_id} and flow_id=#{flow_id})
-			</if>
+			</if-->
 			<!-- 增加是否提交给当前用户审核的过滤 end -->
 			<if test="dealer_user_id != null and dealer_user_id != '' ">
 				AND dealer_user_id = #{dealer_user_id}
@@ -66,7 +66,7 @@
 			tb_trial.hospital_name,tb_trial.reason,tb_trial.trial_num_sum,tb_trial.create_time,
 			tb_trial.status,tb_trial.last_update
 			 from tb_trial 
-			
+			 LEFT JOIN tb_flow_record tfr ON tb_trial.trial_id=tfr.bussiness_id AND tfr.check_id= #{check_id} AND flow_id=#{flow_id}) t 
 			<include refid="adsWhere" />
 			<include refid="adsOrder" />
 			limit #{offset},#{pagesize}

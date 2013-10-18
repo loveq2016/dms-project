@@ -37,9 +37,11 @@
           <label>Validation Code/验证码：</label>
           <input type="text" class="ipt code" value="" name="captcha" onkeydown="on_return();">&nbsp;&nbsp;
           <img id="captchaImg" src="getCaptcha" width="84" height="32"  align="absmiddle" style="cursor:hand" onclick="javascript:reloadValidateCode();" title="看不请?点击刷新"/>
-          <!-- <img src="images/code.gif" width="84" height="32"> <a href="javascript:reloadValidateCode();">看不请?</a>-->
+          <!-- <img src="images/code.gif" width="84" height="32"> <a href="javascript:reloadValidateCode();">看不请?</a>--><div id="loading_img" width="16" height="11" ></div>
         </div>
+        
         <div class="formline">
+        	
           <input type="button" name="loginbtn" id="loginbtn" value="Login/登录" class="btn" onclick="login()">
         </div>
       </form>
@@ -68,20 +70,32 @@
 				error : function(request) {
 					$.messager.alert('提示',error,'error');
 				},
+				beforeSend:StartRequest,
 				success:function(msg){
 					var jsonobj= eval('('+msg+')'); 
 					if(jsonobj.state=='0'){
 						
 						$('#loginbtn').removeAttr("disabled"); 
-				   		$.messager.alert('提示',jsonobj.error.msg,'warning');				   		
+				   		$.messager.alert('提示',jsonobj.error.msg,'warning');	
+				   		EndResponse();
 				   		
 				   	}else{
 				   		location.href ="main.jsp";
-				   	}			   		
+				   	}			
+					
 				}	
 			});
 		}
 		
+		function StartRequest(){
+				$('#loginbtn').attr('disabled',"true");
+				
+			   $('#loading_img').html('<img src="images/ajloading.gif"  width="16" height="11" />');
+		}
+		function EndResponse(data){
+			$('#loginbtn').removeAttr("disabled"); 
+			   $('#loading_img').html("");
+			}
 		function reloadValidateCode() {
 			$("#captchaImg").attr("src","getCaptcha?date = " + new Date() + Math.floor(Math.random()*24));
 		}
