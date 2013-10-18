@@ -40,6 +40,12 @@ public class DealerRelationFunController {
 		return dealerRelationFunService.getList();
 	}
 	
+	@ResponseBody
+	@RequestMapping("dealerlist")
+	public List<DealerRelationFun> dealerlist(HttpServletRequest request) {
+		List<PropertyFilter> filters = PropertyFilters.build(request);
+		return dealerRelationFunService.getDealerRelationList(filters);
+	}
 	
 
 	@ResponseBody

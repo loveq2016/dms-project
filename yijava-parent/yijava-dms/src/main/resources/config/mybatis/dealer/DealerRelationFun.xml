@@ -3,6 +3,12 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="DealerRelationFun">
+<sql id="adsWhere">
+	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">and dealer_id =#{dealer_id}</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">and parent_dealer_id =#{parent_dealer_id}</if>
+	</trim>
+</sql>
 
 <sql id="adsOrder">
 	<choose>
@@ -14,7 +20,6 @@
 	</choose>
 </sql>
 
-    
 <select id="selectByObjectcount" resultType="long">
 	select count(1) from (
 		select t1.id,t2.dealer_id,dealer_name,dealer_code,category_name from dms.tb_dealer_relation  t1 
@@ -53,9 +58,12 @@
 		select dealer_id,dealer_name,dealer_code from dms.tb_dealer where  category_id = 4 
 	</select>
 	
+	 <select id="selectRelationList" resultType="dms.yijava.entity.dealer.DealerRelationFun">
+		select * from dms.tb_dealer_relation 
+		<include refid="adsWhere" />
+	</select>
+	
 	<delete id="deleteByPrimaryKey" parameterType="int">
 		delete from dms.tb_dealer_relation where id = #{id}
 	</delete>
-	
-
 </mapper>
