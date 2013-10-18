@@ -26,6 +26,7 @@ public class CaptchaUtils {
 	
 	public static Integer FONT_SIZE = 16;
 	
+	private static String[] chars={"2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","J","K","L","M","N","P","Q","R","S","T","U","V","W","X","Y","Z"};
 	/**
 	 * 生成GIF动画验证码
 	 * 
@@ -193,7 +194,13 @@ public class CaptchaUtils {
 	 * 生成随机字符的方法
 	 */
 	public static String getRandomChar() {
-		int rand = (int) Math.round(Math.random() * 2);
+		
+		Random ran = new Random();
+		int index = ran.nextInt(chars.length);
+		return chars[index];
+		
+		
+		/*int rand = (int) Math.round(Math.random() * 2);
 		long itmp = 0;
 		char ctmp = '\u0000';
 		// 根据rand的值来决定是生成一个大写字母，小写字母和数字
@@ -212,7 +219,7 @@ public class CaptchaUtils {
 		default:
 			itmp = Math.round(Math.random() * 9);
 			return String.valueOf(itmp);
-		}
+		}*/
 
 	}
 	
