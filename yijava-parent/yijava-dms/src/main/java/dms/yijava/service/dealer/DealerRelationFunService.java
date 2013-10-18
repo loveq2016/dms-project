@@ -22,7 +22,6 @@ public class DealerRelationFunService {
 	@Autowired
 	private DealerRelationFunDao  dealerRelationFunDao ;
 	
-	
 	public JsonPage<DealerRelationFun> paging(PageRequest pageRequest,List<PropertyFilter> filters) {
 		Map<String,String> parameters = new HashMap<String,String>();
 		for (PropertyFilter propertyFilter : filters) {
@@ -37,6 +36,15 @@ public class DealerRelationFunService {
 	public List<DealerRelationFun> getList(){
 		HashMap<String,String> parameters = new HashMap<String,String>();
 		return dealerRelationFunDao.find(parameters);
+	}
+	
+	public List<DealerRelationFun> getDealerRelationList(List<PropertyFilter> filters){
+		Map<String,String> parameters = new HashMap<String,String>();
+		for (PropertyFilter propertyFilter : filters) {
+			String propertyKey = propertyFilter.getPropertyNames()[0];
+			parameters.put(propertyKey, propertyFilter.getMatchValue());
+		}
+		return dealerRelationFunDao.find(".selectRelationList", parameters);
 	}
 
 	public void saveEntity(DealerRelationFun entity) {
