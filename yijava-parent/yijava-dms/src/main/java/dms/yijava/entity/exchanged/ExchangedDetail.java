@@ -11,6 +11,7 @@ public class ExchangedDetail {
 	private String storage_name;
 	private String exchanged_code;
 	private String product_item_number;
+	private String models;
 	private String batch_no;
 	private String exchanged_number;
 	private String valid_date;
