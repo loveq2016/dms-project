@@ -48,7 +48,30 @@
 								                    textField:'dealer_name',
 								                    panelHeight:'auto'
 						            			"/>
-									</td>						
+									</td>				
+									
+									<td width="50">状态:</td>
+									<td width="270">										
+										<input name="order_status" class="easyui-combobox" data-options="
+											valueField: 'id',
+											textField: 'value',
+											data: [{
+												id: '0',
+												value: '未提交'
+											},{
+												id: '1',
+												value: '已提交'
+											},{
+												id: '2',
+												value: '驳回'
+											},{
+												id: '3',
+												value: '已审核'
+											},{
+												id: '4',
+												value: '已完成'
+											}]" />
+									</td>		
 								</tr>
 							</table>
 						</form>
@@ -80,7 +103,11 @@
 							<th data-options="field:'create_time',width:200" formatter="formatterdate">申请日期</th>	
 							<th data-options="field:'status',width:90" sortable="true" formatter="formatterstatus">单据状态</th>
 							<th data-options="field:'notice',width:90"  hidden="true">单据状态</th>
-							<th data-options="field:'id',width:90" sortable="true" formatter="formatterdesc">明细</th>							
+							<th data-options="field:'id',width:90" sortable="true" formatter="formatterdesc">明细</th>	
+							<th data-options="field:'check_id',width:80,align:'center'"></th>
+							<restrict:function funId="128">
+								<th data-options="field:'custom2',width:80,align:'center'" formatter="formatterCheck">审核</th>
+							</restrict:function>						
 						</tr>
 					</thead>
 				</table>
@@ -499,6 +526,7 @@
 					 pageList: [12, 20, 30], 
 					onLoadSuccess:function(data){ 
 					  $(".questionBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
+					  $(".checkBtn").linkbutton({ plain:true, iconCls:'icon-check' });
 				 }
 		});
 		
@@ -527,9 +555,9 @@
 				 return '<span style="color:green" >未提交</span>'; 
 				else if(value=='1')
 					{
-						if(row.notice=='1')
-							return '<span style="color:red">已提交-待处理</span>'; 
-						else
+						//if(row.notice=='1')
+							//return '<span style="color:red">已提交-待处理</span>'; 
+						//else
 							return '<span style="color:red">已提交</span>'; 	
 					}
 					
@@ -541,6 +569,11 @@
 					return '<span style="color:red">已完成</span>'; 
 			
 		}
+		 
+		 function formatterCheck (value, row, index) {
+				var d=(typeof(row.check_id) != "undefined" && row.record_status=='0') ?'':'disabled';
+				return '<a class="checkBtn" '+d+' href="javascript:void(0)" onclick="CheckEntity('+index+')">审核</a>'; 
+			}
 		
 	    function openview(t){	    	
 	    	  $("#test").window({
@@ -578,7 +611,9 @@
 		    	filter_ANDS_hospital_id: $("#ffquery input[name=hospital_id]").val(),
 		    	filter_ANDS_dealer_user_id: $("#ffquery input[name=querydealer_id]").val(),
 		    	filter_ANDS_q_start_time: $("#ffquery input[name=q_start_time]").val(),
-		    	filter_ANDS_q_end_time: $("#ffquery input[name=q_end_time]").val()
+		    	filter_ANDS_q_end_time: $("#ffquery input[name=q_end_time]").val(),
+		    	filter_ANDS_status: $("#ffquery input[name=order_status]").val()
+		    	
 		    });
 		}
 		
@@ -719,7 +754,8 @@
 		/**
 		审核
 		*/
-		function CheckEntity(){
+		function CheckEntity(index){
+			$('#dg').datagrid('selectRow',index);
 			var row = $('#dg').datagrid('getSelected');
 			
 			if (row && row.status ==1){				

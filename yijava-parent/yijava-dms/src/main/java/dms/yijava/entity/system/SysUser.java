@@ -44,4 +44,5 @@ public class SysUser {
 	public List<UserDealer> userDealerList;
 	
 	public String parentIds;
+	public String[] childIds;
 }

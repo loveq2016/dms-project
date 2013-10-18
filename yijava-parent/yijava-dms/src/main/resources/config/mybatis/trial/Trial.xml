@@ -8,9 +8,13 @@
 			<if test="sales_user_ids != null and sales_user_ids != '' ">
 				sales_user_id in (${sales_user_ids})
 			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">
+				  and tb_trial.status=#{status}
+			</if>
 			<if test="statuses != null and statuses != '' ">
 				AND tb_trial.status  in (${statuses})
 			</if>
+			
 			<!-- 增加是否提交给当前用户审核的过滤 start -->
 			<!-- if test="check_id != null and check_id != '' ">
 				AND trial_id in (select bussiness_id from tb_flow_record  where check_id= #{check_id} and flow_id=#{flow_id})
@@ -64,11 +68,11 @@
 			select tb_trial.trial_id,tb_trial.trial_code,tb_trial.dealer_user_id,tb_trial.sales_user_id,tb_trial.dealer_name,
 			tb_trial.region_user_id,tb_trial.company_user_id,tb_trial.hospital_id,
 			tb_trial.hospital_name,tb_trial.reason,tb_trial.trial_num_sum,tb_trial.create_time,
-			tb_trial.status,tb_trial.last_update
+			tb_trial.status,tb_trial.last_update,tfr.check_id as check_id
 			 from tb_trial 
-			<if test="check_id != null and check_id != '' ">
+			<!-- <if test="check_id != null and check_id != '' "> -->
 			 LEFT JOIN tb_flow_record tfr ON tb_trial.trial_id=tfr.bussiness_id AND tfr.check_id= #{check_id} AND flow_id=#{flow_id}) t 
-			 </if>
+			<!--  </if> -->
 			<include refid="adsWhere" />
 			<include refid="adsOrder" />
 			limit #{offset},#{pagesize}

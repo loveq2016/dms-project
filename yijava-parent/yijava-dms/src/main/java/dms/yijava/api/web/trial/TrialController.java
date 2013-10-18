@@ -100,11 +100,13 @@ public class TrialController {
 			//是销售
 			filters.add(PropertyFilters.build("ANDS_sales_user_ids", currentUserId));
 			
+			filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
+			filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
 			trialPages=trialService.paging(pageRequest, filters);
 		}else
 		{
 			//不是销售，需要找到他对应的所有销售
-			filters.add(PropertyFilters.build("ANDS_sales_user_ids", this.listString(sysUser.getUserDealerList())));
+			filters.add(PropertyFilters.build("ANDS_sales_user_ids", this.listString(sysUser.getChildIds())));
 			
 			filters.add(PropertyFilters.build("ANDS_statuses","1,2,3,4"));
 			//filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
@@ -381,7 +383,19 @@ public class TrialController {
 		return listString;
 	}
 	
-	
+	public String listString(String[] ids) {
+		String listString = "";
+		for (int i = 0; i < ids.length; i++)
+		{
+			if (i == ids.length - 1) {
+				listString += ids[i];
+			}else {
+				listString += ids[i]+ ",";
+			}
+		}
+		return listString;
+		
+	}
 	
 	
 }

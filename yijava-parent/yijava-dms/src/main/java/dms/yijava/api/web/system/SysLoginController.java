@@ -119,6 +119,16 @@ public class SysLoginController {
 					/**/
 					List<UserDealer> userDealerList=userDealerFunService.getUserDealerList(sysUser.getId(),teams.split(","));//节点用户
 					List<String> list=userLayouService.getUserListById(sysUser.getId(),teams.split(","));
+					if(list!=null)
+					{
+						 int size=list.size();  
+						 String[] array = (String[])list.toArray(new String[size]);  
+					       /* for(int i=0;i<array.length;i++){  
+					            System.out.println(array[i]);  
+					        }*/  
+						sysUser.setChildIds(array);
+					}
+					 
 					sysUser.setUserDealerList(userDealerList);
 					sysUser.setTeams(teams);
 				}catch(Exception e){
