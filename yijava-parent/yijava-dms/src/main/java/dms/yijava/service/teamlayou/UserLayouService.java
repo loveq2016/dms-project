@@ -26,7 +26,7 @@ public class UserLayouService {
 		HashMap<String,Object> parameters = new HashMap<String,Object>();
 		parameters.put("user_id", user_id);
 		parameters.put("sourceIds", sourceIds);
-		return userLayouDao.find(parameters);
+		return userLayouDao.find(".selectUserListById",parameters);
 	}
 	public UserLayou getTeamIdsByUserId(String user_id){
 		UserLayou userLayou = userLayouDao.getObject(".selectTeamIdsByUserId", user_id);
