@@ -9,7 +9,10 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(deliver_code)">and deliver_code like CONCAT('%','${deliver_code}','%' ) </if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(deliver_status)">and deliver_status = #{deliver_status}</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(check_status)">and check_status = #{check_status}</if>
-			
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(start_date)"><![CDATA[ and create_date > CONCAT(#{start_date}' 00:00:00') ]]></if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(end_date)"> <![CDATA[ and create_date < CONCAT(#{end_date}' 23:59:59')]]></if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(start_date_order)"><![CDATA[ and order_date > CONCAT(#{start_date_order}' 00:00:00') ]]></if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(end_date_order)"> <![CDATA[ and order_date < CONCAT(#{end_date_order}' 23:59:59')]]></if>
 			<if test="dealer_ids != null and dealer_ids != '' ">AND dealer_id in (${dealer_ids})</if>
 			<if test="statuses != null and statuses != '' ">AND check_status  in (${statuses})</if>
 			<if test="check_id != null and check_id != '' ">AND deliver_id in (select bussiness_id from tb_flow_record  where check_id= #{check_id} and flow_id=#{flow_id})</if>
@@ -41,13 +44,14 @@
 	    limit #{offset},#{pagesize}
 	</select>
 		
-	<select id="queryDeliverNo" resultType="dms.yijava.entity.deliver.Deliver">
-		select LPAD(max(deliver_no)+1,3,0) as deliver_no from dms.tb_deliver WHERE create_date between CURDATE() AND CONCAT(CURDATE(),' 23:59:59')
+	<select id="queryDeliverNo" resultType="dms.yijava.entity.deliver.Deliver" parameterType="dms.yijava.entity.deliver.Deliver">
+		select LPAD(max(deliver_no)+1,3,0) as deliver_no from dms.tb_deliver WHERE dealer_id = ${dealer_id}
+		and create_date between CURDATE() AND CONCAT(CURDATE(),' 23:59:59')
 	</select>
 	
 	<insert id="insert" parameterType="dms.yijava.entity.deliver.Deliver" useGeneratedKeys="true" keyProperty="deliver_id">     
-		insert into dms.tb_deliver(deliver_code,deliver_no,order_id,order_code,order_date,create_date,remark,deliver_status,user_id,dealer_id,dealer_address_id) 
-		values(#{deliver_code},#{deliver_no},#{order_id},#{order_code},#{order_date},NOW(),#{remark},#{deliver_status},#{user_id},#{dealer_id},#{dealer_address_id});
+		insert into dms.tb_deliver(deliver_code,deliver_no,order_id,order_code,order_type,order_date,create_date,remark,deliver_status,user_id,dealer_id,dealer_address_id) 
+		values(#{deliver_code},#{deliver_no},#{order_id},#{order_code},#{order_type},#{order_date},NOW(),#{remark},#{deliver_status},#{user_id},#{dealer_id},#{dealer_address_id});
 	</insert>
 	
 	<insert id="update" parameterType="dms.yijava.entity.deliver.Deliver">     

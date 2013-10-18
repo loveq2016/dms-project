@@ -16,18 +16,21 @@ import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 
+import dms.yijava.dao.dealer.DealerDao;
 import dms.yijava.dao.deliver.DeliverDao;
 import dms.yijava.dao.deliver.DeliverDetailDao;
 import dms.yijava.dao.order.OrderDetailDao;
+import dms.yijava.entity.dealer.Dealer;
 import dms.yijava.entity.deliver.Deliver;
 import dms.yijava.entity.deliver.DeliverDetail;
-import dms.yijava.entity.order.Order;
 import dms.yijava.entity.order.OrderDetail;
 
 @Service
 @Transactional
 public class DeliverService {
 
+	@Autowired
+	private DealerDao dealerDao;
 	@Autowired
 	private DeliverDao  deliverDao ;
 	@Autowired
@@ -56,15 +59,18 @@ public class DeliverService {
 	
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
 	public void saveEntity(Deliver entity,DeliverDetail deliverDetail) {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-		Deliver deliverNo = deliverDao.getObject(".queryDeliverNo", null);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");
+		//SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+		Deliver deliverNo = deliverDao.getObject(".queryDeliverNo", entity);
 		if(null== deliverNo || StringUtils.isBlank(deliverNo.getDeliver_no())){
 			deliverNo = new Deliver();
 			deliverNo.setDeliver_no("001");
 		}
-		if(StringUtils.isNotBlank(deliverNo.getDeliver_no())){
+		Dealer dealer = dealerDao.getObject(".select", entity.getDealer_id());
+		
+		if(StringUtils.isNotBlank(deliverNo.getDeliver_no()) && StringUtils.isNotBlank(dealer.getDealer_code())){
 			entity.setDeliver_no(deliverNo.getDeliver_no());
-			entity.setDeliver_code("TEST-"+formatter.format(new Date())+"-"+entity.getDeliver_no());
+			entity.setDeliver_code(dealer.getDealer_code()+"DS"+formatter.format(new Date())+deliverNo.getDeliver_no());
 			deliverDao.insert(entity);
 		}
 		if(StringUtils.isNotBlank(entity.getDeliver_id())){
@@ -90,6 +96,7 @@ public class DeliverService {
 						tempDeliverDetail.setDiscount(orderDetail.getDiscount());
 						tempDeliverDetail.setModels(orderDetail.getModels());
 						tempDeliverDetail.setOrder_number_sum(orderDetail.getOrder_number_sum());
+						tempDeliverDetail.setType(orderDetail.getType());
 						break;
 					}
 				}

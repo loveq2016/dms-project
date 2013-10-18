@@ -17,6 +17,7 @@ public class DeliverExpressDetail {
 	private String order_code;
 	private String product_item_number;
 	private String order_price;
+	private String order_company;
 	private String discount;
 	private String product_name;
 	private String models;

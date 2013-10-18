@@ -121,6 +121,7 @@ public class AdjustStorageService{
 				sd.setFk_storage_id(adjustStorageDetail.getFk_storage_id());
 				sd.setProduct_item_number(adjustStorageDetail.getProduct_item_number());
 				sd.setBatch_no(adjustStorageDetail.getBatch_no());
+				sd.setModels(adjustStorageDetail.getModels());
 				sd.setInventory_number(adjustStorageDetail.getAdjust_number());
 				storageDetailList.add(sd);
 			}

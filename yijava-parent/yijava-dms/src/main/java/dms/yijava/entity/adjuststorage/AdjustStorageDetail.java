@@ -11,6 +11,7 @@ public class AdjustStorageDetail {
 	private String storage_name;
 	private String adjust_storage_code;
 	private String product_item_number;
+	private String models;
 	private String batch_no;
 	private String adjust_number;
 	private String valid_date;

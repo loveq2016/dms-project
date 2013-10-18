@@ -37,16 +37,26 @@
 												}]" />
 									</td>
 								</tr>
-<!-- 								<tr> -->
-<!-- 									<td width="100">开始时间:</td> -->
-<!-- 									<td width="270"> -->
-<!-- 										<input name="start_date" id="start_date" class="easyui-datebox"></input> -->
-<!-- 									</td> -->
-<!-- 									<td width="100">结束时间:</td> -->
-<!-- 									<td width="270"> -->
-<!-- 										 <input name="end_date" id="end_date" class="easyui-datebox"></input> -->
-<!-- 									</td> -->
-<!-- 								</tr> -->
+								<tr>
+									<td width="100">订单开始时间:</td>
+									<td width="270">
+										<input name="start_date_order" id="start_date_order" class="easyui-datebox"></input>
+									</td>
+									<td width="100">订单结束时间:</td>
+									<td width="270">
+										 <input name="end_date_order" id="end_date_order" class="easyui-datebox"></input>
+									</td>
+								</tr>
+								<tr>
+									<td width="100">编制开始时间:</td>
+									<td width="270">
+										<input name="start_date" id="start_date" class="easyui-datebox"></input>
+									</td>
+									<td width="100">编制结束时间:</td>
+									<td width="270">
+										 <input name="end_date" id="end_date" class="easyui-datebox"></input>
+									</td>
+								</tr>
 							</table>
 						</form>
 					</div>
@@ -145,7 +155,19 @@
 					<td><input class="easyui-validatebox" type="text" style="width:200px;"
 						name="order_code" id="order_code" data-options="required:false" readonly="readonly"></input>
 					</td>
-					<td></td>
+					<td>订单类型</td>
+					<td>
+						<input name="order_type" width="200px" class="easyui-combobox" id="order_type" readonly="readonly"
+							data-options="
+								valueField: 'id',
+								textField: 'value',
+								panelHeight:'auto',
+								data: [
+									{id: '0',value: '普通订单'},
+									{id: '1',value: '试用订单'},
+									{id: '2',value: '退换货订单'},
+									]" />
+					</td>					
 					<td>发货类型:</td>
 					<td>
 						<input name="deliver_status" width="200px" class="easyui-combobox" id="deliver_status"
@@ -181,9 +203,10 @@
 							<th data-options="field:'product_name',width:100,align:'center'" sortable="true">产品名称</th>
 							<th data-options="field:'models',width:65,align:'center'" sortable="true">产品规格</th>
 							<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">数量</th>
+							<th data-options="field:'type',width:80,align:'center'" sortable="true" formatter="formattertype">类型</th>
 							<th data-options="field:'deliver_number_sum',width:80,align:'center',editor:'numberbox'">发货数量</th>
-							<th data-options="field:'deliver_date',width:100,align:'center',editor:'datebox'" formatter="formatterdate">预计发货日期</th>
-							<th data-options="field:'arrival_date',width:100,align:'center',editor:'datebox'" formatter="formatterdate">预计到货日期</th>
+							<th data-options="field:'deliver_date',width:100,align:'center',editor:'datebox'">预计发货日期</th>
+							<th data-options="field:'arrival_date',width:100,align:'center',editor:'datebox'">预计到货日期</th>
 							<th data-options="field:'deliver_remark',width:150,align:'center',editor:'text'">备注</th>
 							</tr>
 						</thead>
@@ -221,6 +244,21 @@
 									<td></td>
 									<td>订单日期:</td>	
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="order_date"></input></td>
+									<td></td>
+									<td>订单类型</td>
+									<td>
+										<input name="order_type" width="200px" class="easyui-combobox" id="order_type" readonly="readonly"
+											data-options="
+												valueField: 'id',
+												textField: 'value',
+												panelHeight:'auto',
+												data: [
+													{id: '0',value: '普通订单'},
+													{id: '1',value: '试用订单'},
+													{id: '2',value: '退换货订单'},
+													]" />
+									</td>	
+								
 								</tr>
 								<tr>
 									<td>出货单号:</td>	
@@ -259,9 +297,10 @@
 							<th data-options="field:'product_name',width:100,align:'center'" sortable="true">产品名称</th>
 							<th data-options="field:'models',width:65,align:'center'" sortable="true">产品规格</th>
 							<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">数量</th>
+							<th data-options="field:'type',width:80,align:'center'" sortable="true" formatter="formattertype">类型</th>
 							<th data-options="field:'deliver_number_sum',width:80,align:'center',editor:'numberbox'">发货数量</th>
-							<th data-options="field:'deliver_date',width:100,align:'center',editor:'datebox'" formatter="formatterdate">预计发货日期</th>
-							<th data-options="field:'arrival_date',width:100,align:'center',editor:'datebox'" formatter="formatterdate">预计到货日期</th>
+							<th data-options="field:'deliver_date',width:100,align:'center',editor:'datebox'">预计发货日期</th>
+							<th data-options="field:'arrival_date',width:100,align:'center',editor:'datebox'">预计到货日期</th>
 							<th data-options="field:'deliver_remark',width:150,align:'center',editor:'text'">备注</th>
 							</tr>
 						</thead>
@@ -344,6 +383,8 @@
 		    	filter_ANDS_deliver_status: $('input[name=deliver_status]').val(),
 		    	filter_ANDS_start_date: $('input[name=start_date]').val(),
 		    	filter_ANDS_end_date: $('input[name=end_date]').val(),
+		    	filter_ANDS_start_date_order: $('input[name=start_date_order]').val(),
+		    	filter_ANDS_end_date_order: $('input[name=end_date_order]').val()
 		    });
 		}
 		
@@ -352,6 +393,15 @@
 				return '<span>全部出货</span>'; 
 			else if(value=='5')
 				return '<span>部分出货</span>'; 
+		}
+		
+		
+		
+		function formattertype(value, row, index){
+			if(value=='0')
+				return '<span>正常</span>'; 
+			else if(value=='1')
+				return '<span>其他</span>'; 
 		}
 		
 		function formatterCheckStatus(value, row, index){
@@ -408,6 +458,7 @@
 				$("#dealer_id").val(row.dealer_id);
 				$("#dealer_name").val(row.dealer_name);
 				$("#dealer_address_id").val(row.dealer_address_id);
+				$('#order_type').combobox('setValue',row.type);
 				$('#deliver_status').combobox('enable');
 				$("#btnSetp1").show();
 				$("#btnSetp2").hide();

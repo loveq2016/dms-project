@@ -14,7 +14,7 @@ public class StorageDetail {
 	private String batch_no;
 	private String inventory_number;
 	private String valid_date;
-	
+	private String models;
 	private String storage_name;
 	private String dealer_name;
 	private String product_cname;

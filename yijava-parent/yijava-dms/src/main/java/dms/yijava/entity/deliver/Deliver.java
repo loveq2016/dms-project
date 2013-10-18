@@ -13,6 +13,7 @@ public class Deliver {
 	private String order_id;
 	private String order_code;
 	private String order_date;
+	private String order_type;
 	private String create_date;
 	private String remark;
 	private String deliver_status;

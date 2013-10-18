@@ -34,9 +34,9 @@
 	
 	
 	<insert id="insert" parameterType="dms.yijava.entity.deliver.DeliverDetail" useGeneratedKeys="true" keyProperty="delivery_detail_id">     
-		insert into dms.tb_delivery_detail(deliver_id,deliver_code,order_code,order_detail_id,product_item_number,product_name,
+		insert into dms.tb_delivery_detail(deliver_id,deliver_code,order_code,type,order_detail_id,product_item_number,product_name,
 			models,order_number_sum,order_price,discount,deliver_number_sum,deliver_date,arrival_date,deliver_remark) 
-		values(#{deliver_id},#{deliver_code},#{order_code},#{order_detail_id},#{product_item_number},#{product_name},
+		values(#{deliver_id},#{deliver_code},#{order_code},#{type},#{order_detail_id},#{product_item_number},#{product_name},
 			#{models},#{order_number_sum},#{order_price},#{discount},#{deliver_number_sum},#{deliver_date},#{arrival_date},#{deliver_remark});
 	</insert>
 	
