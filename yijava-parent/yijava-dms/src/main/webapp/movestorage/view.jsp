@@ -23,7 +23,7 @@
 									<td>
 									<c:if test="${user.fk_dealer_id!='0'}">
 										<input class="easyui-validatebox" disabled="disabled" id="move_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
-										<input class="easyui-validatebox" hidden="true" name="fk_move_storage_party_id" id="fk_move_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">
+										<input class="easyui-validatebox" type="hidden" name="fk_move_storage_party_id" id="fk_move_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">
 									</c:if>
 									<c:if test="${user.fk_department_id!='0'}">
 										<input class="easyui-combobox" name="fk_move_storage_party_id" id="fk_move_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
@@ -204,7 +204,7 @@
 									<tr>
 										<input type="hidden" name="fk_dealer_id" id="fk_dealer_id" value="${user.fk_dealer_id}"></input>
 										<td>仓库:</td>
-										<td width="100px">
+										<td width="160px">
 											<input class="easyui-combobox" name="fk_storage_id" id="fk_storage_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 						             			data-options="
 							             			url:'${basePath}api/storage/list?dealer_id=${user.fk_dealer_id}',
@@ -215,9 +215,9 @@
 						            			"/>
 										</td>
 										<td>产品编号:</td>	
-										<td width="100px"><input class="easyui-validatebox" type="text" name="product_item_number" id="product_item_number" ></input></td>
+										<td width="150px"><input class="easyui-validatebox" type="text" name="product_item_number" id="product_item_number" ></input></td>
 										<td>产品批次:</td>	
-										<td width="100px"><input class="easyui-validatebox" type="text" name="batch_no" id="batch_no" ></input></td>
+										<td width="150px"><input class="easyui-validatebox" type="text" name="batch_no" id="batch_no" ></input></td>
 									</tr>
 								</table>
 							</form>

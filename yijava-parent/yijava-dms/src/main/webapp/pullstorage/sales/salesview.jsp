@@ -16,15 +16,15 @@
 					<div style="padding: 10px 0 10px 60px">
 						<form id="ff" method="post">
 							<table>
-								<tr>
+								<tr height="30">
 									<input class="easyui-validatebox" type="hidden" name="type" id="type" value="3"/>
-									<td width="200">销售单号:</td>	
-									<td><input class="easyui-validatebox" type="text" name="pull_storage_code"></input></td>
-									<td width="180">经销商:</td>
-									<td>
+									<td width="100">销售单号:</td>	
+									<td width="270"><input class="easyui-validatebox" style="width:150px" type="text" name="pull_storage_code"></input></td>
+									<td width="100">经销商:</td>
+									<td width="270">
 										<c:choose>
 											<c:when test="${user.fk_dealer_id!='0'}">
-												<input class="easyui-validatebox" disabled="disabled" id="pull_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
+												<input class="easyui-validatebox" disabled="disabled" style="width:150px" id="pull_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
 												<input class="easyui-validatebox" type="hidden" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">					       	
 											</c:when>
 											<c:otherwise>
@@ -39,8 +39,8 @@
 											</c:otherwise>
 										</c:choose>
 									</td>
-									<td width="150">销售医院:</td>
-									<td><input class="easyui-validatebox" type="text" name="put_storage_party_name"></input></td>
+									<td width="100">销售医院:</td>
+									<td width="270"><input class="easyui-validatebox" style="width:150px" type="text" name="put_storage_party_name"></input></td>
 								</tr>
 								<tr>
 									<td width="50">状态:</td>
@@ -71,7 +71,7 @@
 										 <input name="sales_end_date" id="sales_end_date" class="easyui-datebox"></input>
 									</td>
 								</tr>
-								<tr>
+								<tr height="30">
 									<td width="100">提交时间开始日期:</td>
 									<td width="270">
 										<input name="pull_start_date" id="pull_start_date" class="easyui-datebox"></input>
@@ -100,11 +100,11 @@
 						<tr>
 							<th data-options="field:'id',width:10,align:'center'" hidden="true">id</th>
 							<th data-options="field:'pull_storage_party_name',width:150,align:'center'" sortable="true">经销商</th>
-							<th data-options="field:'pull_storage_code',width:100,align:'center'" sortable="true">销售单号</th>
+							<th data-options="field:'pull_storage_code',width:160,align:'center'" sortable="true">销售单号</th>
 							<th data-options="field:'put_storage_party_name',width:150,align:'center'" sortable="true">销售医院</th>
 							<th data-options="field:'total_number',width:80,align:'center'" sortable="true">总数量</th>
-							<th data-options="field:'sales_date',width:100,align:'center'" formatter="formatterdate" sortable="true">销售时间</th>
-							<th data-options="field:'pull_storage_date',width:100,align:'center'" formatter="formatterdate" sortable="true">提交时间</th>
+							<th data-options="field:'sales_date',width:150,align:'center'" formatter="formatterdate" sortable="true">销售时间</th>
+							<th data-options="field:'pull_storage_date',width:150,align:'center'" formatter="formatterdate" sortable="true">提交时间</th>
 							<th data-options="field:'status',width:80,align:'center'" formatter="formatterStatus" sortable="true">单据状态</th>
 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
 							<th data-options="field:'record_id',width:80,align:'center'" hidden="true"></th>
@@ -185,22 +185,22 @@
 					<form id="ffPullStorageDetail" method="post">
 							<table>
 								<tr>
-									<td width="100">经销商:</td>
-									<td>
-						            	<input class="easyui-validatebox" readonly="readonly" type="text" name="pull_storage_party_name"></input>
+									<td width="80">经销商:</td>
+									<td width="200">
+						            	<input class="easyui-validatebox" style="width:150px;" readonly="readonly" type="text" name="pull_storage_party_name"></input>
 									</td>
-									<td width="100">出售单号:</td>	
-									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="pull_storage_code"></input></td>
-									<td>提交时间:</td>	
-									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="pull_storage_date"></input></td>
+									<td width="80">出售单号:</td>	
+									<td width="200"><input class="easyui-validatebox" style="width:150px;" readonly="readonly" type="text" name="pull_storage_code"></input></td>
+									<td width="80">提交时间:</td>	
+									<td width="200"><input class="easyui-validatebox" readonly="readonly" type="text" name="pull_storage_date"></input></td>
 								</tr>
 								<tr>
-									<td width="100">销售医院:</td>
+									<td width="80">销售医院:</td>
 									<td>
-						            	<input class="easyui-validatebox" readonly="readonly" type="text" name="put_storage_party_name"></input>
+						            	<input class="easyui-validatebox" style="width:150px;" readonly="readonly" type="text" name="put_storage_party_name"></input>
 									</td>
 									<td width="50">状态:</td>
-									<td width="270">				
+									<td width="200">				
 										<input name="status" readonly="readonly" class="easyui-combobox" data-options="
 											valueField: 'id',
 											textField: 'value',
@@ -331,7 +331,7 @@
 									<tr>
 										<input type="hidden" name="fk_dealer_id" id="fk_dealer_id" value="${user.fk_dealer_id}"></input>
 										<td>仓库:</td>
-										<td width="100px">
+										<td width="160px">
 											<input class="easyui-combobox" name="fk_storage_id" id="fk_storage_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 						             			data-options="
 							             			url:'${basePath}api/storage/list?dealer_id=${user.fk_dealer_id}',
@@ -342,9 +342,9 @@
 						            			"/>
 										</td>
 										<td>产品编号:</td>	
-										<td width="100px"><input class="easyui-validatebox" type="text" name="product_item_number" id="product_item_number" ></input></td>
+										<td width="150px"><input class="easyui-validatebox" type="text" name="product_item_number" id="product_item_number" ></input></td>
 										<td>产品批次:</td>	
-										<td width="100px"><input class="easyui-validatebox" type="text" name="batch_no" id="batch_no" ></input></td>
+										<td width="150px"><input class="easyui-validatebox" type="text" name="batch_no" id="batch_no" ></input></td>
 									</tr>
 								</table>
 							</form>
