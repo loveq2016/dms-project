@@ -24,11 +24,27 @@
 									<td>
 										<input class="easyui-validatebox" type="text" name="address" id="address" data-options="required:false"></input>
 									</td>
+									
+									<td>省份:</td>
+									<td>
+										<input class="easyui-combobox" type="text" name="quprovince" id="quprovince" data-options="required:false"></input>
+									</td>
+									
+									<td>城市:</td>
+									<td>
+										<input class="easyui-combobox" type="text" name="qucity" id="qucity" data-options="required:false"></input>
+									</td>
+									
+									<td>区或乡:</td>
+									<td>
+										<input class="easyui-combobox" type="text" name="quarea" id="quarea" data-options="required:false"></input>
+									</td>
 								</tr>
 							</table>
 						</form>
 					</div>
 					<div style="text-align: right; padding:5px">
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="clearSearch()">清除查询</a>
 						<restrict:function funId="87">
 						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>
 						</restrict:function>
@@ -39,21 +55,21 @@
 			<div style="margin: 10px 0;"></div>
 
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" class="easyui-datagrid" title="查询结果" style="height: 430px"  method="get"
+				<table id="dg"  title="查询结果" style="height: 430px"  method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
 							<th field="id" width="200" align="left" hidden="true"></th>
-							<th field="storage_name" width="200" align="left" sortable="true">仓库名称</th>
-							<th field="province" width="100" align="left" sortable="true">省份</th>
-							<th field="city" width="100" align="left" sortable="true">城市</th>
+							<th field="storage_name" width="200" align="left" sortable="true">仓库名称</th>							
 							<th field="category_id" width="100" align="left" hidden="true"></th>
 							<th field="category_name" width="100" align="left" sortable="true">仓库类型</th>
 							<th field="hospital_name" width="100" align="left" hidden="true">医院名称</th>
 							<th field="status" width="100" align="left"  formatter="formatterStatus" sortable="true">状态</th>
-							<th field="postcode" width="100" align="left" sortable="true">邮编</th>
-							<th field="address" width="200" align="left" sortable="true">地址</th>
+							<th field="province" width="100" align="left" sortable="true">省份</th>
+							<th field="city" width="100" align="left" sortable="true">城市</th>
 							<th field="area" width="200" align="left" sortable="true">区或乡</th>
+							<th field="postcode" width="100" align="left" sortable="true">邮编</th>
+							<th field="address" width="200" align="left" sortable="true">地址</th>							
 							<th field="phone" width="100" align="left" sortable="true">电话</th>
 							<th field="tex" width="100" align="left" sortable="true">传真</th>
 						</tr>
@@ -87,7 +103,7 @@
 				             	<tr>
 				             		<td>仓库类型:</td>
 				             		<td>
-						            	<input name="category_id" class="easyui-combobox" 
+						            	<input name="category_id" style="width:300px" class="easyui-combobox" 
 							            	data-options="
 					             			url:'${basePath}/api/storageCategory/list',
 						                    method:'get',
@@ -119,43 +135,43 @@
 				             	<tr>
 				             		<td>省份:</td>
 				             		<td>
-				             		    <input class="easyui-validatebox" type="text" name="province" id="province" data-options="required:false"></input>
+				             		    <input class="easyui-combobox" type="text" style="width:300px" name="province" id="province" data-options="required:false"></input>
 				             		</td>
 				             	</tr>
 				             	<tr>
 				             		<td>城市:</td>
 				             		<td>
-				             		    <input class="easyui-validatebox" type="text" name="city" id="city" data-options="required:false"></input>
+				             		    <input class="easyui-combobox" type="text" style="width:300px" name="city" id="city" data-options="required:false"></input>
 				             		</td>
 				             	</tr>
 				             	<tr>
 				             		<td>区或乡:</td>
 				             		<td>
-				             		    <input class="easyui-validatebox" type="text" name="area" id="area" data-options="required:false"></input>
+				             		    <input class="easyui-combobox" type="text" style="width:300px" name="area" id="area" data-options="required:false"></input>
 				             		</td>
 				             	</tr>
 				             	<tr>
 				             		<td>地址:</td>
 				             		<td>
-				             		    <input class="easyui-validatebox" type="text" name="address" id="address" data-options="required:false"></input>
+				             		    <input class="easyui-validatebox" type="text" style="width:300px" name="address" id="address" data-options="required:false"></input>
 				             		</td>
 				             	</tr>
 				             	<tr>
 				             		<td>邮编:</td>
 				             		<td>
-				             		    <input class="easyui-validatebox" type="text" name="postcode" id="postcode" data-options="required:false"></input>
+				             		    <input class="easyui-validatebox" type="text" name="postcode" style="width:300px" id="postcode" data-options="required:false"></input>
 				             		</td>
 				             	</tr>
 				             	<tr>
 				             		<td>电话:</td>
 				             		<td>
-				             		    <input class="easyui-validatebox" type="text" name="phone" id="phone" data-options="required:false"></input>
+				             		    <input class="easyui-validatebox" type="text" name="phone" style="width:300px" id="phone" data-options="required:false"></input>
 				             		</td>
 				             	</tr>
 				             	<tr>
 				             		<td>传真:</td>
 				             		<td>
-				             		    <input class="easyui-validatebox" type="text" name="tex" id="tex" data-options="required:false"></input>
+				             		    <input class="easyui-validatebox" type="text" name="tex" style="width:300px" id="tex" data-options="required:false"></input>
 				             		</td>
 				             	</tr>
 				         </table>        	
@@ -168,12 +184,100 @@
 
 	<script type="text/javascript">
 	 	var url;
+	 	
+	 	loadProvinceforqu();
+	 	
 		function newEntity(){
 		    $('#dlg').dialog('open').dialog('setTitle','仓库添加');
 		    $('#ffadd').form('clear');
 		    initCheckBox();
 		    url = basePath +  'api/storage/save';
+		    
+		    loadProvince();
 		}
+		function loadProvinceforqu(){
+			
+			var quprovince =  $('#quprovince').combobox({
+					valueField:'areaid',
+					textField:'name',
+					editable:false,
+					url:basePath +'api/area/getarea_api?pid=0',
+					onChange:function(newValue, oldValue){
+						$.get(basePath +'api/area/getarea_api',{pid:newValue},function(data){
+							qucity.combobox("clear").combobox('loadData',data);
+							quarea.combobox("clear");
+						},'json');
+					},
+					onLoadSuccess:onLoadSuccess
+				});
+			
+			var qucity = $('#qucity').combobox({
+				valueField:'areaid',
+				textField:'name',
+				editable:false,
+				onChange:function(newValue, oldValue){
+					$.get(basePath +'api/area/getarea_api',{pid:newValue},function(data){
+						quarea.combobox("clear").combobox('loadData',data);
+					},'json');
+				},
+				onLoadSuccess:onLoadSuccess
+			});
+			
+			var quarea = $('#quarea').combobox({
+				valueField:'areaid',
+				textField:'name',
+				editable:false,
+				onLoadSuccess:onLoadSuccess
+			});				
+		}
+		
+		function loadProvince(){
+			
+			var province =  $('#province').combobox({
+					valueField:'areaid',
+					textField:'name',
+					editable:false,
+					url:basePath +'api/area/getarea_api?pid=0',
+					onChange:function(newValue, oldValue){
+						$.get(basePath +'api/area/getarea_api',{pid:newValue},function(data){
+							city.combobox("clear").combobox('loadData',data);
+							area.combobox("clear");
+						},'json');
+					},
+					onLoadSuccess:onLoadSuccess
+				});
+			
+			var city = $('#city').combobox({
+				valueField:'areaid',
+				textField:'name',
+				editable:false,
+				onChange:function(newValue, oldValue){
+					$.get(basePath +'api/area/getarea_api',{pid:newValue},function(data){
+						area.combobox("clear").combobox('loadData',data);
+					},'json');
+				},
+				onLoadSuccess:onLoadSuccess
+			});
+			
+			var area = $('#area').combobox({
+				valueField:'areaid',
+				textField:'name',
+				editable:false,
+				onLoadSuccess:onLoadSuccess
+			});				
+		}
+		
+		function onLoadSuccess(){
+			var target = $(this);
+			var data = target.combobox("getData");
+			var options = target.combobox("options");
+			if(data && data.length>0){
+				var fs = data[0];
+				target.combobox("setValue",fs[options.valueField]);
+			}
+		}
+		
+		
 	    function updateEntity(){
 		    $('#ffadd').form('clear');
 		    initCheckBox();
@@ -185,6 +289,8 @@
 	         }else{
 				$.messager.alert('提示','请选中数据!','warning');				
 			 }	
+	         
+	         loadProvince();
 	     }		
 		function saveEntity() {
 			$('#ffadd').form('submit', {
@@ -230,14 +336,21 @@
 					$.messager.alert('提示','请选中数据!','warning');				
 				 }	
 	        }
-		  
+		function clearSearch()
+		{
+			$('#ffquery').form('clear');
+		}
 		function doSearch(){
-			$('#dg').datagrid({
+			/* $('#dg').datagrid({
 				  url : basePath +"api/storage/paging" 
-			});
+			}); */
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_storage_name: $('#storage_name').val(),
-		    	filter_ANDS_address: $('#address').val()
+		    	filter_ANDS_address: $('#address').val(),
+		    	filter_ANDS_province: $('#ffquery input[name=quprovince]').val(),
+		    	filter_ANDS_city: $('#ffquery input[name=qucity]').val(),
+		    	filter_ANDS_area: $('#ffquery input[name=quarea]').val()
+		    	
 		    });
 		}
 		function formatterStatus(value, row, index){
@@ -284,7 +397,10 @@
 				$('copy_hospital').attr("checked",false);
 		}
 		$(function() {
-			var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
+			var pager =$('#dg').datagrid({
+				  url : basePath +"api/storage/paging" 
+			}).datagrid('getPager');
+			//var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
 			pager.pagination();
 		});
 	</script>

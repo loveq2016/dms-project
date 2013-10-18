@@ -22,6 +22,10 @@ public class Interseptor extends HandlerInterceptorAdapter {
 			HttpServletResponse response, Object handler) throws Exception {
 		String url =  request.getRequestURI().toString();
 		logger.debug("url:"+url);
+		if(url.indexOf("getarea_api")>-1)
+		{
+			return true;
+		}
 		if(url.indexOf("getCaptcha")>-1)
 		{
 			return true;
