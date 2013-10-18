@@ -18,6 +18,15 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
 				and dealer_id =#{dealer_id}
 			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(province)">
+				and province =#{province}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(city)">
+				and city =#{city}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(area)">
+				and area =#{area}
+			</if>
 		</trim>
 	</sql>
 	<sql id="adsOrder">
@@ -31,17 +40,52 @@
 		select count(*) from dms.tb_storage 
 		<include refid="adsWhere"/>
 	</select>
- 	<select id="selectByObject" resultType="dms.yijava.entity.storage.Storage">
-		select ts.*,tsc.category_name from dms.tb_storage ts LEFT JOIN dms.tb_storage_category tsc ON ts.category_id=tsc.id	
+	
+ 	<!-- <select id="selectByObject" resultType="dms.yijava.entity.storage.Storage">
+		select ts.*,tsc.category_name,proarea.name as province from dms.tb_storage ts 
+		LEFT JOIN dms.tb_area proarea on ts.province=proarea.areaid
+		LEFT JOIN dms.tb_storage_category tsc ON ts.category_id=tsc.id	
+		<include refid="adsWhere"/>
+		<include refid="adsOrder"/>
+	    limit #{offset},#{pagesize}
+	</select> -->
+	
+	<select id="selectByObject" resultType="dms.yijava.entity.storage.Storage">
+		select ts.id,ts.storage_name,ts.category_id,ts.category_id,ts.hospital_name,ts.status,ts.postcode,ts.address,ts.phone,ts.tex,tsc.category_name,
+		proarea.name as province,cityarea.name as city,area_area.name as area from dms.tb_storage ts 
+		LEFT JOIN dms.tb_area proarea on ts.province=proarea.areaid
+		LEFT JOIN dms.tb_area cityarea on ts.city=cityarea.areaid
+		LEFT JOIN dms.tb_area area_area on ts.area=area_area.areaid	
+		LEFT JOIN dms.tb_storage_category tsc ON ts.category_id=tsc.id	
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
 	    limit #{offset},#{pagesize}
 	</select>
-	<select id="select" parameterType="int" resultType="dms.yijava.entity.storage.Storage">
+	
+	
+	<!-- <select id="select" parameterType="int" resultType="dms.yijava.entity.storage.Storage">
         select ts.*,tsc.category_name from dms.tb_storage ts LEFT JOIN dms.tb_storage_category tsc ON ts.category_id=tsc.id where id = #{id}
+    </select> -->
+   <!--  <select id="selectAll" resultType="dms.yijava.entity.storage.Storage">
+        select ts.*,tsc.category_name from dms.tb_storage ts LEFT JOIN dms.tb_storage_category tsc ON ts.category_id=tsc.id
+    </select> -->
+    
+    <select id="select" parameterType="int" resultType="dms.yijava.entity.storage.Storage">
+        select ts.id,ts.storage_name,ts.category_id,ts.category_id,ts.hospital_name,ts.status,ts.postcode,ts.address,ts.phone,ts.tex,tsc.category_name,
+		proarea.name as province,cityarea.name as city,area_area.name as area from dms.tb_storage ts 
+		LEFT JOIN dms.tb_area proarea on ts.province=proarea.areaid
+		LEFT JOIN dms.tb_area cityarea on ts.city=cityarea.areaid
+		LEFT JOIN dms.tb_area area_area on ts.area=area_area.areaid	
+		LEFT JOIN dms.tb_storage_category tsc ON ts.category_id=tsc.id	
+		where ts.id = #{id}
     </select>
     <select id="selectAll" resultType="dms.yijava.entity.storage.Storage">
-        select ts.*,tsc.category_name from dms.tb_storage ts LEFT JOIN dms.tb_storage_category tsc ON ts.category_id=tsc.id
+        select ts.id,ts.storage_name,ts.category_id,ts.category_id,ts.hospital_name,ts.status,ts.postcode,ts.address,ts.phone,ts.tex,tsc.category_name,
+		proarea.name as province,cityarea.name as city,area_area.name as area from dms.tb_storage ts 
+		LEFT JOIN dms.tb_area proarea on ts.province=proarea.areaid
+		LEFT JOIN dms.tb_area cityarea on ts.city=cityarea.areaid
+		LEFT JOIN dms.tb_area area_area on ts.area=area_area.areaid	
+		LEFT JOIN dms.tb_storage_category tsc ON ts.category_id=tsc.id	
     </select>
 	<insert id="insert" parameterType="dms.yijava.entity.storage.Storage">     
 		insert into dms.tb_storage(storage_name,hospital_name,category_id,status,province,city,area,address,postcode,phone,tex,last_date,column1,column2,column3) values(#{storage_name},#{hospital_name},#{category_id},#{status},#{province},#{city},#{area},#{address},#{postcode},#{phone},#{tex},NOW(),#{column1},#{column2},#{column3});
