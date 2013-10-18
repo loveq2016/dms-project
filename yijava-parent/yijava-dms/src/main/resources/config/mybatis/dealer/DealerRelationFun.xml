@@ -53,13 +53,16 @@
 	<update id="update" parameterType="dms.yijava.entity.dealer.DealerRelationFun">
 		 update dms.tb_dealer_relation set  parent_dealer_id=#{parent_dealer_id} where id = #{id}
 	</update>
-
+	
 	<select id="selectByMap" resultType="dms.yijava.entity.dealer.DealerRelationFun">
 		select dealer_id,dealer_name,dealer_code from dms.tb_dealer where  category_id = 4 
 	</select>
 	
-	 <select id="selectRelationList" resultType="dms.yijava.entity.dealer.DealerRelationFun">
-		select * from dms.tb_dealer_relation 
+	<select id="selectRelationList" resultType="dms.yijava.entity.dealer.DealerRelationFun">
+	  select tdr.*,td1.dealer_name,td1.dealer_code,td1.business_contacts,td1.business_phone,td2.dealer_name as parent_dealer_name,
+	  td2.dealer_code as parent_dealer_code from dms.tb_dealer_relation tdr 
+  	  LEFT JOIN dms.tb_dealer td1 ON tdr.dealer_id=td1.dealer_id
+	  LEFT JOIN dms.tb_dealer td2 ON tdr.parent_dealer_id=td2.dealer_id
 		<include refid="adsWhere" />
 	</select>
 	

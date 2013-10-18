@@ -22,6 +22,7 @@ public class Order {
 	public String end_date;
 	
 	public String dealer_name;
+	public String dealer_attribute;
 	public String business_contacts;
 	public String business_phone;
 	public String addess;

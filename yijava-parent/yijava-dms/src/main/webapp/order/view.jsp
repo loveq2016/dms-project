@@ -149,6 +149,12 @@
 						</td>
 					</tr>
 					<tr>
+						<td>供货区域:</td>
+						<td>
+							<input class="easyui-validatebox" disabled="disabled" name="dealer_attribute" id="dealer_attribute" value="${user.dealer_attribute}" style="width:150px" maxLength="100">
+						</td>
+					</tr>
+					<tr>
 						<td>收货地址:</td>
 						<td>
 							<input type="hidden" name="id"></input>

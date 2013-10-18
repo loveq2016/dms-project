@@ -71,8 +71,8 @@
 		SELECT order_code,SUM(order_money_sum) as order_money_sum,SUM(order_number_sum) as order_number_sum FROM dms.tb_order_detail WHERE order_code=#{order_code}
 	</select>
 	<insert id="insert" parameterType="dms.yijava.entity.order.Order">     
-    	  insert into dms.tb_order(dealer_id,order_code,order_no,type,order_date,dealer_address_id,last_time)
-    	  values(#{dealer_id},#{order_code},#{order_no},#{type},NOW(),#{dealer_address_id},NOW())
+    	  insert into dms.tb_order(dealer_id,order_code,order_no,type,order_date,dealer_address_id,dealer_attribute,last_time)
+    	  values(#{dealer_id},#{order_code},#{order_no},#{type},NOW(),#{dealer_address_id},#{dealer_attribute},NOW())
     </insert>
      <update id="updateAddress" parameterType="dms.yijava.entity.order.Order">
     	update dms.tb_order set dealer_address_id=#{dealer_address_id},type=#{type},last_time=NOW() where order_code=#{order_code}

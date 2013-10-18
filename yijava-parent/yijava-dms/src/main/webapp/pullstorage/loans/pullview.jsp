@@ -29,7 +29,7 @@
 													<input class="easyui-validatebox" type="hidden" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">					       	
 										       </c:when>
 										       <c:otherwise>
-										       		<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+										       		<input class="easyui-combobox" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 								             			data-options="
 									             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
 										                    method:'get',
@@ -40,16 +40,18 @@
 										       </c:otherwise>
 										</c:choose>
 									</td>
-									<!-- 此处查询需要修改，如果是经销商，必须查询子经销商 -->
 									<td width="160">借入经销商:</td>
 									<td>
 										<c:choose>
 										       <c:when test="${user.fk_dealer_id!='0'}">
-													<input class="easyui-validatebox" disabled="disabled" id="pull_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
-													<input class="easyui-validatebox" type="hidden" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">
-													
-													
-																		       	
+													<input class="easyui-combobox" name="fk_put_storage_party_id" id="fk_put_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+								             			data-options="
+									             			url:'${basePath}api/dealerRelationFun/dealerlist?p_id=${user.fk_dealer_id}',
+										                    method:'get',
+										                    valueField:'dealer_id',
+										                    textField:'dealer_name',
+										                    panelHeight:'auto'
+								            			"/>
 										       </c:when>
 										       <c:otherwise>
 										       		<input class="easyui-combobox" name="fk_put_storage_party_id" id="fk_put_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
@@ -62,15 +64,6 @@
 								            			"/>
 										       </c:otherwise>
 										</c:choose>
-										
-						            	<input class="easyui-combobox" name="fk_put_storage_party_id" id="fk_put_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
-						             			data-options="
-							             			url:'${basePath}api/dealer/list',
-								                    method:'get',
-								                    valueField:'dealer_id',
-								                    textField:'dealer_name',
-								                    panelHeight:'auto'
-						            			"/>
 									</td>
 								</tr>
 								<tr>
@@ -154,7 +147,7 @@
 			<form id="ffadd" action="" method="post" enctype="multipart/form-data">
 				<table>
 					<tr>
-					<!-- 此处查询需要修改，如果是经销商，必须查询子经销商 -->
+					<!--如果是经销商，必须查询子经销商 -->
 						<td>借入经销商:</td>
 						<td>
 							<!-- 借贷类型-->
@@ -162,7 +155,7 @@
 							<input type="hidden" id="put_storage_code" name="put_storage_code"/>
 						    <input class="easyui-combobox" name="fk_put_storage_party_id" id="fk_put_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 						             			data-options="
-							             			url:'${basePath}api/dealer/list',
+							             			url:'${basePath}api/dealerRelationFun/dealerlist?p_id=${user.fk_dealer_id}',
 								                    method:'get',
 								                    valueField:'dealer_id',
 								                    textField:'dealer_name',

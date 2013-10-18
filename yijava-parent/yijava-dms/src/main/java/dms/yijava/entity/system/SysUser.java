@@ -26,6 +26,7 @@ public class SysUser {
 	public String fk_dealer_id;
 	public String dealer_name;
 	public String dealer_code;
+	public String dealer_attribute;
 	public String fk_role_id;
 	public String role_name;
 	public String isdeleted;

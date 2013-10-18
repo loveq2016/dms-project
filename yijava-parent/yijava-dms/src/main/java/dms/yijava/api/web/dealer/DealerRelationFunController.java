@@ -44,6 +44,8 @@ public class DealerRelationFunController {
 	@RequestMapping("dealerlist")
 	public List<DealerRelationFun> dealerlist(HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
+		filters.add(PropertyFilters.build("ANDS_dealer_id",request.getParameter("id")));
+		filters.add(PropertyFilters.build("ANDS_parent_dealer_id",request.getParameter("p_id")));
 		return dealerRelationFunService.getDealerRelationList(filters);
 	}
 	

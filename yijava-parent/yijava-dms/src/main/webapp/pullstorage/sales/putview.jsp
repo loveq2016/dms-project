@@ -20,15 +20,40 @@
 									<input class="easyui-validatebox" type="hidden" name="type" id="type" value="1"/>
 									<td width="200">分销出库单号:</td>	
 									<td><input class="easyui-validatebox" type="text" name="pull_storage_code"></input></td>
-									<td width="150">经销商:</td>
+									<td width="180">经销商:</td>
+									<td>
+										<c:choose>
+										       <c:when test="${user.fk_dealer_id!='0'}">
+													<input class="easyui-combobox" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+								             			data-options="
+									             			url:'${basePath}api/dealerRelationFun/dealerlist?id=${user.fk_dealer_id}',
+										                    method:'get',
+										                    valueField:'parent_dealer_id',
+										                    textField:'parent_dealer_name',
+										                    panelHeight:'auto'
+								            			"/>
+										       </c:when>
+										       <c:otherwise>
+										       		<input class="easyui-combobox" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+								             			data-options="
+									             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
+										                    method:'get',
+										                    valueField:'dealer_id',
+										                    textField:'dealer_name',
+										                    panelHeight:'auto'
+								            			"/>
+										       </c:otherwise>
+										</c:choose>
+									</td>
+									<td width="160">收货经销商:</td>
 									<td>
 										<c:choose>
 										       <c:when test="${user.fk_dealer_id!='0'}">
 													<input class="easyui-validatebox" disabled="disabled" id="put_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
-													<input class="easyui-validatebox" type="hidden" name="fk_put_storage_party_id" id="fk_put_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">					       	
+													<input class="easyui-validatebox" type="hidden" name="fk_put_storage_party_id" id="fk_put_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">
 										       </c:when>
 										       <c:otherwise>
-										       		<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+										       		<input class="easyui-combobox" name="fk_put_storage_party_id" id="fk_put_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 								             			data-options="
 									             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
 										                    method:'get',
