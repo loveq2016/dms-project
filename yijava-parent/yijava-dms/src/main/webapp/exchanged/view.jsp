@@ -16,8 +16,24 @@
 							<table>
 								<tr>
 									<td>经销商:</td>
-									<td><input class="easyui-validatebox" type="text" name="dealer_name" data-options="required:false"></input></td>
-									<td></td>
+									<td>
+										<c:choose>
+										       <c:when test="${user.fk_dealer_id!='0'}">
+													<input class="easyui-validatebox" disabled="disabled" id="dealer_name" value="${user.dealer_name}" style="width:200px" maxLength="100">
+													<input class="easyui-validatebox" type="hidden" name="dealer_id" id="dealer_id" value="${user.fk_dealer_id}" style="width:200px" maxLength="100">					       	
+										       </c:when>
+										       <c:otherwise>
+										       		<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:200px" maxLength="100" class="easyui-validatebox"
+							             			data-options="
+								             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
+									                    method:'get',
+									                    valueField:'dealer_id',
+									                    textField:'dealer_name',
+									                    panelHeight:'auto'
+							            			"/>
+										       </c:otherwise>
+										</c:choose>
+									</td>
 									<td>退换货单号:</td>
 									<td><input class="easyui-validatebox" type="text" name="exchanged_code" data-options="required:false"></input></td>
 								</tr>
@@ -33,7 +49,6 @@
 														{id: '2',value: '换货'}
 														]" />
 									</td>
-									<td></td>
 									<td>状态:</td>
 									<td><input name="status" class="easyui-combobox" 
 												data-options="
@@ -41,14 +56,23 @@
 													textField: 'value',
 													panelHeight:'auto',
 													data: [
-														{id: '1',value: '未提交'},
-														{id: '2',value: '提交'},
-														{id: '3',value: '驳回'},
-														{id: '4',value: '已经审核'},
-														{id: '5',value: '完成'}
+														{id: '0',value: '未提交'},
+														{id: '1',value: '提交'},
+														{id: '2',value: '驳回'},
+														{id: '3',value: '已经审核'},
+														{id: '4',value: '完成'}
 														]" />
 									</td>
-									
+								</tr>
+								<tr>
+									<td width="100">调整开始时间:</td>
+									<td width="270">
+										<input name="start_date" id="start_date" class="easyui-datebox"></input>
+									</td>
+									<td width="100">调整结束时间:</td>
+									<td width="270">
+										 <input name="end_date" id="end_date" class="easyui-datebox"></input>
+									</td>
 								</tr>
 							</table>
 						</form>
@@ -187,6 +211,7 @@
 							<tr>
 							<th data-options="field:'storage_name',width:100,align:'center'" sortable="true">仓库</th>
 							<th data-options="field:'product_item_number',width:65,align:'center'" sortable="true">产品编码</th>
+							<th data-options="field:'models',width:65,align:'center'" sortable="true">规格</th>
 							<th data-options="field:'batch_no',width:80,align:'center'" sortable="true">批次</th>
 							<th data-options="field:'valid_date',width:80,align:'center',editor:'numberbox'">有效期</th>
 							<th data-options="field:'inventory_number',width:100,align:'center',editor:'datebox'">库存量</th>
@@ -299,6 +324,7 @@
 								<th field="fk_storage_id" width="120" align="center" hidden="true"></th>
 								<th field="storage_name" width="120" align="center" sortable="true">仓库</th>
 								<th field="product_item_number" width="120" align="center" sortable="true">产品编号</th>
+								<th field="models" width="120" align="center" sortable="true">规格</th>
 								<th field="product_cname" width="120" align="center" sortable="true">产品中文名称</th>
 								<th field="batch_no" width="100" align="center" sortable="true">产品批次</th>
 								<th field="valid_date" width="100" align="center" sortable="true">有效期</th>
@@ -331,6 +357,10 @@
 					            <tr>
 					             	<td>产品名称</td>
 					             	<td><input name="product_cname" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					            </tr>
+					           	<tr>
+					             	<td>规格</td>
+					             	<td><input name="models" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
 					            <tr>
 					             	<td>批次</td>
@@ -456,8 +486,12 @@
 
 		function doSearch(){
 		    $('#dg').datagrid('load',{
-		    	filter_ANDS_dealer_name: $('#dealer_name').val(),
-		    	filter_ANDS_dealer_code: $('#dealer_code').val()
+		    	filter_ANDS_exchanged_code:$('#ffquery input[name=exchanged_code]').val(),
+		    	filter_ANDS_dealer_id: $('#ffquery input[name=dealer_id]').val(),
+		    	filter_ANDS_type: $('#ffquery input[name=type]').val(),
+		    	filter_ANDS_status: $('#ffquery input[name=status]').val(),
+		    	filter_ANDS_start_date: $('#ffquery input[name=start_date]').val(),
+		    	filter_ANDS_end_date: $('#ffquery input[name=end_date]').val(),
 		    });
 		}
 		

@@ -51,6 +51,9 @@ public class DeliverService {
 				pageRequest.getOrderDir());
 	}
 	
+	public Deliver getEntity(Integer id) {
+		return deliverDao.get(id);
+	}
 	
 	public Deliver queryDeliverNo(){
 		return deliverDao.getObject(".queryDeliverNo", null);
