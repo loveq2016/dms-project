@@ -181,7 +181,8 @@ public class OrderController {
 		Result<String> result=new Result<String>("0", 0);
 		
 		try {
-			String filePath=document_filepath;
+			String tomcatPath = request.getSession().getServletContext().getRealPath("/");
+			String filePath= tomcatPath ;//document_filepath;
 			String fileName="order"+File.separator+"order-"+order_id+".doc";
 			File outFile = new File(filePath+fileName);		
 			Order order = orderService.getEntity(Integer.toString(order_id));

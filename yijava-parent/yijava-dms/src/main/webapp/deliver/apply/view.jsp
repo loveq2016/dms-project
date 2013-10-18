@@ -106,6 +106,9 @@
         		<restrict:function funId="160">
         			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="CheckEntity()">审核</a>
         		</restrict:function>
+        		<restrict:function funId="156">
+        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="VidwDocument()">查看单据</a>
+        		</restrict:function>
 			</div>
 			<div style="margin: 10px 0;"></div>
 		</div>
@@ -883,6 +886,38 @@
 				    }		
 				});		
 			}
+		
+		
+		/**
+		查看单据
+		*/
+		function VidwDocument () 
+		{
+			var row = $('#dg').datagrid('getSelected');
+			if (row && row.check_status ==3){				
+				$.post(basePath+'api/deliverApply/viewdocument',{deliver_id:row.deliver_id},function(result){
+                	
+			    	if(result.state==1){
+			    		var tabTitle = "出货管理单据"+result.data;
+			    		
+						var url = "generate/"+result.data;			
+						addTabByChild(tabTitle,url);
+						
+			    		//var pager = $('#dg').datagrid().datagrid('getPager');
+		    			//pager.pagination('select');	
+                    } else {
+                        $.messager.show({    // show error message
+                            title: 'Error',
+                            msg: result.error.msg
+                        });
+                    } 
+                },'json');
+			}else
+			{
+				$.messager.alert('提示-审核结束才能查看单据 ','请选中数据!','warning');
+			}
+			
+		}
 		
 	</script>
 </body>

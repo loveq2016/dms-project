@@ -118,6 +118,7 @@ public class ExchangedService{
 				sd.setFk_dealer_id(entity.getDealer_id());
 				sd.setFk_storage_id(exchangedDetail.getFk_storage_id());
 				sd.setProduct_item_number(exchangedDetail.getProduct_item_number());
+				sd.setModels(exchangedDetail.getModels());
 				sd.setBatch_no(exchangedDetail.getBatch_no());
 				sd.setInventory_number(exchangedDetail.getExchanged_number());
 				storageDetailList.add(sd);

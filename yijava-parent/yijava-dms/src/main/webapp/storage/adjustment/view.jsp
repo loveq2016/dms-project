@@ -34,7 +34,6 @@
 										       </c:otherwise>
 										</c:choose>
 									</td>
-									<td></td>
 									<td>调整单号:</td>
 									<td><input class="easyui-validatebox" type="text" name="adjust_storage_code" data-options="required:false"></input></td>
 								</tr>
@@ -51,7 +50,6 @@
 														{id: '3',value: '报废'}
 														]" />
 									</td>
-									<td></td>
 									<td>状态:</td>
 									<td><input name="status" class="easyui-combobox" 
 												data-options="
