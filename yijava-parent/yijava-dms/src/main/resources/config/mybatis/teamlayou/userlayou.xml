@@ -18,13 +18,13 @@
 		from tb_user_layou a 
 		<include refid="adsWhere"/>
 	</select>
-	<select id="selectUserListById" resultType="dms.yijava.entity.teamlayou.UserLayou">
+	<select id="selectUserListById" resultType="String">
 		select * from (
 		<foreach item="item" index="index" collection="sourceIds" separator="union">
 			SELECT fk_user_id FROM tb_user_layou WHERE fk_team_id in (select id from tb_team_layou where FIND_IN_SET(id,getChildLst(#{item})) AND id!=#{item})
 		</foreach>
 			 UNION SELECT #{user_id}
-		)
+		) t
 	</select>
 	<select id="selectTeamIdsByUserId" resultType="dms.yijava.entity.teamlayou.UserLayou">
 		select cast(group_concat(fk_team_id separator ',') as char(100000)) as fk_team_id FROM tb_user_layou WHERE fk_user_id = #{user_id}

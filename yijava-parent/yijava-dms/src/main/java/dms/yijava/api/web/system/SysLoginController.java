@@ -118,9 +118,12 @@ public class SysLoginController {
 					sysUser.setParentIds(parentIds);
 					/**/
 					List<UserDealer> userDealerList=userDealerFunService.getUserDealerList(sysUser.getId(),teams.split(","));//节点用户
+					List<String> list=userLayouService.getUserListById(sysUser.getId(),teams.split(","));
 					sysUser.setUserDealerList(userDealerList);
 					sysUser.setTeams(teams);
-				}catch(Exception e){}
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 				List<SysMenuFunction> sysMenuFunctionList=sysMenuFunctionService.getAllList();
 				request.getSession().setAttribute("roleFunctionList", sysLoginList);
 				request.getSession().setAttribute("allFunctionList", sysMenuFunctionList);
