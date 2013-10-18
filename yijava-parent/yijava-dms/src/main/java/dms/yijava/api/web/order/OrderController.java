@@ -194,13 +194,13 @@ public class OrderController {
 			Map<String,Object> dataMap = new HashMap<String, Object>();			
 			dataMap.put("order_number", order.getOrder_code());
 			dataMap.put("order_date",order.getOrder_date());
-			dataMap.put("order_region", "");
+			dataMap.put("order_region",order.getDealer_attribute());		
 			dataMap.put("dealer_name", order.getDealer_name());
 			dataMap.put("contact_name", order.getBusiness_contacts());
 			dataMap.put("contact_phone", order.getBusiness_phone());			
 			dataMap.put("accept_address", order.getReceive_addess());
 			dataMap.put("accept_name", order.getReceive_linkman());
-			dataMap.put("accept_phone",order.getReceive_linkphone());		
+			dataMap.put("accept_phone",order.getReceive_linkphone());	
 			List<OrderDetail> listOrderDetail=orderDetailService.getOrderDetailList(order.getOrder_code());
 			List<OrderProdcut> list = new ArrayList<OrderProdcut>();
 			for (int j = 0; j<listOrderDetail.size(); j++) {

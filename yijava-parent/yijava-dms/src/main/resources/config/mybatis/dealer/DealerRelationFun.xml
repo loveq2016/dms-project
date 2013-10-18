@@ -6,7 +6,7 @@
 <sql id="adsWhere">
 	<trim prefix="WHERE" prefixOverrides="AND|OR">
 		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">and dealer_id =#{dealer_id}</if>
-		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">and parent_dealer_id =#{parent_dealer_id}</if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(parent_dealer_id)">and parent_dealer_id =#{parent_dealer_id}</if>
 	</trim>
 </sql>
 
@@ -59,10 +59,12 @@
 	</select>
 	
 	<select id="selectRelationList" resultType="dms.yijava.entity.dealer.DealerRelationFun">
-	  select tdr.*,td1.dealer_name,td1.dealer_code,td1.business_contacts,td1.business_phone,td2.dealer_name as parent_dealer_name,
-	  td2.dealer_code as parent_dealer_code from dms.tb_dealer_relation tdr 
-  	  LEFT JOIN dms.tb_dealer td1 ON tdr.dealer_id=td1.dealer_id
-	  LEFT JOIN dms.tb_dealer td2 ON tdr.parent_dealer_id=td2.dealer_id
+		  select * from(
+		  	select tdr.*,td1.dealer_name,td1.dealer_code,td1.business_contacts,td1.business_phone,td2.dealer_name as parent_dealer_name,
+		  td2.dealer_code as parent_dealer_code from dms.tb_dealer_relation tdr 
+	  	  LEFT JOIN dms.tb_dealer td1 ON tdr.dealer_id=td1.dealer_id
+		  LEFT JOIN dms.tb_dealer td2 ON tdr.parent_dealer_id=td2.dealer_id
+		  ) y
 		<include refid="adsWhere" />
 	</select>
 	

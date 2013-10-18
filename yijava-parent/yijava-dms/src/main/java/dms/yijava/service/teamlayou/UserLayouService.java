@@ -22,7 +22,12 @@ public class UserLayouService {
 		HashMap<String,String> parameters = new HashMap<String,String>();
 		return userLayouDao.find(parameters);
 	}
-
+	public List<String> getUserListById(String user_id,String [] sourceIds){
+		HashMap<String,Object> parameters = new HashMap<String,Object>();
+		parameters.put("user_id", user_id);
+		parameters.put("sourceIds", sourceIds);
+		return userLayouDao.find(parameters);
+	}
 	public UserLayou getTeamIdsByUserId(String user_id){
 		UserLayou userLayou = userLayouDao.getObject(".selectTeamIdsByUserId", user_id);
 		return userLayou;
