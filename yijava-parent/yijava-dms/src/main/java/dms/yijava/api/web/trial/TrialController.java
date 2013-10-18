@@ -107,8 +107,8 @@ public class TrialController {
 			filters.add(PropertyFilters.build("ANDS_sales_user_ids", this.listString(sysUser.getUserDealerList())));
 			
 			filters.add(PropertyFilters.build("ANDS_statuses","1,2,3,4"));
-			filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
-			filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
+			//filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
+			//filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
 			trialPages=trialService.paging(pageRequest, filters);
 			
 			/**

@@ -40,7 +40,7 @@ public class SystemCommonController {
 		headers.setContentType(MediaType.IMAGE_GIF);
 		
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		String captcha = CaptchaUtils.getGifCaptcha(70, 28, 4, outputStream,120).toLowerCase();
+		String captcha = CaptchaUtils.getGifCaptcha(84, 32, 4, outputStream,120).toLowerCase();
 		
 		session.setAttribute(SysConstant.DEFAULT_CAPTCHA_PARAM,captcha);
 		byte[] bs = outputStream.toByteArray();

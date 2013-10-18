@@ -66,7 +66,9 @@
 			tb_trial.hospital_name,tb_trial.reason,tb_trial.trial_num_sum,tb_trial.create_time,
 			tb_trial.status,tb_trial.last_update
 			 from tb_trial 
+			<if test="check_id != null and check_id != '' ">
 			 LEFT JOIN tb_flow_record tfr ON tb_trial.trial_id=tfr.bussiness_id AND tfr.check_id= #{check_id} AND flow_id=#{flow_id}) t 
+			 </if>
 			<include refid="adsWhere" />
 			<include refid="adsOrder" />
 			limit #{offset},#{pagesize}
