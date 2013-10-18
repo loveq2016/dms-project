@@ -111,6 +111,12 @@
 							<th data-options="field:'pull_storage_date',width:100,align:'center'" formatter="formatterdate" sortable="true">出库时间</th>
 							<th data-options="field:'status',width:80,align:'center'" formatter="formatterStatus" sortable="true">单据状态</th>
 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
+							<th data-options="field:'record_id',width:80,align:'center'" hidden="true"></th>
+							<th data-options="field:'record_status',width:80,align:'center'" hidden="true"></th>
+							<th data-options="field:'check_id',width:80,align:'center'" hidden="true"></th>
+							<restrict:function funId="163">
+								<th data-options="field:'custom2',width:80,align:'center'" formatter="formatterCheck">审核</th>
+							</restrict:function>
 						</tr>
 					</thead>
 				</table>
@@ -121,9 +127,6 @@
 			</restrict:function>
 			<restrict:function funId="45">
         		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyEntity()">删除</a>
-        	</restrict:function>
-        	<restrict:function funId="163">
-        		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="CheckEntity()">审核</a>
         	</restrict:function>
 			</div>
 			<div style="margin: 10px 0;"></div>
@@ -290,7 +293,7 @@
 									<input type="hidden" name="bussiness_id" id="bussiness_id">
 									<input type="hidden" name="flow_id" id="flow_id" value="">
 									<div style="text-align: right; padding: 5px">
-											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveFlowCheck()">提交</a>
+											<a href="javascript:void(0)" class="easyui-linkbutton" id="saveCheckbtn" data-options="iconCls:'icon-save'" onclick="saveFlowCheck()">提交</a>
 									</div>
 								</td>
 								</tr>	
@@ -492,6 +495,7 @@
 				 },
 				 onLoadSuccess:function(data){
 					$(".infoBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
+					$(".checkBtn").linkbutton({ plain:true, iconCls:'icon-check' });
 				 }
 			});
 		})
@@ -745,6 +749,10 @@
 		function formatterProductSn (value, row, index) { 
 			return '<a class="productSnBtn" href="javascript:void(0)"  onclick="openProductSn('+index+')" ></a>';
 		}
+		function formatterCheck (value, row, index) {
+			var d=(typeof(row.check_id) != "undefined" && row.record_status=='0') ?'':'disabled';
+			return '<a class="checkBtn" '+d+' href="javascript:void(0)" onclick="CheckEntity('+index+')">审核</a>'; 
+		}
 		function doSearchProductSn(){
 		    $('#dgStorageProductSn').datagrid('load',{
 		    	filter_ANDS_fk_storage_id: $("#fffdetail input[name=fk_storage_id]").val(),
@@ -908,7 +916,8 @@
 		/**
 		审核
 		*/
-		function CheckEntity(){
+		function CheckEntity(index){
+			$('#dg').datagrid('selectRow',index);
 			var row = $('#dg').datagrid('getSelected');
 			if (row && row.status==1){
 				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){
@@ -924,6 +933,7 @@
 		/*保存审核*/
 		function saveFlowCheck()
 		{
+			$('#saveCheckbtn').linkbutton('disable');
 			$('#base_form_check').form('submit', {
 				url:basePath+'/api/flowrecord/do_flow',
 				method:"post",	
@@ -938,6 +948,12 @@
 					    $('#dlgPullStorageDetail').dialog('close');
 					    var pager = $('#dg').datagrid().datagrid('getPager');
 					    pager.pagination('select');				
+				   }else{
+					   $.messager.show({
+                           title: 'Error',
+                           msg: jsonobj.error.msg
+                       });
+	    			   $('#saveCheckbtn').linkbutton('enable');
 				   }
 				}
 			});

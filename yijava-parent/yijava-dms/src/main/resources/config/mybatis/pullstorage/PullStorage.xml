@@ -50,13 +50,8 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(put_end_date)">
 				  <![CDATA[ and put_storage_date < #{put_end_date}]]>
 			</if>
-			
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(statuses)">
 				  and status in (${statuses})
-			</if>
-			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(check_id) and
-				@com.yijava.orm.core.OgnlUtils@isNotEmpty(flow_id)">
-				  and id in (select bussiness_id from tb_flow_record where check_id= #{check_id} and flow_id=#{flow_id})
 			</if>
 		</trim>
 	</sql>
@@ -71,17 +66,19 @@
 	</sql>
 	<select id="selectByObjectcount" resultType="long">
 		SELECT COUNT(*)  FROM(
-		select tps.*,d1.dealer_name as pull_storage_party_name,d1.dealer_name as pull_storage_user_name,d2.dealer_name as put_storage_party_name,d2.dealer_name as put_storage_user_name from dms.tb_pull_storage tps
+		select tfr.record_id,tfr.status as record_status,tfr.check_id as check_id,tps.*,d1.dealer_name as pull_storage_party_name,d1.dealer_name as pull_storage_user_name,d2.dealer_name as put_storage_party_name,d2.dealer_name as put_storage_user_name from dms.tb_pull_storage tps
 		    LEFT JOIN tb_dealer d1 ON tps.fk_pull_storage_party_id=d1.dealer_id 
 		    LEFT JOIN tb_dealer d2 ON tps.fk_put_storage_party_id=d2.dealer_id 
+				LEFT JOIN tb_flow_record tfr ON tps.id=tfr.bussiness_id AND check_id=#{check_id} AND flow_id=#{flow_id}
 		) t
 		<include refid="adsWhere" />
 	</select>
 	<select id="selectByObject" resultType="dms.yijava.entity.pullstorage.PullStorage">
 		SELECT * FROM(
-		select tps.*,d1.dealer_name as pull_storage_party_name,d1.dealer_name as pull_storage_user_name,d2.dealer_name as put_storage_party_name,d2.dealer_name as put_storage_user_name from dms.tb_pull_storage tps
+		select tfr.record_id,tfr.status as record_status,tfr.check_id as check_id,tps.*,d1.dealer_name as pull_storage_party_name,d1.dealer_name as pull_storage_user_name,d2.dealer_name as put_storage_party_name,d2.dealer_name as put_storage_user_name from dms.tb_pull_storage tps
 		    LEFT JOIN tb_dealer d1 ON tps.fk_pull_storage_party_id=d1.dealer_id 
 		    LEFT JOIN tb_dealer d2 ON tps.fk_put_storage_party_id=d2.dealer_id 
+				LEFT JOIN tb_flow_record tfr ON tps.id=tfr.bussiness_id AND check_id=#{check_id} AND flow_id=#{flow_id}
 		) t
 		<include refid="adsWhere" />
 		<include refid="adsOrder" />
@@ -89,9 +86,10 @@
 	</select>
 	<select id="selectByMap" resultType="dms.yijava.entity.pullstorage.PullStorage">
 		SELECT * FROM(
-		select tps.*,d1.dealer_name as pull_storage_party_name,d1.dealer_name as pull_storage_user_name,d2.dealer_name as put_storage_party_name,d2.dealer_name as put_storage_user_name from dms.tb_pull_storage tps
+		select tfr.record_id,tfr.status as record_status,tfr.check_id as check_id,tps.*,d1.dealer_name as pull_storage_party_name,d1.dealer_name as pull_storage_user_name,d2.dealer_name as put_storage_party_name,d2.dealer_name as put_storage_user_name from dms.tb_pull_storage tps
 		    LEFT JOIN tb_dealer d1 ON tps.fk_pull_storage_party_id=d1.dealer_id 
 		    LEFT JOIN tb_dealer d2 ON tps.fk_put_storage_party_id=d2.dealer_id 
+			LEFT JOIN tb_flow_record tfr ON tps.id=tfr.bussiness_id AND check_id=#{check_id} AND flow_id=#{flow_id}
 		) t
 		<include refid="adsWhere" />
 	</select>
