@@ -149,14 +149,9 @@
 						</td>
 					</tr>
 					<tr>
-						<td>供货区域:</td>
-						<td>
-							<input class="easyui-validatebox" disabled="disabled" name="dealer_attribute" id="dealer_attribute" value="${user.dealer_attribute}" style="width:150px" maxLength="100">
-						</td>
-					</tr>
-					<tr>
 						<td>收货地址:</td>
 						<td>
+							<input type="hidden" name="dealer_attribute" value="${user.dealer_attribute}"/>
 							<input type="hidden" name="id"></input>
 							<input type="hidden" name="order_code"></input>
 							<input class="easyui-combobox" name="dealer_address_id" style="width:150px" maxLength="100" class="easyui-validatebox" required="true"
