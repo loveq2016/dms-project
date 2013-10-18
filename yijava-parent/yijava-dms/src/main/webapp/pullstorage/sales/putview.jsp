@@ -20,7 +20,26 @@
 									<input class="easyui-validatebox" type="hidden" name="type" id="type" value="1"/>
 									<td width="200">分销出库单号:</td>	
 									<td><input class="easyui-validatebox" type="text" name="pull_storage_code"></input></td>
-									<td width="180">经销商:</td>
+									<td width="160">经销商:</td>
+									<td>
+										<c:choose>
+										       <c:when test="${user.fk_dealer_id!='0'}">
+													<input class="easyui-validatebox" disabled="disabled" id="put_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
+													<input class="easyui-validatebox" type="hidden" name="fk_put_storage_party_id" id="fk_put_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">
+										       </c:when>
+										       <c:otherwise>
+										       		<input class="easyui-combobox" name="fk_put_storage_party_id" id="fk_put_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+								             			data-options="
+									             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
+										                    method:'get',
+										                    valueField:'dealer_id',
+										                    textField:'dealer_name',
+										                    panelHeight:'auto'
+								            			"/>
+										       </c:otherwise>
+										</c:choose>
+									</td>
+									<td width="180">分销方:</td>
 									<td>
 										<c:choose>
 										       <c:when test="${user.fk_dealer_id!='0'}">
@@ -45,25 +64,8 @@
 										       </c:otherwise>
 										</c:choose>
 									</td>
-									<td width="160">收货经销商:</td>
-									<td>
-										<c:choose>
-										       <c:when test="${user.fk_dealer_id!='0'}">
-													<input class="easyui-validatebox" disabled="disabled" id="put_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
-													<input class="easyui-validatebox" type="hidden" name="fk_put_storage_party_id" id="fk_put_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">
-										       </c:when>
-										       <c:otherwise>
-										       		<input class="easyui-combobox" name="fk_put_storage_party_id" id="fk_put_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
-								             			data-options="
-									             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
-										                    method:'get',
-										                    valueField:'dealer_id',
-										                    textField:'dealer_name',
-										                    panelHeight:'auto'
-								            			"/>
-										       </c:otherwise>
-										</c:choose>
-									</td>
+								</tr>
+								<tr>
 									<td width="50">状态:</td>
 									<td width="270">										
 										<input name="status" class="easyui-combobox" data-options="
@@ -80,8 +82,6 @@
 												value: '成功'
 											}]" />
 									</td>
-								</tr>
-								<tr>
 									<td width="100">开始时间:</td>
 									<td width="270">
 										<input name="put_start_date" id="put_start_date" class="easyui-datebox"></input>
@@ -110,7 +110,7 @@
 						<tr>
 							<th data-options="field:'id',width:10,align:'center'" hidden="true">id</th>
 							<th data-options="field:'put_storage_party_name',width:200,align:'center'" sortable="true">经销商</th>
-							<th data-options="field:'pull_storage_code',width:100,align:'center'" sortable="true">分销出库单号</th>
+							<th data-options="field:'pull_storage_code',width:200,align:'center'" sortable="true">分销出库单号</th>
 							<th data-options="field:'pull_storage_party_name',width:200,align:'center'" sortable="true">分销方</th>							
 							<th data-options="field:'put_storage_code',width:100,align:'center'" hidden="true">收货单号</th>
 							<th data-options="field:'total_number',width:80,align:'center'" sortable="true">总数量</th>
