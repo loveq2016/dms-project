@@ -54,7 +54,7 @@ public class StorageDetailService {
 	 * 销售入库
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
-	public synchronized boolean orderStorage(String dealer_id,
+	public synchronized boolean orderStorage(String dealer_id,String order_code,
 			List<DeliverExpressDetail> deliverExpressDetails,
 			List<DeliverExpressSn> deliverExpressSns) {
 		//查询默认仓库
@@ -83,6 +83,7 @@ public class StorageDetailService {
 					StorageProDetail storageProDetail = new StorageProDetail();
 					storageProDetail.setFk_dealer_id(dealerStorage.getDealer_id());
 					storageProDetail.setFk_storage_id(dealerStorage.getStorage_id());
+					storageProDetail.setFk_order_code(order_code);
 					storageProDetail.setBatch_no(deliverExpressDetail.getExpress_sn());
 					storageProDetail.setProduct_sn(deliverExpressSn.getProduct_sn());
 					storageProDetail.setProduct_item_number(deliverExpressDetail.getProduct_item_number());

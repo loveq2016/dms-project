@@ -397,14 +397,16 @@
 	    </div>	    
 	    
 	    
-	    <div id="dlgExchangedProductSn" class="easyui-dialog" style="width:403px;height:413px;padding: 5px 5px 5px 5px;"
+	    <div id="dlgExchangedProductSn" class="easyui-dialog" style="width:653px;height:413px;padding: 5px 5px 5px 5px;"
             modal="true" closed="true">
-				<table id="dgExchangedProductSn"  class="easyui-datagrid" title="查询结果" style="height:365px;width:380px;" method="get"
+				<table id="dgExchangedProductSn"  class="easyui-datagrid" title="查询结果" style="height:365px;width:630px;" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id"  toolbar="#tb3"
 						pagination="true" iconCls="icon-search" sortOrder="asc">
 					<thead>
 						<tr>
-							<th data-options="field:'product_sn',width:240,align:'center'" sortable="true">序列号</th>
+							<th data-options="field:'order_code',width:240,align:'center'" sortable="true">订单号</th>
+							<th data-options="field:'product_sn',width:180,align:'center'" sortable="true">序列号</th>
+							<th data-options="field:'newModels',width:100,align:'center'" sortable="true">换货规格</th>
 						</tr>
 					</thead>
 				</table>
@@ -414,6 +416,9 @@
 					</restrict:function>
 					<restrict:function funId="202">
 						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="deleteExchangedSn" onclick="deleteExchangedSn()">删除</a>
+					</restrict:function>
+					<restrict:function funId="209">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="selectProduct" onclick="">选择产品</a>
 					</restrict:function>
 				</div>
     	</div>
@@ -458,7 +463,7 @@
 						<thead>
 							<tr>
 <!-- 								<th field="dealer_name" width="100" align="center" hidden="true">经销商</th> -->
-<!-- 								<th field="fk_storage_id" width="120" align="center" hidden="true"></th> -->
+								<th field="fk_order_code" width="120" align="center" sortable="true">订单号</th>
 								<th field="storage_name" width="120" align="center" sortable="true">仓库</th>
 <!-- 								<th field="product_item_number" width="120" align="center" sortable="true">产品编号</th> -->
 <!-- 								<th field="product_cname" width="120" align="center" sortable="true">产品中文名称</th> -->
@@ -757,16 +762,15 @@
 			sn_num = Math.abs(row.exchanged_number);
 			batch_no = row.batch_no;
 			fk_storage_id = row.fk_storage_id;
-			
 			if($('#status').combobox('getValue')==0 || $('#status').combobox('getValue')==2){
 				$("#selectProductSn").linkbutton('enable');
 				$("#deleteExchangedSn").linkbutton('enable');
+				$("#selectProduct").linkbutton('enable');
 			}else{
 				$("#selectProductSn").linkbutton('disable');
 				$("#deleteExchangedSn").linkbutton('disable');
+				$("#selectProduct").linkbutton('disable');
 			}
-			
-			
 			$('#dgExchangedProductSn').datagrid('loadData', {total: 0, rows: []});
 			$('#dgExchangedProductSn').datagrid({
 				url : basePath + "api/exchangeddetailpro/paging",
@@ -805,7 +809,8 @@
 		            						fk_storage_id:row.fk_storage_id,
 		            						batch_no : row.batch_no,
 		            						product_sn : row.product_sn,
-		            						exchanged_code:exchanged_code
+		            						exchanged_code:exchanged_code,
+		            						order_code:row.fk_order_code
 		            				},
 		            				error : function(request) {
 		            					$.messager.alert('提示','Error!','error');	

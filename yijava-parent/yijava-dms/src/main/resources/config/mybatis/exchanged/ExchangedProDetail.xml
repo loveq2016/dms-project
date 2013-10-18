@@ -38,8 +38,8 @@
 	</select>
 	
 	<insert id="insert" parameterType="dms.yijava.entity.exchanged.ExchangedProDetail" useGeneratedKeys="true" keyProperty="id">     
-		insert into dms.tb_exchanged_pro_detail(fk_storage_id,exchanged_detail_id,exchanged_code,batch_no,product_sn) 
-		values(#{fk_storage_id},#{exchanged_detail_id},#{exchanged_code},#{batch_no},#{product_sn})
+		insert into dms.tb_exchanged_pro_detail(fk_storage_id,exchanged_detail_id,exchanged_code,order_code,batch_no,product_sn,newModels) 
+		values(#{fk_storage_id},#{exchanged_detail_id},#{exchanged_code},#{order_code},#{batch_no},#{product_sn},#{newModels})
 	</insert>
 
 	<delete id="deleteByPrimaryKey" parameterType="int">

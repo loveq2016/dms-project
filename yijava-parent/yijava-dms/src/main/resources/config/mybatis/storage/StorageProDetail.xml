@@ -64,8 +64,8 @@
     
     
     <insert id="saveSnSub" parameterType="dms.yijava.entity.storage.StorageProDetail">
-    	insert into dms.tb_storage_pro_detail (fk_storage_id,fk_dealer_id,product_item_number,status,batch_no,product_sn)
-    	values(#{fk_storage_id},#{fk_dealer_id},#{product_item_number},1,#{batch_no},#{product_sn})
+    	insert into dms.tb_storage_pro_detail (fk_storage_id,fk_dealer_id,product_item_number,fk_order_code,status,batch_no,product_sn)
+    	values(#{fk_storage_id},#{fk_dealer_id},#{product_item_number},#{fk_order_code},1,#{batch_no},#{product_sn})
     </insert>
     
     
