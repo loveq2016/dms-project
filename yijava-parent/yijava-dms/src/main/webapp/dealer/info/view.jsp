@@ -48,12 +48,12 @@
 						<tr>
 							<th field="dealer_name" width="150" align="left" sortable="true">中文名称</th>
 							<th field="dealer_code" width="200" align="left" sortable="true">经销商代码</th>
-							<th field="business_contacts" width="200" align="left" sortable="true">商务联系人</th>
+							<th field="business_contacts" width="80" align="left" sortable="true">商务联系人</th>
 							<th field="business_phone" width="200" align="left" sortable="true">商务联系人电话</th>
 							<th field="invoice_address" width="300" align="left">发票邮寄地址</th>
 							<th field="invoicea_postcode" width="150" align="left">发票邮寄地址邮编</th>
 							<th field="status" width="70" align="left" formatter="formatterStatus">经销商状态</th>
-							<th field="attribute" width="100" align="left" hidden="true">经销商属性</th>
+							<th field="attribute" width="130" align="left" >经销商属性-供货区域</th>
 							<th data-options="field:'ids',width:50" sortable="true" formatter="formatterdesc">明细</th>	
 						</tr>
 					</thead>
@@ -119,8 +119,10 @@
 	             		<td><input name="settlement_time" style="width:150px" class="easyui-datebox" required="true"></td>
 	             	</tr> 	             	
 	              	<tr>
-	             		<td>经销商属性:</td>
-	             		<td><input name="attribute" style="width:150px" maxLength="30" class="easyui-validatebox"></td>
+	             		<td>经销商属性-供货区域:</td>
+	             		<td><!-- <input name="attribute" style="width:150px" maxLength="30" class="easyui-validatebox"> -->
+	             			 <input class="easyui-combobox" type="text" style="width:300px" name="attribute" id="attribute" data-options="required:false"></input>
+	             		</td>
 	             	</tr> 
 	              	<tr>
 	             		<td>经销商状态:</td>
@@ -223,12 +225,35 @@
 			//pager.pagination(); 
 		});
 		
+		function loadProvince(){
+			
+			var provinces =  $('#attribute').combobox({
+					valueField:'name',
+					textField:'name',
+					editable:false,
+					url:basePath +'api/area/getarea_api?pid=0',
+					
+					onLoadSuccess:onLoadSuccess
+				});	
+		}
+		
+		function onLoadSuccess(){
+			var target = $(this);
+			var data = target.combobox("getData");
+			var options = target.combobox("options");
+			if(data && data.length>0){
+				var fs = data[0];
+				target.combobox("setValue",fs[options.valueField]);
+			}
+		}
 		 
 		 function newEntity(){
 	        $('#dlg').dialog('open').dialog('setTitle','经销商基础信息添加');
 	        $('#fm').form('clear');
 	        $("input[name='status']:eq(0)").attr("checked", "checked"); 
 	        url = basePath +  'api/dealer/save';
+	        
+	        loadProvince();
 		  } 
 
 	     function updateEntity(){
