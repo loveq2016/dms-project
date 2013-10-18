@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Dealer">
+
+<sql id="adsWhere">
+	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_code)">and dealer_code like CONCAT('%','${dealer_code}','%' ) </if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">and dealer_name like CONCAT('%','${dealer_name}','%' ) </if>
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(not_category_id)">and category_id != #{not_category_id}</if>
+	</trim>
+</sql>
+
+<sql id="adsOrder">
+	<choose>
+		<when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">
+			order by ${orderSql}
+		</when>
+		<otherwise>
+		</otherwise>
+	</choose>
+</sql>
+
+    
+<select id="selectByObjectcount" resultType="long">
+	select count(1) from (
+		select t1.*,t2.category_name from dms.tb_dealer t1 
+		left join dms.tb_dealer_category t2 on t1.category_id = t2.id
+	)t
+	<include refid="adsWhere" />
+</select>
+
+<select id="selectByObject" resultType="dms.yijava.entity.dealer.Dealer">
+	select * from (
+		select t1.*,t2.category_name from dms.tb_dealer t1 
+		left join dms.tb_dealer_category t2 on t1.category_id = t2.id
+	)t
+	<include refid="adsWhere" />
+	<include refid="adsOrder" />
+	limit #{offset},#{pagesize}
+</select>
+	
+<select id="selectByMap" resultType="dms.yijava.entity.dealer.Dealer">
+	select *  from  tb_dealer
+</select>	
+	
+	
+	
+<select id="select"  resultType="dms.yijava.entity.dealer.Dealer">
+    select * from tb_dealer where dealer_id=#{dealer_id}
+</select>
+
+<select id="checkdealer_code" resultType="dms.yijava.entity.dealer.Dealer">
+    select * from tb_dealer where dealer_code=#{dealer_code}
+</select>
+
+<insert id="insert" parameterType="dms.yijava.entity.dealer.Dealer" useGeneratedKeys="true" keyProperty="dealer_id">
+	insert into tb_dealer
+	 (dealer_code,dealer_name,create_date,business_contacts,business_phone,financial_contacts,financial_phone,invoice_address,invoicea_postcode,settlement_time,attribute,status,
+	 register_address,company_type,found_time,corporate,corporate_phone,register_fund,operated_scope,addess,gm_name,gm_phone,bm_name,bm_phone,bm_telephone,bm_fax,email,column1,column2,column3)
+	values (#{dealer_code},#{dealer_name},now(),#{business_contacts},#{business_phone},#{financial_contacts},#{financial_phone},#{invoice_address},#{invoicea_postcode},#{settlement_time},#{attribute},#{status},
+	 #{register_address},#{company_type},#{found_time},#{corporate},#{corporate_phone},#{register_fund},#{operated_scope},#{addess},#{gm_name},#{gm_phone},#{bm_name},#{bm_phone},#{bm_telephone},#{bm_fax},#{email},
+	 #{column1},#{column2},#{column3})
+</insert>
+    
+<update id="update" parameterType="dms.yijava.entity.dealer.Dealer">
+	 update tb_dealer set
+	 dealer_code=#{dealer_code},dealer_name=#{dealer_name},business_contacts=#{business_contacts},business_phone=#{business_phone},financial_contacts=#{financial_contacts},
+	 financial_phone=#{financial_phone},invoice_address=#{invoice_address},invoicea_postcode=#{invoicea_postcode},settlement_time=#{settlement_time},attribute=#{attribute},status=#{attribute},
+	 register_address=#{register_address},company_type=#{company_type},found_time=#{found_time},corporate=#{corporate},corporate_phone=#{corporate_phone},register_fund=#{register_fund},
+	 operated_scope=#{operated_scope},addess=#{addess},gm_name=#{gm_name},gm_phone=#{gm_phone},bm_name=#{bm_name},bm_phone=#{bm_phone},bm_telephone=#{bm_telephone},
+	 bm_fax=#{bm_fax},email=#{email},column1=#{column1},column2=#{column2},column3=#{column3}
+	 where dealer_id = #{dealer_id}
+</update>
+
+<delete id="delete">
+	delete from tb_dealer where dealer_id = #{id}
+</delete>
+    
+    
+    
+    
+</mapper>
