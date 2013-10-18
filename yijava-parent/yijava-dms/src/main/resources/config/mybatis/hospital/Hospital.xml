@@ -18,7 +18,7 @@
 <sql id="adsOrder">
 	<choose>  
             <when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">  
-                order by ${orderSql}
+                order by t1.${orderSql}
             </when>
             <otherwise> 
             </otherwise>  
@@ -33,7 +33,11 @@
 
  <!-- select * from (select t1.*,t2.level_name from  tb_hospital t1 left join tb_hospital_level t2 on t1.level_id = t2.id) t  -->
  	<select id="selectByObject" resultType="dms.yijava.entity.hospital.Hospital">	
-		select t1.*,t2.level_name from  tb_hospital t1 left join tb_hospital_level t2 on t1.level_id = t2.id
+		select t1.id,t1.hospital_name,t1.city,t1.area,t1.hostpital_category,t1.address,t1.postcode,t1.last_update,t1.beds,t1.phone
+		,t2.level_name ,area.name as provinces
+		from  
+		tb_hospital t1 left join tb_hospital_level t2 on t1.level_id = t2.id
+		left join tb_area area on t1.provinces = area.areaid
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
 	    limit #{offset},#{pagesize}  

@@ -35,22 +35,17 @@
 								
 									<td>省份:</td>
 									<td>
-										<input class="easyui-combobox" type="text" name="provinces" id="provinces" data-options="
-								             			url:'${basePath}/api/hospital/getprovince_api',
-									                    method:'get',
-									                    valueField:'province',
-									                    textField:'province',
-									                    panelHeight:'auto',
-									                    required:false
-							            			"></input>
+										<input class="easyui-combobox" type="text" name="quprovince" id="quprovince" data-options="required:false"></input>
 									</td>
-									<td>地区:</td>
+									
+									<td>城市:</td>
 									<td>
-										<input class="easyui-validatebox" type="text" name="area" id="area" data-options="required:false"></input>
+										<input class="easyui-combobox" type="text" name="qucity" id="qucity" data-options="required:false"></input>
 									</td>
-									<td>县市(区):</td>
+									
+									<td>区或乡:</td>
 									<td>
-										<input class="easyui-validatebox" type="text" name="city" id="city" data-options="required:false"></input>
+										<input class="easyui-combobox" type="text" name="quarea" id="quarea" data-options="required:false"></input>
 									</td>
 									
 									<td>地址:</td>
@@ -132,24 +127,23 @@
 					             		</td>
 					             	</tr>
 					             	<tr>
-					             		<td>省份:</td>
-										<td><input name="provinces" style="width:300px" maxLength="50" class="easyui-combobox" data-options="
-								             			url:'${basePath}/api/hospital/getprovince_api',
-									                    method:'get',
-									                    valueField:'province',
-									                    textField:'province',
-									                    panelHeight:'auto',
-									                    required:false
-							            			"></td>
-					             	</tr>   
-					             	<tr>
-					             		<td>地区:</td>
-										<td><input name="area" style="width:300px" maxLength="20" class="easyui-validatebox" ></td>
-					             	</tr>   
-					             	<tr>
-					             		<td>县市（区）:</td>
-										<td><input name="city" style="width:300px" maxLength="20" class="easyui-validatebox" ></td>
-					             	</tr>   
+				             		<td>省份:</td>
+				             		<td>
+				             		    <input class="easyui-combobox" type="text" style="width:300px" name="provinces" id="provinces" data-options="required:false"></input>
+				             		</td>
+				             	</tr>
+				             	<tr>
+				             		<td>城市:</td>
+				             		<td>
+				             		    <input class="easyui-validatebox" type="text" style="width:300px" name="city" id="city" data-options="required:false"></input>
+				             		</td>
+				             	</tr>
+				             	<tr>
+				             		<td>区或乡:</td>
+				             		<td>
+				             		    <input class="easyui-validatebox" type="text" style="width:300px" name="area" id="area" data-options="required:false"></input>
+				             		</td>
+				             	</tr>
 					             	<tr>
 					             		<td>地址:</td>
 										<td><input name="address" style="width:300px" maxLength="100" class="easyui-validatebox" ></td>
@@ -184,6 +178,68 @@
 	 	var url;
 	 	var pagesize='13';
 
+	 	loadProvinceforqu();
+		function loadProvinceforqu(){
+			
+			var quprovince =  $('#quprovince').combobox({
+					valueField:'areaid',
+					textField:'name',
+					editable:false,
+					url:basePath +'api/area/getarea_api?pid=0',
+					onChange:function(newValue, oldValue){
+						$.get(basePath +'api/area/getarea_api',{pid:newValue},function(data){
+							qucity.combobox("clear").combobox('loadData',data);
+							quarea.combobox("clear");
+						},'json');
+					},
+					onLoadSuccess:onLoadSuccess
+				});
+			
+			var qucity = $('#qucity').combobox({
+				valueField:'areaid',
+				textField:'name',
+				editable:false,
+				onChange:function(newValue, oldValue){
+					$.get(basePath +'api/area/getarea_api',{pid:newValue},function(data){
+						quarea.combobox("clear").combobox('loadData',data);
+					},'json');
+				},
+				onLoadSuccess:onLoadSuccess
+			});
+			
+			var quarea = $('#quarea').combobox({
+				valueField:'areaid',
+				textField:'name',
+				editable:false,
+				onLoadSuccess:onLoadSuccess
+			});				
+		}
+		
+		function loadProvince(){
+			
+			var provinces =  $('#provinces').combobox({
+					valueField:'areaid',
+					textField:'name',
+					editable:false,
+					url:basePath +'api/area/getarea_api?pid=0',
+					
+					onLoadSuccess:onLoadSuccess
+				});
+			
+			
+			
+		}
+		
+		
+		function onLoadSuccess(){
+			var target = $(this);
+			var data = target.combobox("getData");
+			var options = target.combobox("options");
+			if(data && data.length>0){
+				var fs = data[0];
+				target.combobox("setValue",fs[options.valueField]);
+			}
+		}
 	 	 function formatterdesc (value, row, index) { 
 				// v = "'"+ row.id + "','" + index+"'";
 				 	return '<a class="questionBtn" href="javascript:void(0)"  onclick="View_Entity('+index+')" ></a>';
@@ -214,7 +270,9 @@
 			 url = basePath + 'api/hospital/save';
 			 $('#fm').form('clear');
 			 $('#saveobject').linkbutton('enable');
-			 saveEntity();
+			 //saveEntity();
+			 
+			   loadProvince();
 		  } 
 
 
@@ -226,6 +284,8 @@
 	            $('#fm').form('load',row);
 	            $('#saveobject').linkbutton('enable');
 	            url = basePath + 'api/hospital/update';
+	            
+	            loadProvince();
 	          }else{
 					$.messager.alert('提示','请选中数据!','warning');				
 			 }	
@@ -284,9 +344,9 @@
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_hospital_name: $('#hospital_name').val(),
 		    	filter_ANDS_level_id: $('#level_id').combobox('getValue'),
-		    	filter_ANDS_provinces: $('#provinces').combobox('getValue'),
-		    	filter_ANDS_area: $('#area').val(),
-		    	filter_ANDS_city: $('#city').val(),
+		    	filter_ANDS_provinces: $('#quprovince').combobox('getValue'),
+		    	filter_ANDS_area: $('#quarea').val(),
+		    	filter_ANDS_city: $('#qucity').val(),
 		    	filter_ANDS_address: $('#address').val()
 		    });
 		}

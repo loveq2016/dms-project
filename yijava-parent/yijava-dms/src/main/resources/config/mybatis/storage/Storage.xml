@@ -3,10 +3,17 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Storage">
+	<!-- <select id="selectByMap" resultType="dms.yijava.entity.storage.Storage">
+		select ts.* from tb_storage ts LEFT JOIN tb_dealer_storage tds ON ts.id=tds.storage_id 
+		<include refid="adsWhere"/>
+	</select> -->
+	
 	<select id="selectByMap" resultType="dms.yijava.entity.storage.Storage">
 		select ts.* from tb_storage ts LEFT JOIN tb_dealer_storage tds ON ts.id=tds.storage_id 
 		<include refid="adsWhere"/>
 	</select>
+	
+	
 	<sql id="adsWhere">
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(storage_name)">
