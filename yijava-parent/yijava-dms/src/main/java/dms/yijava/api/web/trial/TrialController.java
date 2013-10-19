@@ -88,7 +88,7 @@ public class TrialController {
 	public JsonPage<Trial> paging(PageRequest pageRequest,
 			HttpServletRequest request) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
-		JsonPage<Trial> trialPages;
+		JsonPage<Trial> trialPages=null;
 		//找到当前登录用户所拥有的所有销售
 		//如果是销售，只查询自己的试用
 		//如果是其他用户，根据关系找到所有的销售
@@ -100,18 +100,28 @@ public class TrialController {
 			//是销售
 			filters.add(PropertyFilters.build("ANDS_sales_user_ids", currentUserId));
 			
-			filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
-			filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
-			trialPages=trialService.paging(pageRequest, filters);
+			//filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
+			//filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
+			try {
+				trialPages=trialService.paging(pageRequest, filters);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}else
 		{
 			//不是销售，需要找到他对应的所有销售
 			filters.add(PropertyFilters.build("ANDS_sales_user_ids", this.listString(sysUser.getChildIds())));
 			
 			filters.add(PropertyFilters.build("ANDS_statuses","1,2,3,4"));
-			//filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
-			//filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
-			trialPages=trialService.paging(pageRequest, filters);
+			filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
+			filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
+			try {
+				trialPages=trialService.paging(pageRequest, filters);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			/**
 			 * 以下开始标记哪些记录需要当前人处理

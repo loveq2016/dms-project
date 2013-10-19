@@ -68,4 +68,23 @@ public class ExchangedDetailProController {
 		return new Result<String>(id, 0);
 	}
 	
+	
+	@ResponseBody
+	@RequestMapping("setModelsBySn")
+	public Result<String> setModelsBySn(
+			@RequestParam(value = "id", required = true) String id,
+			@RequestParam(value = "models", required = true) String models) {
+		try {
+			
+			ExchangedProDetail exchangedProDetail = new ExchangedProDetail();
+			exchangedProDetail.setId(id);
+			exchangedProDetail.setNewModels(models);
+			exchangedProDetailService.setModelsBySn(exchangedProDetail);
+			return new Result<String>(id, 1);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result<String>(id, 0);
+	}
+	
 }

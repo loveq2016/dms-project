@@ -104,7 +104,8 @@
 							<th data-options="field:'status',width:90" sortable="true" formatter="formatterstatus">单据状态</th>
 							<th data-options="field:'notice',width:90"  hidden="true">单据状态</th>
 							<th data-options="field:'id',width:90" sortable="true" formatter="formatterdesc">明细</th>	
-							<th data-options="field:'check_id',width:80,align:'center'"></th>
+							<th data-options="field:'check_id',width:80,align:'center'"  hidden="true"></th>
+							<th data-options="field:'record_status',width:80,align:'center'" hidden="true"></th>
 							<restrict:function funId="128">
 								<th data-options="field:'custom2',width:80,align:'center'" formatter="formatterCheck">审核</th>
 							</restrict:function>						
@@ -126,9 +127,9 @@
         		<restrict:function funId="127">
         			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="ToCheckEntity()">提交审核</a>
         		</restrict:function>
-        		<restrict:function funId="128">
+        		<%-- <restrict:function funId="128">
         			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="CheckEntity()">审核</a>
-        		</restrict:function>
+        		</restrict:function> --%>
         		<restrict:function funId="156">
         			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="VidwDocument()">查看单据</a>
         		</restrict:function>

@@ -418,7 +418,7 @@
 						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="deleteExchangedSn" onclick="deleteExchangedSn()">删除</a>
 					</restrict:function>
 					<restrict:function funId="209">
-						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="selectProduct" onclick="">选择产品</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="selectProduct" onclick="newOrderDetailEntity()">选择换货产品</a>
 					</restrict:function>
 				</div>
     	</div>
@@ -478,6 +478,58 @@
 	    <div id="dlgProductSn-buttons">
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="addProductSn()">添加</a>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProductSn').dialog('close')">取消</a>
+	    </div>
+	    
+	    <div id="dlgOrderProduct" class="easyui-dialog" style="width:850px;height:495px;padding:5px 5px 5px 5px;"
+            modal="true" closed="true" buttons="#dlgOrderProduct-buttons">
+				<div class="easyui-panel" title="查询条件" style="width:825px;">
+						<div style="padding: 10px 0 0 30px">
+							<form id="fffdetail" method="post">
+								<table>
+									<tr>
+										<td>产品编号:</td>	
+										<td width="150px"><input class="easyui-validatebox" type="text" name="item_number" id="item_number" ></input></td>
+										<td>选择分类:</td>
+										<td>
+							            	<input class="easyui-combobox" name="category_id" id="category_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+						             			data-options="
+							             			url: '${basePath}api/dealerAuthProduct/list?dealer_id=${user.fk_dealer_id}',
+								                    method:'get',
+								                    valueField:'product_category_id',
+													textField:'category_name',
+								                    panelHeight:'auto'
+						            			"/>
+					                	</td>
+									</tr>
+								</table>
+							</form>
+						</div>
+						<div style="text-align: right; padding:5px">
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="doSearchOrderProduct()">查询</a>   
+						</div>
+					</div>
+				<div style="margin: 10px 0;"></div>
+					<table id="dgOrderProduct" class="easyui-datagrid" title="查询结果" style="height:300px" method="get"
+					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="desc" toolbar="#tbProduct">
+						<thead>
+							<tr>
+								<th data-options="field:'item_number',width:100,align:'center'" sortable="true">产品编号</th>
+								<th data-options="field:'cname',width:150,align:'center'" sortable="true">中文名称</th>
+								<th data-options="field:'ename',width:120,align:'center'" sortable="true">英文名称</th>
+								<th data-options="field:'models',width:100,align:'center'" sortable="true">规格型号</th>
+								<th data-options="field:'price',width:80,align:'center'" sortable="true">价格</th>
+								<th data-options="field:'discount',width:80,align:'center'" sortable="true">成交价格</th>
+								<th data-options="field:'order_company',width:80,align:'center'">订购单位</th>
+								<th data-options="field:'is_order',width:80" formatter="formatterIs_order">是否可订货</th>
+								<th data-options="field:'remark',width:80" hidden="true">备注</th>
+							</tr>
+						</thead>
+					</table>
+		</div>
+		<div style="margin: 10px 0;"></div>
+	    <div id="dlgOrderProduct-buttons">
+	       	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="updateExchangedModels()">选择</a>
+	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgOrderProduct').dialog('close')">取消</a>
 	    </div>
 
 	<script type="text/javascript">
@@ -605,12 +657,14 @@
 		
 		var dealer_id ; 
 		var exchanged_code ;
+		var type;
 		function openExchangedDetail(index){
 			$('#dg').datagrid('selectRow',index);
 			var row = $('#dg').datagrid('getSelected');
 			$('#fm').form('load',row);
 			exchanged_code = row.exchanged_code;
 			dealer_id = row.dealer_id;
+			type = row.type;
 			if(row.status==0 || row.status==2){
 				$("#newExchangedBtn").linkbutton('enable');
 				$("#deleteExchangedBtn").linkbutton('enable');
@@ -765,12 +819,17 @@
 			if($('#status').combobox('getValue')==0 || $('#status').combobox('getValue')==2){
 				$("#selectProductSn").linkbutton('enable');
 				$("#deleteExchangedSn").linkbutton('enable');
-				$("#selectProduct").linkbutton('enable');
+				if(type==2 ){
+					$("#selectProduct").linkbutton('enable');
+				}else{
+					$("#selectProduct").linkbutton('disable');
+				}
 			}else{
 				$("#selectProductSn").linkbutton('disable');
 				$("#deleteExchangedSn").linkbutton('disable');
 				$("#selectProduct").linkbutton('disable');
 			}
+
 			$('#dgExchangedProductSn').datagrid('loadData', {total: 0, rows: []});
 			$('#dgExchangedProductSn').datagrid({
 				url : basePath + "api/exchangeddetailpro/paging",
@@ -778,7 +837,16 @@
 					filter_ANDS_exchanged_code: exchanged_code,
 					filter_ANDS_fk_storage_id : fk_storage_id	,
 					filter_ANDS_batch_no : batch_no
+				},
+				onLoadSuccess:function(data){ 
+					if(type==2){
+						$('#dgExchangedProductSn').datagrid('showColumn',"newModels");  
+					}else{
+						$('#dgExchangedProductSn').datagrid('hideColumn',"newModels");  
+					}
+					 
 				}
+				
 			});
 		}
 		
@@ -991,6 +1059,69 @@
 				    }		
 				});		
 			}
+		
+		function formatterIs_order (value, row, index) { 
+			return value==1?"<span style='color:green'>是</span>":"<span style='color:red'>否</span>";
+		}
+		var exchanged_pro_detail_id;
+		function newOrderDetailEntity(){
+			var row = $('#dgExchangedProductSn').datagrid('getSelected');
+			if (row){	
+				exchanged_pro_detail_id = row.id;
+				$('#dlgOrderProduct').dialog('open').dialog('setTitle','['+row.batch_no+']换货产品列表');
+				$('#dgOrderProduct').datagrid({
+					 url:basePath+'api/product/api_paging',
+					 queryParams: {
+							filter_ANDS_dealer_id : dealer_id
+					 }
+				});
+			}else{
+				$.messager.alert('提示','请选中数据!','warning');
+			}
+		}	
+		
+		function doSearchOrderProduct(){
+		    $('#dgOrderProduct').datagrid('load',{
+		    	filter_ANDS_item_number: $("#fffdetail input[name=item_number]").val(),
+		    	filter_ANDS_dealer_id: dealer_id,
+		    	filter_ANDS_category_id: $("#fffdetail input[name=category_id]").val()
+		    });
+		}
+		
+		function updateExchangedModels(){
+			
+			if(typeof(exchanged_pro_detail_id) != "undefined"){
+				var row = $('#dgOrderProduct').datagrid('getSelected');
+				if (row){	
+        			$.ajax({
+        				type : "POST",
+        				url : basePath + 'api/exchangeddetailpro/setModelsBySn',
+        				data : {
+        					id:exchanged_pro_detail_id , 
+        					models:row.models},
+        				error : function(request) {
+        					$.messager.alert('提示','Error!','error');	
+        				},
+        				success : function(data) {
+        					var jsonobj = $.parseJSON(data);
+        					if (jsonobj.state == 1) {  
+        						$('#dgExchangedProductSn').datagrid('reload');
+        						$.messager.alert('提示','规格设置成功!','info');	
+        						$('#dlgOrderProduct').dialog('close');
+        	                     
+        					}else{
+        						$.messager.alert('提示','Error!','error');	
+        					}
+        				}
+        			});  
+				}else{
+					$.messager.alert('提示','请选中数据!','warning');
+				}
+			}else{
+				$.messager.alert('提示','请选中换货产品序列号!','warning');
+			}
+			
+		}
 		
 	</script>
 

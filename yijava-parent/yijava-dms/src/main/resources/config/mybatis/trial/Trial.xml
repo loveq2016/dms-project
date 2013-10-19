@@ -68,11 +68,14 @@
 			select tb_trial.trial_id,tb_trial.trial_code,tb_trial.dealer_user_id,tb_trial.sales_user_id,tb_trial.dealer_name,
 			tb_trial.region_user_id,tb_trial.company_user_id,tb_trial.hospital_id,
 			tb_trial.hospital_name,tb_trial.reason,tb_trial.trial_num_sum,tb_trial.create_time,
-			tb_trial.status,tb_trial.last_update,tfr.check_id as check_id
+			tb_trial.status,tb_trial.last_update
+			<if test="check_id != null and check_id != '' ">
+			,tfr.check_id as check_id,tfr.status as record_status, tfr.record_id
+			</if>
 			 from tb_trial 
-			<!-- <if test="check_id != null and check_id != '' "> -->
-			 LEFT JOIN tb_flow_record tfr ON tb_trial.trial_id=tfr.bussiness_id AND tfr.check_id= #{check_id} AND flow_id=#{flow_id}) t 
-			<!--  </if> -->
+			<if test="check_id != null and check_id != '' ">
+			 LEFT JOIN tb_flow_record tfr ON tb_trial.trial_id=tfr.bussiness_id AND tfr.check_id= #{check_id} AND flow_id=#{flow_id}
+			</if>
 			<include refid="adsWhere" />
 			<include refid="adsOrder" />
 			limit #{offset},#{pagesize}

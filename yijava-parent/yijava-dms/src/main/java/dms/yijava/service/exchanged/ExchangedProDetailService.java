@@ -91,4 +91,9 @@ public class ExchangedProDetailService{
 	}
 
 	
+	public void setModelsBySn(ExchangedProDetail entity) {
+		exchangedProDetailDao.updateObject(".setModelsBySn", entity);
+	}
+
+	
 }
