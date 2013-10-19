@@ -15,19 +15,16 @@
 						<form id="ffquery" method="post">
 							<table>
 								<tr>
-									<td>经销商:</td>
-									<td>
+									<td width="50">经销商:</td>
+									<td width="270">
 										<input class="easyui-validatebox" type="text" name="dealer_name" id="dealer_name" data-options="required:false"></input>
 									</td>
-									<td></td>
-									<td>单据状态:</td>
-									<td>
+									<td width="50">单据状态:</td>
+									<td width="270">
 										<input class="easyui-validatebox" type="text" name="dealer_name" id="dealer_name" data-options="required:false"></input>
 									</td>
-								</tr>
-								<tr>
-									<td>客户订单号:</td>
-									<td>
+									<td width="50">客户订单号:</td>
+									<td width="270">
 										<input class="easyui-validatebox" type="text" name="dealer_name" id="dealer_name" data-options="required:false"></input>
 									</td>
 								</tr>

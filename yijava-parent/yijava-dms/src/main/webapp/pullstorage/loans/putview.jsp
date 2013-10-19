@@ -16,15 +16,15 @@
 					<div style="padding: 10px 0 10px 60px">
 						<form id="ff" method="post">
 							<table>
-								<tr>
+								<tr height="30">
 									<input class="easyui-validatebox" type="hidden" name="type" id="type" value="2"/>
-									<td width="200">借贷出库单号:</td>	
-									<td><input class="easyui-validatebox" type="text" name="pull_storage_code"></input></td>
-									<td width="160">经销商:</td>
-									<td>
+									<td width="80">借贷出库单号:</td>	
+									<td width="270"><input class="easyui-validatebox" style="width:150px" type="text" name="pull_storage_code"></input></td>
+									<td width="80">经销商:</td>
+									<td width="270">
 										<c:choose>
 										       <c:when test="${user.fk_dealer_id!='0'}">
-													<input class="easyui-validatebox" disabled="disabled" id="put_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
+													<input class="easyui-validatebox" readonly="readonly" id="put_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
 													<input class="easyui-validatebox" type="hidden" name="fk_put_storage_party_id" id="fk_put_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">
 										       </c:when>
 										       <c:otherwise>
@@ -39,8 +39,8 @@
 										       </c:otherwise>
 										</c:choose>
 									</td>
-									<td width="180">借出经销商:</td>
-									<td>
+									<td width="80">借出经销商:</td>
+									<td width="270">
 										<c:choose>
 										       <c:when test="${user.fk_dealer_id!='0'}">
 													<input class="easyui-combobox" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
@@ -66,9 +66,9 @@
 									</td>
 								</tr>
 								<tr>
-									<td width="50">状态:</td>
-									<td width="270">										
-										<input name="status" class="easyui-combobox" data-options="
+									<td width="80">状态:</td>
+									<td>										
+										<input name="status" class="easyui-combobox" style="width:150px" data-options="
 											valueField: 'id',
 											textField: 'value',
 											data: [{
@@ -88,12 +88,12 @@
 												value: '成功'
 											}]" />
 									</td>
-									<td width="100">开始时间:</td>
-									<td width="270">
+									<td width="80">开始时间:</td>
+									<td>
 										<input name="put_start_date" id="put_start_date" class="easyui-datebox"></input>
 									</td>
-									<td width="100">结束时间:</td>
-									<td width="270">
+									<td width="80">结束时间:</td>
+									<td>
 										 <input name="put_end_date" id="put_end_date" class="easyui-datebox"></input>
 									</td>
 								</tr>
@@ -116,12 +116,12 @@
 						<tr>
 							<th data-options="field:'id',width:10,align:'center'" hidden="true">id</th>
 							<th data-options="field:'put_storage_party_name',width:200,align:'center'" sortable="true">经销商</th>
-							<th data-options="field:'pull_storage_code',width:100,align:'center'" sortable="true">借贷出库单号</th>
+							<th data-options="field:'pull_storage_code',width:160,align:'center'" sortable="true">借贷出库单号</th>
 							<th data-options="field:'pull_storage_party_name',width:200,align:'center'" sortable="true">借出方</th>							
 							<th data-options="field:'put_storage_code',width:100,align:'center'" hidden="true">收货单号</th>
 							<th data-options="field:'total_number',width:80,align:'center'" sortable="true">总数量</th>
-							<th data-options="field:'pull_storage_date',width:100,align:'center'" formatter="formatterdate" sortable="true">借出时间</th>
-							<th data-options="field:'put_storage_date',width:100,align:'center'" formatter="formatterdate" sortable="true">收货时间</th>
+							<th data-options="field:'pull_storage_date',width:160,align:'center'" formatter="formatterdate" sortable="true">借出时间</th>
+							<th data-options="field:'put_storage_date',width:160,align:'center'" formatter="formatterdate" sortable="true">收货时间</th>
 							<th data-options="field:'status',width:80,align:'center'" formatter="formatterStatus" sortable="true">单据状态</th>
 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
 						</tr>
@@ -136,16 +136,16 @@
 					<form id="ffPullStorageDetail" method="post">
 							<table>
 								<tr>
-									<td width="100">经销商:</td>
-									<td>
-						            	<input class="easyui-validatebox" readonly="readonly" type="text" name="put_storage_party_name"></input>
+									<td width="50">经销商:</td>
+									<td width="200">
+						            	<input class="easyui-validatebox" style="width:160px;" readonly="readonly" type="text" name="put_storage_party_name"></input>
 									</td>
-									<td width="150">收货单号:</td>
-									<td>
-						            	<input class="easyui-validatebox" readonly="readonly" type="text" name="put_storage_code"></input>
+									<td width="80">收货单号:</td>
+									<td width="200">
+						            	<input class="easyui-validatebox" style="width:160px;" readonly="readonly" type="text" name="put_storage_code"></input>
 									</td>
-									<td width="100">状态:</td>
-									<td width="270">				
+									<td width="60">状态:</td>
+									<td width="200">
 										<input name="status" readonly="readonly" class="easyui-combobox" data-options="
 											valueField: 'id',
 											textField: 'value',
@@ -168,12 +168,12 @@
 									</td>
 								</tr>
 								<tr>
-									<td width="100">借出方:</td>
+									<td>借出方:</td>
 									<td>
-						            	<input class="easyui-validatebox" readonly="readonly" type="text" name="pull_storage_party_name"></input>
+						            	<input class="easyui-validatebox" style="width:160px;" readonly="readonly" type="text" name="pull_storage_party_name"></input>
 									</td>
-									<td width="150">借贷出货单号:</td>	
-									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="pull_storage_code"></input></td>
+									<td>借贷出货单号:</td>	
+									<td><input class="easyui-validatebox" style="width:160px;" readonly="readonly" type="text" name="pull_storage_code"></input></td>
 									<td>借出时间:</td>	
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="pull_storage_date"></input></td>
 								</tr>
@@ -186,12 +186,12 @@
 					 rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc">
 					<thead>
 						<tr>
-							<th data-options="field:'fk_storage_id',width:100,align:'center'" hidden="true"></th>
+							<th data-options="field:'fk_storage_id',width:120,align:'center'" hidden="true"></th>
 							<th data-options="field:'storage_name',width:100,align:'center'" sortable="true">仓库</th>
 							<th data-options="field:'product_item_number',width:100,align:'center'" sortable="true">产品编码</th>
 							<th data-options="field:'models',width:60,align:'center'" sortable="true">规格型号</th>
 							<th data-options="field:'batch_no',width:200,align:'center'" sortable="true">产品批次</th>
-							<th data-options="field:'valid_date',width:100,align:'center'" formatter="formatterdate" sortable="true">有效日期</th>
+							<th data-options="field:'valid_date',width:130,align:'center'" formatter="formatterdate" sortable="true">有效日期</th>
 							<th data-options="field:'inventory_number',width:80,align:'center'" sortable="true">库存量</th>
 							<th data-options="field:'sales_number',width:80,align:'center'" sortable="true">销售数量(EA)</th>
 							<th data-options="field:'product_sn',width:100,align:'center',editor:'datebox'" formatter="formatterProductSn">序列号</th>

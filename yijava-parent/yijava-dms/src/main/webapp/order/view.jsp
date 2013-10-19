@@ -18,16 +18,16 @@
 							<table>
 								<tr>
 									<td>订单号:</td>	
-									<td><input class="easyui-validatebox" style="width:200px" type="text" name="order_code"></input></td>
+									<td><input class="easyui-validatebox" style="width:160px" type="text" name="order_code"></input></td>
 									<td width="100">经销商:</td>
 									<td>
 										<c:choose>
 										       <c:when test="${user.fk_dealer_id!='0'}">
-													<input class="easyui-validatebox" disabled="disabled" id="dealer_name" value="${user.dealer_name}" style="width:200px" maxLength="100">
-													<input class="easyui-validatebox" type="hidden" name="dealer_id" id="dealer_id" value="${user.fk_dealer_id}" style="width:200px" maxLength="100">					       	
+													<input class="easyui-validatebox" readonly="readonly" id="dealer_name" value="${user.dealer_name}" style="width:160px" maxLength="100">
+													<input class="easyui-validatebox" type="hidden" name="dealer_id" id="dealer_id" value="${user.fk_dealer_id}" maxLength="100">					       	
 										       </c:when>
 										       <c:otherwise>
-										       		<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:200px" maxLength="100" class="easyui-validatebox"
+										       		<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:160px" maxLength="100" class="easyui-validatebox"
 							             			data-options="
 								             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
 									                    method:'get',

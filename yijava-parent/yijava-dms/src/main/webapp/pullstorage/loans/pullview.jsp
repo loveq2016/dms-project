@@ -25,7 +25,7 @@
 									<td width="270">
 										<c:choose>
 										       <c:when test="${user.fk_dealer_id!='0'}">
-													<input class="easyui-validatebox" disabled="disabled" id="pull_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
+													<input class="easyui-validatebox" readonly="readonly" id="pull_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
 													<input class="easyui-validatebox" type="hidden" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">					       	
 										       </c:when>
 										       <c:otherwise>

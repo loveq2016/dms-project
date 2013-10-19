@@ -15,14 +15,14 @@
 					<div style="padding: 10px 0 0 60px">
 						<form id="ffquery" method="post">
 							<table>
-								<tr>
+								<tr height="30">
 									<td width="50">账户:</td>
 									<td width="270"><input class="easyui-validatebox" type="text" name="account" id="account"></input>
 									</td>
-									<td width="100">姓名:</td>
+									<td width="50">姓名:</td>
 									<td width="270"><input class="easyui-validatebox" type="text" name="realname" id="realname"></input>
 									</td>
-									<td width="100">角色:</td>
+									<td width="50">角色:</td>
 									<td width="270">
 										<input class="easyui-combobox" name="fk_role_id" id="fk_role_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 						             			data-options="
@@ -62,7 +62,7 @@
 								                    panelHeight:'auto'
 						            			"/>
 									</td>
-									<td width="100">经销商:</td>
+									<td width="50">经销商:</td>
 									<td>
 										<input class="easyui-combobox" name="fk_dealer_id" id="fk_dealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 						             			data-options="

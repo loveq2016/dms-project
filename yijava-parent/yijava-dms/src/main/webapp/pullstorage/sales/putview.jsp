@@ -16,15 +16,15 @@
 					<div style="padding: 10px 0 10px 60px">
 						<form id="ff" method="post">
 							<table>
-								<tr>
+								<tr height="30">
 									<input class="easyui-validatebox" type="hidden" name="type" id="type" value="1"/>
-									<td width="200">分销出库单号:</td>	
-									<td><input class="easyui-validatebox" type="text" name="pull_storage_code"></input></td>
-									<td width="160">经销商:</td>
-									<td>
+									<td width="80">分销出库单号:</td>	
+									<td width="270"><input class="easyui-validatebox" style="width:150px" type="text" name="pull_storage_code"></input></td>
+									<td width="80">经销商:</td>
+									<td width="270">
 										<c:choose>
 										       <c:when test="${user.fk_dealer_id!='0'}">
-													<input class="easyui-validatebox" disabled="disabled" id="put_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
+													<input class="easyui-validatebox" readonly="readonly" id="put_storage_party_name" value="${user.dealer_name}" style="width:150px" maxLength="100">
 													<input class="easyui-validatebox" type="hidden" name="fk_put_storage_party_id" id="fk_put_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">
 										       </c:when>
 										       <c:otherwise>
@@ -39,8 +39,8 @@
 										       </c:otherwise>
 										</c:choose>
 									</td>
-									<td width="180">分销方:</td>
-									<td>
+									<td width="80">分销方:</td>
+									<td width="270">
 										<c:choose>
 										       <c:when test="${user.fk_dealer_id!='0'}">
 													<input class="easyui-combobox" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
@@ -66,9 +66,9 @@
 									</td>
 								</tr>
 								<tr>
-									<td width="50">状态:</td>
+									<td width="80">状态:</td>
 									<td width="270">										
-										<input name="status" class="easyui-combobox" data-options="
+										<input name="status" style="width:150px" class="easyui-combobox" data-options="
 											valueField: 'id',
 											textField: 'value',
 											data:[{
@@ -82,11 +82,11 @@
 												value: '成功'
 											}]" />
 									</td>
-									<td width="100">开始时间:</td>
+									<td width="80">开始时间:</td>
 									<td width="270">
 										<input name="put_start_date" id="put_start_date" class="easyui-datebox"></input>
 									</td>
-									<td width="100">结束时间:</td>
+									<td width="80">结束时间:</td>
 									<td width="270">
 										 <input name="put_end_date" id="put_end_date" class="easyui-datebox"></input>
 									</td>
@@ -114,8 +114,8 @@
 							<th data-options="field:'pull_storage_party_name',width:200,align:'center'" sortable="true">分销方</th>							
 							<th data-options="field:'put_storage_code',width:100,align:'center'" hidden="true">收货单号</th>
 							<th data-options="field:'total_number',width:80,align:'center'" sortable="true">总数量</th>
-							<th data-options="field:'pull_storage_date',width:100,align:'center'" formatter="formatterdate" sortable="true">分销时间</th>
-							<th data-options="field:'put_storage_date',width:100,align:'center'" formatter="formatterdate" sortable="true">收货时间</th>
+							<th data-options="field:'pull_storage_date',width:130,align:'center'" formatter="formatterdate" sortable="true">分销时间</th>
+							<th data-options="field:'put_storage_date',width:130,align:'center'" formatter="formatterdate" sortable="true">收货时间</th>
 							<th data-options="field:'status',width:80,align:'center'" formatter="formatterStatus" sortable="true">单据状态</th>
 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
 						</tr>
@@ -130,17 +130,17 @@
 					<form id="ffPullStorageDetail" method="post">
 							<table>
 								<tr>
-									<td width="100">经销商:</td>
-									<td>
-						            	<input class="easyui-validatebox" readonly="readonly" type="text" name="put_storage_party_name"></input>
+									<td width="50">经销商:</td>
+									<td width="200">
+						            	<input class="easyui-validatebox" readonly="readonly" style="width:150px" type="text" name="put_storage_party_name"></input>
 									</td>
-									<td width="150">收货单号:</td>
-									<td>
-						            	<input class="easyui-validatebox" readonly="readonly" type="text" name="put_storage_code"></input>
+									<td width="80">收货单号:</td>
+									<td width="200">
+						            	<input class="easyui-validatebox" readonly="readonly" style="width:160px" type="text" name="put_storage_code"></input>
 									</td>
-									<td width="100">状态:</td>
-									<td width="270">				
-										<input name="status" readonly="readonly" class="easyui-combobox" data-options="
+									<td width="60">状态:</td>
+									<td width="200">				
+										<input name="status" readonly="readonly" style="width:150px"  class="easyui-combobox" data-options="
 											valueField: 'id',
 											textField: 'value',
 											data:[{
@@ -156,14 +156,14 @@
 									</td>
 								</tr>
 								<tr>
-									<td width="100">分销方:</td>
+									<td>分销方:</td>
 									<td>
-						            	<input class="easyui-validatebox" readonly="readonly" type="text" name="pull_storage_party_name"></input>
+						            	<input class="easyui-validatebox" style="width:150px" readonly="readonly" type="text" name="pull_storage_party_name"></input>
 									</td>
-									<td width="150">分销出货单号:</td>	
-									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="pull_storage_code"></input></td>
+									<td>分销出货单号:</td>	
+									<td><input class="easyui-validatebox" style="width:160px" readonly="readonly" type="text" name="pull_storage_code"></input></td>
 									<td>分销时间:</td>	
-									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="pull_storage_date"></input></td>
+									<td><input class="easyui-validatebox" style="width:150px" readonly="readonly" type="text" name="pull_storage_date"></input></td>
 								</tr>
 							</table>
 					</form>
