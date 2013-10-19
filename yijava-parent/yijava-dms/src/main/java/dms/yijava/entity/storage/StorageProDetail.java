@@ -11,7 +11,7 @@ public class StorageProDetail {
 	private String fk_storage_id;
 	private String fk_dealer_id;
 	private String product_item_number;
-	//private String order_code;
+	private String fk_order_code;
 	//private String pull_storage_code;
 	//private String type;
 	private String status;
