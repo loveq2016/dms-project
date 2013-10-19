@@ -34,4 +34,6 @@ public class Trial {
 	
 	protected long notice = 0;//仅用于页面显示
 	private Integer check_id;
+	private Integer record_status;
+	private Integer record_id;
 }
