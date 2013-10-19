@@ -40,18 +40,18 @@
 			<div style="margin: 10px 0;"></div>
 
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg"  title="查询结果" style="height: 330px" method="get"
+				<table id="dg"  title="查询结果" style="height: 450px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
-							<th field="dealer_name" width="100" align="center" sortable="true">经销商</th>
-							<th field="storage_name" width="120" align="center" sortable="true">仓库</th>
-							<th field="product_item_number" width="120" align="center" sortable="true">Item Number</th>
-							<th field="product_cname" width="120" align="center" sortable="true">产品中文名称</th>
-							<th field="models" width="120" align="center" sortable="true">规格</th>
-							<th field="batch_no" width="100" align="center" sortable="true">批号/序列号</th>
-							<th field="valid_date" width="100" align="center" sortable="true" >有效期</th>
-							<th field="inventory_number" width="100" align="center" sortable="true">产品数量（EA）</th>
+							<th field="dealer_name" width="100" align="left" sortable="true">经销商</th>
+							<th field="storage_name" width="120" align="left" sortable="true">仓库</th>
+							<th field="product_item_number" width="120" align="left" sortable="true">Item Number</th>
+							<th field="product_cname" width="120" align="left" sortable="true">产品中文名称</th>
+							<th field="models" width="120" align="left" sortable="true">规格</th>
+							<th field="batch_no" width="100" align="left" sortable="true">批号/序列号</th>
+							<th field="valid_date" width="100" align="left" sortable="true" >有效期</th>
+							<th field="inventory_number" width="100" align="left" sortable="true">产品数量（EA）</th>
 							
 							<th data-options="field:'product_sn',width:100,align:'center',editor:'datebox'" formatter="formatterProductSn">序列号</th>
 						</tr>
