@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,9 @@ import dms.yijava.entity.flow.FlowRecord;
 import dms.yijava.entity.flow.Step;
 import dms.yijava.entity.flow.StepDepartment;
 import dms.yijava.entity.system.SysUser;
+import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.system.SysUserService;
+import dms.yijava.service.user.UserDealerFunService;
 
 /**
  * 
@@ -47,6 +50,9 @@ public class FlowBussService {
 	
 	@Autowired
 	private FlowRecordService flowRecordService;
+	
+	@Autowired
+	private UserDealerFunService userDealerFunService;
 	
 	/**
 	 * 找到流程的第一步
@@ -301,13 +307,26 @@ public class FlowBussService {
 		List<SysUser> sysUsers= stepDepartment.getUsers();
 		for(SysUser sysUser: sysUsers)
 		{
-			if(currentUser.getParentIds()!=null && !currentUser.getParentIds().equals(""))
+			//如果是经销商,直接找到他所属的销售,否则才找他的上级
+			if(!StringUtils.equals("0",currentUser.getFk_dealer_id())){
+				//是经销商
+				
+				UserDealer userDealer=(UserDealer)userDealerFunService.getUserByDealer(currentUser.getFk_dealer_id());
+				
+				check_id=userDealer.getUser_id();
+				break;
+			}else
 			{
-				if(currentUser.getParentIds().indexOf(sysUser.getId())>-1)
+				if(currentUser.getParentIds()!=null && !currentUser.getParentIds().equals(""))
 				{
-					check_id=sysUser.getId();
+					if(currentUser.getParentIds().indexOf(sysUser.getId())>-1)
+					{
+						check_id=sysUser.getId();
+						break;
+					}
 				}
 			}
+			
 			
 		}
 		
