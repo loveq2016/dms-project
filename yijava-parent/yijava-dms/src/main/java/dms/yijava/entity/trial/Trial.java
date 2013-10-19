@@ -33,4 +33,5 @@ public class Trial {
 	private List<TrialDetail> trialDetails;
 	
 	protected long notice = 0;//仅用于页面显示
+	private Integer check_id;
 }

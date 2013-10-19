@@ -104,7 +104,7 @@
 							<th data-options="field:'status',width:90" sortable="true" formatter="formatterstatus">单据状态</th>
 							<th data-options="field:'notice',width:90"  hidden="true">单据状态</th>
 							<th data-options="field:'id',width:90" sortable="true" formatter="formatterdesc">明细</th>	
-							<th data-options="field:'check_id',width:80,align:'center'"></th>
+							<th data-options="field:'check_id',width:80,align:'center'"  ></th>
 							<restrict:function funId="128">
 								<th data-options="field:'custom2',width:80,align:'center'" formatter="formatterCheck">审核</th>
 							</restrict:function>						
