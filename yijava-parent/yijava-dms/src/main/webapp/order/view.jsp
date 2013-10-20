@@ -135,7 +135,7 @@
         		</restrict:function>
 			</div>
 			<div style="margin: 10px 0;"></div>
-			<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:300px;height:220px;padding:10px;">
+			<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:500px;height:220px;padding:10px;">
 			<form id="ffadd" action="" method="post" enctype="multipart/form-data">
 				<table>
 					<tr>
@@ -154,7 +154,7 @@
 							<input type="hidden" name="dealer_attribute" value="${user.dealer_attribute}"/>
 							<input type="hidden" name="id"></input>
 							<input type="hidden" name="order_code"></input>
-							<input class="easyui-combobox" name="dealer_address_id" style="width:150px" maxLength="100" class="easyui-validatebox" required="true"
+							<input class="easyui-combobox" name="dealer_address_id" style="width:300px" maxLength="100" class="easyui-validatebox" required="true"
 						             			data-options="
 							             			url:'${basePath}api/dealerAddress/list?id=${user.fk_dealer_id}',
 								                    method:'get',

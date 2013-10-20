@@ -126,7 +126,11 @@
 	<update id="updateStatus" parameterType="dms.yijava.entity.pullstorage.PullStorage">
 		update dms.tb_pull_storage
 		<trim prefix="SET" suffixOverrides=",">
-            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">status=#{status},</if>  
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">status=#{status},</if> 
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(total_number)">total_number=#{total_number},</if>
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">status=#{status},</if> 
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(pull_storage_date)">pull_storage_date=#{pull_storage_date},</if>  
+            <if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(put_storage_date)">put_storage_date=#{put_storage_date},</if> 
             last_time=NOW()
         </trim>
 		WHERE id=#{id}

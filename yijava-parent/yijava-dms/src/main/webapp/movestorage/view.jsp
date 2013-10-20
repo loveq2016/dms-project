@@ -173,7 +173,8 @@
 							<th data-options="field:'fk_move_to_storage_id',width:100,align:'center'" hidden="true"></th>
 							<th data-options="field:'move_storage_name',width:100,align:'center'" sortable="true">移出仓库</th>
 							<th data-options="field:'product_item_number',width:100,align:'center'" sortable="true">产品编码</th>
-							<th data-options="field:'batch_no',width:200,align:'center'" sortable="true">产品批次</th>
+							<th data-options="field:'models',width:100,align:'center'" sortable="true">规格型号</th>
+							<th data-options="field:'batch_no',width:100,align:'center'" sortable="true">产品批次</th>
 							<th data-options="field:'valid_date',width:100,align:'center'" formatter="formatterdate" sortable="true">有效日期</th>
 							<th data-options="field:'inventory_number',width:80,align:'center'" sortable="true">库存量</th>
 							<th data-options="field:'move_number',width:80,align:'center'" sortable="true">移动数量(EA)</th>
@@ -234,7 +235,8 @@
 								<th field="dealer_name" width="100" align="center" hidden="true">经销商</th>
 								<th field="fk_storage_id" width="120" align="center" hidden="true"></th>
 								<th field="storage_name" width="120" align="center" sortable="true">仓库</th>
-								<th field="product_item_number" width="120" align="center" sortable="true">产品编号</th>
+								<th field="product_item_number" width="80" align="center" sortable="true">产品编号</th>
+								<th field="models" width="120" align="center" sortable="true">规格型号</th>
 								<th field="product_cname" width="120" align="center" sortable="true">产品中文名称</th>
 								<th field="batch_no" width="100" align="center" sortable="true">批号/序列号</th>
 								<th field="valid_date" width="100" align="center" formatter="formatterdate" sortable="true">有效期</th>
@@ -283,6 +285,10 @@
 					             	</td>
 					            </tr>
 					            <tr>
+					             	<td>规格型号:</td>
+					             	<td><input name="models" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					            </tr>
+					            <tr>
 					             	<td>产品编码:</td>
 					             	<td><input name="product_item_number" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>
@@ -322,8 +328,8 @@
 					</thead>
 				</table>
 				<div id="tb3">
-						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="selectProductSn()">添加</a>
-						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteProductSn()">删除</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="saveProductSn" onclick="selectProductSn()">添加</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="deleteProductSn" onclick="deleteProductSn()">删除</a>
 				</div>
     	</div>
     	<div id="dlgStorageProductSn" class="easyui-dialog" title="序列号列表" style="width:800px;height:495px;padding:5px 5px 5px 5px;"
@@ -492,11 +498,17 @@
 				$('#delMoveStorageDetail').linkbutton('disable');
 				$('#saveDraft').linkbutton('disable');
 				$('#submitMoveStorage').linkbutton('disable');
+				
+				$('#saveProductSn').linkbutton('disable');
+				$('#deleteProductSn').linkbutton('disable');
 			}else{
 				$('#saveMoveStorageDetail').linkbutton('enable');
 				$('#delMoveStorageDetail').linkbutton('enable');
 				$('#saveDraft').linkbutton('enable');
 				$('#submitMoveStorage').linkbutton('enable');
+				
+				$('#saveProductSn').linkbutton('enable');
+				$('#deleteProductSn').linkbutton('enable');
 			}
 		}
 		//明细

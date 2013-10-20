@@ -143,6 +143,7 @@ public class SalesStorageService{
 				sd.setProduct_item_number(pullStorageDetail.getProduct_item_number());
 				sd.setBatch_no(pullStorageDetail.getBatch_no());
 				sd.setInventory_number(pullStorageDetail.getSales_number());
+				sd.setModels(pullStorageDetail.getModels());
 				storageDetailList.add(sd);
 			}
 			for (PullStorageProDetail pullStorageProDetail : listPullStorageProDetail) {

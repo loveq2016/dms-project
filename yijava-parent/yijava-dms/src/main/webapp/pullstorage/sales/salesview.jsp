@@ -126,7 +126,7 @@
         	</restrict:function>
 			</div>
 			<div style="margin: 10px 0;"></div>
-			<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:300px;height:250px;padding:10px;">
+			<div id="w" class="easyui-window" data-options="minimizable:false,maximizable:false,modal:true,closed:true,iconCls:'icon-manage'" style="width:500px;height:250px;padding:10px;">
 			<form id="ffadd" action="" method="post" enctype="multipart/form-data">
 				<table>
 					<tr>
@@ -137,7 +137,7 @@
 						<td>销售医院:</td>
 						<td>
 							<input type="hidden" id="type" name="type" value="3"/>
-						    <input class="easyui-combobox" name="fk_put_storage_party_id" id="fk_put_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
+						    <input class="easyui-combobox" style="width:300px" name="fk_put_storage_party_id" id="fk_put_storage_party_id" maxLength="100" class="easyui-validatebox"
 						             			data-options="
 							             			url:'${basePath}api/dealerAuthHospital/api_list',
 								                    method:'get',

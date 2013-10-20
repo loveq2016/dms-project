@@ -120,6 +120,7 @@ public class MoveStorageService{
 				sd.setProduct_item_number(moveStorageDetail.getProduct_item_number());
 				sd.setBatch_no(moveStorageDetail.getBatch_no());
 				sd.setInventory_number(moveStorageDetail.getMove_number());
+				sd.setModels(moveStorageDetail.getModels());
 				storageDetailList.add(sd);
 			}
 			for (MoveStorageProDetail moveStorageProDetail : listMoveStorageProDetail) {
@@ -158,6 +159,7 @@ public class MoveStorageService{
 				sd.setBatch_no(moveStorageDetail.getBatch_no());
 				sd.setInventory_number(moveStorageDetail.getMove_number());
 				sd.setValid_date(moveStorageDetail.getValid_date());
+				sd.setModels(moveStorageDetail.getModels());
 				storageDetailList.add(sd);
 			}
 			for (MoveStorageProDetail moveStorageProDetail : listMoveStorageProDetail) {

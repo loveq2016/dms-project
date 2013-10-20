@@ -162,6 +162,7 @@ public class PullStorageService{
 				sd.setProduct_item_number(pullStorageDetail.getProduct_item_number());
 				sd.setBatch_no(pullStorageDetail.getBatch_no());
 				sd.setInventory_number(pullStorageDetail.getSales_number());
+				sd.setModels(pullStorageDetail.getModels());
 				storageDetailList.add(sd);
 			}
 			for (PullStorageProDetail pullStorageProDetail : listPullStorageProDetail) {
@@ -187,7 +188,7 @@ public class PullStorageService{
 		PullStorage pullStorage = this.getEntity(id);//库存单据
 		List<StorageDetail> storageDetailList = new ArrayList<StorageDetail>();//库存明细表
 		List<StorageProDetail> storageProDetailList =  new ArrayList<StorageProDetail>();//sn表
-		if (pullStorage != null && pullStorage.getStatus().equals("3")) {
+		if (pullStorage != null && (pullStorage.getStatus().equals("3")||pullStorage.getStatus().equals("0"))) {
 			List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
 			filters.add(PropertyFilters.build("ANDS_pull_storage_code",pullStorage.getPull_storage_code()));
 			filters.add(PropertyFilters.build("ANDS_put_storage_code",pullStorage.getPut_storage_code()));
@@ -200,6 +201,7 @@ public class PullStorageService{
 				sd.setBatch_no(pullStorageDetail.getBatch_no());
 				sd.setInventory_number(pullStorageDetail.getSales_number());
 				sd.setValid_date(pullStorageDetail.getValid_date());
+				sd.setModels(pullStorageDetail.getModels());
 				storageDetailList.add(sd);
 			}
 			for (PullStorageProDetail pullStorageProDetail : listPullStorageProDetail) {

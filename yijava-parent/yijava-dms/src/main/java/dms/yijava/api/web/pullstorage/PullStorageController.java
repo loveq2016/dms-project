@@ -140,6 +140,10 @@ public class PullStorageController {
 					{
 						//更新状态
 						pullStorageService.updateStatus(entity.getId(),"1");
+						SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+						entity.setStatus("1");
+						entity.setPull_storage_date(time.format(new Date()));
+						pullStorageService.updateEntity(entity);//修改发货时间
 						result.setData(1);
 						result.setState(1);;
 					}else
@@ -184,8 +188,8 @@ public class PullStorageController {
 				if(pullStorageOpt!=null && "success".equals(pullStorageOpt.getStatus()) 
 						&& pullStorageOpt.getList().size() > 0){
 						//入库操作
-						boolean s =pullStorageService.processPutStorage(entity.getId());
-						if(s){
+						//boolean s =pullStorageService.processPutStorage(entity.getId());
+						//if(s){
 							/**
 							 * 处理订单状态
 							 */
@@ -195,7 +199,7 @@ public class PullStorageController {
 							pullStorageService.updateEntity(entity);
 							result.setData(1);
 							result.setState(1);
-						}
+						//}
 				}else{
 					result.setState(4);
 					result.setError(new ErrorCode("出现库存错误，库存不足!"));
