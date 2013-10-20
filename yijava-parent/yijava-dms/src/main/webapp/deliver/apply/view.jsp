@@ -82,7 +82,7 @@
 							<th data-options="field:'create_date',width:150,align:'center'" sortable="true" formatter="formatterdate">编制时间</th>
 <!-- 							<th data-options="field:'express_number',width:150,align:'center'" sortable="true">快递号</th> -->
 							<th data-options="field:'deliver_status',width:80,align:'center'" formatter="formatterDeliverStatus" sortable="true">发货类型</th>
-							<th data-options="field:'check_status',width:80,align:'center'"  formatter="formatterCheckStatus">审核状态</th>
+							<th data-options="field:'check_status',width:80,align:'center'"  formatter="formatterCheckStatus">单据状态</th>
 							<restrict:function funId="145">
 								<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
 							</restrict:function>
@@ -412,7 +412,13 @@
 		}
 		
 		function formatterCheckStatus(value, row, index){
-			return formatterStatus(value, row, index);
+			
+			if (row.consignee_status == null) {
+				return formatterStatus(value, row, index);
+			}else{
+				return '<span>已发货</span>';
+			}
+			
 		}
 		
 		function formatterDetail(value, row, index){

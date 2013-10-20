@@ -67,7 +67,7 @@
 							<th data-options="field:'create_date',width:150,align:'center'" sortable="true" formatter="formatterdate">编制时间</th>
 <!-- 							<th data-options="field:'express_number',width:150,align:'center'" sortable="true">快递号</th> -->
 							<th data-options="field:'deliver_status',width:80,align:'center'" formatter="formatterDeliverStatus" sortable="true">发货类型</th>
-							<th data-options="field:'check_status',width:80,align:'center'"  formatter="formatterCheckStatus">审核状态</th>
+							<th data-options="field:'check_status',width:80,align:'center'"  formatter="formatterCheckStatus">单据状态</th>
 <!-- 							<th data-options="field:'express_code',width:180,align:'center'"  formatter="formatterExpressStatus" sortable="true">物流状态</th> -->
 							<th data-options="field:'express_code',width:180,align:'center'">快递号</th>
 <!-- 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th> -->
@@ -344,97 +344,112 @@
 		}
 		
 		function formatterCheckStatus(value, row, index){
-			return formatterStatus(value, row, index);
+			if (row.consignee_status == null) {
+				return '<span>已审核</span>';
+			}else{
+				return '<span>已发货</span>';
+			}
+			//return formatterStatus(value, row, index);
 		}
-		
-		function formatterDetail(value, row, index){
-			return '<span style="color:red;cursor:pointer" onclick="openDeliverDetail(\''+index+'\')">明细</span>'; 
+
+		function formatterDetail(value, row, index) {
+			return '<span style="color:red;cursor:pointer" onclick="openDeliverDetail(\''
+					+ index + '\')">明细</span>';
 		}
-		
-		function formatterExpressStatus(value, row, index){
-			if(value)
-				return '<span>'+value+'</span>'; 
+
+		function formatterExpressStatus(value, row, index) {
+			if (value)
+				return '<span>' + value + '</span>';
 			else
-				return '<span>尚未发货</span>'; 
+				return '<span>尚未发货</span>';
 		}
-		
-		function formatterStatus(value, row, index){
-			if(value=='0')
-				return '<span>未提交</span>'; 
-			else if(value=='1')
-				return '<span>已提交</span>'; 
-			else if(value=='2')
-				return '<span>驳回</span>'; 
-			else if(value=='3')
-				return '<span>已审核</span>'; 
-			else if(value=='4')
-				return '<span>已发货</span>'; 
-			else if(value=='5')
-				return '<span>部分发货</span>'; 
-			else if(value=='6')
-				return '<span>已完成</span>'; 
+
+		function formatterStatus(value, row, index) {
+			if (value == '0')
+				return '<span>未提交</span>';
+			else if (value == '1')
+				return '<span>已提交</span>';
+			else if (value == '2')
+				return '<span>驳回</span>';
+			else if (value == '3')
+				return '<span>已审核</span>';
+			else if (value == '4')
+				return '<span>已发货</span>';
+			else if (value == '5')
+				return '<span>部分发货</span>';
+			else if (value == '6')
+				return '<span>已完成</span>';
 		}
-		
-		
-		 function formatterProductSn (value, row, index) { 
-			 	return '<a class="productSnBtn" href="javascript:void(0)"  onclick="openProductSn('+index+')" ></a>';
-		} 
-		 
-		 
-		var deliver_code ;
-		var isExpress ; 
-		function newEntity(){
+
+		function formatterProductSn(value, row, index) {
+			return '<a class="productSnBtn" href="javascript:void(0)"  onclick="openProductSn('
+					+ index + ')" ></a>';
+		}
+
+		var deliver_code;
+		var isExpress;
+		function newEntity() {
 			var row = $('#dg').datagrid('getSelected');
-			if (row){
+			if (row) {
 				isExpress = row.express_code;
 				$('#ffDeliverDetail').form('clear');
-				$('#ffDeliverDetail').form('load',row);
+				$('#ffDeliverDetail').form('load', row);
 				$('#dlgDeliverDetail').dialog('open');
 				deliver_code = row.deliver_code;
-				$.getJSON(basePath + "api/dealerAddress/entity?id="+ row.dealer_address_id,function(result){
+				$.getJSON(basePath + "api/dealerAddress/entity?id="
+						+ row.dealer_address_id, function(result) {
 					$("#address").val(result.address);
 					$("#linkman").val(result.linkman);
 					$("#linkphone").val(result.linkphone);
-				});		
-	            $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
+				});
+				$('#dgDetail').datagrid('loadData', {
+					total : 0,
+					rows : []
+				});
 				$('#dgDetail').datagrid({
 					url : basePath + "api/deliverApply/detailPaging",
-					queryParams: {
+					queryParams : {
 						filter_ANDS_deliver_code : deliver_code
 					}
 				});
-	            $('#dgExpress').datagrid('loadData', {total: 0, rows: []});
+				$('#dgExpress').datagrid('loadData', {
+					total : 0,
+					rows : []
+				});
 				$('#dgExpress').datagrid({
 					url : basePath + "api/deliverExpress/paging",
-					queryParams: {
+					queryParams : {
 						filter_ANDS_deliver_code : deliver_code
 					},
-					onLoadSuccess:function(data){ 
-						  $(".productSnBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
-					 }
+					onLoadSuccess : function(data) {
+						$(".productSnBtn").linkbutton({
+							plain : true,
+							iconCls : 'icon-manage'
+						});
+					}
 				});
-			}else{
-				$.messager.alert('提示','请选中数据!','warning');
-			}		
-		}		
-		
-		function newExpress(){
-			var row = $('#dgDetail').datagrid('getSelected');
-			if (row){
-				if(!isExpress){
-					$('#dlgExpress').dialog('open').dialog('setTitle', '物流产品信息添加');
-					$('#fm').form('clear');
-					$('#fm').form('load',row);
-				}else{
-					$.messager.alert('提示','已发货，不能修改!','warning');
-				}
-			}else{
-				$.messager.alert('提示','请选中数据!','warning');
-			}		
+			} else {
+				$.messager.alert('提示', '请选中数据!', 'warning');
+			}
 		}
-		
-		
-		function saveExpress(){
+
+		function newExpress() {
+			var row = $('#dgDetail').datagrid('getSelected');
+			if (row) {
+				if (!isExpress) {
+					$('#dlgExpress').dialog('open').dialog('setTitle',
+							'物流产品信息添加');
+					$('#fm').form('clear');
+					$('#fm').form('load', row);
+				} else {
+					$.messager.alert('提示', '已发货，不能修改!', 'warning');
+				}
+			} else {
+				$.messager.alert('提示', '请选中数据!', 'warning');
+			}
+		}
+
+		function saveExpress() {
 			$('#fm').form('submit', {
 				url : basePath + 'api/deliverExpress/save',
 				method : "post",
@@ -445,135 +460,152 @@
 					var jsonobj = $.parseJSON(msg);
 					if (jsonobj.state == 1) {
 						$('#dlgExpress').dialog('close');
-						$("#tab").tabs("select","物流明细行");
+						$("#tab").tabs("select", "物流明细行");
 						$('#dgExpress').datagrid('reload');
 					} else if (jsonobj.state == 2) {
 						$.messager.alert('提示', '数量不能大于累计发货数量!', 'warning');
-					}else {
+					} else {
 						$.messager.alert('提示', 'Error!', 'error');
 					}
 				}
 			});
 		}
-		
-		function deleteExpress(){
-	           var row = $('#dgExpress').datagrid('getSelected');
-	            if (row){
-					if(!isExpress){
-		                $.messager.confirm('Confirm','是否确定删除?',function(r){
-		                    if (r){
-		            			$.ajax({
-		            				type : "POST",
-		            				url : basePath + 'api/deliverExpress/delete',
-		            				data : {id:row.id},
-		            				error : function(request) {
-		            					$.messager.alert('提示','Error!','error');	
-		            				},
-		            				success : function(data) {
-		            					var jsonobj = $.parseJSON(data);
-		            					if (jsonobj.state == 1) {  
-		            	                     $('#dgExpress').datagrid('reload');
-		            					}else{
-		            						$.messager.alert('提示','Error!','error');	
-		            					}
-		            				}
-		            			});                    	
-		                    }
-		                });
-					}else{
-						$.messager.alert('提示','已发货，不能修改!','warning');
-					}
-	            }else{
-					$.messager.alert('提示','请选中数据!','warning');				
-				 }	
-		}
-		
-		
-		function isEmpty(s1){
-		    var sValue = s1 + "";
-		    var test = / /g;
-		    sValue = sValue.replace(test, "");
-		    return sValue==null || sValue.length<=0;
-		}
-		
-		
-		function submitExpress(){
-			if(isExpress){
-				submitExpressR()
-			}else{
-				   $.messager.confirm('Confirm','填写快递单号后无法修改出货明细,可以修改快递单号?',function(r){
-	                    if (r){
-	                    	submitExpressR();
-	                    }
-				   });
+
+		function deleteExpress() {
+			var row = $('#dgExpress').datagrid('getSelected');
+			if (row) {
+				if (!isExpress) {
+					$.messager.confirm('Confirm', '是否确定删除?', function(r) {
+						if (r) {
+							$.ajax({
+								type : "POST",
+								url : basePath + 'api/deliverExpress/delete',
+								data : {
+									id : row.id
+								},
+								error : function(request) {
+									$.messager.alert('提示', 'Error!', 'error');
+								},
+								success : function(data) {
+									var jsonobj = $.parseJSON(data);
+									if (jsonobj.state == 1) {
+										$('#dgExpress').datagrid('reload');
+									} else {
+										$.messager.alert('提示', 'Error!',
+												'error');
+									}
+								}
+							});
+						}
+					});
+				} else {
+					$.messager.alert('提示', '已发货，不能修改!', 'warning');
+				}
+			} else {
+				$.messager.alert('提示', '请选中数据!', 'warning');
 			}
 		}
-		
-		function submitExpressR(){
-				$('#ffDeliverDetail').form('submit', {
-					url : basePath + 'api/deliverExpress/submitExpress',
-					method : "post",
-					onSubmit : function() {
-						return $(this).form('validate');
-					},
-					success : function(msg) {
-						var jsonobj = $.parseJSON(msg);
-						if (jsonobj.state == 1) {
-							$('#dlgDeliverDetail').dialog('close');
-							$('#dg').datagrid('reload');
-						}else if (jsonobj.state == 2) {
-							$("#tab").tabs("select","物流明细行");
-							$.messager.alert('提示', '物流明细行中序列号不能为空!', 'warning');
-						}else {
-							$.messager.alert('提示', 'Error!', 'error');
-						}
-					}
-				});
+
+		function isEmpty(s1) {
+			var sValue = s1 + "";
+			var test = / /g;
+			sValue = sValue.replace(test, "");
+			return sValue == null || sValue.length <= 0;
 		}
-		
-		function openDeliverDetail(index){
-			$('#dg').datagrid('selectRow',index);
+
+		function submitExpress() {
+			if (isExpress) {
+				submitExpressR()
+			} else {
+				$.messager.confirm('Confirm', '填写快递单号后无法修改出货明细,可以修改快递单号?',
+						function(r) {
+							if (r) {
+								submitExpressR();
+							}
+						});
+			}
+		}
+
+		function submitExpressR() {
+			$('#ffDeliverDetail').form('submit', {
+				url : basePath + 'api/deliverExpress/submitExpress',
+				method : "post",
+				onSubmit : function() {
+					return $(this).form('validate');
+				},
+				success : function(msg) {
+					var jsonobj = $.parseJSON(msg);
+					if (jsonobj.state == 1) {
+						$('#dlgDeliverDetail').dialog('close');
+						$('#dg').datagrid('reload');
+					} else if (jsonobj.state == 2) {
+						$("#tab").tabs("select", "物流明细行");
+						$.messager.alert('提示', '物流明细行中序列号不能为空!', 'warning');
+					} else {
+						$.messager.alert('提示', 'Error!', 'error');
+					}
+				}
+			});
+		}
+
+		function openDeliverDetail(index) {
+			$('#dg').datagrid('selectRow', index);
 			var row = $('#dg').datagrid('getSelected');
-			$('#ffDeliverDetail').form('load',row);
+			$('#ffDeliverDetail').form('load', row);
 			$('#deliver_status_ss').combobox('disable');
 			$('#dlgDeliverDetail').dialog('open');
 			deliver_code = row.deliver_code;
-            $('#dgDetail').datagrid('loadData', {total: 0, rows: []});
+			$('#dgDetail').datagrid('loadData', {
+				total : 0,
+				rows : []
+			});
 			$('#dgDetail').datagrid({
 				url : basePath + "api/deliverApply/detailPaging",
-				queryParams: {
+				queryParams : {
 					filter_ANDS_deliver_code : deliver_code
 				}
 			});
 		}
-		
+
 		var deliver_express_detail_id;
 		var sn_num;
-		function openProductSn(index){
-			$('#dgExpress').datagrid('selectRow',index);
+		function openProductSn(index) {
+			$('#dgExpress').datagrid('selectRow', index);
 			var row = $('#dgExpress').datagrid('getSelected');
-			$('#dlgProductSn').dialog('open').dialog('setTitle', '['+row.express_sn+']产品序列号维护');
+			$('#dlgProductSn').dialog('open').dialog('setTitle',
+					'[' + row.express_sn + ']产品序列号维护');
 			deliver_express_detail_id = row.id;
 			sn_num = row.express_num;
-			$('#dgProductSn').datagrid('loadData', {total: 0, rows: []});
-			$('#dgProductSn').datagrid({
-				url : basePath + "api/deliverExpressSn/paging",
-				queryParams: {
-					filter_ANDS_deliver_express_detail_id : deliver_express_detail_id
-				}
+			$('#dgProductSn').datagrid('loadData', {
+				total : 0,
+				rows : []
 			});
+			$('#dgProductSn')
+					.datagrid(
+							{
+								url : basePath + "api/deliverExpressSn/paging",
+								queryParams : {
+									filter_ANDS_deliver_express_detail_id : deliver_express_detail_id
+								}
+							});
 		}
-		
+
 		var url;
-		function addExpressSn(){
-			if(!isExpress){
+		function addExpressSn() {
+			if (!isExpress) {
 				data = $('#dgProductSn').datagrid('getData');
-				if(parseInt(data.total) ==0 || parseInt(data.total) < parseInt(sn_num) ){
-					$('#dlgProductSn2').dialog('open').dialog('setTitle', '序列号添加');
+				if (parseInt(data.total) == 0
+						|| parseInt(data.total) < parseInt(sn_num)) {
+					$('#dlgProductSn2').dialog('open').dialog('setTitle',
+							'序列号添加');
 					$('#fm2').form('clear');
-					$('#fm2').form('load',{
-						"deliver_express_detail_id":deliver_express_detail_id,
-						"deliver_code" : deliver_code});
+					$('#fm2')
+							.form(
+									'load',
+									{
+										"deliver_express_detail_id" : deliver_express_detail_id,
+										"deliver_code" : deliver_code
+									});
 					url = basePath + 'api/deliverExpressSn/save';
 				} else {
 					$.messager.alert('提示', '序列号数量已满!', 'warning');

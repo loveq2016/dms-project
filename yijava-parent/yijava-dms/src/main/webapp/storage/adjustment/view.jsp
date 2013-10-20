@@ -99,7 +99,7 @@
 							<th field="total_number" width="120" align="center" sortable="true">总数量</th>
 							<th field="adjust_storage_date" width="100" align="center" sortable="true">调整日期</th>
 							<th field="dealer_name" width="100" align="center" sortable="true">调整人</th>
-							<th field="status" width="100" align="center" sortable="true" formatter="formatterStatus">状态</th>
+							<th field="status" width="100" align="center" sortable="true" formatter="formatterStatus">单据状态</th>
 							<th field="info" width="100" align="center" sortable="false" formatter="formatterInfo">明细</th>
 							<restrict:function funId="174">
 								<th data-options="field:'custom2',width:80,align:'center'" formatter="formatterCheck">审核</th>

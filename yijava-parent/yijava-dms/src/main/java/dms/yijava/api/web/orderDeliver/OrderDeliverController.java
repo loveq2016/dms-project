@@ -100,8 +100,8 @@ public class OrderDeliverController {
 				List<DeliverExpressSn> deliverExpressSns = deliverExpressSnService.getList(deliver_code);
 				if (deliverExpressDetails == null || deliverExpressSns == null)
 					return new Result<String>(deliver_code, 0);
-				boolean flag = storageDetailService.orderStorage(dealer_id,orderDeliver.getOrder_code(),deliverExpressDetails,deliverExpressSns);
-				if(flag){
+				String flag = storageDetailService.orderStorage(dealer_id,orderDeliver.getOrder_code(),deliverExpressDetails,deliverExpressSns);
+				if("success".equals(flag)){
 					OrderDeliver entity = new OrderDeliver();
 					entity.setDeliver_code(deliver_code);
 					entity.setConsignee_user_id("1");
@@ -110,6 +110,8 @@ public class OrderDeliverController {
 						orderService.updateStatusByOrderCode(orderDeliver.getOrder_code(), "6");
 					}
 					return new Result<String>(deliver_code, 1);
+				}else if("storageError".equals(flag)){
+					return new Result<String>(deliver_code, 3);
 				}
 				return new Result<String>(deliver_code, 0);
 			}

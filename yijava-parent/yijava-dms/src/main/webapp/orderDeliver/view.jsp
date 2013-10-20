@@ -228,6 +228,8 @@
 						 $('#dlgDeliverDetail').dialog('close');
 					}else if (jsonobj.state == 2) {  
 						$.messager.alert('提示','Sn重复，请联系客服','error');	
+					}else if (jsonobj.state == 3) {  
+						$.messager.alert('提示','默认仓库不存在，请联系客服','error');	
 					}else{
 						$("#submitConsignee").linkbutton('enable');
 						$.messager.alert('提示','Error!','error');	

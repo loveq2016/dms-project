@@ -54,13 +54,13 @@ public class StorageDetailService {
 	 * 销售入库
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
-	public synchronized boolean orderStorage(String dealer_id,String order_code,
+	public synchronized String orderStorage(String dealer_id,String order_code,
 			List<DeliverExpressDetail> deliverExpressDetails,
 			List<DeliverExpressSn> deliverExpressSns) {
 		//查询默认仓库
 		DealerStorage dealerStorage = dealerStorageService.getDefaultStorage(dealer_id);
 		if (dealerStorage == null) {
-			return false;
+			return "storageError";
 		}
 		//更新库存
 		for (DeliverExpressDetail deliverExpressDetail : deliverExpressDetails) {
@@ -91,7 +91,7 @@ public class StorageDetailService {
 				}
 			}
 		}
-		return true ; 
+		return "success" ; 
 	}
 	
 	
