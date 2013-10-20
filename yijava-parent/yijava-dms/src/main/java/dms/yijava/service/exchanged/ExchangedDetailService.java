@@ -58,6 +58,11 @@ public class ExchangedDetailService {
 		return exchangedDetailDao.findObject(".selectExchangedDetailMap",exchanged_code);
 	}
 	
+	public List<ExchangedDetail> selectExchangedDetailWordMap(String exchanged_code) {
+		return exchangedDetailDao.findObject(".selectExchangedDetailWordMap",exchanged_code);
+	}
+	
+	
 
 	public void removeByIdEntity(String id,String exchanged_code) {
 		exchangedDetailDao.removeById(id);

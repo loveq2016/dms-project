@@ -1,10 +1,19 @@
 package dms.yijava.api.web.exchanged;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import sun.misc.BASE64Encoder;
+
 import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
@@ -22,15 +33,21 @@ import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.ErrorCode;
 import com.yijava.web.vo.Result;
 
+import dms.yijava.api.web.word.util.TheFreemarker;
+import dms.yijava.entity.dealer.Dealer;
 import dms.yijava.entity.exchanged.Exchanged;
+import dms.yijava.entity.exchanged.ExchangedDetail;
+import dms.yijava.entity.flow.FlowLog;
 import dms.yijava.entity.storage.StorageDetail;
 import dms.yijava.entity.storage.StorageProDetail;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.user.UserDealer;
+import dms.yijava.service.dealer.DealerService;
 import dms.yijava.service.exchanged.ExchangedDetailService;
 import dms.yijava.service.exchanged.ExchangedProDetailService;
 import dms.yijava.service.exchanged.ExchangedService;
 import dms.yijava.service.flow.FlowBussService;
+import dms.yijava.service.flow.FlowLogService;
 import dms.yijava.service.storage.StorageDetailService;
 import dms.yijava.service.storage.StorageDetailService.PullStorageOpt;
 @Controller
@@ -51,6 +68,11 @@ public class ExchangedController {
 	private String flowIdentifierNumber;
 	@Value("#{properties['document_filepath']}")   	
 	private String document_filepath;
+	@Autowired
+	private FlowLogService flowLogService;
+	@Autowired
+	private DealerService dealerService;
+	
 	
 	@ResponseBody
 	@RequestMapping("paging")
@@ -158,6 +180,99 @@ public class ExchangedController {
 		return result;
 	}
 	
+	
+	@ResponseBody
+	@RequestMapping("viewdocument")
+	public Result<String> viewdocument (String exchanged_id,HttpServletRequest request,HttpServletResponse response) {
+		Result<String> result=new Result<String>("0", 0);
+		
+		
+		Exchanged entity = exchangedService.getEntity(exchanged_id);
+		
+
+		if (Integer.parseInt(entity.getStatus()) < 3) {
+			result.setError(new ErrorCode("单据不正确，无法生成文档"));
+			return result;
+		}
+		try {
+			DateFormat format2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String generatePath = request.getSession().getServletContext().getRealPath("generate");
+			String fileName="exchanged/exchanged-"+exchanged_id+".doc";
+			File outFile = new File(generatePath + File.separator + fileName);		
+			TheFreemarker freemarker = new TheFreemarker();
+			Map<String, Object> dataMap = new HashMap<String, Object>();
+			
+			Dealer dealer = dealerService.getEntity(entity.getDealer_id());
+			//查找明细
+			List<ExchangedDetail>	list = exchangedDetailService.selectExchangedDetailWordMap(entity.getExchanged_code());
+			
+			dataMap.put("dealer_name", dealer.getDealer_name());
+			dataMap.put("remark", entity.getRemark()==null?"":entity.getRemark());
+			dataMap.put("create_date",entity.getExchanged_date());
+			dataMap.put("total","");
+			
+			//查找该流程的处理记录,找到签名文件
+			List<FlowLog> flowlogs= flowLogService.getLogByFlowAndBusIdSq(flowIdentifierNumber, exchanged_id);
+			String xiaoshou = "", jingli = "", lingdao = "";
+			String xiaoshoudate="",jinglidate="",lingdaodate="";
+			String sign_Path = request.getSession().getServletContext().getRealPath("resource");
+			sign_Path+=File.separator+ "signimg";
+			for (FlowLog flowLog : flowlogs) {
+				
+				if (flowLog.getSign() != null && !"".equals(flowLog.getSign())) {
+					if(flowLog.action_name.indexOf("销售代表审核")>-1)
+					{
+						xiaoshoudate = format2.format(format2.parse(flowLog.getCreate_date()));
+						xiaoshou= sign_Path+File.separator+flowLog.getSign();
+					}
+					if (flowLog.action_name.indexOf("区域经理审核") > -1) {
+						jinglidate = format2.format(format2.parse(flowLog.getCreate_date()));
+						jingli= sign_Path+File.separator+flowLog.getSign();
+						
+					}
+					if (flowLog.action_name.indexOf("分管领导审核") > -1) {
+						lingdaodate = format2.format(format2.parse(flowLog.getCreate_date()));
+						lingdao= sign_Path+File.separator+flowLog.getSign();
+					}
+				}
+			}
+			dataMap.put("xiaoshou", getImageStr(xiaoshou));
+			dataMap.put("jingli", getImageStr(jingli));
+			dataMap.put("lingdao", getImageStr(lingdao));
+			dataMap.put("xiaoshoudate", xiaoshoudate);
+			dataMap.put("jinglidate", jinglidate);
+			dataMap.put("lingdaodate", lingdaodate);
+			dataMap.put("table", list);
+			freemarker.createExchangedWord(new FileOutputStream(outFile),dataMap);	
+
+			result.setData(fileName);
+			result.setState(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setError(new ErrorCode(e.toString()));
+		}  
+	    
+		return result;
+	}
+	
+	
+	private String getImageStr(String imagename) {
+		if(StringUtils.isEmpty(imagename))
+			return "";
+        String imgFile = imagename;//"d:/10049_qz.jpg";
+        InputStream in = null;
+        byte[] data = null;
+        try {
+            in = new FileInputStream(imgFile);
+            data = new byte[in.available()];
+            in.read(data);
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BASE64Encoder encoder = new BASE64Encoder();
+        return encoder.encode(data);
+    }
 
 	/**
 	 * 把一个list转换为String返回过去

@@ -67,6 +67,26 @@ public class TheFreemarker {
 		return null;
 	}
 	
+	
+	public Writer createExchangedWord(OutputStream outputStream,Map<String ,Object> dataMap) {
+		try {
+			String classPath = new File(getClass().getResource("/").getFile()).getCanonicalPath();
+			classPath += File.separator + "word" + File.separator + "ftl";
+			configuration.setClassForTemplateLoading(this.getClass(), File.separator + "word" + File.separator + "ftl");
+			// 获取模板
+			Template temp = configuration.getTemplate("exchanged.ftl");
+			temp.setEncoding("utf-8");			
+			Writer out = null;
+			out = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));
+			temp.process(dataMap, out);
+			out.close();
+			return null ;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public Writer createOrderWord(OutputStream outputStream,Map<String ,Object> dataMap) {
 		try {
 			String classPath = new File(getClass().getResource("/").getFile()).getCanonicalPath();

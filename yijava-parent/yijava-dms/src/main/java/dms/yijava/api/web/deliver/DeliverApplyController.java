@@ -60,7 +60,6 @@ public class DeliverApplyController {
 	private String flowIdentifierNumber;
 	@Value("#{properties['document_filepath']}")   	
 	private String document_filepath;
-	
 	@Autowired
 	private DealerAddressService dealerAddressService;
 	@Autowired

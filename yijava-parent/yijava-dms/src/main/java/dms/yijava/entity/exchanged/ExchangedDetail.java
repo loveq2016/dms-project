@@ -17,5 +17,11 @@ public class ExchangedDetail {
 	private String valid_date;
 	private String inventory_number;
 	
+	
+	private String order_code;
+	private String cname;
+	private String newModels="";
+	
+	
 
 }
