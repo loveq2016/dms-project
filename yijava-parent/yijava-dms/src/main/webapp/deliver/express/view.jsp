@@ -309,7 +309,7 @@
 	<script type="text/javascript">
 		$(function() {
 			$('#dg').datagrid({
-				  url : basePath +"api/deliverApply/paging" ,
+				  url : basePath +"api/deliverApply/pagingtodelver" ,
 					queryParams: {
 						filter_ANDS_check_status : 3
 					}
