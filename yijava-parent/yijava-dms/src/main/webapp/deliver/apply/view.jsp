@@ -86,6 +86,9 @@
 							<restrict:function funId="145">
 								<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
 							</restrict:function>
+							<restrict:function funId="160">
+								<th data-options="field:'custom2',width:80,align:'center'" formatter="formatterCheck">审核</th>
+							</restrict:function>
 						</tr>
 					</thead>
 				</table>
@@ -103,9 +106,9 @@
         		<restrict:function funId="161">
         			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="ToCheckEntity()">提交审核</a>
         		</restrict:function>
-        		<restrict:function funId="160">
-        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="CheckEntity()">审核</a>
-        		</restrict:function>
+<%--         		<restrict:function funId="160"> --%>
+<!--         			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="CheckEntity()">审核</a> -->
+<%--         		</restrict:function> --%>
         		<restrict:function funId="156">
         			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="VidwDocument()">查看单据</a>
         		</restrict:function>
@@ -375,6 +378,7 @@
 					},
 					onLoadSuccess:function(data){ 
 						  $(".infoBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
+						  $(".checkBtn").linkbutton({ plain:true, iconCls:'icon-check' });
 					 }
 			});
 		});
@@ -414,6 +418,11 @@
 		function formatterDetail(value, row, index){
 			return '<a class="infoBtn" href="javascript:void(0)"  onclick="openDeliverDetail('+index+')" ></a>';
 			//return '<span style="color:red;cursor:pointer" onclick="openDeliverDetail(\''+index+'\')">明细</span>'; 
+		}
+		
+		function formatterCheck (value, row, index) {
+			var d=(typeof(row.check_id) != "undefined" && row.record_status=='0') ?'':'disabled';
+			return '<a class="checkBtn" '+d+' href="javascript:void(0)" onclick="CheckEntity('+index+')">审核</a>'; 
 		}
 		
 		function formatterStatus(value, row, index){
@@ -796,7 +805,8 @@
 		/**
 		审核
 		*/
-		function CheckEntity(){
+		function CheckEntity(index){
+			$('#dg').datagrid('selectRow',index);
 			var row = $('#dg').datagrid('getSelected');
 			if (row && row.check_status ==1){				
 				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){

@@ -13,7 +13,6 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(start_date)"><![CDATA[ and create_date > CONCAT(#{start_date}' 00:00:00') ]]></if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(end_date)"> <![CDATA[ and create_date < CONCAT(#{end_date}' 23:59:59')]]></if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)"> and dealer_id in (${dealer_ids})</if>
-			
 			<if test="statuses != null and statuses != '' ">AND status  in (${statuses})</if>
 <!-- 			<if test="check_id != null and check_id != '' ">AND id in (select bussiness_id from tb_flow_record  where check_id= #{check_id} and flow_id=#{flow_id})</if> -->
 			

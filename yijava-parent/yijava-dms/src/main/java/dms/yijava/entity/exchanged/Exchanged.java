@@ -16,4 +16,8 @@ public class Exchanged {
 	private String total_number;
 	private String status;
 	private String remark;
+	
+	private String record_id;
+	private String record_status;
+	private String check_id;
 }

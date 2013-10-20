@@ -25,11 +25,8 @@ public class Deliver {
 	private String dealer_code;
 	private String dealer_name;
 	private String dealer_address_id;
-	
-	private String check_id;
-	private String statuses;
-	private String dealer_ids;
-	
-	
 
+	private String record_id;
+	private String record_status;
+	private String check_id;
 }
