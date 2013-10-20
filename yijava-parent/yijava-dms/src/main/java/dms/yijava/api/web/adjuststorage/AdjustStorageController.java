@@ -65,9 +65,9 @@ public class AdjustStorageController {
 			}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
 				filters.add(PropertyFilters.build("ANDS_statuses","1,2,3,4"));
 				filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
-				filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
-				filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
 			}
+			filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
+			filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
 			return adjustStorageService.paging(pageRequest,filters);
 		}
 		return null;

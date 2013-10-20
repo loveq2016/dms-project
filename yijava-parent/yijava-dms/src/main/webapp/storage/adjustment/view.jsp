@@ -101,6 +101,9 @@
 							<th field="dealer_name" width="100" align="center" sortable="true">调整人</th>
 							<th field="status" width="100" align="center" sortable="true" formatter="formatterStatus">状态</th>
 							<th field="info" width="100" align="center" sortable="false" formatter="formatterInfo">明细</th>
+							<restrict:function funId="174">
+								<th data-options="field:'custom2',width:80,align:'center'" formatter="formatterCheck">审核</th>
+							</restrict:function>
 						</tr>
 					</thead>
 				</table>
@@ -114,9 +117,9 @@
 					<restrict:function funId="168">
 	        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteEntity()">删除</a>
 	        		</restrict:function>
-	        		<restrict:function funId="174">
-	        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="CheckEntity()">审核</a>
-	        		</restrict:function>
+<%-- 	        		<restrict:function funId="174"> --%>
+<!-- 	        			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-check" plain="true" onclick="CheckEntity()">审核</a> -->
+<%-- 	        		</restrict:function> --%>
 	        		<restrict:function funId="178">
         				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="ToCheckEntity()">提交审核</a>
         			</restrict:function>
@@ -484,6 +487,7 @@
 			url : basePath + "api/adjuststorage/paging",
 			onLoadSuccess:function(data){ 
 				 $(".infoBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
+				 $(".checkBtn").linkbutton({ plain:true, iconCls:'icon-check' });
 			}
 		});
 
@@ -518,6 +522,11 @@
 				return '<span>已经审核</span>'; 
 			else if(value=='4')
 				return '<span>已完成</span>'; 
+		}
+		
+		function formatterCheck (value, row, index) {
+			var d=(typeof(row.check_id) != "undefined" && row.record_status=='0') ?'':'disabled';
+			return '<a class="checkBtn" '+d+' href="javascript:void(0)" onclick="CheckEntity('+index+')">审核</a>'; 
 		}
 
 		function formatterInfo(value, row, index){
@@ -901,7 +910,8 @@
 		/**
 		审核
 		*/
-		function CheckEntity(){
+		function CheckEntity(index){
+			$('#dg').datagrid('selectRow',index);
 			var row = $('#dg').datagrid('getSelected');
 			if (row && row.status ==1){				
 				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){
