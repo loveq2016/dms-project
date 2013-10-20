@@ -77,9 +77,9 @@ public class DeliverApplyController {
 			filters.add(PropertyFilters.build("ANDS_statuses", "0,1,2,3,4,5,6"));
 		}else if (null != sysUser && StringUtils.isNotEmpty(sysUser.getTeams())) {
 			filters.add(PropertyFilters.build("ANDS_statuses", "1,2,3,4,5,6"));
-			filters.add(PropertyFilters.build("ANDS_check_id", currentUserId));
-			filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
 		}
+		filters.add(PropertyFilters.build("ANDS_check_id", currentUserId));
+		filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
 		filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
 		return deliverService.paging(pageRequest,filters);
 	}
