@@ -105,7 +105,7 @@
 							<th data-options="field:'custom',width:100,align:'center'" sortable="false" formatter="formatterDetail">明细</th>
 							<th data-options="field:'record_id',width:80,align:'center'" hidden="true"></th>
 							<th data-options="field:'record_status',width:80,align:'center'" hidden="true"></th>
-							<th data-options="field:'check_id',width:80,align:'center'" hidden="true"></th>
+							<th data-options="field:'check_id',width:80,align:'center'" >checkid</th>
 							<restrict:function funId="157">
 								<th data-options="field:'custom2',width:80,align:'center'" formatter="formatterCheck">审核</th>
 							</restrict:function>
