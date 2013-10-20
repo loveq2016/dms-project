@@ -307,8 +307,8 @@ public class FlowBussService {
 		List<SysUser> sysUsers= stepDepartment.getUsers();
 		for(SysUser sysUser: sysUsers)
 		{
-			//如果是经销商,直接找到他所属的销售,否则才找他的上级
-			if(!StringUtils.equals("0",currentUser.getFk_dealer_id())){
+			//如果是经销商,直接找到他所属的销售,否则才找他的上级 //同时改部门处理不需要销售关系
+			if(!StringUtils.equals("0",currentUser.getFk_dealer_id()) && stepDepartment.getExt_logic().equals("1") ){
 				//是经销商
 				
 				UserDealer userDealer=(UserDealer)userDealerFunService.getUserByDealer(currentUser.getFk_dealer_id());
