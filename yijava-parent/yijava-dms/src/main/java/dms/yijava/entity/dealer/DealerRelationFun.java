@@ -17,7 +17,8 @@ public class DealerRelationFun {
 	
 	private String parent_dealer_id;
 	
-	
+	private String business_contacts;
+	private String business_phone;
 
 	
 }

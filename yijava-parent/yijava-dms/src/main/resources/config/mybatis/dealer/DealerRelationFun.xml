@@ -60,7 +60,7 @@
 	
 	<select id="selectRelationList" resultType="dms.yijava.entity.dealer.DealerRelationFun">
 		  select * from(
-		  	select tdr.*,td1.dealer_name,td1.dealer_code,td1.business_contacts,td1.business_phone,td2.dealer_name as parent_dealer_name,
+		  select tdr.*,td1.dealer_name,td1.dealer_code,td1.business_contacts,td1.business_phone,td2.dealer_name as parent_dealer_name,
 		  td2.dealer_code as parent_dealer_code from dms.tb_dealer_relation tdr 
 	  	  LEFT JOIN dms.tb_dealer td1 ON tdr.dealer_id=td1.dealer_id
 		  LEFT JOIN dms.tb_dealer td2 ON tdr.parent_dealer_id=td2.dealer_id
