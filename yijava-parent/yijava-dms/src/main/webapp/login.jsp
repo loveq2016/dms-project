@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@include file="/common/base.jsp"%>
 <!doctype html>
 <html>
@@ -18,8 +17,8 @@
 <script type="text/javascript" src="${resPath}resource/js/common.js"></script>
 </head>
 
-<body  onkeydown="on_return();">
-<div class="top"><a href="#"><img src="images/logo.jpg"></a></div>
+<body onkeydown="on_return();">
+<div class="box"><div class="top"><a href="#"><img src="images/logo.png"></a></div>
 <div class="page">
   <div class="main">
     <h1 class="title">海利欧斯经销商管理系统</h1>
@@ -35,12 +34,11 @@
         </div>
         <div class="formline">
           <label>Validation Code/验证码：</label>
-          <input type="text" class="ipt code" value="" name="captcha" onkeydown="on_return();">&nbsp;&nbsp;
-          <img id="captchaImg" src="getCaptcha" width="84" height="32"  align="absmiddle" style="cursor:hand" onclick="javascript:reloadValidateCode();" title="看不请?点击刷新"/>
-          <!-- <img src="images/code.gif" width="84" height="32"> <a href="javascript:reloadValidateCode();">看不请?</a>-->
+           <input type="text" class="ipt code" value="" name="captcha" onkeydown="on_return();">&nbsp;&nbsp;
+           <img id="captchaImg" src="getCaptcha" width="62" height="24"  align="absmiddle" style="cursor:hand" onclick="javascript:reloadValidateCode();" title="看不请?点击刷新"/>
         </div>
-        <div id="loading_img" width="16" height="11" ></div>
-        <div class="formline">        	
+         <div id="loading_img" width="16" height="11" ></div>
+        <div class="formline">
           <input type="button" name="loginbtn" id="loginbtn" value="Login/登录" class="btn" onclick="login()">
         </div>
       </form>
@@ -50,15 +48,15 @@
     </div>
     <div id="focus">
     	<ul class="focus">
-        	<li><a href="#"><img src="images/img.jpg" width="509" height="388"></a></li>
-        	<li><a href="#"><img src="images/img.jpg" width="509" height="388"></a></li>
-        	<li><a href="#"><img src="images/img.jpg" width="509" height="388"></a></li>
-        	<li><a href="#"><img src="images/img.jpg" width="509" height="388"></a></li>
+        	<li><a href="#"><img src="images/img.jpg" width="287" height="219"></a></li>
+        	<li><a href="#"><img src="images/img.jpg" width="287" height="219"></a></li>
+        	<li><a href="#"><img src="images/img.jpg" width="287" height="219"></a></li>
+        	<li><a href="#"><img src="images/img.jpg" width="287" height="219"></a></li>
         </ul>
     </div>
   </div>
 </div>
-<div class="footer">主办单位：深圳市金瑞凯利生物科技有限公司 粤ICP备09108850号-1</div>
+<div class="footer">主办单位：深圳市金瑞凯利生物科技有限公司 粤ICP备09108850号-1</div></div>
 <script type="text/javascript">
 		function login() {
 			$("#loginbtn").attr('disabled',true);
