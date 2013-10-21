@@ -43,8 +43,9 @@
 </select>
 <select id="selectByMap" resultType="dms.yijava.entity.dealer.DealerAuthHospital">
 	select * from (
-		select t1.id,t1.dealer_id,t1.category_id,t1.hospital_id,t2.hospital_name,t2.address,t2.hostpital_category,t2.level_id,t3.level_name,t2.provinces,t2.area,t2.city 
+		select t1.id,t1.dealer_id,t1.category_id,t1.hospital_id,t2.hospital_name,t2.address,t2.hostpital_category,t2.level_id,t3.level_name,area.name as provinces,t2.area,t2.city 
 		from tb_dealer_auth_hospital t1 inner join tb_hospital t2 on t1.hospital_id = t2.id left join tb_hospital_level t3 on t2.level_id = t3.id
+	  left join tb_area area on t2.provinces = area.areaid
 	) t
 	<include refid="adsWhere" />
 </select>	

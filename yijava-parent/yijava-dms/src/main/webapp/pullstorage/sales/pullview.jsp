@@ -350,12 +350,8 @@
 		        </form>
 	    </div>
 	    <div id="dlgProductAdd-buttons">
-	    <restrict:function funId="191">
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="savePullStorageDetailEntity();">保存</a>
-	    </restrict:function>
-	    <restrict:function funId="192">
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProductAdd').dialog('close')">取消</a>
-	    </restrict:function>
 	    </div>
 	    <div id="dlgProductSn" class="easyui-dialog" style="width:475px;height:415px;padding: 5px 5px 5px 5px;"
             modal="true" closed="true">
@@ -370,8 +366,12 @@
 					</thead>
 				</table>
 				<div id="tb3">
-					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="selectProductSn()">添加</a>
-					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteProductSn()">删除</a>
+					<restrict:function funId="191">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" id="saveProductSn" plain="true" onclick="selectProductSn()">添加</a>
+					</restrict:function>
+					<restrict:function funId="192">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" id="deleteProductSn" plain="true" onclick="deleteProductSn()">删除</a>
+					</restrict:function>
 				</div>
     	</div>
     	<div id="dlgStorageProductSn" class="easyui-dialog" title="序列号列表" style="width:800px;height:495px;padding:5px 5px 5px 5px;"
@@ -557,11 +557,15 @@
 				$('#delPullStorageDetail').linkbutton('disable');
 				$('#saveDraft').linkbutton('disable');
 				$('#submitPullStorage').linkbutton('disable');
+				$('#saveProductSn').linkbutton('disable');
+				$('#deleteProductSn').linkbutton('disable');
 			}else{
 				$('#savePullStorageDetail').linkbutton('enable');
 				$('#delPullStorageDetail').linkbutton('enable');
 				$('#saveDraft').linkbutton('enable');
 				$('#submitPullStorage').linkbutton('enable');
+				$('#saveProductSn').linkbutton('enable');
+				$('#deleteProductSn').linkbutton('enable');
 			}
 		}
 		//明细

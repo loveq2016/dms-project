@@ -328,8 +328,12 @@
 					</thead>
 				</table>
 				<div id="tb3">
+					<restrict:function funId="200">
 						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="saveProductSn" onclick="selectProductSn()">添加</a>
+					</restrict:function>
+					<restrict:function funId="199">
 						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="deleteProductSn" onclick="deleteProductSn()">删除</a>
+					</restrict:function>
 				</div>
     	</div>
     	<div id="dlgStorageProductSn" class="easyui-dialog" title="序列号列表" style="width:800px;height:495px;padding:5px 5px 5px 5px;"

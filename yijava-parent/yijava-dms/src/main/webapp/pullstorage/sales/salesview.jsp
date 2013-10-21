@@ -236,7 +236,7 @@
 								<th data-options="field:'storage_name',width:120,align:'center'" sortable="true">仓库</th>
 								<th data-options="field:'product_item_number',width:80,align:'center'" sortable="true">产品编码</th>
 								<th data-options="field:'models',width:100,align:'center'" sortable="true">规格型号</th>
-								<th data-options="field:'batch_no',width:100,align:'center'" sortable="true">产品批次</th>
+								<th data-options="field:'batch_no',width:80,align:'center'" sortable="true">产品批次</th>
 								<th data-options="field:'valid_date',width:120,align:'center'" formatter="formatterdate" sortable="true">有效日期</th>
 								<th data-options="field:'inventory_number',width:80,align:'center'" sortable="true">库存量</th>
 								<th data-options="field:'sales_number',width:100,align:'center'" sortable="true">销售数量(EA)</th>
@@ -373,14 +373,10 @@
 		</div>
 		<div style="margin: 10px 0;"></div>
 	    <div id="dlgProduct-buttons">
-	     <restrict:function funId="194">
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="newProductAddEntity()">添加</a>
-	     </restrict:function>
-	     <restrict:function funId="195">
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
-	     </restrict:function>
 	    </div>
-		<div id="dlgProductAdd" class="easyui-dialog" style="width:300px;height:330px;padding:5px 5px 5px 5px;"
+		<div id="dlgProductAdd" class="easyui-dialog" style="width:300px;height:350px;padding:5px 5px 5px 5px;"
 	            modal="true" closed="true" buttons="#dlgProductAdd-buttons">
 		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
 					      <table>
@@ -444,8 +440,12 @@
 					</thead>
 				</table>
 				<div id="tb3">
-					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="selectProductSn()">添加</a>
-					<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteProductSn()">删除</a>
+					<restrict:function funId="194">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" id="saveProductSn" plain="true" onclick="selectProductSn()">添加</a>
+					</restrict:function>
+					<restrict:function funId="195">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="deleteProductSn" onclick="deleteProductSn()">删除</a>
+					</restrict:function>
 				</div>
     	</div>
     	<div id="dlgStorageProductSn" class="easyui-dialog" title="序列号列表" style="width:800px;height:495px;padding:5px 5px 5px 5px;"
@@ -630,11 +630,15 @@
 				$('#delPullStorageDetail').linkbutton('enable');
 				$('#saveDraft').linkbutton('enable');
 				$('#submitPullStorage').linkbutton('enable');
+				$('#saveProductSn').linkbutton('enable');
+				$('#deleteProductSn').linkbutton('enable');
 			}else{
 				$('#savePullStorageDetail').linkbutton('disable');
 				$('#delPullStorageDetail').linkbutton('disable');
 				$('#saveDraft').linkbutton('disable');
 				$('#submitPullStorage').linkbutton('disable');
+				$('#saveProductSn').linkbutton('disable');
+				$('#deleteProductSn').linkbutton('disable');
 			}
 			if(typeof(type) != "undefined"){
 				$('#dlgPullStorageDetailtabs').tabs('enableTab', '审核'); 

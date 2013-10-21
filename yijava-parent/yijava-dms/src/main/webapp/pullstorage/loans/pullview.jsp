@@ -447,10 +447,10 @@
 				</table>
 				<div id="tb3">
 					<restrict:function funId="188">
-						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="selectProductSn()">添加</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" id="saveProductSn" plain="true" onclick="selectProductSn()">添加</a>
 					</restrict:function>
 					<restrict:function funId="189">
-						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteProductSn()">删除</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" id="deleteProductSn" plain="true" onclick="deleteProductSn()">删除</a>
 					</restrict:function>
 				</div>
     	</div>
@@ -641,11 +641,16 @@
 				$('#delPullStorageDetail').linkbutton('enable');
 				$('#saveDraft').linkbutton('enable');
 				$('#submitPullStorage').linkbutton('enable');
+				
+				$('#saveProductSn').linkbutton('enable');
+				$('#deleteProductSn').linkbutton('enable');
 			}else{
 				$('#savePullStorageDetail').linkbutton('disable');
 				$('#delPullStorageDetail').linkbutton('disable');
 				$('#saveDraft').linkbutton('disable');
 				$('#submitPullStorage').linkbutton('disable');
+				$('#saveProductSn').linkbutton('disable');
+				$('#deleteProductSn').linkbutton('disable');
 			}
 			
 			if(typeof(type) != "undefined"){
