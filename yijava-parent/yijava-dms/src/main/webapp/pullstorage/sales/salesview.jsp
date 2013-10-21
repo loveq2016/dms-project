@@ -949,7 +949,8 @@
 					    clearForm();
 					    $('#dlgPullStorageDetail').dialog('close');
 					    var pager = $('#dg').datagrid().datagrid('getPager');
-					    pager.pagination('select');				
+					    pager.pagination('select');		
+					    $('#saveCheckbtn').linkbutton('enable');
 				   }else{
 					   $.messager.show({
                            title: 'Error',
