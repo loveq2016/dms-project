@@ -148,30 +148,32 @@ public class PullStorageService{
 		List<StorageProDetail> storageProDetailList =  new ArrayList<StorageProDetail>();//sn表
 		if (pullStorage != null) {
 			//状态是否被修改
-			if(!pullStorage.getStatus().equals("0"))
+			if(pullStorage.getStatus().equals("0") || pullStorage.getStatus().equals("2")){
+				List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
+				filters.add(PropertyFilters.build("ANDS_pull_storage_code",pullStorage.getPull_storage_code()));
+				filters.add(PropertyFilters.build("ANDS_put_storage_code",pullStorage.getPut_storage_code()));
+				List<PullStorageDetail> listPullStorageDetail = pullStorageDetailService.getList(filters);
+				List<PullStorageProDetail> listPullStorageProDetail = pullStorageProDetailService.getList(filters);
+				for (PullStorageDetail pullStorageDetail : listPullStorageDetail) {
+					StorageDetail sd = new StorageDetail();
+					sd.setFk_dealer_id(pullStorage.getFk_pull_storage_party_id());
+					sd.setFk_storage_id(pullStorageDetail.getFk_storage_id());
+					sd.setProduct_item_number(pullStorageDetail.getProduct_item_number());
+					sd.setBatch_no(pullStorageDetail.getBatch_no());
+					sd.setInventory_number(pullStorageDetail.getSales_number());
+					sd.setModels(pullStorageDetail.getModels());
+					storageDetailList.add(sd);
+				}
+				for (PullStorageProDetail pullStorageProDetail : listPullStorageProDetail) {
+					StorageProDetail spd = new StorageProDetail();
+					spd.setFk_dealer_id(pullStorage.getFk_pull_storage_party_id());
+					spd.setFk_storage_id(pullStorageProDetail.getFk_storage_id());
+					spd.setBatch_no(pullStorageProDetail.getBatch_no());
+					spd.setProduct_sn(pullStorageProDetail.getProduct_sn());
+					storageProDetailList.add(spd);
+				}
+			}else{
 				return null;
-			List<PropertyFilter> filters = new ArrayList<PropertyFilter>();
-			filters.add(PropertyFilters.build("ANDS_pull_storage_code",pullStorage.getPull_storage_code()));
-			filters.add(PropertyFilters.build("ANDS_put_storage_code",pullStorage.getPut_storage_code()));
-			List<PullStorageDetail> listPullStorageDetail = pullStorageDetailService.getList(filters);
-			List<PullStorageProDetail> listPullStorageProDetail = pullStorageProDetailService.getList(filters);
-			for (PullStorageDetail pullStorageDetail : listPullStorageDetail) {
-				StorageDetail sd = new StorageDetail();
-				sd.setFk_dealer_id(pullStorage.getFk_pull_storage_party_id());
-				sd.setFk_storage_id(pullStorageDetail.getFk_storage_id());
-				sd.setProduct_item_number(pullStorageDetail.getProduct_item_number());
-				sd.setBatch_no(pullStorageDetail.getBatch_no());
-				sd.setInventory_number(pullStorageDetail.getSales_number());
-				sd.setModels(pullStorageDetail.getModels());
-				storageDetailList.add(sd);
-			}
-			for (PullStorageProDetail pullStorageProDetail : listPullStorageProDetail) {
-				StorageProDetail spd = new StorageProDetail();
-				spd.setFk_dealer_id(pullStorage.getFk_pull_storage_party_id());
-				spd.setFk_storage_id(pullStorageProDetail.getFk_storage_id());
-				spd.setBatch_no(pullStorageProDetail.getBatch_no());
-				spd.setProduct_sn(pullStorageProDetail.getProduct_sn());
-				storageProDetailList.add(spd);
 			}
 		}
 		returnList.add(storageDetailList);
