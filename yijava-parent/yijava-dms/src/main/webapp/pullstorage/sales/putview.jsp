@@ -109,10 +109,10 @@
 					<thead>
 						<tr>
 							<th data-options="field:'id',width:10,align:'center'" hidden="true">id</th>
-							<th data-options="field:'put_storage_party_name',width:200,align:'center'" sortable="true">经销商</th>
-							<th data-options="field:'pull_storage_code',width:200,align:'center'" sortable="true">分销出库单号</th>
-							<th data-options="field:'pull_storage_party_name',width:200,align:'center'" sortable="true">分销方</th>							
-							<th data-options="field:'put_storage_code',width:100,align:'center'" hidden="true">收货单号</th>
+							<th data-options="field:'put_storage_party_name',width:200,align:'left'" sortable="true">经销商</th>
+							<th data-options="field:'pull_storage_code',width:200,align:'left'" sortable="true">分销出库单号</th>
+							<th data-options="field:'pull_storage_party_name',width:200,align:'left'" sortable="true">分销方</th>							
+							<th data-options="field:'put_storage_code',width:100,align:'left'" hidden="true">收货单号</th>
 							<th data-options="field:'total_number',width:80,align:'center'" sortable="true">总数量</th>
 							<th data-options="field:'pull_storage_date',width:130,align:'center'" formatter="formatterdate" sortable="true">分销时间</th>
 							<th data-options="field:'put_storage_date',width:130,align:'center'" formatter="formatterdate" sortable="true">收货时间</th>
@@ -175,7 +175,7 @@
 					<thead>
 						<tr>
 							<th data-options="field:'fk_storage_id',width:100,align:'center'" hidden="true"></th>
-							<th data-options="field:'storage_name',width:100,align:'center'" sortable="true">仓库</th>
+							<th data-options="field:'storage_name',width:100,align:'left'" sortable="true">仓库</th>
 							<th data-options="field:'product_item_number',width:100,align:'center'" sortable="true">产品编码</th>
 							<th data-options="field:'models',width:60,align:'center'" sortable="true">规格型号</th>
 							<th data-options="field:'batch_no',width:200,align:'center'" sortable="true">产品批次</th>

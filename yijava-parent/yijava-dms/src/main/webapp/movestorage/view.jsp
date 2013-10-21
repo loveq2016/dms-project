@@ -78,7 +78,7 @@
 					<thead>
 						<tr>
 							<th data-options="field:'id',width:10,align:'center'" hidden="true">id</th>
-							<th data-options="field:'move_storage_party_name',width:200,align:'center'" sortable="true">经销商</th>
+							<th data-options="field:'move_storage_party_name',width:200,align:'left'" sortable="true">经销商</th>
 							<th data-options="field:'move_storage_code',width:160,align:'center'" sortable="true">移库单号</th>
 							<th data-options="field:'move_storage_date',width:150,align:'center'" formatter="formatterdate" sortable="true">移库时间</th>
 							<th data-options="field:'total_number',width:100,align:'center'" sortable="true">总数量</th>

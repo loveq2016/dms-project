@@ -99,9 +99,9 @@
 					<thead>
 						<tr>
 							<th data-options="field:'id',width:10,align:'center'" hidden="true">id</th>
-							<th data-options="field:'pull_storage_party_name',width:150,align:'center'" sortable="true">经销商</th>
-							<th data-options="field:'pull_storage_code',width:160,align:'center'" sortable="true">销售单号</th>
-							<th data-options="field:'put_storage_party_name',width:150,align:'center'" sortable="true">销售医院</th>
+							<th data-options="field:'pull_storage_party_name',width:150,align:'left'" sortable="true">经销商</th>
+							<th data-options="field:'pull_storage_code',width:160,align:'left'" sortable="true">销售单号</th>
+							<th data-options="field:'put_storage_party_name',width:150,align:'left'" sortable="true">销售医院</th>
 							<th data-options="field:'total_number',width:80,align:'center'" sortable="true">总数量</th>
 							<th data-options="field:'sales_date',width:150,align:'center'" formatter="formatterdate" sortable="true">销售时间</th>
 							<th data-options="field:'pull_storage_date',width:150,align:'center'" formatter="formatterdate" sortable="true">提交时间</th>
@@ -233,7 +233,7 @@
 							<tr>
 								<th data-options="field:'id',width:100,align:'center'" hidden="true"></th>
 								<th data-options="field:'fk_storage_id',width:100,align:'center'" hidden="true"></th>
-								<th data-options="field:'storage_name',width:120,align:'center'" sortable="true">仓库</th>
+								<th data-options="field:'storage_name',width:120,align:'left'" sortable="true">仓库</th>
 								<th data-options="field:'product_item_number',width:80,align:'center'" sortable="true">产品编码</th>
 								<th data-options="field:'models',width:100,align:'center'" sortable="true">规格型号</th>
 								<th data-options="field:'batch_no',width:80,align:'center'" sortable="true">产品批次</th>

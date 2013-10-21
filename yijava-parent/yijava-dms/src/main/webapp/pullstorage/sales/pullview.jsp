@@ -110,10 +110,10 @@
 					<thead>
 						<tr>
 							<th data-options="field:'id',width:10,align:'center'" hidden="true"></th>
-							<th data-options="field:'pull_storage_party_name',width:200,align:'center'" sortable="true">经销商</th>
-							<th data-options="field:'pull_storage_code',width:160,align:'center'" sortable="true">分销出库单号</th>
-							<th data-options="field:'put_storage_party_name',width:200,align:'center'" sortable="true">收货经销商</th>
-							<th data-options="field:'put_storage_code',width:150,align:'center'" hidden="true">分销入库单号</th>
+							<th data-options="field:'pull_storage_party_name',width:200,align:'left'" sortable="true">经销商</th>
+							<th data-options="field:'pull_storage_code',width:160,align:'left'" sortable="true">分销出库单号</th>
+							<th data-options="field:'put_storage_party_name',width:200,align:'left'" sortable="true">收货经销商</th>
+							<th data-options="field:'put_storage_code',width:150,align:'left'" hidden="true">分销入库单号</th>
 							<th data-options="field:'total_number',width:80,align:'center'" sortable="true">总数量</th>
 							<th data-options="field:'pull_storage_date',width:150,align:'center'" formatter="formatterdate" sortable="true">出库时间</th>
 							<th data-options="field:'status',width:80,align:'center'" formatter="formatterStatus" sortable="true">单据状态</th>
@@ -224,7 +224,7 @@
 						<tr>
 							<th data-options="field:'id',width:100,align:'center'" hidden="true"></th>
 							<th data-options="field:'fk_storage_id',width:100,align:'center'" hidden="true"></th>
-							<th data-options="field:'storage_name',width:100,align:'center'" sortable="true">仓库</th>
+							<th data-options="field:'storage_name',width:100,align:'left'" sortable="true">仓库</th>
 							<th data-options="field:'product_item_number',width:120,align:'center'" sortable="true">产品编码</th>
 							<th data-options="field:'models',width:100,align:'center'" sortable="true">规格型号</th>
 							<th data-options="field:'batch_no',width:100,align:'center'" sortable="true">产品批次</th>
