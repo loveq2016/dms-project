@@ -14,8 +14,8 @@ public class UKey {
 	private String create_date;
 	private String last_date;
 	
-	private Integer dealer_id;
-	private String dealer_name;
-	private String dealer_code;
+	private Integer userId;
+	private String realname;
+	private String account;
 	
 }

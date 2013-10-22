@@ -24,8 +24,8 @@
 
 	<select id="selectByObject" resultType="dms.yijava.entity.key.UKey">
 			select tb_u_key.key_id,tb_u_key.factory_code,tb_u_key.version,tb_u_key.exversion,tb_u_key.dealer_id,tb_u_key.create_date,
-			tb_dealer.dealer_name,tb_dealer.dealer_code
-			 from tb_u_key left join tb_dealer on tb_u_key.dealer_id=tb_dealer.dealer_id
+			tb_manager_user.realname,tb_manager_user.account,tb_manager_user.id as userId
+			 from tb_u_key left join tb_manager_user on tb_u_key.dealer_id=tb_manager_user.id
 			<include refid="adsWhere" />
 			<include refid="adsOrder" />
 			limit #{offset},#{pagesize}
@@ -40,7 +40,7 @@
 	<insert id="insert" parameterType="dms.yijava.entity.key.UKey" useGeneratedKeys="true" keyProperty="key_id">
 		insert into
 		tb_u_key(factory_code,version,exversion,create_date,last_date,dealer_id)
-		values(#{factory_code},#{version},#{exversion},NOW(),NOW(),#{dealer_id})
+		values(#{factory_code},#{version},#{exversion},NOW(),NOW(),#{userId})
 	</insert>
 
 	

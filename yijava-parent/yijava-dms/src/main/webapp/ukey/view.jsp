@@ -53,9 +53,9 @@
 							<th data-options="field:'factory_code',width:300"  sortable="true">出厂 编码</th>
 							<th data-options="field:'version',width:50" sortable="true">版本号</th>
 							<th data-options="field:'exversion',width:80" sortable="true" >扩展版本号</th>
-							<th data-options="field:'dealer_id',width:80" sortable="dealer_id" >经销商编号</th>
-							<th data-options="field:'dealer_code',width:150" sortable="dealer_code" >经销商代码</th>
-							<th data-options="field:'dealer_name',width:200" sortable="dealer_name" >经销商</th>
+							<th data-options="field:'userId',width:80" sortable="userId" >用户编号</th>
+							<th data-options="field:'account',width:150" sortable="account" >用户名</th>
+							<th data-options="field:'realname',width:200" sortable="realname" >真实名称</th>
 							<th data-options="field:'create_date',width:200" formatter="formatterdate">创建日期</th>							
 							<!-- <th data-options="field:'dd',width:100" align="center" formatter="formatterInfo">配置经销商</th> -->
 						</tr>
@@ -94,7 +94,7 @@
 								</tr>
 								<tr height="30">
 									<td>经销商:</td>
-								<td><input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:260px" maxLength="100" class="easyui-validatebox"
+								<td><input class="easyui-combobox" name="userId" id="userId" style="width:260px" maxLength="100" class="easyui-validatebox"
 							             			data-options="
 								             			url:'${basePath}api/sysuser/list',
 									                    method:'get',

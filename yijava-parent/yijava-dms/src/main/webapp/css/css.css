@@ -38,7 +38,7 @@ button { width: auto; overflow: visible; }
 .clearfix { zoom: 1; }
 html { _background: url(about:blank) no-repeat fixed; }
 body{ font-family:"ËÎÌו"; font-size:12px;}
-.box{background:url(../images/bg-x.jpg) repeat-x; width:100%; height:604px; overflow:hidden; position:absolute; left:0; top:50%; margin:-302px 0 0;}
+.box{background:url(../images/bg-x.jpg) repeat-x; width:100%; height:604px; overflow:hidden; position:absolute; left:0; top:50%; margin:-362px 0 0;}
 a{ text-decoration:none;}
 a:hover{text-decoration: underline;}
 .top{height:56px; overflow:hidden; padding:28px 0 7px; overflow:hidden; text-align:center;}
