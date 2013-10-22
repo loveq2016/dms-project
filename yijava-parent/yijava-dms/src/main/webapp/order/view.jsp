@@ -824,7 +824,7 @@
 		                     $('#dg').datagrid('reload');
 		                     $.messager.show({
                                  title: '提示',
-                                 msg: "添加成功!"
+                                 msg: "写入u盾成功!"
                              });
 				    	}else if(jsonobj.state==2){
 				    		$.messager.alert('提示','不可重复添加一个产品!','error');	

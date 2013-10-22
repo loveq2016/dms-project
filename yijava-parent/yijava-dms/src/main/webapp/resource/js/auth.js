@@ -98,9 +98,15 @@ function WriteKey(value)
 		    s_simnew1.SetBuf(nlen,0);
 		    ret = s_simnew1.YWriteEx( 0, 1, "ffffffff", "ffffffff", DevicePath);
 		    if( ret != 0 )
-		        window.alert("写入字符串长度错误。错误码：" );
+		    	{
+		    		return false; //window.alert("写入字符串长度错误。错误码：" );
+		    	}
+		       
 		    else
-		        window.alert("写入字符串(带长度)成功");
+		    	{
+		    		return true;
+		    	}
+		        //window.alert("写入字符串(带长度)成功");
 		}
 	}
 }

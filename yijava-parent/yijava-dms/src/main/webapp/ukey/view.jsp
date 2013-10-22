@@ -199,7 +199,14 @@
 			    	if(jsonobj.state==1)
 			    		{
 			    			//写入u盾
-			    			WriteKey(jsonobj.data);
+			    			var ret=WriteKey(jsonobj.data);
+			    			if(ret)
+			    				{
+				    				$.messager.show({
+		                                 title: '提示',
+		                                 msg: "添加成功!"
+		                             });
+			    				}
 			    			clearForm();
 			    			$('#w').window('close');
 			    			var pager = $('#dg').datagrid().datagrid('getPager');
