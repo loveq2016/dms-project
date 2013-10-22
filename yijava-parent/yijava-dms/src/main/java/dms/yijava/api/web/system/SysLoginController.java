@@ -108,11 +108,17 @@ public class SysLoginController {
 				return result;
 			}
 			if(isExsitUser(sysUser,password)){
-				doLogin(request,sysUser);
-				result.setState(1);
-				result.setData(1);
-				logger.info("登录用户");
-				return result;
+				try {
+					doLogin(request,sysUser);
+					result.setState(1);
+					result.setData(1);
+					logger.info("登录用户");
+					return result;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					result.setError(new ErrorCode(e.toString()));
+				}
+				
 			}else
 			{
 				result.setError(new ErrorCode("用户名或密码错误"));
@@ -208,11 +214,16 @@ public class SysLoginController {
 						//找到里边的用户account进行登录
 						
 						SysUser sysUser = sysUserService.getEntity(code);
-						doLogin(request,sysUser);
-						result.setState(1);
-						result.setData(1);
-						logger.info("登录用户");
-						return result;
+						try {
+							doLogin(request,sysUser);
+							result.setState(1);
+							result.setData(1);
+							logger.info("登录用户");
+							return result;
+						} catch (Exception e) {
+							result.setError(new ErrorCode("用户授权失效,请联系管理员"));
+						}
+						
 					}else
 					{
 						result.setError(new ErrorCode("用户授权编码不正确,请联系管理员"));
