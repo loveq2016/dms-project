@@ -151,4 +151,64 @@ Date.prototype.format=function(fmt) {
     }        
     return fmt;        
 } 
+var digitArray = new Array('0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f');
 
+function toHex( n ) {
+
+        var result = ''
+        var start = true;
+
+        for ( var i=32; i>0; ) {
+                i -= 4;
+                var digit = ( n >> i ) & 0xf;
+
+                if (!start || digit != 0) {
+                        start = false;
+                        result += digitArray[digit];
+                }
+        }
+
+        return ( result == '' ? '0' : result );
+}
+
+function login_onclick() {
+	var DevicePath,ret,n,mylen;
+	try{
+		var s_simnew31;
+	    //创建插件或控件
+	    if(navigator.userAgent.indexOf("MSIE")>0 && !navigator.userAgent.indexOf("opera") > -1)
+	    {
+		    s_simnew31=new ActiveXObject("Syunew3A.s_simnew3");
+	    }
+	    else
+	    {
+			s_simnew31= document.getElementById('s_simnew31');
+	    }
+	  
+	    //查找是否存在锁,这里使用了FindPort函数
+		DevicePath = s_simnew31.FindPort(0);
+		if( s_simnew31.LastError!= 0 )
+		{
+			window.alert ( "Not Find Key ,Pls insert Key.");
+			window.location.href="err.html";
+			return ;
+		}
+		//'读取锁的ID
+		
+		pdata=s_simnew31.GetProduceDate(DevicePath);
+		if(s_simnew31.LastError !=0){ 			
+			return ;
+		}
+		
+		$("#faccode").val(pdata);	
+		
+		
+		ret=s_simnew31.YReadEx(0,1,"ffffffff","ffffffff",DevicePath);
+		mylen =s_simnew31.GetBuf(0);
+		$("#code").val(s_simnew31.YReadString(1,mylen, "ffffffff", "ffffffff", DevicePath));
+       
+	}catch (e) 
+	{
+		alert(e.name + ": " + e.message+"。可能是没有安装相应的控件或插件");
+	}
+}

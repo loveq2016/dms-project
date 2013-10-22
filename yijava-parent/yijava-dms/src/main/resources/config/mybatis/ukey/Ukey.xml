@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="UKey">
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
+		 		 and tb_u_key.dealer_id=#{dealer_id}
+			</if>
+		</trim>
+	</sql>
+
+	<sql id="adsOrder">
+		order by key_id desc
+	</sql>
+
+	<select id="selectByObjectcount" resultType="long">
+		select count(*) from tb_u_key
+		<include refid="adsWhere" />
+	</select>
+
+
+	<select id="selectByObject" resultType="dms.yijava.entity.key.UKey">
+			select tb_u_key.key_id,tb_u_key.factory_code,tb_u_key.version,tb_u_key.exversion,tb_u_key.dealer_id,tb_u_key.create_date,
+			tb_dealer.dealer_name,tb_dealer.dealer_code
+			 from tb_u_key left join tb_dealer on tb_u_key.dealer_id=tb_dealer.dealer_id
+			<include refid="adsWhere" />
+			<include refid="adsOrder" />
+			limit #{offset},#{pagesize}
+		</select>
+		
+	<select id="select" parameterType="int" resultType="dms.yijava.entity.key.UKey">
+		select * from tb_u_key where key_id = #{key_id}
+	</select>
+
+	
+
+	<insert id="insert" parameterType="dms.yijava.entity.key.UKey" useGeneratedKeys="true" keyProperty="key_id">
+		insert into
+		tb_u_key(factory_code,version,exversion,create_date,last_date,dealer_id)
+		values(#{factory_code},#{version},#{exversion},NOW(),NOW(),#{dealer_id})
+	</insert>
+
+	
+
+	<update id="deleteByPrimaryKey" parameterType="int">
+		delete from tb_u_key where key_id=#{key_id}
+	</update>
+	
+	
+	
+</mapper>

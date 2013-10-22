@@ -2,6 +2,8 @@ package dms.yijava.api.web.system;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +25,13 @@ import com.yijava.web.vo.ErrorCode;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.common.SysConstant;
+import dms.yijava.entity.key.LoginKeyGen;
 import dms.yijava.entity.system.SysLogin;
 import dms.yijava.entity.system.SysMenuFunction;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.teamlayou.UserLayou;
 import dms.yijava.entity.user.UserDealer;
+import dms.yijava.service.key.LoginKeyGenService;
 import dms.yijava.service.system.SysLoginService;
 import dms.yijava.service.system.SysMenuFunctionService;
 import dms.yijava.service.system.SysMenuService;
@@ -56,6 +61,10 @@ public class SysLoginController {
 	private UserDealerFunService userDealerFunService;
 	@Autowired
 	private  UserLayouService userLayouService;
+	
+	@Autowired
+	private LoginKeyGenService loginKeyGenService;
+	
 	
 	@ResponseBody
 	@RequestMapping(value = "/login")
@@ -151,6 +160,51 @@ public class SysLoginController {
 			result.setError(new ErrorCode("用户名或密码错误"));
 		}
 		
+		return result;
+	}
+	
+	/**
+	 * u盾自动登录
+	 * @param request
+	 * @param response
+	 * @param map
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/autologin")
+	public Result<Integer> autologin(HttpServletRequest request,HttpServletResponse response,ModelMap map) {
+		Result<Integer> result=new Result<Integer>(0, 0);
+		String code = request.getParameter("code");
+		String faccode = request.getParameter("faccode");
+		String keygen = request.getParameter("keygen");
+		//判断keygen是否失效
+		
+		List<LoginKeyGen> keygens=loginKeyGenService.getKeyGen(keygen);
+		if(null!=keygens && keygens.size()>0)
+		{
+			LoginKeyGen dbkeygen=keygens.get(0);
+			try {
+				String dateStr=dbkeygen.getCreate_date();
+				dateStr=dateStr.substring(0,dateStr.indexOf("."));
+				Date createDate=DateUtils.parseDate(dateStr,"yyyy-MM-dd HH:mm:ss");
+				long sq=new Date().getTime()-createDate.getTime();
+				if(sq<30*1000)
+				{
+					//开始登录
+					
+				}else
+				{
+					result.setError(new ErrorCode("用户授权失效,请联系管理员"));
+				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}else
+		{
+			result.setError(new ErrorCode("用户授权不存在,请联系管理员"));
+		}
 		return result;
 	}
 	

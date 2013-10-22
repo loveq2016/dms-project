@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="LoginKeyGen">
+	
+
+
+	
+		
+	<select id="select" parameterType="int" resultType="dms.yijava.entity.key.LoginKeyGen">
+		select * from tb_login_keygen where id = #{id}
+	</select>
+
+	
+
+	<insert id="insert" parameterType="dms.yijava.entity.key.LoginKeyGen" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tb_login_keygen(keygen,create_date)
+		values(#{keygen},NOW())
+	</insert>
+
+	
+
+	<update id="deleteByPrimaryKey" parameterType="int">
+		delete from tb_login_keygen where id=#{id}
+	</update>
+	
+	<select id="selectByKeyGen" resultType="dms.yijava.entity.key.LoginKeyGen">
+		select * from tb_login_keygen where keygen=#{keygen}
+	</select>
+	
+</mapper>
