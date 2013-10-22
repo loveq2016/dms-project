@@ -52,6 +52,13 @@ public class SysUserController {
 	}
 	
 	@ResponseBody
+	@RequestMapping("list")
+	public List<SysUser> list(HttpServletRequest request) {
+		return sysUserService.getUserList();
+	}
+	
+	
+	@ResponseBody
 	@RequestMapping("read")
 	public SysUser read(@RequestParam(value = "id", required = false) String id) {
 		SysUser sysUser=sysUserService.getEntity(id);

@@ -60,6 +60,9 @@
 				LEFT join dms.tb_department tb ON(tb.id=tt.fk_department_id)) t
 		<include refid="adsWhere"/>
 	</select>
+	<select id="selectUserList" resultType="dms.yijava.entity.system.SysUser">
+		SELECT * FROM tb_manager_user
+	</select>
 	<select id="select"  parameterType="int" resultType="dms.yijava.entity.system.SysUser">
         SELECT * FROM(
 		SELECT tt.*,tmr.role_name ,td.dealer_name,tb.department_name,td.dealer_code FROM (
