@@ -26,12 +26,14 @@ import com.yijava.web.vo.Result;
 
 import dms.yijava.common.SysConstant;
 import dms.yijava.entity.key.LoginKeyGen;
+import dms.yijava.entity.key.UKey;
 import dms.yijava.entity.system.SysLogin;
 import dms.yijava.entity.system.SysMenuFunction;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.teamlayou.UserLayou;
 import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.key.LoginKeyGenService;
+import dms.yijava.service.key.UKeyService;
 import dms.yijava.service.system.SysLoginService;
 import dms.yijava.service.system.SysMenuFunctionService;
 import dms.yijava.service.system.SysMenuService;
@@ -64,6 +66,9 @@ public class SysLoginController {
 	
 	@Autowired
 	private LoginKeyGenService loginKeyGenService;
+	
+	@Autowired
+	private UKeyService uKeyService;
 	
 	
 	@ResponseBody
@@ -191,6 +196,20 @@ public class SysLoginController {
 				if(sq<30*1000)
 				{
 					//开始登录
+					//检查faccode是不是我们登记过的
+					
+					List<UKey> ukeys=uKeyService.getKeyByCode(faccode);
+					if(null!=ukeys && ukeys.size()>0)
+					{
+						//找到里边的用户account进行登录
+						SysUser sysUser=new SysUser();
+						sysUser.setId(code);
+						sysUser = sysUserService.getEntityByAccount(sysUser);
+						
+					}else
+					{
+						result.setError(new ErrorCode("用户授权编码不正确,请联系管理员"));
+					}
 					
 				}else
 				{

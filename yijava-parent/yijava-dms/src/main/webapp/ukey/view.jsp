@@ -96,10 +96,10 @@
 									<td>经销商:</td>
 								<td><input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:260px" maxLength="100" class="easyui-validatebox"
 							             			data-options="
-								             			url:'${basePath}/api/dealer/list',
+								             			url:'${basePath}api/sysuser/list',
 									                    method:'get',
-									                    valueField:'dealer_id',
-									                    textField:'dealer_name',
+									                    valueField:'id',
+									                    textField:'account',
 									                    panelHeight:'auto'
 							            			"/>
 							            			</td>	

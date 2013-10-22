@@ -14,6 +14,7 @@ import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.key.UKeyDao;
 import dms.yijava.entity.flow.Flow;
+import dms.yijava.entity.key.LoginKeyGen;
 import dms.yijava.entity.key.UKey;
 
 @Service
@@ -44,6 +45,11 @@ public class UKeyService {
 	
 	public void updateEntity(UKey entity) {
 		uKeyDao.update( entity);
+	}
+	
+	public List<UKey>  getKeyByCode(String key)
+	{			
+		return uKeyDao.find(".selectByFactoryCode", key);		
 	}
 	
 	public void removeEntityById(String key_id) {
