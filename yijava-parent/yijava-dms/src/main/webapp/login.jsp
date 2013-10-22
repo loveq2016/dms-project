@@ -18,26 +18,26 @@
 </head>
 
 <body onkeydown="on_return();">
-<div class="box"><div class="top"><a href="#"><img src="images/logo.png"></a></div>
+<div class="box"><div class="top"><a href="#"><img src="images/logo.jpg"></a></div>
 <div class="page">
   <div class="main">
     <h1 class="title">海利欧斯经销商管理系统</h1>
     <div class="left">
-      <form id="ffadd" action="" method="post" enctype="multipart/form-data">
+     <form id="ffadd" action="" method="post" enctype="multipart/form-data">
         <div class="formline">
           <label>User ID/系统登陆账号：</label>
           <input type="text" class="ipt" value="" name="account" value="admin">
         </div>
         <div class="formline">
           <label>Password/密码：</label>
-          <input type="password" class="ipt" value="" name="password" value="111111">
+         <input type="password" class="ipt" value="" name="password" value="111111">
         </div>
         <div class="formline">
           <label>Validation Code/验证码：</label>
-           <input type="text" class="ipt code" value="" name="captcha" onkeydown="on_return();">&nbsp;&nbsp;
-           <img id="captchaImg" src="getCaptcha" width="62" height="24"  align="absmiddle" style="cursor:hand" onclick="javascript:reloadValidateCode();" title="看不请?点击刷新"/>
+          <input type="text" class="ipt code" value="" name="captcha" onkeydown="on_return();">&nbsp;&nbsp;
+         <img id="captchaImg" src="getCaptcha" width="84" height="32"  align="absmiddle" style="cursor:hand" onclick="javascript:reloadValidateCode();" title="看不请?点击刷新"/>
         </div>
-         <div id="loading_img" width="16" height="11" ></div>
+        <div id="loading_img" width="16" height="11" ></div>
         <div class="formline">
           <input type="button" name="loginbtn" id="loginbtn" value="Login/登录" class="btn" onclick="login()">
         </div>
@@ -48,10 +48,10 @@
     </div>
     <div id="focus">
     	<ul class="focus">
-        	<li><a href="#"><img src="images/img.jpg" width="287" height="219"></a></li>
-        	<li><a href="#"><img src="images/img.jpg" width="287" height="219"></a></li>
-        	<li><a href="#"><img src="images/img.jpg" width="287" height="219"></a></li>
-        	<li><a href="#"><img src="images/img.jpg" width="287" height="219"></a></li>
+        	<li><a href="#"><img src="images/img.jpg" width="509" height="388"></a></li>
+        	<li><a href="#"><img src="images/img.jpg" width="509" height="388"></a></li>
+        	<li><a href="#"><img src="images/img.jpg" width="509" height="388"></a></li>
+        	<li><a href="#"><img src="images/img.jpg" width="509" height="388"></a></li>
         </ul>
     </div>
   </div>
