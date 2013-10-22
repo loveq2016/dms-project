@@ -93,6 +93,13 @@ public class SysUserService {
 		parameters.put("fk_department_id", id);
 		return sysUserDao.find(parameters);
 	}
+	/**
+	 * 查询所有用户
+	 * @return
+	 */
+	public List<SysUser> getUserList(){
+		return sysUserDao.find(".selectUserList",null);
+	}
 	
 	/**
 	 * 修改密码
