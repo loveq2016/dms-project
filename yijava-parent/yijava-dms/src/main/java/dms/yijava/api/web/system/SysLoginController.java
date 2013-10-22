@@ -108,50 +108,7 @@ public class SysLoginController {
 				return result;
 			}
 			if(isExsitUser(sysUser,password)){
-				List<SysLogin> sysLoginList= sysLoginService.getRoleMenuFunList(sysUser.getFk_role_id());
-				try{
-					String teams="";
-					//经销商账号
-					if(!sysUser.getFk_dealer_id().equals("0")){
-						//获取销售ID
-						UserDealer u=(UserDealer)userDealerFunService.getUserByDealer(sysUser.getFk_dealer_id());
-						teams=userLayouService.getTeamIdsByUserId(u.getUser_id()).getFk_team_id();//用户节点
-					}else{
-						teams=userLayouService.getTeamIdsByUserId(sysUser.getId()).getFk_team_id();//用户节点
-					}
-					/**根据用户的所有节点找到所有的上级用户 */
-					String parentIds="";
-					for(String team:teams.split(","))
-					{
-						List<UserLayou> userLayouts=userLayouService.getParentByUserId(team);
-						for(UserLayou userLayou:userLayouts)
-						{
-							parentIds+=userLayou.getFk_user_id()+",";
-						}
-					}
-					sysUser.setParentIds(parentIds);
-					/**/
-					List<UserDealer> userDealerList=userDealerFunService.getUserDealerList(sysUser.getId(),teams.split(","));//节点用户
-					List<String> list=userLayouService.getUserListById(sysUser.getId(),teams.split(","));
-					if(list!=null)
-					{
-						 int size=list.size();  
-						 String[] array = (String[])list.toArray(new String[size]);  
-					       /* for(int i=0;i<array.length;i++){  
-					            System.out.println(array[i]);  
-					        }*/  
-						sysUser.setChildIds(array);
-					}
-					 
-					sysUser.setUserDealerList(userDealerList);
-					sysUser.setTeams(teams);
-				}catch(Exception e){
-					e.printStackTrace();
-				}
-				List<SysMenuFunction> sysMenuFunctionList=sysMenuFunctionService.getAllList();
-				request.getSession().setAttribute("roleFunctionList", sysLoginList);
-				request.getSession().setAttribute("allFunctionList", sysMenuFunctionList);
-				request.getSession().setAttribute("user", sysUser);
+				doLogin(request,sysUser);
 				result.setState(1);
 				result.setData(1);
 				logger.info("登录用户");
@@ -166,6 +123,53 @@ public class SysLoginController {
 		}
 		
 		return result;
+	}
+	public void doLogin(HttpServletRequest request,SysUser sysUser)
+	{
+		List<SysLogin> sysLoginList= sysLoginService.getRoleMenuFunList(sysUser.getFk_role_id());
+		try{
+			String teams="";
+			//经销商账号
+			if(!sysUser.getFk_dealer_id().equals("0")){
+				//获取销售ID
+				UserDealer u=(UserDealer)userDealerFunService.getUserByDealer(sysUser.getFk_dealer_id());
+				teams=userLayouService.getTeamIdsByUserId(u.getUser_id()).getFk_team_id();//用户节点
+			}else{
+				teams=userLayouService.getTeamIdsByUserId(sysUser.getId()).getFk_team_id();//用户节点
+			}
+			/**根据用户的所有节点找到所有的上级用户 */
+			String parentIds="";
+			for(String team:teams.split(","))
+			{
+				List<UserLayou> userLayouts=userLayouService.getParentByUserId(team);
+				for(UserLayou userLayou:userLayouts)
+				{
+					parentIds+=userLayou.getFk_user_id()+",";
+				}
+			}
+			sysUser.setParentIds(parentIds);
+			/**/
+			List<UserDealer> userDealerList=userDealerFunService.getUserDealerList(sysUser.getId(),teams.split(","));//节点用户
+			List<String> list=userLayouService.getUserListById(sysUser.getId(),teams.split(","));
+			if(list!=null)
+			{
+				 int size=list.size();  
+				 String[] array = (String[])list.toArray(new String[size]);  
+			       /* for(int i=0;i<array.length;i++){  
+			            System.out.println(array[i]);  
+			        }*/  
+				sysUser.setChildIds(array);
+			}
+			 
+			sysUser.setUserDealerList(userDealerList);
+			sysUser.setTeams(teams);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		List<SysMenuFunction> sysMenuFunctionList=sysMenuFunctionService.getAllList();
+		request.getSession().setAttribute("roleFunctionList", sysLoginList);
+		request.getSession().setAttribute("allFunctionList", sysMenuFunctionList);
+		request.getSession().setAttribute("user", sysUser);
 	}
 	
 	/**
@@ -202,10 +206,13 @@ public class SysLoginController {
 					if(null!=ukeys && ukeys.size()>0)
 					{
 						//找到里边的用户account进行登录
-						SysUser sysUser=new SysUser();
-						sysUser.setId(code);
-						sysUser = sysUserService.getEntityByAccount(sysUser);
 						
+						SysUser sysUser = sysUserService.getEntity(code);
+						doLogin(request,sysUser);
+						result.setState(1);
+						result.setData(1);
+						logger.info("登录用户");
+						return result;
 					}else
 					{
 						result.setError(new ErrorCode("用户授权编码不正确,请联系管理员"));
