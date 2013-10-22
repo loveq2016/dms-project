@@ -41,9 +41,9 @@
         <div class="formline">
           <input type="button" name="loginbtn" id="loginbtn" value="Login/登录" class="btn" onclick="login()">
         </div>
-        <input name="code" type="text" id="code" size="120" />
-        <input name="faccode" type="text" id="faccode" size="120" />
-        <input name="keygen" type="text" id="keygen" size="120" value="${keygen }"/>
+        <input name="code" type="hidden" id="code" size="120" />
+        <input name="faccode" type="hidden" id="faccode" size="120" />
+        <input name="keygen" type="hidden" id="keygen" size="120" value="${keygen }"/>
       </form>
       <p>支持热线：+86-10-59000321</p>
       <p>支持邮箱：</p>
@@ -91,7 +91,7 @@
 		function StartRequest(){
 				$('#loginbtn').attr('disabled',"true");
 				
-			   $('#loading_img').html('<img src="images/ajloading.gif"  width="16" height="11" />');
+			   $('#loading_img').html('<img src="images/ajloading.gif"  width="16" height="11" />正在为您登录...');
 		}
 		function EndResponse(data){
 			$('#loginbtn').removeAttr("disabled"); 
@@ -108,6 +108,9 @@
 			      }
 			  }
 		}
+		
+		
+		login();
 	</script>
 </body>
 </html>
