@@ -212,17 +212,34 @@ public class SysLoginController {
 					if(null!=ukeys && ukeys.size()>0)
 					{
 						//找到里边的用户account进行登录
-						
-						SysUser sysUser = sysUserService.getEntity(code);
+						String[] codearray=code.split(",");
+						//校验内容是否经过修改
+						SysUser sysUser = sysUserService.getEntity(codearray[0]);
+						String keycontent=sysUser.getId()+","+sysUser.getAccount();
+						String md5key=null;
 						try {
-							doLogin(request,sysUser);
-							result.setState(1);
-							result.setData(1);
-							logger.info("登录用户");
-							return result;
-						} catch (Exception e) {
-							result.setError(new ErrorCode("用户授权失效,请联系管理员"));
+							md5key = EncodeUtils.encoderByMd5(keycontent);
+						} catch (NoSuchAlgorithmException
+								| UnsupportedEncodingException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
 						}
+						if(md5key.equals(codearray[1]))
+						{
+							try {
+								doLogin(request,sysUser);
+								result.setState(1);
+								result.setData(1);
+								logger.info("登录用户");
+								return result;
+							} catch (Exception e) {
+								result.setError(new ErrorCode("用户授权失效,请联系管理员"));
+							}
+						}else
+						{
+							
+						}
+						
 						
 					}else
 					{

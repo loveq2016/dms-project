@@ -93,7 +93,7 @@
 									<td><input class="easyui-validatebox" readonly="true" style="width:260px;" type="text" id="exversion" name="exversion" data-options="required:true"></input></td>								
 								</tr>
 								<tr height="30">
-									<td>经销商:</td>
+									<td>用户:</td>
 								<td><input class="easyui-combobox" name="userId" id="userId" style="width:260px" maxLength="100" class="easyui-validatebox"
 							             			data-options="
 								             			url:'${basePath}api/sysuser/list',

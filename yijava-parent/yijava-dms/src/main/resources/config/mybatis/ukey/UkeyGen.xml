@@ -5,7 +5,9 @@
 <mapper namespace="LoginKeyGen">
 	
 
-
+	<select id="selectAll" parameterType="int" resultType="dms.yijava.entity.key.LoginKeyGen">
+		select * from tb_login_keygen 
+	</select>
 	
 		
 	<select id="select" parameterType="int" resultType="dms.yijava.entity.key.LoginKeyGen">

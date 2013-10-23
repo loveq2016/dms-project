@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yijava.common.utils.EncodeUtils;
 import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
@@ -20,7 +21,9 @@ import com.yijava.web.vo.ErrorCode;
 import com.yijava.web.vo.Result;
 
 import dms.yijava.entity.key.UKey;
+import dms.yijava.entity.system.SysUser;
 import dms.yijava.service.key.UKeyService;
+import dms.yijava.service.system.SysUserService;
 
 @Controller
 @RequestMapping("/api/ukey")
@@ -30,7 +33,8 @@ public class UKeyController {
 			.getLogger(UKeyController.class);
 	@Autowired
 	private UKeyService uKeyService;
-	
+	@Autowired
+	public SysUserService sysUserService;
 	@ResponseBody
 	@RequestMapping("paging")
 	public JsonPage<UKey> paging(PageRequest pageRequest,HttpServletRequest request) {
@@ -52,9 +56,13 @@ public class UKeyController {
 		try {
 			uKeyService.saveEntity(entity);
 			
+			SysUser sysUser=sysUserService.getEntity(entity.getUserId().toString());
 			
-			
-			result.setData(entity.getUserId().toString());
+			String keycontent=sysUser.getId()+","+sysUser.getAccount();
+			String writecontent=sysUser.getId();
+			String md5key=EncodeUtils.encoderByMd5(keycontent);
+			writecontent+=","+md5key;
+			result.setData(writecontent);
 			result.setState(1);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

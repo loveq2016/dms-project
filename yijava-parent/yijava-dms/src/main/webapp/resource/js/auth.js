@@ -1,3 +1,7 @@
+var HReadkey ="hailiosi";
+var LReadkey ="hailiosi";
+var HWritekey ="hailiosi";
+var LWritekey ="hailiosi";
 var digitArray = new Array('0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f');
 var keyid,pdata;
 function toHex( n ) {
@@ -82,6 +86,23 @@ function WriteKey(value)
 		$('#keymsginfo').text("未发现加密锁，请插入加密锁");
 		//window.alert ( "未发现加密锁，请插入加密锁");
 	}else{
+		//设置写密码
+	   /* {
+		    ret=s_simnew1.SetWritePassword(HReadkey,LReadkey,"FFFFFFFF","FFFFFFFF", DevicePath);
+			if( ret != 0 )
+			{ 
+				window.alert ( "设置写密码错误");return ;
+			}
+		}*/
+	    //设置读密码
+		 /*{
+			ret=s_simnew1.SetReadPassword("FFFFFFFF","FFFFFFFF",HReadkey,LReadkey, DevicePath);
+			if( ret != 0 )
+			{ 
+				window.alert ( "设置读密码错误");return ;
+			}
+			window.alert ( "设置读密码成功");
+		}*/
 		//写入字符串带长度
 		{
 			//写入字符串带长度，,使用默认的读密码
