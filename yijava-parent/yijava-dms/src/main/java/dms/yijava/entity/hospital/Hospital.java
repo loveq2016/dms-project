@@ -14,8 +14,11 @@ public class Hospital {
 	private String level_id;
 	private String level_name;
 	private String provinces;
+	private String provinces_name;
 	private String area;
+	private String area_name;
 	private String city;
+	private String city_name;
 	private String address;
 	private String postcode;
 	private String phone;

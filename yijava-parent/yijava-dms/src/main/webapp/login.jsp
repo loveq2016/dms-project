@@ -57,7 +57,7 @@
     </div>
   </div>
 </div>
-<div class="footer">主办单位：深圳市金瑞凯利生物科技有限公司 粤ICP备09108850号-1 &nbsp;&nbsp;&nbsp;<a href="dd">下载u盾驱动</a></div></div>
+<div class="footer">主办单位：深圳市金瑞凯利生物科技有限公司 粤ICP备09108850号-1 &nbsp;&nbsp;&nbsp;<a href="${resPath}resource/static/UDriverSetUp.exe">u盾操作，请下载u盾驱动</a></div></div>
 <script type="text/javascript">
 		function login() {
 			$("#loginbtn").attr('disabled',true);

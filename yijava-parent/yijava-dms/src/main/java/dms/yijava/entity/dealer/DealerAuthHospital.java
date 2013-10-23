@@ -20,10 +20,11 @@ public class DealerAuthHospital {
 	private String hostpital_category;
 	private String level_id;
 	private String level_name;
-	private String provinces;
+	private String provinces_name;
+	private String city_name;
+	private String area_name;
 	private String address;
-	private String area;
-	private String city;
+
 	
 	
 	

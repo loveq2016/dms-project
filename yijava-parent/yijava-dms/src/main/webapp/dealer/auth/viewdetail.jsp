@@ -51,14 +51,13 @@
 					rownumbers="true" singleSelect="false" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbHospital">
 					<thead>
 						<tr>
-							
 						<th field="id" checkBox="true">选择</th>
 							<th field="hospital_name" width="250" align="left" sortable="true">医院名称</th>
 							<th field="hostpital_category" width="100" align="left" sortable="true">医院分类</th>
 							<th field="level_name" width="100" align="left" sortable="true">等级</th>
-							<th field="provinces" width="200" align="left" sortable="true">省份</th>
-							<th field="area" width="100" align="left" sortable="true">地区</th>
-							<th field="city" width="100" align="left" sortable="true">县市(区)</th>
+							<th field="provinces_name" width="200" align="left" sortable="true">省份</th>
+							<th field="city_name" width="100" align="left" sortable="true">城市</th>
+							<th field="area_name" width="100" align="left" sortable="true">区或乡</th>
 							<th field="address" width="300" align="left" sortable="true">地址</th>
 						</tr>
 					</thead>
@@ -146,34 +145,27 @@
 												                    method:'get',
 												                    valueField:'id',
 												                    textField:'level_name',
-												                    panelHeight:'auto',
-												                    required:false
+												                    required:false,
+												                    editable:false
 										            			">
 										            			
 												</td>
 											
 												<td>省份:</td>
 												<td>
-													<input class="easyui-combobox" type="text" name="provinces" id="provinces" data-options="
-											             			url:'${basePath}/api/hospital/getprovince_api',
-												                    method:'get',
-												                    valueField:'province',
-												                    textField:'province',
-												                    panelHeight:'auto',
-												                    required:false
-										            			"></input>
+													<input class="easyui-combobox" type="text" name="quprovince" id="quprovince" data-options="required:false"></input>
 												</td>
 												</tr>	
 												<tr>	
-												<td>地区:</td>
-												<td>
-													<input class="easyui-validatebox" type="text" name="area" id="area" data-options="required:false"></input>
-												</td>
-												<td>县市(区):</td>
-												<td>
-													<input class="easyui-validatebox" type="text" name="city" id="city" data-options="required:false"></input>
-												</td>
-												
+													<td>城市:</td>
+													<td>
+														<input class="easyui-combobox" type="text"  name="qucity" id="qucity" data-options="required:false"></input>
+													</td>
+													
+													<td>区或乡:</td>
+													<td>
+														<input class="easyui-combobox" type="text"  name="quarea" id="quarea" data-options="required:false"></input>
+													</td>
 												<td>地址:</td>
 												<td>
 													<input class="easyui-validatebox" type="text" name="address" id="address" style="width:300px" data-options="required:false"></input>
@@ -195,7 +187,9 @@
 												<!-- <th field="id" width="280" align="left" sortable="true" hidden="true">id</th>	 -->
 												<th field="hospital_name" width="280" align="left" sortable="true">医院名称</th>										
 												<th field="level_name" width="50" align="left" sortable="true">等级</th>
-												<th field="provinces" width="120" align="left" sortable="true">省份</th>										
+												<th field="provinces_name" width="100" align="left" sortable="true">省份</th>
+												<th field="city_name" width="100" align="left" sortable="true">城市</th>
+												<th field="area_name" width="100" align="left" sortable="true">区或乡</th>									
 												<th field="address" width="300" align="left" sortable="true">地址</th>										
 												</tr>
 											</thead>
@@ -459,7 +453,8 @@
     	        $('#fm2').form('clear');
     	        $("#hospital_dealer_id").val(dealer_id);
     	        $("#hospital_category_id").val(category_id);
-    	        url = basePath +  'api/dealerAuthHospital/save';           		
+    	        url = basePath +  'api/dealerAuthHospital/save';      
+    	        loadProvinceforqu();
         	}else{
 				$.messager.alert('提示','请选中数据!','warning');				
 			 }	
@@ -612,16 +607,62 @@
 		    $('#tablehospital').datagrid('load',{
 		    	filter_ANDS_hospital_name: $('#hospital_name').val(),
 		    	filter_ANDS_level_id: $('#level_id').combobox('getValue'),
-		    	filter_ANDS_provinces: $('#provinces').combobox('getValue'),
-		    	filter_ANDS_area: $('#area').val(),
-		    	filter_ANDS_city: $('#city').val(),
+		    	filter_ANDS_provinces: $('#quprovince').combobox('getValue'),
+		    	filter_ANDS_area: $('#quarea').combobox('getValue'),
+		    	filter_ANDS_city: $('#qucity').combobox('getValue'),
 		    	filter_ANDS_address: $('#address').val()
 		    });
 		}
 		
+      
+		function loadProvinceforqu(){
+			var quprovince =  $('#quprovince').combobox({
+					valueField:'areaid',
+					textField:'name',
+					editable:false,
+					url:basePath +'api/area/getarea_api?pid=0',
+					onChange:function(newValue, oldValue){
+						$.get(basePath +'api/area/getarea_api',{pid:newValue},function(data){
+							qucity.combobox("clear").combobox('loadData',data);
+							quarea.combobox("clear");
+						},'json');
+					},
+					onLoadSuccess:onLoadSuccess
+				});
+			
+			var  qucity = $('#qucity').combobox({
+				valueField:'areaid',
+				textField:'name',
+				editable:false,
+				onChange:function(newValue, oldValue){
+					
+					if(newValue!=0){
+						$.get(basePath +'api/area/getarea_api',{pid:newValue},function(data){
+							quarea.combobox("clear");
+							quarea.combobox("clear").combobox('loadData',data);
+						},'json');
+					}
+				},
+				onLoadSuccess:onLoadSuccess
+			});
+			
+			var quarea = $('#quarea').combobox({
+				valueField:'areaid',
+				textField:'name',
+				editable:false,
+				onLoadSuccess:onLoadSuccess
+			});				
+		}
 		
-		
-
+		function onLoadSuccess(){
+			var target = $(this);
+			var data = target.combobox("getData");
+			var options = target.combobox("options");
+			if(data && data.length>0){
+				var fs = data[0];
+				target.combobox("setValue",fs[options.valueField]);
+			}
+		}
 
 		
 		

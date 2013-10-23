@@ -35,12 +35,15 @@
  <!-- select * from (select t1.*,t2.level_name from  tb_hospital t1 left join tb_hospital_level t2 on t1.level_id = t2.id) t  -->
  	<select id="selectByObject" resultType="dms.yijava.entity.hospital.Hospital">	
 		select t1.id,t1.hospital_name,t1.hostpital_category,t1.address,t1.postcode,t1.last_update,t1.beds,t1.phone
-		,t2.level_name ,provinces.name as provinces,area.name as area,city.name as city
+		,t2.level_name ,
+		provinces.name as provinces_name,provinces.areaid as provinces,
+		city.name as city_name,city.areaid as city,
+		area.name as area_name,area.areaid as area
 		from  
 		tb_hospital t1 left join tb_hospital_level t2 on t1.level_id = t2.id
 		left join tb_area provinces on t1.provinces = provinces.areaid
-		left join tb_area area on t1.area = area.areaid
 		left join tb_area city on t1.city = city.areaid
+		left join tb_area area on t1.area = area.areaid
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
 	    limit #{offset},#{pagesize}  
@@ -53,8 +56,8 @@
         select * from tb_hospital where hospital_name = #{hospital_name}
     </select>
 	<insert id="insert" parameterType="dms.yijava.entity.hospital.Hospital" useGeneratedKeys="true" keyProperty="item_number">     
-    	  insert into tb_hospital (hospital_name,hostpital_category,level_id,provinces,area,city,address,postcode,phone,beds,create_date,last_update) 
-    	  values(#{hospital_name},#{hostpital_category},#{level_id},#{provinces},#{area},#{city},#{address},#{postcode},#{phone},#{beds},NOW(),NOW())
+    	  insert into tb_hospital (hospital_name,hostpital_category,level_id,provinces,city,area,address,postcode,phone,beds,create_date,last_update) 
+    	  values(#{hospital_name},#{hostpital_category},#{level_id},#{provinces},#{city},#{area},#{address},#{postcode},#{phone},#{beds},NOW(),NOW())
     </insert>
     
     <update id="update" parameterType="dms.yijava.entity.hospital.Hospital">
