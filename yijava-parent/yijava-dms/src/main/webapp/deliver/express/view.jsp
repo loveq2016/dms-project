@@ -92,6 +92,7 @@
             modal="true" closed="true" buttons="#dlg-buttons">
             <div class="easyui-panel" style="width:925px;" style="margin: 10px 0;">
 					<form id="ffDeliverDetail" method="post" enctype="multipart/form-data">
+							<input type="text" name="deliver_id">
 							<table>
 								<tr>
 									<td>经销商:</td>
@@ -391,6 +392,7 @@
 		function newEntity() {
 			var row = $('#dg').datagrid('getSelected');
 			if (row) {
+				alert(row.express_code)
 				isExpress = row.express_code;
 				$('#ffDeliverDetail').form('clear');
 				$('#ffDeliverDetail').form('load', row);
@@ -515,9 +517,9 @@
 
 		function submitExpress() {
 			if (isExpress) {
-				submitExpressR()
+				submitExpressR();
 			} else {
-				$.messager.confirm('Confirm', '填写快递单号后无法修改出货明细,可以修改快递单号?',
+				$.messager.confirm('Confirm', '填写快递单号后无法修改出货明细,可以修改快递单号!',
 						function(r) {
 							if (r) {
 								submitExpressR();
