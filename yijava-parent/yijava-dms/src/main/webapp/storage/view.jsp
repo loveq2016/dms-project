@@ -14,17 +14,36 @@
 						<form id="ffquery" method="post">
 							<table>
 								<tr>
-									<td></td>
-									<td>仓库名称:</td>
-									<td>
+									<td width="80">经销商:</td>
+									<td width="270">
+											<c:choose>
+											       <c:when test="${user.fk_dealer_id!='0'}">
+														<input class="easyui-validatebox" readonly="readonly" id="dealer_name" value="${user.dealer_name}" style="width:160px" maxLength="100">
+														<input class="easyui-validatebox" type="hidden" name="dealer_id" id="dealer_id" value="${user.fk_dealer_id}" maxLength="100">					       	
+											       </c:when>
+											       <c:otherwise>
+											       		<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:160px" maxLength="100" class="easyui-validatebox"
+								             			data-options="
+									             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
+										                    method:'get',
+										                    valueField:'dealer_id',
+										                    textField:'dealer_name',
+										                    panelHeight:'auto'
+								            			"/>
+											       </c:otherwise>
+											</c:choose>
+									</td>
+									<td width="80">仓库名称:</td>
+									<td width="270">
 										<input class="easyui-validatebox" type="text" name="storage_name" id="storage_name" data-options="required:false"></input>
 									</td>
-									<td></td>
-									<td>地址:</td>
-									<td>
+									<td width="50">地址:</td>
+									<td width="270">
 										<input class="easyui-validatebox" type="text" name="address" id="address" data-options="required:false"></input>
 									</td>
 									
+								</tr>
+								<tr>
 									<td>省份:</td>
 									<td>
 										<input class="easyui-combobox" type="text" name="quprovince" id="quprovince" data-options="required:false"></input>
@@ -60,18 +79,20 @@
 					<thead>
 						<tr>
 							<th field="id" width="200" align="left" hidden="true"></th>
-							<th field="storage_name" width="200" align="left" sortable="true">仓库名称</th>							
+							<th field="dealer_name" width="160" align="left" sortable="true">经销商名称</th>
+							<th field="dealer_id" width="200" align="left" hidden="true"></th>
+							<th field="storage_name" width="160" align="left" sortable="true">仓库名称</th>							
 							<th field="category_id" width="100" align="left" hidden="true"></th>
 							<th field="category_name" width="100" align="left" sortable="true">仓库类型</th>
 							<th field="hospital_name" width="100" align="left" hidden="true">医院名称</th>
 							<th field="status" width="100" align="left"  formatter="formatterStatus" sortable="true">状态</th>
-							<th field="province" width="100" align="left" sortable="true">省份</th>
-							<th field="city" width="100" align="left" sortable="true">城市</th>
-							<th field="area" width="200" align="left" sortable="true">区或乡</th>
-							<th field="postcode" width="100" align="left" sortable="true">邮编</th>
-							<th field="address" width="200" align="left" sortable="true">地址</th>							
-							<th field="phone" width="100" align="left" sortable="true">电话</th>
-							<th field="tex" width="100" align="left" sortable="true">传真</th>
+							<th field="province" width="80" align="left" sortable="true">省份</th>
+							<th field="city" width="80" align="left" sortable="true">城市</th>
+							<th field="area" width="80" align="left" sortable="true">区或乡</th>
+							<th field="postcode" width="80" align="left" sortable="true">邮编</th>						
+							<th field="phone" width="80" align="left" sortable="true">电话</th>
+							<th field="tex" width="80" align="left" sortable="true">传真</th>
+							<th field="address" width="160" align="left" sortable="true">地址</th>	
 						</tr>
 					</thead>
 				</table>
@@ -94,6 +115,28 @@
 		<form id="ffadd" action="" method="post" enctype="multipart/form-data">
 	        				  <input type="hidden" name="id">
 				         	  <table>
+				         	 	 <tr>
+				             		<td>经销商:</td>
+				             		<td>
+										<c:choose>
+											 <c:when test="${user.fk_dealer_id!='0'}">
+												<input class="easyui-validatebox" readonly="readonly" id="dealer_name" value="${user.dealer_name}" style="width:160px" maxLength="100">
+												<input class="easyui-validatebox" type="hidden" name="dealer_id" id="dealer_id" value="${user.fk_dealer_id}" maxLength="100">					       	
+											 </c:when>
+											 <c:otherwise>
+											    <input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:160px" maxLength="100" class="easyui-validatebox"
+								             			data-options="
+									             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
+										                    method:'get',
+										                    valueField:'dealer_id',
+										                    textField:'dealer_name',
+										                    panelHeight:'auto',
+										                    required:true
+								            	"/>
+											 </c:otherwise>
+										</c:choose>
+				             		</td>
+				             	</tr>
 				             	<tr>
 				             		<td>仓库名称:</td>
 				             		<td>
@@ -181,12 +224,9 @@
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveEntity();">保存</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
     </div>
-
 	<script type="text/javascript">
 	 	var url;
-	 	
 	 	loadProvinceforqu();
-	 	
 		function newEntity(){
 		    $('#dlg').dialog('open').dialog('setTitle','仓库添加');
 		    $('#ffadd').form('clear');
@@ -341,10 +381,8 @@
 			$('#ffquery').form('clear');
 		}
 		function doSearch(){
-			/* $('#dg').datagrid({
-				  url : basePath +"api/storage/paging" 
-			}); */
 		    $('#dg').datagrid('load',{
+		    	filter_ANDS_dealer_id: $('#ffquery input[name=dealer_id]').val(),
 		    	filter_ANDS_storage_name: $('#storage_name').val(),
 		    	filter_ANDS_address: $('#address').val(),
 		    	filter_ANDS_province: $('#ffquery input[name=quprovince]').val(),

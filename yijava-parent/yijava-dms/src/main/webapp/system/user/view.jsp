@@ -251,15 +251,15 @@
  		var url;
  		var pagesize='15';
 		$(function() {
-			var pager = $('#dg').datagrid(
-					{
-						 pageSize:pagesize,						 
-						 pageList: [15, 20, 30]						
-					
-					}).datagrid('getPager');
-			pager.pagination();
 			//var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
 			//pager.pagination();
+			var pager = $('#dg').datagrid(
+					{
+						 url : basePath +"api/sysuser/paging",
+						 pageSize:pagesize,						 
+						 pageList: [15, 20, 30]
+					}).datagrid('getPager');
+			pager.pagination();
 			$.ajax({
 				type : "POST",
 				url :basePath+'api/sysrole/list',
@@ -291,7 +291,6 @@
 		}
 		function doSearch(){
 			$('#dg').datagrid({
-				  url : basePath +"api/sysuser/paging",
 				  queryParams: {
 					    filter_ANDS_account: $('#account').val(),
 				    	filter_ANDS_realname: $('#realname').val(),

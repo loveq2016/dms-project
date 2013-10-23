@@ -24,48 +24,48 @@ import dms.yijava.service.dealer.DealerStorageService;
 @RequestMapping("/api/dealerStorage")
 public class DealerStorageController {
 	
-
-	@Autowired
-	private DealerStorageService dealerStorageService;
-	
-
-	@ResponseBody
-	@RequestMapping("paging")
-	public JsonPage<DealerStorage> paging(PageRequest pageRequest,HttpServletRequest request) {
-		List<PropertyFilter> filters = PropertyFilters.build(request);
-		return dealerStorageService.paging(pageRequest,filters);
-	}
-	
-	
-	@ResponseBody
-	@RequestMapping("list")
-	public List<DealerStorage> list(@RequestParam(value = "dealer_id", required = false) String dealer_id) {
-		return dealerStorageService.getList(dealer_id);
-	}
-	
-	
-	@ResponseBody
-	@RequestMapping("save")
-	public Result<String> save(@ModelAttribute("entity") DealerStorage entity) {
-		dealerStorageService.saveEntity(entity);
-		return new Result<String>(entity.getDealer_id(), 1);
-	}
-	
-	
-	@ResponseBody
-	@RequestMapping("update")
-	public Result<String> update(@ModelAttribute("entity") DealerStorage entity) {
-		dealerStorageService.updateEntity(entity);
-		return new Result<String>(entity.getDealer_id(), 1);
-	}
-	
-	
-	@ResponseBody
-	@RequestMapping("delete")
-	public Result<String> delete(@RequestParam(value = "id", required = true) String id) {
-		dealerStorageService.deleteEntity(id);
-		return new Result<String>(id, 1);
-	}
+//  已废除”经销商仓库维护“菜单，内部service方法已修改，20131024
+//	@Autowired
+//	private DealerStorageService dealerStorageService;
+//	
+//
+//	@ResponseBody
+//	@RequestMapping("paging")
+//	public JsonPage<DealerStorage> paging(PageRequest pageRequest,HttpServletRequest request) {
+//		List<PropertyFilter> filters = PropertyFilters.build(request);
+//		return dealerStorageService.paging(pageRequest,filters);
+//	}
+//	
+//	
+//	@ResponseBody
+//	@RequestMapping("list")
+//	public List<DealerStorage> list(@RequestParam(value = "dealer_id", required = false) String dealer_id) {
+//		return dealerStorageService.getList(dealer_id);
+//	}
+//	
+//	
+//	@ResponseBody
+//	@RequestMapping("save")
+//	public Result<String> save(@ModelAttribute("entity") DealerStorage entity) {
+//		dealerStorageService.saveEntity(entity);
+//		return new Result<String>(entity.getDealer_id(), 1);
+//	}
+//	
+//	
+//	@ResponseBody
+//	@RequestMapping("update")
+//	public Result<String> update(@ModelAttribute("entity") DealerStorage entity) {
+//		dealerStorageService.updateEntity(entity);
+//		return new Result<String>(entity.getDealer_id(), 1);
+//	}
+//	
+//	
+//	@ResponseBody
+//	@RequestMapping("delete")
+//	public Result<String> delete(@RequestParam(value = "id", required = true) String id) {
+//		dealerStorageService.deleteEntity(id);
+//		return new Result<String>(id, 1);
+//	}
 	
 	
 	

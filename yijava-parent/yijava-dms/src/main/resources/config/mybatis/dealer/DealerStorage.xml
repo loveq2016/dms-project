@@ -66,14 +66,11 @@
 </insert>
     
 <update id="update" parameterType="dms.yijava.entity.dealer.DealerStorage">
-	 update tb_dealer_storage set  storage_id=#{storage_id}  where id = #{id}
+	 update tb_dealer_storage set dealer_id = #{dealer_id} where storage_id=#{storage_id}
 </update>
 
 <delete id="delete">
-	delete from tb_dealer_storage where id = #{id}
+	delete from tb_dealer_storage where dealer_id = #{dealer_id} and storage_id=#{storage_id}
 </delete>
-    
-    
-    
     
 </mapper>

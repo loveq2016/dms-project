@@ -38,7 +38,7 @@
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
 				<table id="dg" title="查询结果" style="height:330px" method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="timestmp" pagination="true" iconCls="icon-search" sortOrder="asc" toolbar="#tb">
+					rownumbers="true" singleSelect="true" pagination="true" url="${basePath}api/syslog/paging" sortName="timestmp" pagination="true" iconCls="icon-search" sortOrder="asc" toolbar="#tb">
 					<thead>
 						<tr>
 							<th data-options="field:'formatted_message',width:180,align:'center'" sortable="true">操作名</th>
@@ -59,7 +59,6 @@
 			pager.pagination();
 		});
 		function doSearch(){
-			$('#dg').datagrid({url : basePath +"api/syslog/paging"});
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_start_date: $('input[name=start_date]').val(),
 		    	filter_ANDS_end_date: $('input[name=end_date]').val()

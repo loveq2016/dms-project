@@ -85,17 +85,15 @@
 		$(function() {
 			//var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid pageSize:pagesize,pageList: [12, 20, 30], 
 			//pager.pagination();
-			
 			var pager = $('#dg').datagrid(
 					{
-						 pageSize:pagesize,						 
-						 pageList: [12, 20, 30]						
-					
+						url : basePath +"api/sysrole/paging",
+						pageSize:pagesize,						 
+						pageList: [12, 20, 30]
 					}).datagrid('getPager');
 			pager.pagination();
 		})
 		function doSearch(){
-			$('#dg').datagrid({url : basePath +"api/sysrole/paging"});
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_role_name: $('#role_name').val(),
 		    });

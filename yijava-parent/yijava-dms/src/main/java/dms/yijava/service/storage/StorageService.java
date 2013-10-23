@@ -14,8 +14,10 @@ import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.storage.StorageDao;
+import dms.yijava.entity.dealer.DealerStorage;
 import dms.yijava.entity.hospital.Hospital;
 import dms.yijava.entity.storage.Storage;
+import dms.yijava.service.dealer.DealerStorageService;
 
 @Service
 @Transactional
@@ -23,6 +25,9 @@ public class StorageService {
 
 	@Autowired
 	private StorageDao  storageDao ;
+	
+	@Autowired
+	private DealerStorageService dealerStorageService;
 	
 	public List<Storage> getList(String id){
 		HashMap<String,String> parameters = new HashMap<String,String>();
@@ -42,13 +47,17 @@ public class StorageService {
 				pageRequest.getOrderDir());
 	}
 
-	public Hospital getEntity(String id) {
+	public Storage getEntity(String id) {
 		return storageDao.get(id);
 	}
 	
 	public void saveEntity(Storage entity) {
 		try {
 			storageDao.insert(entity);
+			DealerStorage entity2=new DealerStorage();
+			entity2.setDealer_id(entity.getDealer_id());
+			entity2.setStorage_id(entity.getId());
+			dealerStorageService.saveEntity(entity2);//添加经销商关系
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -56,13 +65,21 @@ public class StorageService {
 	
 	public void updateEntity(Storage entity) {
 		try {
-			storageDao.update( entity);
+			storageDao.update(entity);
+			DealerStorage entity2=new DealerStorage();
+			entity2.setDealer_id(entity.getDealer_id());
+			entity2.setStorage_id(entity.getId());
+			dealerStorageService.updateEntity(entity2);//修改经销商关系
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
 	public void deleteEntity(String id) {
+		Storage s=storageDao.get(id);
+		DealerStorage entity2=new DealerStorage();
+		entity2.setDealer_id(s.getDealer_id());
+		entity2.setStorage_id(s.getId());
+		dealerStorageService.deleteEntity(entity2);//删除经销商关系
 		storageDao.removeById(id);
 	}
 }

@@ -59,8 +59,8 @@ public class DealerStorageService {
 		dealerStorageDao.update( entity);
 	}
 	
-	public void deleteEntity(String id) {
-		dealerStorageDao.remove(id);
+	public void deleteEntity(DealerStorage entity) {
+		dealerStorageDao.remove(entity);
 	}
 		
 
