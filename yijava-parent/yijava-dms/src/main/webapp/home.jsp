@@ -151,6 +151,16 @@ $('#tochecktree').tree({
 			var tabTitle = "退换管理";
 			var url = "exchanged/view.jsp";
 			addTabByChild(tabTitle,url);
+		}else if(node.id==sendproduct_identifier_num)
+		{
+			var tabTitle = "出货管理";
+			var url = "deliver/express/view.jsp";
+			addTabByChild(tabTitle,url);
+		}else if(node.id==reciveproduct_identifier_num)
+		{
+			var tabTitle = "经销商采购入库";
+			var url = "orderDeliver/view.jsp";
+			addTabByChild(tabTitle,url);
 		}
 	}
 });

@@ -80,6 +80,14 @@ public class FlowRecordController {
 	@Value("#{properties['exchangedflow_identifier_num']}")   	
 	private String exchangedflow_identifier_num;
 	
+	//发货提醒
+	@Value("#{properties['sendproduct_identifier_num']}")   	
+	private String sendproduct_identifier_num;
+	
+	//收货提醒
+	@Value("#{properties['reciveproduct_identifier_num']}")   	
+	private String reciveproduct_identifier_num;
+	
 	/**
 	 * 查询流程处理记录
 	 * @param bussiness_id
@@ -474,6 +482,12 @@ public class FlowRecordController {
 		}else if(flow_id.equals(exchangedflow_identifier_num))
 		{
 			flowDescibe="退换审核"+"(<font color='red'>"+item_number+"</font>)";
+		}else if(flow_id.equals(sendproduct_identifier_num))
+		{
+			flowDescibe="待发货"+"(<font color='red'>"+item_number+"</font>)";
+		}else if(flow_id.equals(reciveproduct_identifier_num))
+		{
+			flowDescibe="待入库"+"(<font color='red'>"+item_number+"</font>)";
 		}
 		
 	

@@ -9,7 +9,8 @@ var pullStorageflow_identifier_num="500000";
 var salesStorageflow_identifier_num="600000";
 var adjustStorageflow_identifier_num="700000";
 var exchangedflow_identifier_num="800000";
-
+var sendproduct_identifier_num="900001";
+var reciveproduct_identifier_num="900002";
 $(function(){
 	InitLeftMenu();
 	
