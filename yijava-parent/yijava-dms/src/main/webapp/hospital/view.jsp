@@ -27,8 +27,8 @@
 									                    method:'get',
 									                    valueField:'id',
 									                    textField:'level_name',
-									                    panelHeight:'auto',
-									                    required:false
+									                    required:false,
+									                    editable:false,
 							            			">
 							            			
 									</td>
@@ -40,12 +40,12 @@
 									
 									<td>城市:</td>
 									<td>
-										<input class="easyui-combobox" type="text" name="qucity" id="qucity" data-options="required:false"></input>
+										<input class="easyui-combobox" type="text"  name="quarea" id="quarea" data-options="required:false"></input>
 									</td>
 									
 									<td>区或乡:</td>
 									<td>
-										<input class="easyui-combobox" type="text" name="quarea" id="quarea" data-options="required:false"></input>
+										<input class="easyui-combobox" type="text"  name="qucity" id="qucity" data-options="required:false"></input>
 									</td>
 									
 									<td>地址:</td>
@@ -73,8 +73,8 @@
 							<th field="hostpital_category" width="50" align="left" sortable="true">客户分类</th>
 							<th field="level_name" width="50" align="left" sortable="true">等级</th>
 							<th field="provinces" width="120" align="left" sortable="true">省份</th>
-							<th field="area" width="80" align="left" sortable="true">地区</th>
-							<th field="city" width="80" align="left" sortable="true">县市(区)</th>
+							<th field="area" width="80" align="left" sortable="true">城市</th>
+							<th field="city" width="80" align="left" sortable="true">区或乡</th>
 							<th field="address" width="300" align="left" sortable="true">地址</th>
 							<th field="postcode" width="100" align="left" sortable="true">邮编</th>
 							<th field="last_update" width="150" align="left" sortable="true" formatter="formatterdate">最后修改时间</th>
@@ -188,26 +188,30 @@
 					url:basePath +'api/area/getarea_api?pid=0',
 					onChange:function(newValue, oldValue){
 						$.get(basePath +'api/area/getarea_api',{pid:newValue},function(data){
-							qucity.combobox("clear").combobox('loadData',data);
-							quarea.combobox("clear");
+							qucity.combobox("clear");
+							quarea.combobox("clear").combobox('loadData',data);
+							
 						},'json');
 					},
 					onLoadSuccess:onLoadSuccess
 				});
 			
-			var qucity = $('#qucity').combobox({
+			var quarea = $('#quarea').combobox({
 				valueField:'areaid',
 				textField:'name',
 				editable:false,
 				onChange:function(newValue, oldValue){
-					$.get(basePath +'api/area/getarea_api',{pid:newValue},function(data){
-						quarea.combobox("clear").combobox('loadData',data);
-					},'json');
+					qucity.combobox("clear");
+					if(newValue!=0){
+						$.get(basePath +'api/area/getarea_api',{pid:newValue},function(data){
+							qucity.combobox("clear").combobox('loadData',data);
+						},'json');
+					}
 				},
 				onLoadSuccess:onLoadSuccess
 			});
 			
-			var quarea = $('#quarea').combobox({
+			var qucity = $('#qucity').combobox({
 				valueField:'areaid',
 				textField:'name',
 				editable:false,
@@ -345,8 +349,8 @@
 		    	filter_ANDS_hospital_name: $('#hospital_name').val(),
 		    	filter_ANDS_level_id: $('#level_id').combobox('getValue'),
 		    	filter_ANDS_provinces: $('#quprovince').combobox('getValue'),
-		    	filter_ANDS_area: $('#quarea').val(),
-		    	filter_ANDS_city: $('#qucity').val(),
+		    	filter_ANDS_area: $('#quarea').combobox('getValue'),
+		    	filter_ANDS_city: $('#qucity').combobox('getValue'),
 		    	filter_ANDS_address: $('#address').val()
 		    });
 		}

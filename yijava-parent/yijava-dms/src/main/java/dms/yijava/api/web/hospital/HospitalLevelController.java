@@ -1,5 +1,6 @@
 package dms.yijava.api.web.hospital;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,14 @@ public class HospitalLevelController {
 	@ResponseBody
 	@RequestMapping("list")
 	public List<HospitalLevel> list() {
-		return hospitalLevelService.getList();
+		List<HospitalLevel> list = new ArrayList<HospitalLevel>();
+		HospitalLevel hospitalLevel = new HospitalLevel();
+		hospitalLevel.setId("");
+		hospitalLevel.setLevel_name("全部");
+		list.add(hospitalLevel);
+		list.addAll(hospitalLevelService.getList());
+		
+		return list ;
 	}
 	
 }

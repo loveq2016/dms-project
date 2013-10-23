@@ -8,9 +8,10 @@
 <trim prefix="WHERE" prefixOverrides="AND|OR">
 	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(hospital_name)">and hospital_name like CONCAT('%','${hospital_name}','%' ) </if>
 	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(level_id)">and level_id=#{level_id}</if>
-	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(provinces)">and provinces like CONCAT('%','${provinces}','%' ) </if>
-	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(area)">and area like CONCAT('%','${area}','%' ) </if>
-	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(city)">and city like CONCAT('%','${city}','%' ) </if>	
+	<if test="provinces != null and provinces != 0 ">and provinces = #{provinces} </if>
+	<if test="city != null and city != 0 ">and city =#{city}</if>	
+	<if test="area != null and area != 0 ">and area =#{area}</if>
+	
 	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(address)">and address like CONCAT('%','${address}','%' ) </if>	
 </trim>
 </sql>
@@ -33,11 +34,13 @@
 
  <!-- select * from (select t1.*,t2.level_name from  tb_hospital t1 left join tb_hospital_level t2 on t1.level_id = t2.id) t  -->
  	<select id="selectByObject" resultType="dms.yijava.entity.hospital.Hospital">	
-		select t1.id,t1.hospital_name,t1.city,t1.area,t1.hostpital_category,t1.address,t1.postcode,t1.last_update,t1.beds,t1.phone
-		,t2.level_name ,area.name as provinces
+		select t1.id,t1.hospital_name,t1.hostpital_category,t1.address,t1.postcode,t1.last_update,t1.beds,t1.phone
+		,t2.level_name ,provinces.name as provinces,area.name as area,city.name as city
 		from  
 		tb_hospital t1 left join tb_hospital_level t2 on t1.level_id = t2.id
-		left join tb_area area on t1.provinces = area.areaid
+		left join tb_area provinces on t1.provinces = provinces.areaid
+		left join tb_area area on t1.area = area.areaid
+		left join tb_area city on t1.city = city.areaid
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
 	    limit #{offset},#{pagesize}  

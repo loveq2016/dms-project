@@ -1,5 +1,6 @@
 package dms.yijava.api.web.area;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import dms.yijava.entity.area.Area;
+import dms.yijava.entity.hospital.HospitalLevel;
 import dms.yijava.service.area.AreaService;
 
 @Controller
@@ -22,9 +24,16 @@ public class AreaController {
 	@RequestMapping("getarea_api")
 	public List<Area> getList(@RequestParam(value = "pid", required = false) String pid){
 		try {
+			
+			List<Area> list = new ArrayList<Area>();
+			Area area = new Area();
+			area.setAreaid(0);
+			area.setName("全部");
+			list.add(area);
 			if(pid==null || "".equals(pid))
 				pid="0";
-			return areaService.getList(pid);
+			list.addAll(areaService.getList(pid));
+			return list;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
