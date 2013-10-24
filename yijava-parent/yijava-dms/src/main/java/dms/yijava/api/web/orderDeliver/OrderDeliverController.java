@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +25,7 @@ import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.deliver.DeliverExpressDetailService;
 import dms.yijava.service.deliver.DeliverExpressSnService;
+import dms.yijava.service.flow.FlowRecordService;
 import dms.yijava.service.order.OrderService;
 import dms.yijava.service.orderDeliver.OrderDeliverService;
 import dms.yijava.service.storage.StorageDetailService;
@@ -42,7 +44,11 @@ public class OrderDeliverController {
 	private DeliverExpressSnService deliverExpressSnService;
 	@Autowired
 	private OrderService orderService;
-	
+	//收货提醒
+	@Value("#{properties['reciveproduct_identifier_num']}")   	
+	private String reciveproduct_identifier_num;
+	@Autowired
+	private FlowRecordService flowRecordService;
 	
 
 	@ResponseBody
@@ -89,7 +95,7 @@ public class OrderDeliverController {
 
 	@ResponseBody
 	@RequestMapping("consignee")
-	public Result<String> consignee(
+	public Result<String> consignee(HttpServletRequest request,
 			@RequestParam(value = "deliver_code", required = true) String deliver_code,
 			@RequestParam(value = "dealer_id", required = true) String dealer_id) {
 		try {
@@ -100,12 +106,23 @@ public class OrderDeliverController {
 				List<DeliverExpressSn> deliverExpressSns = deliverExpressSnService.getList(deliver_code);
 				if (deliverExpressDetails == null || deliverExpressSns == null)
 					return new Result<String>(deliver_code, 0);
-				String flag = storageDetailService.orderStorage(dealer_id,orderDeliver.getOrder_code(),deliverExpressDetails,deliverExpressSns);
+				//String flag = storageDetailService.orderStorage(dealer_id,orderDeliver.getOrder_code(),deliverExpressDetails,deliverExpressSns);
+				String flag ="success";
 				if("success".equals(flag)){
 					OrderDeliver entity = new OrderDeliver();
 					entity.setDeliver_code(deliver_code);
 					entity.setConsignee_user_id("1");
 					orderDeliverService.submitConsignee(entity);
+					
+					
+					try {
+						SysUser sysUser = (SysUser)request.getSession().getAttribute("user");
+						//关闭发货提醒
+						flowRecordService.updateFlowByFlowUB(reciveproduct_identifier_num, sysUser.getId(), orderDeliver.getDeliver_id(), "", "1");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
 					if ("4".equals(orderDeliver.getDeliver_status())) {//全部发货
 						orderService.updateStatusByOrderCode(orderDeliver.getOrder_code(), "6");
 					}

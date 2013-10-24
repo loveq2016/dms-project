@@ -187,7 +187,7 @@ public class DeliverApplyController {
 		Result<Integer> result = new Result<Integer>(0, 0);
 		try {				
 				SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
-				if(flowBussService.processFlow(deliver_id,sysUser,flowIdentifierNumber)){//提交流程
+				if(flowBussService.processFlowWithSign(deliver_id,sysUser,flowIdentifierNumber)){//提交流程
 					//更新状态
 					deliverService.updateDeliverStatus(String.valueOf(deliver_id),"1");
 					//adjustStorageService.updateAdjustStorageStatus(String.valueOf(adjust_id), "1");//流程成功、更新业务的状态为提交审核
