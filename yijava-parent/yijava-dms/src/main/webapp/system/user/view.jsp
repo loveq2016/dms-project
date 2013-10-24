@@ -306,6 +306,9 @@
 			clearForm();
 			$('#w').dialog('open').dialog('setTitle','添加用户信息');
 			url =basePath+'api/sysuser/save';
+			$("#ffadd input[name=password]").validatebox({ 
+				required:true 
+			}); 
 			$('#w').window('open');
 		}		
 		function saveEntity() {
@@ -332,8 +335,12 @@
 		{
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
+				$("#ffadd input[name=password]").validatebox({ 
+					required:false
+				}); 
 				$('#w').dialog('open').dialog('setTitle','更新用户信息');
 			    $('#ffadd').form('load', row);
+			    $("#ffadd input[name=password]").val('');
 				url = basePath+'api/sysuser/update';
 				$('#w').window('open');
 			}else
