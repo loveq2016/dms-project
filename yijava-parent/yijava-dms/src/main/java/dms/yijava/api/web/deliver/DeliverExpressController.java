@@ -40,7 +40,6 @@ public class DeliverExpressController {
 	private OrderService orderService;
 	@Autowired
 	private DeliverExpressDetailService deliverExpressDetailService;
-	
 	@Autowired
 	private FlowRecordService flowRecordService;
 	@Autowired
@@ -48,7 +47,6 @@ public class DeliverExpressController {
 	//发货提醒
 	@Value("#{properties['sendproduct_identifier_num']}")   	
 	private String sendproduct_identifier_num;
-	
 	//收货提醒
 	@Value("#{properties['reciveproduct_identifier_num']}")   	
 	private String reciveproduct_identifier_num;
@@ -114,12 +112,12 @@ public class DeliverExpressController {
 	public Result<String> submitExpress(@ModelAttribute("entity") DeliverExpressDetail entity) {
 		
 		try {
-			Deliver deliver =   deliverService.getEntity(Integer.parseInt(entity.getDeliver_id()));
 			DeliverExpressDetail checkDeliverExpressDetail =  deliverExpressDetailService.checkSn(entity.getDeliver_code());
 			if (checkDeliverExpressDetail == null) {
 				return new Result<String>("1", 2);
 			}
 			if(checkDeliverExpressDetail.getExprees_total().equals(checkDeliverExpressDetail.getSn_total())){
+				Deliver deliver =   deliverService.getEntity(Integer.parseInt(entity.getDeliver_id()));
 				Deliver deliverEntity = new Deliver();
 				deliverEntity.setDeliver_code(entity.getDeliver_code());
 				deliverEntity.setExpress_code(entity.getExpress_code());
@@ -139,24 +137,22 @@ public class DeliverExpressController {
 						//开始收货提醒
 						 if(users!=null && users.size()>0)
 						 {
+							SysUser sysUser =  sysUserService.getEntityByDealer(deliver.getDealer_id());
 							FlowRecord flowRecord = new FlowRecord();
 							flowRecord.setFlow_id(reciveproduct_identifier_num);
 							flowRecord.setBussiness_id(entity.getDeliver_id());		
 							flowRecord.setTitle("待收货");
 							flowRecord.setSend_id("0000000000");//只做提醒，所以此处设置了全0
-							flowRecord.setCheck_id(deliver.getDealer_id());//经销商id 取登录人的id 有问题。。
+							flowRecord.setCheck_id(sysUser.getFk_dealer_id());//经销商id 取登录人的id 有问题。。
 							flowRecord.setSend_time(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 							flowRecord.setCreate_time(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));			
 							flowRecord.setStatus("0");
-							//entity.setStep_order_no(step_order_no);
-							//flowRecordService.saveEntity(flowRecord);
+							flowRecordService.saveEntity(flowRecord);
 						 }
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
-				
 				return new Result<String>("1", 1);
 			}else{
 				return new Result<String>("1", 2);

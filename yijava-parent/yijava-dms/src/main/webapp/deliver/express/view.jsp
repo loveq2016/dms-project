@@ -92,7 +92,7 @@
             modal="true" closed="true" buttons="#dlg-buttons">
             <div class="easyui-panel" style="width:925px;" style="margin: 10px 0;">
 					<form id="ffDeliverDetail" method="post" enctype="multipart/form-data">
-							<input type="text" name="deliver_id">
+							<input type="hidden" name="deliver_id">
 							<table>
 								<tr>
 									<td>经销商:</td>
@@ -154,10 +154,10 @@
 								</tr>
 								<tr>
 									<td>快递单号:</td>	
-			             			<td><input class="easyui-validatebox" type="text" style="width:250px;" name="express_code" data-options="required:true"/></td>
+			             			<td><input class="easyui-validatebox" type="text" style="width:250px;" name="express_code" data-options="required:false"/></td>
 			             			<td></td>
 			             			<td>发货日期:</td>	
-									<td><input class="easyui-datebox" type="text" style="width:150px;" name="express_date" data-options="required:true"/></td>
+									<td><input class="easyui-datebox" type="text" style="width:150px;" name="express_date" data-options="required:false"/></td>
 								</tr>
 							</table>
 					</form>
@@ -194,7 +194,7 @@
 							<th data-options="field:'product_name',width:100,align:'center'" sortable="true">产品名称</th>
 							<th data-options="field:'models',width:65,align:'center'" sortable="true">产品规格</th>
 							<th data-options="field:'express_num',width:80,align:'center'">出货数量</th>
-							<th data-options="field:'express_sn',width:100,align:'center'">规格、批号</th>
+							<th data-options="field:'express_sn',width:100,align:'center'">批号</th>
 							<th data-options="field:'validity_date',width:100,align:'center'">有效期</th>
 							<th data-options="field:'remark',width:100,align:'center'">备注</th>
 							<restrict:function funId="151">
@@ -245,7 +245,7 @@
 					             	<td><input name="express_num" class="easyui-numberbox" style="width:150px" data-options="min:1,required:true"></td>
 					             </tr>
 					            <tr>
-					             	<td>规格、批号</td>
+					             	<td>批号</td>
 					             	<td><input name="express_sn"  class="easyui-validatebox" style="width:150px" data-options="required:true"></td>
 					            </tr>
 					            <tr>
@@ -519,7 +519,7 @@
 			if (isExpress) {
 				submitExpressR();
 			} else {
-				$.messager.confirm('Confirm', '填写快递单号后无法修改出货明细,可以修改快递单号!',
+				$.messager.confirm('Confirm', '填写快递单号后无法修改出货明细,是否提交!',
 						function(r) {
 							if (r) {
 								submitExpressR();
