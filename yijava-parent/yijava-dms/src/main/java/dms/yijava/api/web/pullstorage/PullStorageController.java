@@ -1,7 +1,6 @@
 package dms.yijava.api.web.pullstorage;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yijava.common.utils.DateUtils;
 import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
@@ -24,20 +24,20 @@ import com.yijava.orm.core.PropertyFilters;
 import com.yijava.web.vo.ErrorCode;
 import com.yijava.web.vo.Result;
 
-import dms.yijava.api.web.order.OrderController;
+import dms.yijava.entity.flow.FlowRecord;
 import dms.yijava.entity.pullstorage.PullStorage;
-import dms.yijava.entity.pullstorage.PullStorageDetail;
-import dms.yijava.entity.pullstorage.PullStorageProDetail;
 import dms.yijava.entity.storage.StorageDetail;
 import dms.yijava.entity.storage.StorageProDetail;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.flow.FlowBussService;
+import dms.yijava.service.flow.FlowRecordService;
 import dms.yijava.service.pullstorage.PullStorageDetailService;
 import dms.yijava.service.pullstorage.PullStorageProDetailService;
 import dms.yijava.service.pullstorage.PullStorageService;
 import dms.yijava.service.storage.StorageDetailService;
 import dms.yijava.service.storage.StorageDetailService.PullStorageOpt;
+import dms.yijava.service.system.SysUserService;
 @Controller
 @RequestMapping("/api/pullstorage")
 public class PullStorageController {
@@ -54,6 +54,10 @@ public class PullStorageController {
 	private StorageDetailService storageDetailService;
 	@Autowired
 	private FlowBussService flowBussService;
+	@Autowired
+	private FlowRecordService flowRecordService;
+	@Autowired
+	private SysUserService sysUserService;
 	
 	@ResponseBody
 	@RequestMapping("paging")
@@ -187,19 +191,15 @@ public class PullStorageController {
 				PullStorageOpt pullStorageOpt = storageDetailService.updateStorageLockSn((List<StorageDetail>)list.get(0),(List<StorageProDetail>)list.get(1));//锁定库存
 				if(pullStorageOpt!=null && "success".equals(pullStorageOpt.getStatus()) 
 						&& pullStorageOpt.getList().size() > 0){
-						//入库操作
-						//boolean s =pullStorageService.processPutStorage(entity.getId());
-						//if(s){
-							/**
-							 * 处理订单状态
-							 */
-							SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
-							entity.setStatus("3");//在途中
-							entity.setPull_storage_date(time.format(new Date()));
-							pullStorageService.updateEntity(entity);
-							result.setData(1);
-							result.setState(1);
-						//}
+						/**
+						 * 处理订单状态
+						 */
+						SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+						entity.setStatus("3");//在途中
+						entity.setPull_storage_date(time.format(new Date()));
+						pullStorageService.updateSalesStatus(entity);
+						result.setData(1);
+						result.setState(1);
 				}else{
 					result.setState(4);
 					result.setError(new ErrorCode("出现库存错误，库存不足!"));

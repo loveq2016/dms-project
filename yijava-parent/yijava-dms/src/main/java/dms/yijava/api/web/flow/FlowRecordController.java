@@ -88,6 +88,14 @@ public class FlowRecordController {
 	@Value("#{properties['reciveproduct_identifier_num']}")   	
 	private String reciveproduct_identifier_num;
 	
+	//借贷提醒
+	@Value("#{properties['loansproduct_identifier_num']}")   	
+	private String loansproduct_identifier_num;
+	
+	//分销提醒
+	@Value("#{properties['salesproduct_identifier_num']}")   	
+	private String salesproduct_identifier_num;
+	
 	/**
 	 * 查询流程处理记录
 	 * @param bussiness_id
@@ -488,12 +496,14 @@ public class FlowRecordController {
 			flowDescibe="待发货"+"(<font color='red'>"+item_number+"</font>)";
 		}else if(flow_id.equals(reciveproduct_identifier_num))
 		{
-			flowDescibe="待入库"+"(<font color='red'>"+item_number+"</font>)";
+			flowDescibe="采购待入库"+"(<font color='red'>"+item_number+"</font>)";
+		}else if(flow_id.equals(loansproduct_identifier_num))
+		{
+			flowDescibe="借贷待入库"+"(<font color='red'>"+item_number+"</font>)";
+		}else if(flow_id.equals(salesproduct_identifier_num))
+		{
+			flowDescibe="分销待入库"+"(<font color='red'>"+item_number+"</font>)";
 		}
-		
-	
-		
-		
 		return flowDescibe;
 	}
 	

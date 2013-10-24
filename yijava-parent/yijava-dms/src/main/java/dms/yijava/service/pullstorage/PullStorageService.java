@@ -12,11 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.yijava.common.spring.SpringContextHolder;
+import com.yijava.common.utils.DateUtils;
 import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
@@ -26,6 +28,7 @@ import com.yijava.web.vo.Result;
 import dms.yijava.dao.pullstorage.PullStorageDao;
 import dms.yijava.entity.adjuststorage.AdjustStorageDetail;
 import dms.yijava.entity.adjuststorage.AdjustStorageProDetail;
+import dms.yijava.entity.flow.FlowRecord;
 import dms.yijava.entity.pullstorage.PullStorage;
 import dms.yijava.entity.pullstorage.PullStorageDetail;
 import dms.yijava.entity.pullstorage.PullStorageProDetail;
@@ -33,17 +36,29 @@ import dms.yijava.entity.storage.StorageDetail;
 import dms.yijava.entity.storage.StorageProDetail;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.service.adjuststorage.AdjustStorageProDetailService;
+import dms.yijava.service.flow.FlowRecordService;
 import dms.yijava.service.storage.StorageDetailService;
 import dms.yijava.service.storage.StorageDetailService.PullStorageOpt;
+import dms.yijava.service.system.SysUserService;
 @Service
 @Transactional
 public class PullStorageService{
+	//借贷提醒
+	@Value("#{properties['loansproduct_identifier_num']}")   	
+	private String loansproduct_identifier_num;
+	//分销提醒
+	@Value("#{properties['salesproduct_identifier_num']}")   	
+	private String salesproduct_identifier_num;
 	@Autowired
 	private PullStorageDao pullStorageDao;
 	@Autowired
 	private PullStorageDetailService pullStorageDetailService;
 	@Autowired
 	private PullStorageProDetailService pullStorageProDetailService;
+	@Autowired
+	private SysUserService sysUserService;
+	@Autowired
+	private FlowRecordService flowRecordService;
 	
 	public JsonPage<PullStorage> paging(PageRequest pageRequest,List<PropertyFilter> filters) {
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -89,6 +104,38 @@ public class PullStorageService{
 	public void updateEntity(PullStorage entity) {
 		pullStorageDao.update(entity);
 	}
+	public void updateSalesStatus(PullStorage entity){
+		PullStorage pullStorage=this.getEntity(entity.getId());
+		SysUser sysUser=sysUserService.getEntityByDealer(pullStorage.getFk_put_storage_party_id());//获取入库用户信息
+		//更新提醒
+		FlowRecord flowRecord = new FlowRecord();
+		flowRecord.setFlow_id(salesproduct_identifier_num);
+		flowRecord.setBussiness_id(entity.getId());		
+		flowRecord.setTitle("分销待收货");
+		flowRecord.setSend_id("0000000000");//只做提醒，所以此处设置了全0
+		flowRecord.setCheck_id(sysUser.getId());//经销商id 取登录人的id 有问题。。
+		flowRecord.setSend_time(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+		flowRecord.setCreate_time(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));			
+		flowRecord.setStatus("0");
+		flowRecordService.saveEntity(flowRecord);
+		this.updateEntity(entity);
+	}
+	public void updateLoansStatus(String id,String status){
+		PullStorage pullStorage=this.getEntity(id);
+		SysUser sysUser=sysUserService.getEntityByDealer(pullStorage.getFk_put_storage_party_id());//获取入库用户信息
+		//更新提醒
+		FlowRecord flowRecord = new FlowRecord();
+		flowRecord.setFlow_id(loansproduct_identifier_num);
+		flowRecord.setBussiness_id(id);		
+		flowRecord.setTitle("借贷待收货");
+		flowRecord.setSend_id("0000000000");//只做提醒，所以此处设置了全0
+		flowRecord.setCheck_id(sysUser.getId());//经销商id 取登录人的id 有问题。。
+		flowRecord.setSend_time(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+		flowRecord.setCreate_time(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));			
+		flowRecord.setStatus("0");
+		flowRecordService.saveEntity(flowRecord);
+		this.updateStatus(id, status);
+	}	
 	public void updateStatus(String id,String status){
 		PullStorage entity=new PullStorage();
 		entity.setId(id);

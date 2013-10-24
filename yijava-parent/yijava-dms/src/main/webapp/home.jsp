@@ -161,6 +161,16 @@ $('#tochecktree').tree({
 			var tabTitle = "经销商采购入库";
 			var url = "orderDeliver/view.jsp";
 			addTabByChild(tabTitle,url);
+		}else if(node.id==loansproduct_identifier_num)
+		{
+			var tabTitle = "经销商借贷入库";
+			var url = "pullstorage/loans/putview.jsp";
+			addTabByChild(tabTitle,url);
+		}else if(node.id==salesproduct_identifier_num)
+		{
+			var tabTitle = "经销商分销入库";
+			var url = "pullstorage/sales/putview.jsp";
+			addTabByChild(tabTitle,url);
 		}
 	}
 });

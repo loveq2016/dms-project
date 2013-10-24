@@ -29,9 +29,18 @@
 													<input class="easyui-validatebox" type="hidden" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" value="${user.fk_dealer_id}" style="width:150px" maxLength="100">					       	
 										       </c:when>
 										       <c:otherwise>
+										       <%-- 
 										       		<input class="easyui-combobox" style="width:150px" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 								             			data-options="
 									             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
+										                    method:'get',
+										                    valueField:'dealer_id',
+										                    textField:'dealer_name',
+										                    panelHeight:'auto'
+								            			"/> --%>
+								            		 <input class="easyui-combobox" name="fk_pull_storage_party_id" id="fk_pull_storage_party_id" style="width:300px" maxLength="100" class="easyui-validatebox"
+								             			data-options="
+									             			url:'${basePath}api/dealer/list',
 										                    method:'get',
 										                    valueField:'dealer_id',
 										                    textField:'dealer_name',
@@ -42,7 +51,15 @@
 									</td>
 									<td width="80">借入经销商:</td>
 									<td width="270">
-										<c:choose>
+										<input class="easyui-combobox" name="fk_put_storage_party_id" id="fk_put_storage_party_id" style="width:300px" maxLength="100" class="easyui-validatebox"
+								             			data-options="
+									             			url:'${basePath}api/dealer/list',
+										                    method:'get',
+										                    valueField:'dealer_id',
+										                    textField:'dealer_name',
+										                    panelHeight:'auto'
+								            			"/>
+										<%-- <c:choose>
 										       <c:when test="${user.fk_dealer_id!='0'}">
 													<input class="easyui-combobox" style="width:150px" name="fk_put_storage_party_id" id="fk_put_storage_party_id" style="width:150px" maxLength="100" class="easyui-validatebox"
 								             			data-options="
@@ -63,7 +80,7 @@
 										                    panelHeight:'auto'
 								            			"/>
 										       </c:otherwise>
-										</c:choose>
+										</c:choose> --%>
 									</td>
 								</tr>
 								<tr>

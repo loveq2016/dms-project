@@ -293,7 +293,7 @@
 					 $.ajax({
 							type : "POST",
 							url :basePath+'api/putstorage/submit',
-							data:{pull_storage_code:pull_storage_code,put_storage_code:put_storage_code,id:row.id},
+							data:{pull_storage_code:pull_storage_code,put_storage_code:put_storage_code,id:row.id,type:$('#type').val()},
 							error : function(request) {
 								$.messager.alert('提示','抱歉,提交错误!','error');
 							},

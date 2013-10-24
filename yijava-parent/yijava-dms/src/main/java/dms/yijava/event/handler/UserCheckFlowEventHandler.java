@@ -74,7 +74,6 @@ public class UserCheckFlowEventHandler {
 	//收货提醒
 	@Value("#{properties['reciveproduct_identifier_num']}")   	
 	private String reciveproduct_identifier_num;
-	
 	@Subscribe
 	public void onUserCheckAgree(UserCheckFlowEvent flow_check) {
 		logger.debug("get user check flow"+flow_check.toString());
@@ -113,7 +112,7 @@ public class UserCheckFlowEventHandler {
 		}else if(flow_check.getFlow_id().equals(pullStorageflow_identifier_num)){
 			//借贷出货
 			logger.debug("借贷出货流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());
-			pullStorageService.updateStatus(flow_check.getBussiness_id(),"3");//审核通过
+			pullStorageService.updateLoansStatus(flow_check.getBussiness_id(),"3");//审核通过			
 		}else if(flow_check.getFlow_id().equals(salesStorageflow_identifier_num)){
 			//销售出货
 			logger.debug("销售出货流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());
@@ -127,10 +126,5 @@ public class UserCheckFlowEventHandler {
 			logger.debug("退换货流程审核完毕,更新状态,业务号:"+flow_check.getBussiness_id());
 			exchangedService.updateExchangedStatus(flow_check.getBussiness_id(),"3");//审核通过
 		}
-		
-		
-		
-		
-		
 	}
 }

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ import dms.yijava.entity.storage.StorageDetail;
 import dms.yijava.entity.storage.StorageProDetail;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.user.UserDealer;
+import dms.yijava.service.flow.FlowRecordService;
 import dms.yijava.service.pullstorage.PullStorageDetailService;
 import dms.yijava.service.pullstorage.PullStorageProDetailService;
 import dms.yijava.service.pullstorage.PullStorageService;
@@ -35,7 +37,12 @@ import dms.yijava.service.storage.StorageDetailService.PullStorageOpt;
 @Controller
 @RequestMapping("/api/putstorage")
 public class PutStorageController {
-
+	//借贷提醒
+	@Value("#{properties['loansproduct_identifier_num']}")   	
+	private String loansproduct_identifier_num;
+	//分销提醒
+	@Value("#{properties['salesproduct_identifier_num']}")   	
+	private String salesproduct_identifier_num;
 	@Autowired
 	private PullStorageService pullStorageService;
 	@Autowired
@@ -44,7 +51,8 @@ public class PutStorageController {
 	private PullStorageProDetailService pullStorageProDetailService;
 	@Autowired
 	private StorageDetailService storageDetailService;
-	
+	@Autowired
+	private FlowRecordService flowRecordService;
 	@ResponseBody
 	@RequestMapping("paging")
 	public JsonPage<PullStorage> paging(PageRequest pageRequest,HttpServletRequest request) {
@@ -66,6 +74,7 @@ public class PutStorageController {
 	@ResponseBody
 	@RequestMapping("submit")
 	public Result<Integer> submitPutStorage(@ModelAttribute("entity") PullStorage entity,HttpServletRequest request) {
+		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
 		boolean s =pullStorageService.processPutStorage(entity.getId());
 		if(s){
 			/**
@@ -75,6 +84,14 @@ public class PutStorageController {
 			entity.setStatus("4");//成功
 			entity.setPut_storage_date(time.format(new Date()));
 			pullStorageService.updateEntity(entity);
+			
+			//关闭提醒
+			String identifier_num;
+			if(entity.getType().equals("1"))
+				identifier_num=salesproduct_identifier_num;
+			else
+				identifier_num=loansproduct_identifier_num;
+			flowRecordService.updateFlowByFlowUB(identifier_num,sysUser.getId(), entity.getId(), "", "1");
 			return new Result<Integer>(1, 1);
 		}
 		return new Result<Integer>(1, 2);		
