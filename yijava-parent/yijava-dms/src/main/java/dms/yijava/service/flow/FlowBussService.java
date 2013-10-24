@@ -355,4 +355,64 @@ public class FlowBussService {
 		return true;
 	}
 	
+	
+	
+	public boolean processFlowWithSign(Integer trial_id,SysUser currentUser,String flowIdentifierNumber)
+	{
+		Step step=this.getFirstStep(flowIdentifierNumber);
+		//此处需要根据当前用户从所属的部门里找到用户id
+		String check_id =null;
+		
+		StepDepartment stepDepartment=step.getStepDepartments().get(0);
+		//这里找到了这个部门下的几个用户，应该查找哪个是他的上级
+		List<SysUser> sysUsers= stepDepartment.getUsers();
+		for(SysUser sysUser: sysUsers)
+		{
+			//如果是经销商,直接找到他所属的销售,否则才找他的上级 //同时改部门处理不需要销售关系
+			if(!StringUtils.equals("0",currentUser.getFk_dealer_id()) && stepDepartment.getExt_logic().equals("1") ){
+				//是经销商
+				
+				UserDealer userDealer=(UserDealer)userDealerFunService.getUserByDealer(currentUser.getFk_dealer_id());
+				
+				check_id=userDealer.getUser_id();
+				break;
+			}else
+			{
+				if(currentUser.getParentIds()!=null && !currentUser.getParentIds().equals(""))
+				{
+					if(currentUser.getParentIds().indexOf(sysUser.getId())>-1)
+					{
+						check_id=sysUser.getId();
+						break;
+					}
+				}
+			}
+			
+			
+		}
+		
+		if(check_id==null)
+		{
+			return false;
+		}
+		
+		//check_id=stepDepartment.getUsers().get(0).getId();
+		
+		//先记录处理日志
+		//写处理日志
+		FlowLog flowLog=new FlowLog();
+		flowLog.setFlow_id(flowIdentifierNumber);
+		flowLog.setUser_id(currentUser.getId());
+		flowLog.setUser_name(currentUser.getRealname());
+		flowLog.setBussiness_id(trial_id.toString());
+		flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+		flowLog.setAction_name("提交"+"-"+step.getAction_name());
+		flowLog.setSign(currentUser.getId()+"_qz.jpg");
+		flowLogService.saveEntity(flowLog);
+		
+		//记录流程
+		this.insertStep(flowIdentifierNumber, currentUser.getId(),  
+				"提交", trial_id.toString(), check_id, "提交"+"-"+step.getAction_name(),"0","1");
+		return true;
+	}
 }
