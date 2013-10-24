@@ -456,11 +456,12 @@
 								rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="desc" toolbar="#tbProduct">
 									<thead>
 										<tr>
-											<th data-options="field:'item_number',width:100,align:'center'" sortable="true">产品编号</th>
+											<th data-options="field:'item_number',width:80,align:'center'" sortable="true">产品编号</th>
 											<th data-options="field:'cname',width:150,align:'center'" sortable="true">中文名称</th>
 											<th data-options="field:'ename',width:150,align:'center'" sortable="true">英文说明</th>
+											<th data-options="field:'models',width:100,align:'center'" sortable="true">规格型号</th>
 											<th data-options="field:'price',width:80,align:'center'" sortable="true">价格</th>
-											<th data-options="field:'discount',width:80,align:'center'" sortable="true">折扣</th>
+											<th data-options="field:'discount',width:80,align:'center'" sortable="true" hidden="true">折扣</th>
 											<th data-options="field:'order_company',width:80,align:'center'">订购单位</th>
 											<th data-options="field:'is_order',width:80" formatter="formatterIs_order">是否可订货</th>
 										</tr>

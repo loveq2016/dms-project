@@ -392,7 +392,7 @@
 		function newEntity() {
 			var row = $('#dg').datagrid('getSelected');
 			if (row) {
-				alert(row.express_code)
+				//alert(row.express_code)
 				isExpress = row.express_code;
 				$('#ffDeliverDetail').form('clear');
 				$('#ffDeliverDetail').form('load', row);

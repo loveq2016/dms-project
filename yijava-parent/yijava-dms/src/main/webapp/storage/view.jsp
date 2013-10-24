@@ -120,11 +120,11 @@
 				             		<td>
 										<c:choose>
 											 <c:when test="${user.fk_dealer_id!='0'}">
-												<input class="easyui-validatebox" readonly="readonly" id="dealer_name" value="${user.dealer_name}" style="width:160px" maxLength="100">
+												<input class="easyui-validatebox" readonly="readonly" id="dealer_name" value="${user.dealer_name}" style="width:300px" maxLength="100">
 												<input class="easyui-validatebox" type="hidden" name="dealer_id" id="dealer_id" value="${user.fk_dealer_id}" maxLength="100">					       	
 											 </c:when>
 											 <c:otherwise>
-											    <input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:160px" maxLength="100" class="easyui-validatebox"
+											    <input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:300px" maxLength="100" class="easyui-validatebox"
 								             			data-options="
 									             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
 										                    method:'get',
