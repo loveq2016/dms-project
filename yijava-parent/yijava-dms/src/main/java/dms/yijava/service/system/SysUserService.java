@@ -102,6 +102,17 @@ public class SysUserService {
 	}
 	
 	/**
+	 * 查询用户By 经销商id
+	 * @param dealer_id
+	 * @return
+	 */
+	public SysUser getEntityByDealer(String dealer_id) {
+		return sysUserDao.getObject(".selectUserByDealer", dealer_id);
+	}
+	
+	
+	
+	/**
 	 * 修改密码
 	 */
 	public void updateUserPassword(SysUser entity)

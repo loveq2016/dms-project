@@ -63,6 +63,9 @@
 	<select id="selectUserList" resultType="dms.yijava.entity.system.SysUser">
 		SELECT * FROM tb_manager_user
 	</select>
+	<select id="selectUserByDealer" resultType="dms.yijava.entity.system.SysUser">
+		SELECT * FROM tb_manager_user WHERE  fk_dealer_id=#{dealer_id}
+	</select>
 	<select id="select"  parameterType="int" resultType="dms.yijava.entity.system.SysUser">
         SELECT * FROM(
 		SELECT tt.*,tmr.role_name ,td.dealer_name,tb.department_name,td.dealer_code FROM (
