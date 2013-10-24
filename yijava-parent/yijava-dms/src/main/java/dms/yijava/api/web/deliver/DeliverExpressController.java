@@ -144,12 +144,12 @@ public class DeliverExpressController {
 							flowRecord.setBussiness_id(entity.getDeliver_id());		
 							flowRecord.setTitle("待收货");
 							flowRecord.setSend_id("0000000000");//只做提醒，所以此处设置了全0
-							flowRecord.setCheck_id(deliver.getDealer_id());//经销商id 取登录人的id
+							flowRecord.setCheck_id(deliver.getDealer_id());//经销商id 取登录人的id 有问题。。
 							flowRecord.setSend_time(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 							flowRecord.setCreate_time(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));			
 							flowRecord.setStatus("0");
 							//entity.setStep_order_no(step_order_no);
-							flowRecordService.saveEntity(flowRecord);
+							//flowRecordService.saveEntity(flowRecord);
 						 }
 					}
 				} catch (Exception e) {
