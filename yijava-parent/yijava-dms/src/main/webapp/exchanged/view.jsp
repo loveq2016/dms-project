@@ -329,7 +329,7 @@
 								<th field="dealer_name" width="100" align="center" hidden="true">经销商</th>
 								<th field="fk_storage_id" width="120" align="center" hidden="true"></th>
 								<th field="storage_name" width="120" align="center" sortable="true">仓库</th>
-								<th field="product_item_number" width="120" align="center" sortable="true">产品编号</th>
+								<th field="product_item_number" width="80" align="center" sortable="true">产品编号</th>
 								<th field="models" width="120" align="center" sortable="true">规格</th>
 								<th field="product_cname" width="120" align="center" sortable="true">产品中文名称</th>
 								<th field="batch_no" width="100" align="center" sortable="true">产品批次</th>
@@ -519,7 +519,7 @@
 					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="desc" toolbar="#tbProduct">
 						<thead>
 							<tr>
-								<th data-options="field:'item_number',width:100,align:'center'" sortable="true">产品编号</th>
+								<th data-options="field:'item_number',width:80,align:'center'" sortable="true">产品编号</th>
 								<th data-options="field:'cname',width:150,align:'center'" sortable="true">中文名称</th>
 								<th data-options="field:'ename',width:120,align:'center'" sortable="true">英文名称</th>
 								<th data-options="field:'models',width:100,align:'center'" sortable="true">规格型号</th>

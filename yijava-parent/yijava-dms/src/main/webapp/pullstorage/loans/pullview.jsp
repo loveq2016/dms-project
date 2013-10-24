@@ -155,7 +155,7 @@
 							<input type="hidden" id="put_storage_code" name="put_storage_code"/>
 						    <input class="easyui-combobox" name="fk_put_storage_party_id" id="fk_put_storage_party_id" style="width:300px" maxLength="100" class="easyui-validatebox"
 						             			data-options="
-							             			url:'${basePath}api/dealerRelationFun/dealerlist?p_id=${user.fk_dealer_id}',
+							             			url:'${basePath}api/dealer/list',
 								                    method:'get',
 								                    valueField:'dealer_id',
 								                    textField:'dealer_name',

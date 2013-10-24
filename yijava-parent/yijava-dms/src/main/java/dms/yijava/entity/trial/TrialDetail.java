@@ -11,6 +11,7 @@ public class TrialDetail {
 	private Integer trial_id;
 	private Integer product_id;
 	private String product_name;
+	private String models;
 	private Integer trial_num;
 	private String remark;
 }

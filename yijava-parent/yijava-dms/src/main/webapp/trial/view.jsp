@@ -287,8 +287,9 @@
 					<thead>
 						<tr>
 							<th data-options="field:'trial_detail_id',width:10"  sortable="true" hidden="true">trial_detail_id</th>
+							<th data-options="field:'product_id',width:80"  sortable="true">产品编号</th>
 							<th data-options="field:'product_name',width:150"  sortable="true">产品名称</th>
-							<th data-options="field:'product_name',width:150" sortable="true">规格型号</th>
+							<th data-options="field:'models',width:150" sortable="true">规格型号</th>
 							<th data-options="field:'trial_num',width:50" sortable="true">数量</th>							
 							<th data-options="field:'remark',width:290">备注</th>										
 						</tr>
@@ -363,9 +364,10 @@
 					<table id="dgflow" title="查询结果" style="width:800px;height: 320px">
 					<thead>
 						<tr>
-							<th data-options="field:'trial_detail_id',width:10"  sortable="true" hidden="true">trial_detail_id</th>
+							<th data-options="field:'trial_detail_id',width:10"  sortable="true" hidden="true">trial_detail_id</th>							
+							<th data-options="field:'product_id',width:80"  sortable="true">产品编号</th>
 							<th data-options="field:'product_name',width:150"  sortable="true">产品名称</th>
-							<th data-options="field:'product_name',width:150" sortable="true">规格型号</th>
+							<th data-options="field:'models',width:150" sortable="true">规格型号</th>
 							<th data-options="field:'trial_num',width:50" sortable="true">数量</th>							
 							<th data-options="field:'remark',width:290">备注</th>										
 						</tr>
@@ -490,6 +492,10 @@
 					            <tr>
 					             	<td>产品名称</td>
 					             	<td><input name="product_name" readonly="true" class="easyui-validatebox" style="width:150px"></td>
+					            </tr>
+					            <tr>
+					             	<td>规格型号</td>
+					             	<td><input name="models" readonly="true" class="easyui-validatebox" style="width:150px"></td>
 					            </tr>					           
 						        <tr>
 					             	<td>数量:</td>
@@ -963,6 +969,7 @@
 				$("#fm3 input[name=trial_code]").val(trial_code);
 				$("#fm3 input[name=product_id]").val(row.item_number);
 				$("#fm3 input[name=product_name]").val(row.cname);
+				$("#fm3 input[name=models]").val(row.models);
 				//$("#fm3 input[name=order_price]").val(row.price);
 				//$("#fm3 input[name=discount]").val(row.discount);
 				

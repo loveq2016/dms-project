@@ -237,6 +237,7 @@ public class FlowRecordController {
 								if(sysUser.getParentIds().indexOf(tmpsysUser.getId())>-1)
 								{
 									check_id=tmpsysUser.getId();
+									break;
 								}
 							}
 							
@@ -246,7 +247,7 @@ public class FlowRecordController {
 						{
 							return result;
 						}
-						check_id=stepDepartment.getUsers().get(0).getId();
+						//check_id=stepDepartment.getUsers().get(0).getId();
 						
 						flowBussService.insertStep(flow_id, currentUserId,  
 								step.getAction_name(), entity.getBussiness_id(), check_id, step.getAction_name(),"0",step.getStep_order_no().toString());
