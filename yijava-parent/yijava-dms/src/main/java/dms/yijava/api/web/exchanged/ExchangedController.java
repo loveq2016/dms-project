@@ -50,6 +50,7 @@ import dms.yijava.service.flow.FlowBussService;
 import dms.yijava.service.flow.FlowLogService;
 import dms.yijava.service.storage.StorageDetailService;
 import dms.yijava.service.storage.StorageDetailService.PullStorageOpt;
+import dms.yijava.service.system.SysUserService;
 @Controller
 @RequestMapping("/api/exchanged")
 public class ExchangedController {
@@ -72,6 +73,8 @@ public class ExchangedController {
 	private FlowLogService flowLogService;
 	@Autowired
 	private DealerService dealerService;
+	@Autowired
+	public SysUserService sysUserService;
 	
 	
 	@ResponseBody
@@ -222,6 +225,28 @@ public class ExchangedController {
 			for (FlowLog flowLog : flowlogs) {
 				
 				if (flowLog.getSign() != null && !"".equals(flowLog.getSign())) {
+					
+					String userId = flowLog.getUser_id();
+					SysUser sysUser = sysUserService.getEntity(userId);
+					if (sysUser.getDepartment_name().indexOf("销售")>-1)
+					{
+						jinglidate = format2.format(format2.parse(flowLog.getCreate_date()));
+						jingli= sign_Path+File.separator+flowLog.getSign();
+					}
+					if (sysUser.getDepartment_name().indexOf("大区")>-1)
+					{
+						xiaoshoudate = format2.format(format2.parse(flowLog.getCreate_date()));
+						xiaoshou= sign_Path+File.separator+flowLog.getSign();
+
+					}
+					if (sysUser.getDepartment_name().indexOf("分管 负责人")>-1)
+					{
+						lingdaodate = format2.format(format2.parse(flowLog.getCreate_date()));
+						lingdao= sign_Path+File.separator+flowLog.getSign();
+					}
+					
+					
+					/*
 					if(flowLog.action_name.indexOf("销售代表审核")>-1)
 					{
 						xiaoshoudate = format2.format(format2.parse(flowLog.getCreate_date()));
@@ -236,6 +261,7 @@ public class ExchangedController {
 						lingdaodate = format2.format(format2.parse(flowLog.getCreate_date()));
 						lingdao= sign_Path+File.separator+flowLog.getSign();
 					}
+					*/
 				}
 			}
 			dataMap.put("xiaoshou", getImageStr(xiaoshou));
