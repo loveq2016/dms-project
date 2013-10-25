@@ -261,8 +261,17 @@
 									<select class="easyui-combobox" name="status" style="width:200px;">
 										<option value="1">同意</option>
 										<option value="2">驳回</option>
+										<option value="3">结束</option>
 									</select>
 									</td>								
+								</tr>
+								<tr height="60">
+									<td height="50">请选择用户:</td>
+												<td>
+												<input class="easyui-combobox" name="base_check_id" id="base_check_id" 
+												style="width:250px" maxLength="100" class="easyui-validatebox"
+								             			/>
+								    </td>								
 								</tr>
 								<tr>
 									<td>处理意见:</td>
@@ -273,6 +282,7 @@
 								<tr height="100"><td colspan="2">
 								<input type="hidden" name="bussiness_id" id="bussiness_id">
 								<input type="hidden" name="flow_id" id="flow_id" value="">
+								<input type="hidden" name="check_name" id="check_name">
 								<div style="text-align: right; padding: 5px">
 										<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveFlowCheck()">提交</a>
 <!-- 										<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="javascript:$('#dlgflowcheck').dialog('close')">取消</a>					    -->
@@ -988,6 +998,17 @@
 		function CheckEntity(index){
 			$('#dg').datagrid('selectRow',index);
 			var row = $('#dg').datagrid('getSelected');
+ 			$('#base_check_id').combobox({
+				 
+				 url:'${basePath}api/sysuser/companylist',
+                 method:'get',
+                 valueField:'id',
+                 textField:'realname',
+                 panelHeight:'auto',
+                 onSelect: function (rec) {
+                	 $("#base_form_check input[name=check_name]").val(rec.realname);
+                 }
+			 });
 			if (row && row.status ==1){				
 				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){
 					 $('#bussiness_id').val(row.id);
@@ -1053,7 +1074,7 @@
 		 
 		function saveFlowCheck(){
 				$('#base_form_check').form('submit', {
-				    url:basePath+'/api/flowrecord/do_flow',
+					 url:basePath+'api/flowrecord/do_allocate_flow',
 				    method:"post",
 				    onSubmit: function(){
 				        // do some check

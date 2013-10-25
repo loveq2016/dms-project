@@ -163,6 +163,8 @@ public class ExchangedController {
 					//以下开始走流程处理
 					SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
 					if(flowBussService.processFlow(exchanged_id,sysUser,flowIdentifierNumber)){//提交流程
+					/*20131025zhjt修改，为自定义指定流程处理人*/
+					//if(flowBussService.processAllocateFlow(exchanged_id,sysUser,flowIdentifierNumber)){//提交流程
 					//更新状态
 						exchangedService.updateExchangedStatus(String.valueOf(exchanged_id), "1");//流程成功、更新业务的状态为提交审核
 						result.setData(1);
