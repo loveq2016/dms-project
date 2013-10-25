@@ -36,8 +36,11 @@
 			left join dms.tb_notice_status t4 on t1.status_id = t4.id
 			left join dms.tb_manager_user t2 on t1.user_id = t2.id 
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
-				left join dms.tb_dealer_notice t5 on t5.notice_id = t1.notice_id where t5.dealer_id = #{dealer_id}
-			</if>	
+				left join dms.tb_dealer_notice t5 on t5.notice_id = t1.notice_id where t5.dealer_id = #{dealer_id}</if>	
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(user_id)">
+				left join dms.tb_user_notice t5 on t5.notice_id = t1.notice_id where t5.user_id = #{user_id}</if>	
+			
+			
 		)t	
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
@@ -64,6 +67,13 @@
 		insert into dms.tb_dealer_notice(dealer_id,notice_id) 
 		values(#{dealer_id},#{notice_id});
 	</insert>
+	<insert id="insertUser" parameterType="dms.yijava.entity.notice.Notice">     
+		insert into dms.tb_user_notice(user_id,notice_id) 
+		values(#{user_id},#{notice_id});
+	</insert>	
+	
+	
+	
     <update id="update" parameterType="dms.yijava.entity.notice.Notice">
     	update dms.tb_notice set title=#{title},content=#{content},level_id=#{level_id},status_id=#{status_id},
     	validity_date=#{validity_date},publish_date=NOW()

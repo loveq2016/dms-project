@@ -192,8 +192,7 @@ var dealer_id = ${user.fk_dealer_id};
 	$('#dg').datagrid({
 		  url : basePath +"api/notice/paging" ,
 		  queryParams: {
-				filter_ANDS_status_id : 3,
-				filter_ANDS_dealer_id : dealer_id
+				filter_ANDS_status_id : 3
 		  },
 		  onLoadSuccess:function(data){ 
 			  $(".infoBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
@@ -209,7 +208,9 @@ function showEntity(notice_id,index){
 	if (row) {
 		$('#dlgInfo').dialog('open').dialog('setTitle', '公告详细');
 		$('#fmInfo').form('load', row);
-		$.getJSON(basePath + "api/noticeDealer/update?id="+row.notice_id,function(result){});				
+		if(row.dealer_id){
+			$.getJSON(basePath + "api/noticeDealer/update?id="+row.notice_id,function(result){});		
+		}
 	}
 }
 </script>
