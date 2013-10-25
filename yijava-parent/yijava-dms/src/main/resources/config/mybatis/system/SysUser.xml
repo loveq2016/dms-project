@@ -63,6 +63,13 @@
 	<select id="selectUserList" resultType="dms.yijava.entity.system.SysUser">
 		SELECT * FROM tb_manager_user
 	</select>
+	
+	
+	<select id="selectUserListNotDealer" resultType="dms.yijava.entity.system.SysUser">
+		SELECT * FROM tb_manager_user WHERE  fk_dealer_id=0
+	</select>
+	
+	
 	<select id="selectUserByDealer" resultType="dms.yijava.entity.system.SysUser">
 		SELECT * FROM tb_manager_user WHERE  fk_dealer_id=#{dealer_id}
 	</select>

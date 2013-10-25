@@ -96,11 +96,11 @@
 						<tr>
 							<th data-options="field:'trial_id',width:100"  sortable="true" hidden="true">trial_id</th>
 							<th data-options="field:'dealer_user_id',width:100"  sortable="true" hidden="true">dealer_user_id</th>
-							<th data-options="field:'trial_code',width:200"  sortable="true">试用申请单号</th>
-							<th data-options="field:'dealer_name',width:200"  sortable="true">经销商名称</th>
-							<th data-options="field:'hospital_name',width:200"  sortable="true">医院名称</th>									
-							<th data-options="field:'reason',width:300" sortable="true">试用理由</th>							
-							<th data-options="field:'create_time',width:200" formatter="formatterdate">申请日期</th>	
+							<th data-options="field:'trial_code',width:100"  sortable="true">试用申请单号</th>
+							<th data-options="field:'dealer_name',width:150"  sortable="true">经销商名称</th>
+							<th data-options="field:'hospital_name',width:150"  sortable="true">医院名称</th>									
+							<th data-options="field:'reason',width:150" sortable="true">试用理由</th>							
+							<th data-options="field:'create_time',width:120" formatter="formatterdate">申请日期</th>	
 							<th data-options="field:'status',width:90" sortable="true" formatter="formatterstatus">单据状态</th>
 							<th data-options="field:'notice',width:90"  hidden="true">单据状态</th>
 							<th data-options="field:'id',width:90" sortable="true" formatter="formatterdesc">明细</th>	
@@ -404,8 +404,17 @@
 								<select class="easyui-combobox" name="status" style="width:200px;">
 									<option value="1">同意</option>
 									<option value="2">驳回</option>
+									<option value="3">结束</option>
 								</select>
 								</td>								
+							</tr>
+							<tr height="60">
+							<td height="50">请选择用户:</td>
+										<td>
+										<input class="easyui-combobox" name="base_check_id" id="base_check_id" 
+										style="width:250px" maxLength="100" class="easyui-validatebox"
+						             			/>
+						    </td>								
 							</tr>
 							
 							<tr height="60">
@@ -416,6 +425,7 @@
 							</tr>
 							
 							<tr height="60"><td colspan="2">
+							<input type="hidden" name="check_name" id="check_name">
 							<input type="hidden" name="bussiness_id" id="bussiness_id">
 							<input type="hidden" name="flow_id" id="flow_id" value="">
 							<div style="text-align: right; padding: 5px">
@@ -431,6 +441,68 @@
 		</div>
 	</div>
 	<!--flow end -->	
+	
+	
+	<!--tocheck 提交审核 start -->	
+	<div id="dlgtocheck" class="easyui-dialog" title="提交审核" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
+	style="width:720px;height:500px;padding:10px;">
+	
+	
+	<div class="easyui-tabs" style="width:680px;height:380px">	
+		<div title="基本信息" >
+				<form id="fftocheckadd" action="" method="post" enctype="multipart/form-data">
+								<table>
+									<tr>
+										<td height="50">请选择用户:</td>
+										<td>
+										<input class="easyui-combobox" name="check_id" id="check_id" 
+										style="width:250px" maxLength="100" class="easyui-validatebox"
+						             			/>
+										<!--  <select name="from" id="from" multiple="multiple" size="10" style="width:200px">
+											<option value="1">选项1</option>
+											<option value="2">选项2</option>
+											<option value="3">选项3</option>
+											<option value="4">选项4</option>
+											<option value="5">选项5</option>
+											<option value="6">选项6</option>
+											<option value="7">选项7</option>
+										</select> -->
+						            	</td>							
+								
+										<td>
+											
+											<!-- <input type="button" id="addOne" value=" > " style="width:50px;" /><br />
+											<input type="button" id="removeOne" value="&lt;" style="width:50px;" /><br /> -->
+											
+										</td>
+										<td>										
+											
+											<!-- <select name="to" id="to" multiple="multiple" size="10" style="width:200px">
+											</select> -->
+										</td>		
+										
+										
+														
+									</tr>
+									
+									
+								</table>
+								<input type="hidden" name="trial_id" id="trial_id" value="">
+								<input type="hidden" name="check_name" id="check_name" value="">
+								
+				</form>			
+				<div style="text-align: right; padding: 5px">
+						<a href="javascript:void(0)" id="saveToCheckEntity" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveToCheckEntity()">确定</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="javascript:$('#dlgtocheck').dialog('close')">取消</a>					   
+				</div>
+			</div>
+			
+			
+		</div>
+	</div>
+	
+	<!--tocheck 提交审核 end -->	
+	
 	
 		<div id="dlgProduct" class="easyui-dialog" title="申请试用-审核" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
 			style="width:850px;height:510px;padding:10px;" buttons="#dlgProduct-buttons">
@@ -734,10 +806,25 @@
 		*/
 		function ToCheckEntity(){
 			var row = $('#dg').datagrid('getSelected');
+			 trial_id=row.trial_id;
+			 $('#check_id').combobox({
+				 
+				 url:'${basePath}api/sysuser/companylist',
+                 method:'get',
+                 valueField:'id',
+                 textField:'realname',
+                 panelHeight:'auto',
+                 onSelect: function (rec) {
+                	 $("#fftocheckadd input[name=check_name]").val(rec.realname);
+                 }
+			 });
+			 
 			if (row && (row.status ==0 || row.status ==2) ){			
 				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
 					 if (r){
-	                        $.post(basePath+'api/protrial/updatetocheck',{trial_id:row.trial_id},function(result){
+						 $("#fftocheckadd input[name=trial_id]").val(trial_id);
+						 $('#dlgtocheck').dialog('open').dialog('setTitle', '提交审核');
+	                        /* $.post(basePath+'api/protrial/updatetocheck',{trial_id:row.trial_id},function(result){
 	                        	
 	        			    	if(result.state==1){
 	        			    		var pager = $('#dg').datagrid().datagrid('getPager');
@@ -748,7 +835,7 @@
 	                                    msg: result.errorMsg
 	                                });
 	                            } 
-	                        },'json');
+	                        },'json'); */
 	                    }
 				 });
 			    
@@ -759,12 +846,58 @@
 			}
 		}
 		
+		
+		function saveToCheckEntity()
+		{
+			$('#saveToCheckEntity').linkbutton('disable');
+			$('#fftocheckadd').form('submit', {
+			    url:basePath+'api/protrial/updatetocheck',
+			    method:"post",
+			   
+			    onSubmit: function(){
+			        // do some check
+			        // return false to prevent submit;
+			    	return $(this).form('validate');;
+			    },
+			    success:function(msg){
+			    	$('#saveCheckbtn').linkbutton('enable');
+			    	var jsonobj= eval('('+msg+')');  
+			    	if(jsonobj.state==1)
+			    		{
+			    			$('#fftocheckadd').form('clear');  			
+			    			$('#dlgtocheck').dialog('close');
+			    			var pager = $('#dg').datagrid().datagrid('getPager');
+			    			pager.pagination('select');	
+				   			
+			    		}else{
+			    			 $.messager.show({    // show error message
+		                            title: 'Error',
+		                            msg: jsonobj.error.msg
+		                        });
+			    	
+			    			
+			    		}
+			    }		
+			});		
+		}
 		/**
 		审核
 		*/
 		function CheckEntity(index){
 			$('#dg').datagrid('selectRow',index);
 			var row = $('#dg').datagrid('getSelected');
+			
+			 $('#base_check_id').combobox({
+				 
+				 url:'${basePath}api/sysuser/companylist',
+                 method:'get',
+                 valueField:'id',
+                 textField:'realname',
+                 panelHeight:'auto',
+                 onSelect: function (rec) {
+                	 $("#base_form_check input[name=check_name]").val(rec.realname);
+                 }
+			 });
 			
 			if (row && row.status ==1){				
 				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){
@@ -855,7 +988,7 @@
 			
 			$('#saveCheckbtn').linkbutton('disable');
 			$('#base_form_check').form('submit', {
-			    url:basePath+'/api/flowrecord/do_flow',
+			    url:basePath+'/api/flowrecord/do_allocate_flow',
 			    method:"post",
 			   
 			    onSubmit: function(){
@@ -1052,7 +1185,16 @@
 	</script>
 
 	<script type="text/javascript"> 
-		
+	//选择一项
+	$("#addOne").click(function(){
+		$("#from option:selected").clone().appendTo("#to");
+		$("#from option:selected").remove();
+	});
+	//移除一项
+	$("#removeOne").click(function(){
+		$("#to option:selected").clone().appendTo("#from");
+		$("#to option:selected").remove();
+	});
 </script>
 </body>
 </html>

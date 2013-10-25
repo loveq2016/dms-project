@@ -57,6 +57,12 @@ public class SysUserController {
 		return sysUserService.getUserList();
 	}
 	
+	@ResponseBody
+	@RequestMapping("companylist")
+	public List<SysUser> companyList(HttpServletRequest request) {
+		return sysUserService.getCompanyUserList();
+	}
+	
 	
 	@ResponseBody
 	@RequestMapping("read")

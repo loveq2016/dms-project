@@ -102,6 +102,15 @@ public class SysUserService {
 	}
 	
 	/**
+	 * 查询所有用户
+	 * @return
+	 */
+	public List<SysUser> getCompanyUserList(){
+		return sysUserDao.find(".selectUserListNotDealer",null);
+	}
+	
+	
+	/**
 	 * 查询用户By 经销商id
 	 * @param dealer_id
 	 * @return

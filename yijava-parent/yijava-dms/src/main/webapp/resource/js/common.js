@@ -215,3 +215,5 @@ function login_onclick() {
 		alert(e.name + ": " + e.message+"。可能是没有安装相应的控件或插件");
 	}
 }
+
+

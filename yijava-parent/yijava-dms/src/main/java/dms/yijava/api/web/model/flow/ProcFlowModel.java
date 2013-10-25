@@ -16,6 +16,10 @@ public class ProcFlowModel {
 	private String status;
 	
 	
+	//************以下增加字段为，指定人的处理流程
+	private String check_name;
+	private String base_check_id;
+	
 	
 	
 }

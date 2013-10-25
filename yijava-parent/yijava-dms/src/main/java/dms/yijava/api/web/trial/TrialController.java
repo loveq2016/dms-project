@@ -44,6 +44,7 @@ import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.department.DepartmentService;
 import dms.yijava.service.flow.FlowBussService;
 import dms.yijava.service.flow.FlowLogService;
+import dms.yijava.service.system.SysUserService;
 import dms.yijava.service.trial.TrialDetailService;
 import dms.yijava.service.trial.TrialService;
 
@@ -82,7 +83,9 @@ public class TrialController {
 	@Autowired
 	private DepartmentService departmentService;
 	
-
+	@Autowired
+	public SysUserService sysUserService;
+	
 	@ResponseBody
 	@RequestMapping("paging")
 	public JsonPage<Trial> paging(PageRequest pageRequest,
@@ -95,7 +98,22 @@ public class TrialController {
 		SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
 		String currentUserId=sysUser.getId();
 		List<Department> deparments=departmentService.getChildDeparmentById(sysUser.getFk_department_id());
-		if(deparments==null || deparments.size()<=0)
+		if(sysUser.getFk_department_id().equals("85") || sysUser.getFk_department_id().equals("86")) {
+			//不是销售，需要找到他对应的所有销售
+			filters.add(PropertyFilters.build("ANDS_sales_user_ids", this.listString(sysUser.getChildIds())));
+			
+			filters.add(PropertyFilters.build("ANDS_statuses","1,2,3,4"));
+			filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
+			filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
+			try {
+				trialPages=trialService.paging(pageRequest, filters);
+				return trialPages;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if( deparments==null || deparments.size()<=0)
 		{
 			//是销售
 			filters.add(PropertyFilters.build("ANDS_sales_user_ids", currentUserId));
@@ -123,17 +141,7 @@ public class TrialController {
 				e.printStackTrace();
 			}
 			
-			/**
-			 * 以下开始标记哪些记录需要当前人处理
-			 */
-			List<Trial> trials=trialPages.getRows();
-			if(trials!=null && trials.size()>0)
-			{
-				for (Trial trial:trials)
-				{
-					trial.setNotice(1);
-				}
-			}
+			
 			
 		}
 		
@@ -247,14 +255,15 @@ public class TrialController {
 	 */
 	@ResponseBody
 	@RequestMapping("updatetocheck")
-	public Result<Integer> updatetocheck(Integer trial_id,HttpServletRequest request) {
+	public Result<Integer> updatetocheck(Integer trial_id,String check_id,String check_name,HttpServletRequest request) {
 		Result<Integer> result=new Result<Integer>(0, 0);
 		try {			
 						
 			///以下开始走流程处理
 			SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
 			
-			if(flowBussService.processFlow(trial_id,sysUser,flowIdentifierNumber))
+			//if(flowBussService.processFlow(trial_id,sysUser,flowIdentifierNumber))
+			if(flowBussService.processAllocateFlow(trial_id,sysUser,check_id,check_name,flowIdentifierNumber,false))
 			{
 				
 				//更新状态
@@ -332,15 +341,30 @@ public class TrialController {
 			for (FlowLog flowLog:flowlogs)
 			{
 				
+				
 				if(flowLog.getSign()!=null  && !"".equals(flowLog.getSign()))
 				{
-					if(flowLog.action_name.indexOf("区域负责人")>-1)
+					String userId=flowLog.getUser_id();
+					
+					SysUser sysUser=sysUserService.getEntity(userId);
+					if (sysUser.getDepartment_name().indexOf("大区")>-1)
+					{
+						regionsign=sign_filepath+flowLog.getSign();
+					}
+					if (sysUser.getDepartment_name().indexOf("分管 负责人")>-1)
+					{
+						principalsign=sign_filepath+flowLog.getSign();
+					}
+					
+					
+					
+					/*if(flowLog.action_name.indexOf("区域负责人")>-1)
 					{
 						regionsign=sign_filepath+flowLog.getSign();
 					}if(flowLog.action_name.indexOf("公司负责人")>-1)
 					{
 						principalsign=sign_filepath+flowLog.getSign();
-					}
+					}*/
 					
 				}
 			}

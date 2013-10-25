@@ -116,7 +116,164 @@ public class FlowRecordController {
 		return flowRecordService.getRequetCheck(bussiness_id,flow_id,check_id,status);
 	}
 
+	/**
+	 * 根据用户指定用户触发审批流程
+	 * @param entity
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("do_allocate_flow")
+	public Result<Integer> doAllocateFlow(@ModelAttribute("entity") ProcFlowModel entity,HttpServletRequest request){
+		Result<Integer> result=new Result<Integer>(0, 0);
+		if ((entity!=null && entity.getBase_check_id()!=null && !"".equals(entity.getBase_check_id())) || entity.getStatus().equals("3")|| entity.getStatus().equals("2"))
+		{
+			flow_id=entity.getFlow_id();
+			SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+			String currentUserId=sysUser.getId();
+			//先查找待审核记录
+			List<FlowRecord> flowRecords=flowRecordService.getRequetCheck(entity.getBussiness_id(), entity.getFlow_id(),currentUserId, "0");
+			FlowRecord flowRecord=null;
+			if(flowRecords!=null && flowRecords.size()>0)
+			{
+				flowRecord=flowRecords.get(0);			
+				if(flowRecord!=null)
+				{
+					if(entity.getStatus().equals("1"))//同意
+					{	
+						//先更新本条记录的状态
+						try {
+							entity.setUser_id(currentUserId);
+							entity.setStatus("1");
+							flowRecordService.updateFlowByFlowUB(entity);
+							//写入处理日志
+							FlowLog flowLog=new FlowLog();
+							flowLog.setFlow_id(flow_id);
+							flowLog.setUser_id(currentUserId);
+							flowLog.setUser_name(sysUser.getRealname());
+							flowLog.setBussiness_id(entity.getBussiness_id());
+							flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+							flowLog.setAction_name("进行审核;提交给 "+entity.getCheck_name() + " 审核");
+							flowLog.setCheck_reason(entity.getCheck_reason());
+							flowLog.setSign(sysUser.getSign_img());
+							flowLogService.saveEntity(flowLog);
+							//写入待处理事项
+							
+							int step_order_no = Integer.parseInt(flowRecord.getStep_order_no());
+							step_order_no++;
+							flowBussService.insertStep(flow_id, currentUserId,  
+									"提交审核", entity.getBussiness_id(), entity.getBase_check_id(), "提交审核","0",Integer.toString(step_order_no));
+						} catch (Exception e) {
+							result.setError(new ErrorCode(e.toString()));
+							return result;
+						}
+						result.setData(1);
+						result.setState(1);						
+						return result;
+					} else if (entity.getStatus().equals("2")){//驳回
+						//处理驳回流程
+						try {
+							backAllocateFlow(flowRecord,entity,sysUser);
+						} catch (Exception e) {
+							result.setError(new ErrorCode(e.toString()));
+							return result;
+						}
+						result.setData(1);
+						result.setState(1);						
+						return result;
+					}else if (entity.getStatus().equals("3")){//结束
+						//处理结束
+						try {
+							entity.setStatus("1");
+							FlowLog flowLog=new FlowLog();
+							flowLog.setFlow_id(flow_id);
+							flowLog.setUser_id(currentUserId);
+							flowLog.setUser_name(sysUser.getRealname());
+							flowLog.setBussiness_id(entity.getBussiness_id());
+							flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+							flowLog.setAction_name("进行审核;流程结束");
+							flowLog.setCheck_reason(entity.getCheck_reason());
+							flowLog.setSign(sysUser.getSign_img());
+							flowLogService.saveEntity(flowLog);
+							
+							entity.setUser_id(currentUserId);
+							flowRecordService.updateFlowByFlowUB(entity);
+							
+							eventBus.post(new UserCheckFlowEvent(sysUser.getId(),sysUser.getRealname(),flow_id,entity.getBussiness_id(),
+									entity.getCheck_reason(),entity.getStatus()));
+						} catch (Exception e) {
+							result.setError(new ErrorCode(e.toString()));
+							return result;
+						}
+						result.setData(1);
+						result.setState(1);						
+						return result;
+					}
+				}
+			}else
+			{
+				result.setError(new ErrorCode("您已经审核过该单据，或没有为您找到待审核的记录"));
+				return result;
+			}
+		}else
+		{
+			//数据错误
+			result.setError(new ErrorCode("数据错误，请选择提交人员"));					
+			return result;
+		}
+		result.setError(new ErrorCode("数据错误"));	
+		return result;
+				
+	}
 	
+	
+	public boolean backAllocateFlow(FlowRecord flowRecord,ProcFlowModel entity,SysUser sysUser) throws Exception
+	{
+		try {
+			int currentStepNo = Integer.parseInt(flowRecord.getStep_order_no());
+			if(currentStepNo>1)
+			{
+				//删除本次的待处理事项
+				flowRecordService.removeEntity(new Integer(flowRecord.getRecord_id()));
+				//找到上一步骤，变更状态
+				List<FlowRecord> flowRecordsBack=flowRecordService.getRequetCheck(entity.getBussiness_id(), 
+						entity.getFlow_id(), flowRecord.getSend_id(), "1");
+				FlowRecord flowRecordBack=flowRecordsBack.get(0);			
+				flowRecordBack.setStatus("0");
+				flowRecordService.updateEntity(flowRecordBack);
+				//记录驳回日志
+				FlowLog flowLog=new FlowLog();
+				flowLog.setFlow_id(flow_id);
+				flowLog.setUser_id(sysUser.getId());
+				flowLog.setUser_name(sysUser.getRealname());
+				flowLog.setBussiness_id(entity.getBussiness_id());
+				flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+				flowLog.setAction_name("进行审核;" + "驳回");
+				flowLog.setCheck_reason(entity.getCheck_reason());
+				flowLog.setSign(sysUser.getSign_img());
+				flowLogService.saveEntity(flowLog);
+			}else{
+				//删除本次的待处理事项
+				flowRecordService.removeEntity(new Integer(flowRecord.getRecord_id()));
+				//记录驳回日志
+				FlowLog flowLog=new FlowLog();
+				flowLog.setFlow_id(flow_id);
+				flowLog.setUser_id(sysUser.getId());
+				flowLog.setUser_name(sysUser.getRealname());
+				flowLog.setBussiness_id(entity.getBussiness_id());
+				flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+				flowLog.setAction_name("进行审核;" + "驳回");
+				flowLog.setCheck_reason(entity.getCheck_reason());
+				flowLog.setSign(sysUser.getSign_img());
+				flowLogService.saveEntity(flowLog);
+				eventBus.post(new UserBackFlowEvent(sysUser.getId(),sysUser.getRealname(),flow_id,entity.getBussiness_id(),
+						entity.getCheck_reason(),entity.getStatus()));
+			}
+		} catch (Exception e) {
+			throw e;
+		}	
+		return true;
+	}
 	/**
 	 * 同意流程节点
 	 * @return
