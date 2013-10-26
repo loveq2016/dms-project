@@ -954,7 +954,7 @@
 				$.post(basePath+'api/order/viewdocument',{order_id:row.id},function(result){
 			    	if(result.state==1){
 			    		var tabTitle = "订单管理单据 "+result.data;
-						var url = "generate\\"+result.data;
+						var url = "generate/"+result.data;
 						addTabByChild(tabTitle,url);
                     } else {
                         $.messager.show({

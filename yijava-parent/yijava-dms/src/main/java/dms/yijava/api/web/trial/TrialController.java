@@ -319,7 +319,7 @@ public class TrialController {
 			for (int j = 0; j < trialDetail.size(); j++) {
 				TrialProduct product = new TrialProduct();
 				product.setProductname(trialDetail.get(j).getProduct_name());
-				product.setProductmodel(trialDetail.get(j).getProduct_name());
+				product.setProductmodel(trialDetail.get(j).getModels());
 				trialSumNum+=trialDetail.get(j).getTrial_num();
 				product.setSumnumber(trialDetail.get(j).getTrial_num().toString());
 				product.setRemark(trialDetail.get(j).getRemark());

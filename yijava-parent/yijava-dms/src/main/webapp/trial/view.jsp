@@ -37,7 +37,8 @@
 								                    panelHeight:'auto'
 						            			"/>								
 									</td>
-									
+									</tr>
+									<tr>
 									<td width="100">经销商:</td>
 									<td>
 										<input class="easyui-combobox" name="querydealer_id" id="querydealer_id" style="width:150px" maxLength="100" class="easyui-validatebox"
@@ -71,7 +72,8 @@
 												id: '4',
 												value: '已完成'
 											}]" />
-									</td>		
+									</td>	
+									<td></td>	<td></td>		
 								</tr>
 							</table>
 						</form>
