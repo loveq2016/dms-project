@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,7 +39,17 @@ public class NoticeController {
 	@ResponseBody
 	@RequestMapping("paging")
 	public JsonPage<Notice> paging(PageRequest pageRequest,HttpServletRequest request) {
+		SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
+		String currentUserId = sysUser.getId();
 		List<PropertyFilter> filters = PropertyFilters.build(request);
+		if (null != sysUser) {
+			//经销商
+			if (!StringUtils.equals("0", sysUser.getFk_dealer_id())) {
+				filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
+			}else{
+				filters.add(PropertyFilters.build("ANDS_user_id",currentUserId));
+			}
+		}
 //		filters.add(PropertyFilters.build("ANDS_dealer_id", "3"));
 		return noticeService.paging(pageRequest,filters);
 	}

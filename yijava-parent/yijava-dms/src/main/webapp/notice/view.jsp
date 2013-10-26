@@ -98,13 +98,13 @@
          <div class="easyui-tabs" style="width:680px;height: auto;">
          	 <div title="基本信息" style="padding: 5px 5px 5px 5px;" >
 	            <div class="easyui-layout" style="width:670px;height:320px;">  
-		        <div data-options="region:'east',split:true" title="发布对象" style="width:160px;">
-		        	<table id="dgDealerCategory" class="easyui-datagrid" title="经销商分类" style="height:300px"  method="get"
+		        <div data-options="region:'east',split:true" title="" style="width:160px;">
+		        	<table id="dgDealerCategory" class="easyui-datagrid" title="发布对象" style="height:300px"  method="get"
 						 singleSelect="1"  sortName="id" sortOrder="desc">
 						<thead>
 							<tr>
 								<th field="id" checkbox="true"></th>
-								<th field="category_name" width="150" align="left">中文名称</th>
+								<th field="category_name" width="150" align="left">类型名称</th>
 							</tr>
 						</thead>
 					</table>  
@@ -253,6 +253,10 @@
 			$('#dgDealerCategory').datagrid({
 				url : basePath + "api/dealerCategory/paging",
 				 onLoadSuccess:function(data){ 
+					 $("#dgDealerCategory").datagrid("insertRow", {
+       					 index: 0,
+        				row: {id:"0",category_name:"公司"}
+    					});
 					 $('#dgDealerCategory').datagrid('clearSelections');  
 				 }
 			});

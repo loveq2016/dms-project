@@ -18,6 +18,8 @@ import dms.yijava.dao.dealer.DealerCategoryFunDao;
 import dms.yijava.dao.notice.NoticeDao;
 import dms.yijava.entity.dealer.DealerCategoryFun;
 import dms.yijava.entity.notice.Notice;
+import dms.yijava.entity.system.SysUser;
+import dms.yijava.service.system.SysUserService;
 
 @Service
 @Transactional
@@ -27,6 +29,8 @@ public class NoticeService {
 	private NoticeDao noticeDao;
 	@Autowired
 	private DealerCategoryFunDao dealerCategoryFunDao;
+	@Autowired
+	private SysUserService sysUserService;
 	
 
 	public JsonPage<Notice> paging(PageRequest pageRequest,
@@ -64,12 +68,20 @@ public class NoticeService {
 			entity.setDealer_category_id(category_ids[i]);
 			noticeDao.insertObject(".insertReceive", entity);
 			if(entity.getStatus_id().equals("3")){//发布状态
-				Map<String,String> parameters = new HashMap<String,String>();
-				parameters.put("category_id", category_ids[i]);
-				List<DealerCategoryFun> derlerList = dealerCategoryFunDao.find(parameters);
-				for (DealerCategoryFun dealerCategoryFun : derlerList) {
-					entity.setDealer_id(dealerCategoryFun.getDealer_id());
-					noticeDao.insertObject(".insertDealer", entity);
+				if ("0".equals(category_ids[i])) {
+					List<SysUser> companyList = sysUserService.getCompanyUserList();
+					for (SysUser sysUser : companyList) {
+						entity.setUser_id(sysUser.getId());
+						noticeDao.insertObject(".insertUser", entity);
+					}
+				}else{
+					Map<String,String> parameters = new HashMap<String,String>();
+					parameters.put("category_id", category_ids[i]);
+					List<DealerCategoryFun> derlerList = dealerCategoryFunDao.find(parameters);
+					for (DealerCategoryFun dealerCategoryFun : derlerList) {
+						entity.setDealer_id(dealerCategoryFun.getDealer_id());
+						noticeDao.insertObject(".insertDealer", entity);
+					}
 				}
 			}
 		}
