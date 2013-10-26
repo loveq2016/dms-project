@@ -106,8 +106,8 @@ public class OrderDeliverController {
 				List<DeliverExpressSn> deliverExpressSns = deliverExpressSnService.getList(deliver_code);
 				if (deliverExpressDetails == null || deliverExpressSns == null)
 					return new Result<String>(deliver_code, 0);
-				//String flag = storageDetailService.orderStorage(dealer_id,orderDeliver.getOrder_code(),deliverExpressDetails,deliverExpressSns);
-				String flag ="success";
+				String flag = storageDetailService.orderStorage(dealer_id,orderDeliver.getOrder_code(),deliverExpressDetails,deliverExpressSns);
+				//String flag ="success";
 				if("success".equals(flag)){
 					OrderDeliver entity = new OrderDeliver();
 					entity.setDeliver_code(deliver_code);
