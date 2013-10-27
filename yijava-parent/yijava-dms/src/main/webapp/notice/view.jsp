@@ -281,6 +281,10 @@
 				$('#dgDealerCategory').datagrid({
 					url : basePath + "api/dealerCategory/paging",
 					 onLoadSuccess:function(data){ 
+						 $("#dgDealerCategory").datagrid("insertRow", {
+	       					 index: 0,
+	        				row: {id:"0",category_name:"公司"}
+	    					});
 						 $.getJSON(basePath + "api/notice/categoryList?id="+row.notice_id,function(result){
 							 $.each(result, function(i, field){
 								 var rowData = data.rows;  
