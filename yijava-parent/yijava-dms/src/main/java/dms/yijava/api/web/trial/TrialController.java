@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -287,7 +289,7 @@ public class TrialController {
 	
 	@ResponseBody
 	@RequestMapping("viewdocument")
-	public Result<String> viewdocument (Integer trial_id,HttpServletRequest request,HttpServletResponse response) {
+	public Result<String> viewdocument (Integer trial_id,HttpServletRequest request,HttpServletResponse response) throws ParseException {
 		Result<String> result=new Result<String>("0", 0);
 		
 		Trial entity=trialService.getEntity(trial_id);
@@ -327,7 +329,24 @@ public class TrialController {
 				list.add(product);
 			}
 			dataMap.put("hospital", entity.getHospital_name());
-			dataMap.put("requesttime", entity.getCreate_time());
+			
+			Date createDate;
+			String reqTime="";
+			try {
+				String dateStr=entity.getCreate_time();
+				dateStr=dateStr.substring(0,dateStr.indexOf("."));
+				createDate = DateUtils.parseDate(dateStr,"yyyy-MM-dd HH:mm:ss");
+				reqTime=com.yijava.common.utils.DateUtils.format(createDate, "yyyy-MM-dd");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
+			
+			dataMap.put("requesttime", reqTime);
+			
 			dataMap.put("reason", entity.getReason());
 			dataMap.put("dealer_name", entity.getDealer_name());
 			dataMap.put("regionsign", "沈强");
