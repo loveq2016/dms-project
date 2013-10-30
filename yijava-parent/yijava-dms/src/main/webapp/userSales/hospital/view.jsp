@@ -41,9 +41,9 @@
 							<th field="hospital_name" width="150" align="left" sortable="true">医院名称</th>
 							<th field="hostpital_category" width="200" align="left" sortable="true">客户分类</th>
 							<th field="level_name" width="200" align="left" sortable="true">医院等级</th>
-							<th field="provinces" width="200" align="left" sortable="true">所属省份</th>
-							<th field="area" width="200" align="left" sortable="true">所属地区</th>
-							<th field="city" width="200" align="left" sortable="true">所属县市(区)</th>
+							<th field="provinces_name" width="120" align="left" sortable="true">省份</th>
+							<th field="city_name" width="80" align="left" sortable="true">城市</th>
+							<th field="area_name" width="80" align="left" sortable="true">区或乡</th>
 		            </tr>
 		        </thead>
 		    </table>

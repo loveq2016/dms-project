@@ -35,11 +35,18 @@
 
 <select id="selectByObject" resultType="dms.yijava.entity.user.UserHospital">
 	select * from (
-		select t1.*,t3.level_name,t4.category_name,t5.dealer_name,t5.dealer_id from tb_hospital t1 
+		select t1.*,t3.level_name,t4.category_name,t5.dealer_name,t5.dealer_id,
+		provinces.name as provinces_name,
+		city.name as city_name,
+		area.name as area_name 
+		from tb_hospital t1 
 		inner join tb_dealer_auth_hospital t2 on t1.id = t2.hospital_id
 		left join tb_hospital_level t3 on t1.level_id = t3.id
 		left join tb_product_category t4 on t2.category_id = t4.id
 		inner join tb_dealer t5 on t2.dealer_id = t5.dealer_id and t5.dealer_id in (select dealer_id from tb_user_dealer where user_id in (${user_ids}))
+		left join tb_area provinces on t1.provinces = provinces.areaid
+		left join tb_area city on t1.city = city.areaid
+		left join tb_area area on t1.area = area.areaid
 	) t 
 	<include refid="adsOrder" />
 	limit #{offset},#{pagesize}

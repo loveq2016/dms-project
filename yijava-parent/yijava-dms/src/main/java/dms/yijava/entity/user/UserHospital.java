@@ -18,9 +18,9 @@ public class UserHospital {
 	private String city;
 	private String category_name;
 	private String dealer_name;
-
-	
-	
+	private String provinces_name;
+	private String city_name;
+	private String area_name;
 	private String user_id;
 	private String department_id;
 	
