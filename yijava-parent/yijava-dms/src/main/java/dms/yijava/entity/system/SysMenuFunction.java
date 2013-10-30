@@ -1,6 +1,14 @@
 package dms.yijava.entity.system;
 
-public class SysMenuFunction {
+import java.io.Serializable;
+
+public class SysMenuFunction implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9210771755207684629L;
+	
 	public String id;
 	public String fun_name;
 	public String fun_desc;
