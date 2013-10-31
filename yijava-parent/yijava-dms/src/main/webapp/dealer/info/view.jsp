@@ -96,7 +96,7 @@
 	             	</tr>             	
 	              	<tr>
 	             		<td>商务联系人电话:</td>
-	             		<td><input name="business_phone" style="width:250px" maxLength="10"  class="easyui-numberbox" required="true"></td>
+	             		<td><input name="business_phone" style="width:250px" maxLength="20"  class="easyui-numberbox" required="true"></td>
 	             	</tr>
 	             	<tr>
 	             		<td>财务联系人:</td>
@@ -104,7 +104,7 @@
 	             	</tr>             	
 	              	<tr>
 	             		<td>财务联系人电话:</td>
-						<td><input name="financial_phone" style="width:250px" maxLength="10"  class="easyui-numberbox"></td>
+						<td><input name="financial_phone" style="width:250px" maxLength="20"  class=""></td>
 	             	</tr>    
 	              	<tr>
 	             		<td>发票邮寄地址:</td>
@@ -177,9 +177,9 @@
 	             	</tr>  
 	             	<tr>
 	             		<td>业务经理座机:</td>
-						<td><input name="bm_telephone" style="width:150px" maxLength="20" class="easyui-numberbox"></td>
+						<td><input name="bm_telephone" style="width:150px" maxLength="20" class=""></td>
 	             		<td>业务经理传真:</td>
-						<td><input name="bm_fax" style="width:150px" maxLength="20" class="easyui-numberbox"></td>
+						<td><input name="bm_fax" style="width:150px" maxLength="20" class=""></td>
 	             	</tr>   
 	             	<tr>
 	             		<td>备案往来邮箱:</td>
