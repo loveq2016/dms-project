@@ -113,7 +113,21 @@
 								</tr>
 								<tr>
 									<td>金额:</td>	
-									<td colspan="4"><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="totalMoney"></input></td>
+									<td><input class="easyui-validatebox" readonly="readonly" type="text" style="width:200px;" name="totalMoney"></input></td>
+									<td></td>
+									<td>收货仓库:</td>	 
+									<td><input class="easyui-combobox" name="storage_id" id="storage_id" style="width:200px" 
+							             			data-options="
+								             			url:'${basePath}api/storage/list?dealer_id=${user.fk_dealer_id}',
+									                    method:'get',
+									                    valueField:'id',
+									                    textField:'storage_name',
+									                    panelHeight:'auto',
+									                    editable:false
+							            			"/>
+									 </td>								
+								
+								
 								</tr>
 
 							</table>
@@ -187,8 +201,10 @@
 					$('#ffDeliverDetail').form('load', {"cm":"海利欧斯"});
 					if(row.consignee_status== 1){
 						$("#submitConsignee").linkbutton('disable');
+						$('#storage_id').combobox('disable');
 					}else{
 						$("#submitConsignee").linkbutton('enable');
+						$('#storage_id').combobox('enable');
 					}
 					deliver_code = row.deliver_code;
 					dealer_id = row.dealer_id;
@@ -212,11 +228,17 @@
 		}
 		
 		function submitConsignee(){
+			
+			var storage_id = $('#ffDeliverDetail input[name=storage_id]').val();
+			if(storage_id==""){
+				$.messager.alert('提示','请选择收货仓库','error');	
+				return;
+			}
 			$("#submitConsignee").linkbutton('disable');
 			$.ajax({
 				type : "POST",
 				url : basePath + 'api/orderDeliver/consignee',
-				data : {deliver_code:deliver_code,dealer_id:dealer_id},
+				data : {deliver_code:deliver_code,dealer_id:dealer_id,storage_id:storage_id},
 				error : function(request) {
 					$("#submitConsignee").linkbutton('enable');
 					$.messager.alert('提示','Error!','error');	
@@ -227,9 +249,11 @@
 						 $('#dg').datagrid('reload');
 						 $('#dlgDeliverDetail').dialog('close');
 					}else if (jsonobj.state == 2) {  
+						$("#submitConsignee").linkbutton('enable');
 						$.messager.alert('提示','Sn重复，请联系客服','error');	
 					}else if (jsonobj.state == 3) {  
-						$.messager.alert('提示','默认仓库不存在，请联系客服','error');	
+						$("#submitConsignee").linkbutton('enable');
+						$.messager.alert('提示','收货仓库不存在，请联系客服','error');	
 					}else{
 						$("#submitConsignee").linkbutton('enable');
 						$.messager.alert('提示','Error!','error');	

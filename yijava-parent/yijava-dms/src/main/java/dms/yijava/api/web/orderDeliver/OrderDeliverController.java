@@ -97,32 +97,30 @@ public class OrderDeliverController {
 	@RequestMapping("consignee")
 	public Result<String> consignee(HttpServletRequest request,
 			@RequestParam(value = "deliver_code", required = true) String deliver_code,
-			@RequestParam(value = "dealer_id", required = true) String dealer_id) {
+			@RequestParam(value = "dealer_id", required = true) String dealer_id,
+			@RequestParam(value = "storage_id", required = true) String storage_id) {
 		try {
-			
+			SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
 			OrderDeliver orderDeliver = orderDeliverService.queryDeliverConsigneeStatus(deliver_code);
 			if (orderDeliver != null) {
 				List<DeliverExpressDetail> deliverExpressDetails =  deliverExpressDetailService.getList(deliver_code);
 				List<DeliverExpressSn> deliverExpressSns = deliverExpressSnService.getList(deliver_code);
 				if (deliverExpressDetails == null || deliverExpressSns == null)
 					return new Result<String>(deliver_code, 0);
-				String flag = storageDetailService.orderStorage(dealer_id,orderDeliver.getOrder_code(),deliverExpressDetails,deliverExpressSns);
+				String flag = storageDetailService.orderStorage(dealer_id,storage_id,orderDeliver.getOrder_code(),deliverExpressDetails,deliverExpressSns);
 				//String flag ="success";
 				if("success".equals(flag)){
 					OrderDeliver entity = new OrderDeliver();
 					entity.setDeliver_code(deliver_code);
-					entity.setConsignee_user_id("1");
+					entity.setConsignee_user_id(sysUser.getId());
+					entity.setStorage_id(storage_id);
 					orderDeliverService.submitConsignee(entity);
-					
-					
 					try {
-						SysUser sysUser = (SysUser)request.getSession().getAttribute("user");
 						//关闭发货提醒
 						flowRecordService.updateFlowByFlowUB(reciveproduct_identifier_num, sysUser.getId(), orderDeliver.getDeliver_id(), "", "1");
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					
 					if ("4".equals(orderDeliver.getDeliver_status())) {//全部发货
 						orderService.updateStatusByOrderCode(orderDeliver.getOrder_code(), "6");
 					}

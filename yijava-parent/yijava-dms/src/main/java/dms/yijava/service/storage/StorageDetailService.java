@@ -8,6 +8,7 @@ import java.util.Map;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -54,19 +55,27 @@ public class StorageDetailService {
 	 * 销售入库
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
-	public synchronized String orderStorage(String dealer_id,String order_code,
+	public synchronized String orderStorage(String dealer_id,String storage_id,String order_code,
 			List<DeliverExpressDetail> deliverExpressDetails,
 			List<DeliverExpressSn> deliverExpressSns) {
+		//经销商id
+		if(StringUtils.isBlank(dealer_id) || StringUtils.isBlank(storage_id)){
+			return "storageError";
+		}
+	/*
 		//查询默认仓库
 		DealerStorage dealerStorage = dealerStorageService.getDefaultStorage(dealer_id);
 		if (dealerStorage == null) {
 			return "storageError";
 		}
+	*/
 		//更新库存
 		for (DeliverExpressDetail deliverExpressDetail : deliverExpressDetails) {
 			StorageDetail storageDetail = new StorageDetail();
-			storageDetail.setFk_dealer_id(dealerStorage.getDealer_id());
-			storageDetail.setFk_storage_id(dealerStorage.getStorage_id());
+			//storageDetail.setFk_dealer_id(dealerStorage.getDealer_id());
+			//storageDetail.setFk_storage_id(dealerStorage.getStorage_id());
+			storageDetail.setFk_dealer_id(dealer_id);
+			storageDetail.setFk_storage_id(storage_id);
 			storageDetail.setProduct_item_number(deliverExpressDetail.getProduct_item_number());
 			storageDetail.setInventory_number(deliverExpressDetail.getExpress_num());
 			storageDetail.setBatch_no(deliverExpressDetail.getExpress_sn());
@@ -81,8 +90,10 @@ public class StorageDetailService {
 			for (DeliverExpressSn deliverExpressSn : deliverExpressSns) {
 				if(deliverExpressDetail.getId().equals(deliverExpressSn.getDeliver_express_detail_id())){
 					StorageProDetail storageProDetail = new StorageProDetail();
-					storageProDetail.setFk_dealer_id(dealerStorage.getDealer_id());
-					storageProDetail.setFk_storage_id(dealerStorage.getStorage_id());
+//					storageProDetail.setFk_dealer_id(dealerStorage.getDealer_id());
+//					storageProDetail.setFk_storage_id(dealerStorage.getStorage_id());
+					storageProDetail.setFk_dealer_id(dealer_id);
+					storageProDetail.setFk_storage_id(storage_id);
 					storageProDetail.setFk_order_code(order_code);
 					storageProDetail.setBatch_no(deliverExpressDetail.getExpress_sn());
 					storageProDetail.setProduct_sn(deliverExpressSn.getProduct_sn());

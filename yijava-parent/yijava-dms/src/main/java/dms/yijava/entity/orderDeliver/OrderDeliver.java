@@ -19,5 +19,6 @@ public class OrderDeliver {
 	private String consignee_date;
 	private String consignee_status;
 	private String totalMoney;
+	private String storage_id;
 
 }
