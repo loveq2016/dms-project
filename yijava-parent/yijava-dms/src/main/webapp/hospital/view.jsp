@@ -398,7 +398,27 @@
 			 $('#fm').form('load',row);
 			 $('#dlg').dialog('open').dialog('setTitle','医院信息明细');
 			 $('#saveobject').linkbutton('disable');
-			 
+			  loadProvince();
+	            $('#provinces').combobox({
+	            	onLoadSuccess: function(){
+	    	            $('#provinces').combobox("setValue",row.provinces);
+	    	            $('#provinces').combobox("setText",row.provinces_name);
+	            	}
+	            });
+	            $('#area').combobox({
+	            	onLoadSuccess: function(){
+	    	            $('#area').combobox("setValue",row.area);
+	    	            $('#area').combobox("setText",row.area_name);
+	            	}
+	            });
+	            $('#city').combobox({
+	            	onLoadSuccess: function(){
+	    	            $('#city').combobox("setValue",row.city);
+	    	            $('#city').combobox("setText",row.city_name);
+	            	}
+	            });
+
+	         
 		}
 
 
