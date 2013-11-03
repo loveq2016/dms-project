@@ -669,27 +669,29 @@
 			if (row){
 				if(row.order_status=='0'){
 					$.messager.confirm('Confirm','是否确定删除?',function(r){
-					    $.ajax({
-							type : "POST",
-							url :basePath+'api/order/remove',
-							data:{id:row.order_code},
-							error : function(request) {
-								$.messager.alert('提示','抱歉,删除错误!','error');	
-							},
-							success:function(msg){
-							    var jsonobj = $.parseJSON(msg);
-	        					if (jsonobj.state == 1) {
-	        						 order_code=undefined;
-	        	                     $('#dg').datagrid('reload');
-	        	                     $('#dgDetail').datagrid('loadData', {total: 0, rows: [] });
-	        	                     $('#dgDetail').datagrid({
-	        	         				title:'包含产品'
-	        	         			 });
-	        					}else{
-	        						$.messager.alert('提示','抱歉,删除错误!','error');	
-	        					}
-							}
-						});
+						if (r){
+						    $.ajax({
+								type : "POST",
+								url :basePath+'api/order/remove',
+								data:{id:row.order_code},
+								error : function(request) {
+									$.messager.alert('提示','抱歉,删除错误!','error');	
+								},
+								success:function(msg){
+								    var jsonobj = $.parseJSON(msg);
+		        					if (jsonobj.state == 1) {
+		        						 order_code=undefined;
+		        	                     $('#dg').datagrid('reload');
+		        	                     $('#dgDetail').datagrid('loadData', {total: 0, rows: [] });
+		        	                     $('#dgDetail').datagrid({
+		        	         				title:'包含产品'
+		        	         			 });
+		        					}else{
+		        						$.messager.alert('提示','抱歉,删除错误!','error');	
+		        					}
+								}
+							});
+						}
 					});
 				}else{
 					$.messager.alert('提示','无法删除已处理的订单!','error');
@@ -752,23 +754,25 @@
 			if (row){
 				if(order_status=='0' || order_status=='2'){
 					$.messager.confirm('Confirm','是否确定删除?',function(r){
-					    $.ajax({
-							type : "POST",
-							url :basePath+'api/orderdetail/remove',
-							data:{oc:row.order_code,id:row.id},
-							error : function(request) {
-								$.messager.alert('提示','抱歉,删除错误!','error');	
-							},
-							success:function(msg){
-							    var jsonobj = $.parseJSON(msg);
-	        					if (jsonobj.state == 1) {
-	        	                     $('#dgDetail').datagrid('reload');
-	        	                     $('#dg').datagrid('reload');
-	        					}else{
-	        						$.messager.alert('提示','抱歉,删除错误!','error');	
-	        					}
-							}
-						});
+						if (r){
+						    $.ajax({
+								type : "POST",
+								url :basePath+'api/orderdetail/remove',
+								data:{oc:row.order_code,id:row.id},
+								error : function(request) {
+									$.messager.alert('提示','抱歉,删除错误!','error');	
+								},
+								success:function(msg){
+								    var jsonobj = $.parseJSON(msg);
+		        					if (jsonobj.state == 1) {
+		        	                     $('#dgDetail').datagrid('reload');
+		        	                     $('#dg').datagrid('reload');
+		        					}else{
+		        						$.messager.alert('提示','抱歉,删除错误!','error');	
+		        					}
+								}
+							});
+						}
 					});
 				}else{
 					$.messager.alert('提示','无法删除已提交的订单!','error');

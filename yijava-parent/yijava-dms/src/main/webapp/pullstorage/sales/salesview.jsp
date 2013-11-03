@@ -565,27 +565,29 @@
 			if (row){
 				if(row.status=='0'){
 					$.messager.confirm('Confirm','是否确定删除?',function(r){
-					    $.ajax({
-							type : "POST",
-							url :basePath+'api/salesstorage/remove',
-							data:{pull_storage_code:row.pull_storage_code,filter_ANDS_pull_storage_code:row.pull_storage_code},
-							error : function(request) {
-								$.messager.alert('提示','抱歉,删除错误!','error');	
-							},
-							success:function(msg){
-							    var jsonobj = $.parseJSON(msg);
-	        					if (jsonobj.state == 1) {
-	        						 pull_storage_code=undefined;
-	        	                     $('#dg').datagrid('reload');
-	        	                     $('#dgDetail').datagrid('loadData', {total: 0, rows: [] });
-	        	                     $('#dgDetail').datagrid({
-	        	         				title:'包含产品'
-	        	         			 });
-	        					}else{
-	        						$.messager.alert('提示','抱歉,删除错误!','error');	
-	        					}
-							}
-						});
+						if (r){
+						    $.ajax({
+								type : "POST",
+								url :basePath+'api/salesstorage/remove',
+								data:{pull_storage_code:row.pull_storage_code,filter_ANDS_pull_storage_code:row.pull_storage_code},
+								error : function(request) {
+									$.messager.alert('提示','抱歉,删除错误!','error');	
+								},
+								success:function(msg){
+								    var jsonobj = $.parseJSON(msg);
+		        					if (jsonobj.state == 1) {
+		        						 pull_storage_code=undefined;
+		        	                     $('#dg').datagrid('reload');
+		        	                     $('#dgDetail').datagrid('loadData', {total: 0, rows: [] });
+		        	                     $('#dgDetail').datagrid({
+		        	         				title:'包含产品'
+		        	         			 });
+		        					}else{
+		        						$.messager.alert('提示','抱歉,删除错误!','error');	
+		        					}
+								}
+							});
+						}
 					});
 				}else{
 					$.messager.alert('提示','无法删除已提交的单据!','error');
@@ -655,23 +657,25 @@
 			if (row){
 				if(status=='0'|| status=='2'){
 					$.messager.confirm('Confirm','是否确定删除?',function(r){
-					    $.ajax({
-							type : "POST",
-							url :basePath+'api/pullstoragedetail/remove',
-							data:{id:row.id,pull_storage_code:pull_storage_code},
-							error : function(request) {
-								$.messager.alert('提示','抱歉,删除错误!','error');	
-							},
-							success:function(msg){
-							    var jsonobj = $.parseJSON(msg);
-	        					if (jsonobj.state == 1) {
-	        	                     $('#dgDetail').datagrid('reload');
-	        	                     $('#dg').datagrid('reload');
-	        					}else{
-	        						$.messager.alert('提示','抱歉,删除错误!','error');	
-	        					}
-							}
-						});
+						if (r){
+						    $.ajax({
+								type : "POST",
+								url :basePath+'api/pullstoragedetail/remove',
+								data:{id:row.id,pull_storage_code:pull_storage_code},
+								error : function(request) {
+									$.messager.alert('提示','抱歉,删除错误!','error');	
+								},
+								success:function(msg){
+								    var jsonobj = $.parseJSON(msg);
+		        					if (jsonobj.state == 1) {
+		        	                     $('#dgDetail').datagrid('reload');
+		        	                     $('#dg').datagrid('reload');
+		        					}else{
+		        						$.messager.alert('提示','抱歉,删除错误!','error');	
+		        					}
+								}
+							});
+						}
 					});
 				}else{
 					$.messager.alert('提示','无法删除已提交的单据!','error');
