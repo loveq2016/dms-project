@@ -671,7 +671,8 @@
 					$.messager.confirm('Confirm','是否确定删除?',function(r){
 					    $.ajax({
 							type : "POST",
-							url :basePath+'api/order/remove?id='+row.order_code,
+							url :basePath+'api/order/remove',
+							data:{id:row.order_code},
 							error : function(request) {
 								$.messager.alert('提示','抱歉,删除错误!','error');	
 							},
@@ -753,7 +754,8 @@
 					$.messager.confirm('Confirm','是否确定删除?',function(r){
 					    $.ajax({
 							type : "POST",
-							url :basePath+'api/orderdetail/remove?oc='+row.order_code+'&id='+row.id,
+							url :basePath+'api/orderdetail/remove',
+							data:{oc:row.order_code,id:row.id},
 							error : function(request) {
 								$.messager.alert('提示','抱歉,删除错误!','error');	
 							},
