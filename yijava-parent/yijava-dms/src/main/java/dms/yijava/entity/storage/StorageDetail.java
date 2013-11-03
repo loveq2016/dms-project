@@ -1,11 +1,13 @@
 package dms.yijava.entity.storage;
 
+import java.io.Serializable;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class StorageDetail {
+public class StorageDetail implements Serializable {
 
 	private String id;
 	private String fk_storage_id;

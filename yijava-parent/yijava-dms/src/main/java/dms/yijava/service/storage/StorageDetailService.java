@@ -1,6 +1,13 @@
 package dms.yijava.service.storage;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +56,22 @@ public class StorageDetailService {
 				pageRequest.getPageSize(), pageRequest.getOrderBy(),
 				pageRequest.getOrderDir());
 	}
+	
+	/**
+	 * List 深复制
+	 */
+	public static <T> List<T> deepCopy(List<T> src) throws IOException, ClassNotFoundException {
+		ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+		ObjectOutputStream out = new ObjectOutputStream(byteOut);
+		out.writeObject(src);
+		ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
+		ObjectInputStream in = new ObjectInputStream(byteIn);
+		@SuppressWarnings("unchecked")
+		List<T> dest = (List<T>) in.readObject();
+		return dest;
+	}
+	
+	
 	
 	
 	/**
@@ -111,11 +134,25 @@ public class StorageDetailService {
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
 	public synchronized PullStorageOpt updateStorageLockSn(
-			List<StorageDetail> StorageDetailList,
-			List<StorageProDetail> StorageProDetailList) {
+			List<StorageDetail> StorageDetailListTemp,
+			List<StorageProDetail> StorageProDetailListTemp) {
+
+		boolean isError = false ; 
+		List<StorageDetail> StorageDetailList = null;
+		List<StorageProDetail> StorageProDetailList = null;
+		try {
+			StorageDetailList = deepCopy(StorageDetailListTemp);
+			StorageProDetailList = deepCopy(StorageProDetailListTemp);
+		} catch (ClassNotFoundException e) {
+			isError = true ;
+			throw new RuntimeException("对象未序列化");
+		} catch (IOException e) {
+			isError = true ;
+			throw new RuntimeException("对象未序列化");
+		}
+		
 		List<StorageProDetail> lockSnList = new ArrayList<StorageProDetail>();
 		PullStorageOpt opt = new PullStorageOpt();
-		boolean isError = false ; 
 		//减少库存
 		for (StorageDetail storageDetail : StorageDetailList) {
 			//查询库存
@@ -190,7 +227,17 @@ public class StorageDetailService {
 	 * 库存回滚、取消锁定Sn记录
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
-	public synchronized boolean rollBackStorageUnLockSn(List<StorageDetail> StorageDetailList,List<StorageProDetail> StorageProDetailList) {
+	public synchronized boolean rollBackStorageUnLockSn(List<StorageDetail> StorageDetailListTemp,List<StorageProDetail> StorageProDetailListTemp) {
+		List<StorageDetail> StorageDetailList = null;
+		List<StorageProDetail> StorageProDetailList = null;
+		try {
+			StorageDetailList = deepCopy(StorageDetailListTemp);
+			StorageProDetailList = deepCopy(StorageProDetailListTemp);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("对象未序列化");
+		} catch (IOException e) {
+			throw new RuntimeException("对象未序列化");
+		}
 		//库存回滚
 		for (StorageDetail storageDetail : StorageDetailList) {
 			int upIdex = storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
@@ -210,8 +257,20 @@ public class StorageDetailService {
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
 	public synchronized boolean updateStorageAndSnSub(String dealer_id,
-			List<StorageDetail> StorageDetailList,
-			List<StorageProDetail> StorageProDetailList) {
+			List<StorageDetail> StorageDetailListTemp,
+			List<StorageProDetail> StorageProDetailListTemp) {
+		
+		List<StorageDetail> StorageDetailList = null;
+		List<StorageProDetail> StorageProDetailList = null;
+		try {
+			StorageDetailList = deepCopy(StorageDetailListTemp);
+			StorageProDetailList = deepCopy(StorageProDetailListTemp);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("对象未序列化");
+		} catch (IOException e) {
+			throw new RuntimeException("对象未序列化");
+		}
+		
 		DealerStorage dealerStorage = null ; 
 		if (dealer_id != null) {
 			//查询默认仓库
