@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Object">
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">		
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(parentid)">and 1=1</if>
+		</trim>
+	</sql>
+	<sql id="adsOrder">
+		<choose>
+			<when test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(orderSql)">
+				order by ${orderSql}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</sql>
+	<select id="selectByObjectcount_ProCateHospDetails" resultType="long">
+		select COUNT(*) from (select t7.realname,
+			t1.product_remark,t1.area_remark,
+			provinces.name as provinces_name,	city.name as city_name,area.name as area_name,
+			t4.level_name,t5.dealer_name,t5.dealer_code,t3.* 
+			from 
+			dms.tb_dealer_auth_product t1 
+			inner join dms.tb_dealer_auth_hospital t2 on t1.dealer_id = t2.dealer_id and t1.product_category_id = t2.category_id
+			left join dms.tb_hospital t3 on t2.hospital_id = t3.id
+			left join dms.tb_hospital_level t4 on t3.level_id = t4.id
+			left join dms.tb_dealer t5 on t1.dealer_id = t5.dealer_id
+			left join dms.tb_user_dealer t6 on t1.dealer_id = t6.dealer_id
+			left join dms.tb_manager_user t7 on t6.user_id = t7.id
+			left join tb_area provinces on t3.provinces = provinces.areaid
+			left join tb_area city on t3.city = city.areaid
+			left join tb_area area on t3.area = area.areaid
+		) t
+		<include refid="adsWhere" />
+	</select>
+	<select id="selectByObject_ProCateHospDetails" resultType="java.util.HashMap">
+		select * from (select t7.realname,
+			t1.product_remark,t1.area_remark,
+			provinces.name as provinces_name,	city.name as city_name,area.name as area_name,
+			t4.level_name,t5.dealer_name,t5.dealer_code,t3.* 
+			from 
+			dms.tb_dealer_auth_product t1 
+			inner join dms.tb_dealer_auth_hospital t2 on t1.dealer_id = t2.dealer_id and t1.product_category_id = t2.category_id
+			left join dms.tb_hospital t3 on t2.hospital_id = t3.id
+			left join dms.tb_hospital_level t4 on t3.level_id = t4.id
+			left join dms.tb_dealer t5 on t1.dealer_id = t5.dealer_id
+			left join dms.tb_user_dealer t6 on t1.dealer_id = t6.dealer_id
+			left join dms.tb_manager_user t7 on t6.user_id = t7.id
+			left join tb_area provinces on t3.provinces = provinces.areaid
+			left join tb_area city on t3.city = city.areaid
+			left join tb_area area on t3.area = area.areaid
+		) t
+		<include refid="adsWhere" />
+		<include refid="adsOrder" />
+	</select>    
+</mapper>
