@@ -71,7 +71,7 @@
 					</thead>
 				</table>
 			</div>
-		   <div id="dlgInfo" class="easyui-dialog" style="width:703px;height:450px;padding: 5px 5px 5px 5px;"
+		   <div id="dlgInfo" class="easyui-dialog" style="width:703px;height:250px;padding: 5px 5px 5px 5px;"
 		            modal="true" closed="true">
 		         <form id="fmInfo" method="post" novalidate enctype="multipart/form-data">
 		         <div class="easyui-tabs" style="width:680px;height: auto;">
@@ -100,6 +100,8 @@
 		 		</div>
 		 		</form>
 		   </div>
+		   
+		   
 		</div>
 	</div>	
 	<div id="treetool">
