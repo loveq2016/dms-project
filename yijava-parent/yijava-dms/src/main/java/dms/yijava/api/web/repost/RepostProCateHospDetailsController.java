@@ -59,7 +59,7 @@ public class RepostProCateHospDetailsController {
 	@RequestMapping("down")
 	public void down(PageRequest pageRequest, HttpServletRequest request,
 			final HttpServletResponse response) throws IOException {
-		   pageRequest.setOrderBy("id");
+		   pageRequest.setOrderBy("proid");
 		   pageRequest.setOrderDir("desc");
 		   pageRequest.setPageSize(1000000);
 		   List<PropertyFilter> filters = PropertyFilters.build(request);
@@ -99,23 +99,24 @@ public class RepostProCateHospDetailsController {
 					HSSFCell cellN = rowN.createCell((short)j);  
                     cellN.setCellStyle(styleContent);  
                     switch (j) {
-						case 0:cellN.setCellValue((String)map.get("product_remark"));break;
-						case 1:cellN.setCellValue((String)map.get("hospital_name"));break;
-						case 2:cellN.setCellValue((String)map.get("realname"));break;
-						case 3:cellN.setCellValue((String)map.get("dealer_name"));break;
-						case 4:cellN.setCellValue((String)map.get(""));break;
-						case 5:cellN.setCellValue((String)map.get(""));break;
-						case 6:cellN.setCellValue((String)map.get(""));break;
-						case 7:cellN.setCellValue((String)map.get(""));break;
-						case 8:cellN.setCellValue((String)map.get(""));break;
-						case 9:cellN.setCellValue((String)map.get("level_name"));break;
-						case 10:cellN.setCellValue((String)map.get("provinces_name"));break;
-						case 11:cellN.setCellValue((String)map.get("area_name"));break;
-						case 12:cellN.setCellValue((String)map.get("city_name"));break;
-						case 13:cellN.setCellValue((String)map.get("postcode"));break;
-						case 14:cellN.setCellValue((String)map.get("address"));break;
-						case 15:cellN.setCellValue((String)map.get("phone"));break;
-						case 16:cellN.setCellValue((String)map.get("beds"));break;
+						case 0:cellN.setCellValue(valueOf(map.get("product_remark")));break;
+						case 1:cellN.setCellValue(valueOf(map.get("hospital_name")));break;
+						case 2:cellN.setCellValue(valueOf(map.get("realname")));break;
+						case 3:cellN.setCellValue(valueOf(map.get("dealer_name")));break;
+						case 4:cellN.setCellValue(valueOf(map.get("")));break;
+						case 5:cellN.setCellValue(valueOf(map.get("")));break;
+						case 6:cellN.setCellValue(valueOf(map.get("")));break;
+						case 7:cellN.setCellValue(valueOf(map.get("")));break;
+						case 8:cellN.setCellValue(valueOf(map.get("")));break;
+						case 9:cellN.setCellValue(valueOf(map.get("")));break;
+						case 10:cellN.setCellValue(valueOf(map.get("level_name")));break;
+						case 11:cellN.setCellValue(valueOf(map.get("provinces_name")));break;
+						case 12:cellN.setCellValue(valueOf(map.get("area_name")));break;
+						case 13:cellN.setCellValue(valueOf(map.get("city_name")));break;
+						case 14:cellN.setCellValue(valueOf(map.get("postcode")));break;
+						case 15:cellN.setCellValue(valueOf(map.get("address")));break;
+						case 16:cellN.setCellValue(valueOf(map.get("phone")));break;
+						case 17:cellN.setCellValue(valueOf(map.get("beds")));break;
 						default:break;
 					}
 				}
@@ -155,4 +156,9 @@ public class RepostProCateHospDetailsController {
 			e.printStackTrace();
 		}
 	}
+	
+	public static String valueOf(Object obj) {  
+	    return (obj == null) ? "" : obj.toString();  
+	}  
 }
+

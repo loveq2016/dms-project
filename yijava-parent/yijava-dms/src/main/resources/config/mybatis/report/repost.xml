@@ -17,7 +17,7 @@
 		</choose>
 	</sql>
 	<select id="selectByObjectcount_ProCateHospDetails" resultType="long">
-		select COUNT(*) from (select t7.realname,
+		select COUNT(*) from (select t7.realname,t1.id as proid,
 			t1.product_remark,t1.area_remark,
 			provinces.name as provinces_name,	city.name as city_name,area.name as area_name,
 			t4.level_name,t5.dealer_name,t5.dealer_code,t3.* 
@@ -36,7 +36,7 @@
 		<include refid="adsWhere" />
 	</select>
 	<select id="selectByObject_ProCateHospDetails" resultType="java.util.HashMap">
-		select * from (select t7.realname,
+		select * from (select t7.realname,t1.id as proid,
 			t1.product_remark,t1.area_remark,
 			provinces.name as provinces_name,	city.name as city_name,area.name as area_name,
 			t4.level_name,t5.dealer_name,t5.dealer_code,t3.* 
@@ -54,5 +54,45 @@
 		) t
 		<include refid="adsWhere" />
 		<include refid="adsOrder" />
-	</select>    
+	</select>
+	
+	<select id="selectByObjectcount_SalesHospitalReport" resultType="long">
+		select COUNT(*) from (
+		select tmu.realname,t1.*,t3.level_name,t4.category_name,t5.dealer_name,t5.dealer_id,
+		provinces.name as provinces_name,
+		city.name as city_name,
+		area.name as area_name 
+		from tb_hospital t1 
+		inner join tb_dealer_auth_hospital t2 on t1.id = t2.hospital_id
+		left join tb_hospital_level t3 on t1.level_id = t3.id
+		left join tb_product_category t4 on t2.category_id = t4.id
+		inner join tb_dealer t5 on t2.dealer_id = t5.dealer_id and t5.dealer_id in (select dealer_id from tb_user_dealer)
+		left join tb_area provinces on t1.provinces = provinces.areaid
+		left join tb_area city on t1.city = city.areaid
+		left join tb_area area on t1.area = area.areaid
+		left join tb_user_dealer tud on tud.dealer_id=t5.dealer_id
+	    left join tb_manager_user tmu on tmu.id = tud.user_id
+		) t
+		<include refid="adsWhere" />
+	</select>
+	<select id="selectByObject_SalesHospitalReport" resultType="java.util.HashMap">
+		select * from (
+			select tmu.realname,t1.*,t3.level_name,t4.category_name,t5.dealer_name,t5.dealer_id,
+			provinces.name as provinces_name,
+			city.name as city_name,
+			area.name as area_name 
+			from tb_hospital t1 
+			inner join tb_dealer_auth_hospital t2 on t1.id = t2.hospital_id
+			left join tb_hospital_level t3 on t1.level_id = t3.id
+			left join tb_product_category t4 on t2.category_id = t4.id
+			inner join tb_dealer t5 on t2.dealer_id = t5.dealer_id and t5.dealer_id in (select dealer_id from tb_user_dealer)
+			left join tb_area provinces on t1.provinces = provinces.areaid
+			left join tb_area city on t1.city = city.areaid
+			left join tb_area area on t1.area = area.areaid
+		    left join tb_user_dealer tud on tud.dealer_id=t5.dealer_id
+	        left join tb_manager_user tmu on tmu.id = tud.user_id
+		) t 
+		<include refid="adsWhere" />
+		<include refid="adsOrder" />
+	</select>
 </mapper>

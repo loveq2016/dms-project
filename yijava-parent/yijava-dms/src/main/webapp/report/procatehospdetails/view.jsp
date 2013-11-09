@@ -69,7 +69,7 @@
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
 				<table id="dg" title="查询结果" style="height: 480px" method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tb">
+					rownumbers="true" singleSelect="true" pagination="true" sortName="proid" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
 							<th field="product_remark" width="160" align="left" sortable="true">产品分类</th>
