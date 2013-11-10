@@ -95,4 +95,87 @@
 		<include refid="adsWhere" />
 		<include refid="adsOrder" />
 	</select>
+	
+	
+	<sql id="adsWhereDealerReport">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">		
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">and dealer_name like CONCAT('%','${dealer_name}','%' ) </if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_code)">and dealer_code like CONCAT('%','${dealer_code}','%' ) </if>
+		</trim>
+	</sql>
+		<select id="selectByObjectcount_DealerReport" resultType="long">
+		select COUNT(*) from (
+			select 
+			(select if(count(1)>0,'是','否') from dms.tb_manager_user a where a.fk_dealer_id = t1.dealer_id) as account, 
+			(select if(count(1)>0,'是','否') from dms.tb_dealer_auth_product b where b.dealer_id = t1.dealer_id) as auth,
+			t3.address as linkaddress,t3.postcode,t3.linkman,t3.linkphone,
+			t2.category_name,t1.* 
+			from dms.tb_dealer t1 
+			left join dms.tb_dealer_category t2 on t1.category_id = t2.id
+			left join dms.tb_dealer_address t3 on t1.dealer_id = t3.dealer_id group by t3.id
+		) t
+		<include refid="adsWhereDealerReport" />
+	</select>
+	<select id="selectByObject_DealerReport" resultType="java.util.HashMap">
+		select * from (
+			select 
+			(select if(count(1)>0,'是','否') from dms.tb_manager_user a where a.fk_dealer_id = t1.dealer_id) as account, 
+			(select if(count(1)>0,'是','否') from dms.tb_dealer_auth_product b where b.dealer_id = t1.dealer_id) as auth,
+			t3.address as linkaddress,t3.postcode,t3.linkman,t3.linkphone,
+			t2.category_name,t1.* 
+			from dms.tb_dealer t1 
+			left join dms.tb_dealer_category t2 on t1.category_id = t2.id
+			left join dms.tb_dealer_address t3 on t1.dealer_id = t3.dealer_id group by t3.id
+		) t 
+		<include refid="adsWhereDealerReport" />
+		<include refid="adsOrder" />
+	</select>
+	
+	
+	<sql id="adsWhereDealerAuthReport">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">		
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">and dealer_name like CONCAT('%','${dealer_name}','%' ) </if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_code)">and dealer_code like CONCAT('%','${dealer_code}','%' ) </if>
+		</trim>
+	</sql>
+		<select id="selectByObjectcount_DealerAuthReport" resultType="long">
+		select COUNT(*) from (
+			select t3.* ,
+			t1.product_remark,t1.area_remark,
+			provinces.name as provinces_name,city.name as city_name,area.name as area_name,
+			t4.level_name,t6.category_name,t5.dealer_name,t5.dealer_code,t5.attribute
+			from 
+			dms.tb_dealer_auth_product t1 
+			inner join dms.tb_dealer_auth_hospital t2 on t1.dealer_id = t2.dealer_id and t1.product_category_id = t2.category_id
+			left join dms.tb_hospital t3 on t2.hospital_id = t3.id
+			left join dms.tb_hospital_level t4 on t3.level_id = t4.id
+			left join dms.tb_dealer t5 on t1.dealer_id = t5.dealer_id
+			left join dms.tb_dealer_category t6 on t5.category_id = t6.id
+			left join tb_area provinces on t3.provinces = provinces.areaid
+			left join tb_area city on t3.city = city.areaid
+			left join tb_area area on t3.area = area.areaid
+		) t
+		<include refid="adsWhereDealerAuthReport" />
+	</select>
+	<select id="selectByObject_DealerAuthReport" resultType="java.util.HashMap">
+		select * from (
+			select t3.* ,
+			t1.product_remark,t1.area_remark,
+			provinces.name as provinces_name,city.name as city_name,area.name as area_name,
+			t4.level_name,t6.category_name,t5.dealer_name,t5.dealer_code,t5.attribute
+			from 
+			dms.tb_dealer_auth_product t1 
+			inner join dms.tb_dealer_auth_hospital t2 on t1.dealer_id = t2.dealer_id and t1.product_category_id = t2.category_id
+			left join dms.tb_hospital t3 on t2.hospital_id = t3.id
+			left join dms.tb_hospital_level t4 on t3.level_id = t4.id
+			left join dms.tb_dealer t5 on t1.dealer_id = t5.dealer_id
+			left join dms.tb_dealer_category t6 on t5.category_id = t6.id
+			left join tb_area provinces on t3.provinces = provinces.areaid
+			left join tb_area city on t3.city = city.areaid
+			left join tb_area area on t3.area = area.areaid
+		) t 
+		<include refid="adsWhereDealerAuthReport" />
+		<include refid="adsOrder" />
+	</select>
+	
 </mapper>

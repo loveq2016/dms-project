@@ -37,8 +37,8 @@ import com.yijava.orm.core.PropertyFilters;
 import dms.yijava.service.repost.RepostService;
 
 @Controller
-@RequestMapping("/api/repostDealer")
-public class RepostDealerController {
+@RequestMapping("/api/repostDealerAuth")
+public class RepostDealerAuthController {
 	
 	@Autowired
 	private RepostService repostService;
@@ -48,7 +48,7 @@ public class RepostDealerController {
 	public JsonPage<Map<String,Object>> paging(PageRequest pageRequest,HttpServletRequest request,Model model) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
 		try {
-			return repostService.dealerPaging(pageRequest,filters);
+			return repostService.dealerAuthPaging(pageRequest,filters);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -59,13 +59,13 @@ public class RepostDealerController {
 	@RequestMapping("down")
 	public void down(PageRequest pageRequest, HttpServletRequest request,
 			final HttpServletResponse response) throws IOException {
-		   pageRequest.setOrderBy("dealer_id");
+		   pageRequest.setOrderBy("id");
 		   pageRequest.setOrderDir("desc");
 		   pageRequest.setPageSize(1000000);
 		   List<PropertyFilter> filters = PropertyFilters.build(request);
-		   List<Map<String,Object>> list = repostService.dealerPaging(pageRequest,filters).getRows();
+		   List<Map<String,Object>> list = repostService.dealerAuthPaging(pageRequest,filters).getRows();
 		   String classPath = new File(getClass().getResource("/excel").getFile()).getCanonicalPath(); 
-		   String excelPath = classPath + File.separator + "DealerReport.xls";
+		   String excelPath = classPath + File.separator + "DealerAuthReport.xls";
 		   excel(excelPath, list, response);
 	}
 	
@@ -136,39 +136,23 @@ public class RepostDealerController {
 	        int row = 1 ;
 	        for (Map<String,Object> map : list) {
 	        	HSSFRow rowN = sheet.createRow(row);
-				for (int j = 0; j <= 28; j++) {
+				for (int j = 0; j <= 12; j++) {
 					HSSFCell cellN = rowN.createCell((short)j);  
                     cellN.setCellStyle(styleContent);  
                     switch (j) {
 						case 0:cellN.setCellValue(valueOf( map.get("dealer_name")));break;
-						case 1:cellN.setCellValue(valueOf( map.get("account")));break;
-						case 2:cellN.setCellValue(valueOf( map.get("auth")));break;
-						case 3:cellN.setCellValue(valueOf( map.get("category_name")));break;
-						case 4:cellN.setCellValue(valueOf( map.get("attribute")));break;
-						case 5:cellN.setCellValue(valueOf( map.get("dealer_code")));break;
-						case 6:cellN.setCellValue(valueOf( map.get("business_contacts")));break;
-						case 7:cellN.setCellValue(valueOf( map.get("business_phone")));break;
-						case 8:cellN.setCellValue(valueOf( map.get("invoice_address")));break;
-						case 9:cellN.setCellValue(valueOf( map.get("invoicea_postcode")));break;
-						case 10:cellN.setCellValue(valueOf( map.get("linkaddress")));break;
-						case 11:cellN.setCellValue(valueOf( map.get("postcode")));break;
-						case 12:cellN.setCellValue(valueOf( map.get("linkman")));break;
-						case 13:cellN.setCellValue(valueOf( map.get("linkphone")));break;
-						case 14:cellN.setCellValue(valueOf( map.get("register_address")));break;
-						case 15:cellN.setCellValue(valueOf( map.get("company_type")));break;
-						case 16:cellN.setCellValue(valueOf( map.get("found_time")));break;
-						case 17:cellN.setCellValue(valueOf( map.get("corporate")));break;
-						case 18:cellN.setCellValue(valueOf( map.get("corporate_phone")));break;
-						case 19:cellN.setCellValue(valueOf( map.get("register_fund")));break;
-						case 20:cellN.setCellValue(valueOf( map.get("operated_scope")));break;
-						case 21:cellN.setCellValue(valueOf( map.get("addess")));break;
-						case 22:cellN.setCellValue(valueOf( map.get("GM_name")));break;
-						case 23:cellN.setCellValue(valueOf( map.get("GM_phone")));break;
-						case 24:cellN.setCellValue(valueOf( map.get("BM_name")));break;
-						case 25:cellN.setCellValue(valueOf( map.get("BM_phone")));break;
-						case 26:cellN.setCellValue(valueOf( map.get("BM_telephone")));break;
-						case 27:cellN.setCellValue(valueOf( map.get("BM_fax")));break;
-						case 28:cellN.setCellValue(valueOf( map.get("email")));break;				
+						case 1:cellN.setCellValue(valueOf( map.get("category_name")));break;
+						case 2:cellN.setCellValue(valueOf( map.get("attribute")));break;
+						case 3:cellN.setCellValue(valueOf( map.get("product_remark")));break;
+						case 4:cellN.setCellValue(valueOf( map.get("hospital_name")));break;
+						case 5:cellN.setCellValue(valueOf( map.get("level_name")));break;
+						case 6:cellN.setCellValue(valueOf( map.get("provinces_name")));break;
+						case 7:cellN.setCellValue(valueOf( map.get("area_name")));break;
+						case 8:cellN.setCellValue(valueOf( map.get("city_name")));break;
+						case 9:cellN.setCellValue(valueOf( map.get("postcode")));break;
+						case 10:cellN.setCellValue(valueOf( map.get("address")));break;
+						case 11:cellN.setCellValue(valueOf( map.get("phone")));break;
+						case 12:cellN.setCellValue(valueOf( map.get("beds")));break;
 						default:break;
 					}
 				}

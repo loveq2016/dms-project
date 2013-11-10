@@ -13,7 +13,6 @@ import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 
 import dms.yijava.dao.repost.RepostDao;
-import dms.yijava.entity.question.Question;
 
 @Service
 @Transactional
@@ -40,6 +39,30 @@ public class RepostService {
 			parameters.put(propertyKey, propertyFilter.getMatchValue());
 		}
 		return repostDao.getScrollData("SalesHospitalReport",parameters, pageRequest.getOffset(),
+				pageRequest.getPageSize(), pageRequest.getOrderBy(),
+				pageRequest.getOrderDir());
+	}
+	
+	
+	public JsonPage<Map<String,Object>> dealerPaging(PageRequest pageRequest,List<PropertyFilter> filters) {
+		Map<String,String> parameters = new HashMap<String,String>();
+		for (PropertyFilter propertyFilter : filters) {
+			String propertyKey = propertyFilter.getPropertyNames()[0];
+			parameters.put(propertyKey, propertyFilter.getMatchValue());
+		}
+		return repostDao.getScrollData("DealerReport",parameters, pageRequest.getOffset(),
+				pageRequest.getPageSize(), pageRequest.getOrderBy(),
+				pageRequest.getOrderDir());
+	}
+	
+	
+	public JsonPage<Map<String,Object>> dealerAuthPaging(PageRequest pageRequest,List<PropertyFilter> filters) {
+		Map<String,String> parameters = new HashMap<String,String>();
+		for (PropertyFilter propertyFilter : filters) {
+			String propertyKey = propertyFilter.getPropertyNames()[0];
+			parameters.put(propertyKey, propertyFilter.getMatchValue());
+		}
+		return repostDao.getScrollData("DealerAuthReport",parameters, pageRequest.getOffset(),
 				pageRequest.getPageSize(), pageRequest.getOrderBy(),
 				pageRequest.getOrderDir());
 	}

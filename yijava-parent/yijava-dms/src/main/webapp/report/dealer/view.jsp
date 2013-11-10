@@ -60,7 +60,7 @@
 				</table>
 				<div id="tb">    
 					<restrict:function funId="221">
-					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="repostExcel();">添加</a> 
+					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="repostExcel();">导出</a> 
 					</restrict:function>   
 				</div> 
 			</div>
@@ -203,7 +203,7 @@
 	
 	 	var url;
 		$('#dg').datagrid({
-			url : basePath + "api/dealer/paging",
+			url : basePath + "api/repostDealer/paging",
 			 onLoadSuccess:function(data){ 
 				  $(".questionBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
 			 }
