@@ -2,9 +2,25 @@
     <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Object">
-	<sql id="adsWhere">
+	<sql id="adsWhere_ProCateHospDetails">
 		<trim prefix="WHERE" prefixOverrides="AND|OR">		
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(parentid)">and 1=1</if>
+		</trim>
+	</sql>
+	<sql id="adsWhere_SalesHospitalReport">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">		
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(parentid)">and 1=1</if>
+		</trim>
+	</sql>
+	<sql id="adsWhere_StorageReport">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
+				  and fk_dealer_id=#{dealer_id}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)">
+				  and fk_dealer_id in (${dealer_ids})
+			</if>
+			and status=1
 		</trim>
 	</sql>
 	<sql id="adsOrder">
@@ -33,7 +49,7 @@
 			left join tb_area city on t3.city = city.areaid
 			left join tb_area area on t3.area = area.areaid
 		) t
-		<include refid="adsWhere" />
+		<include refid="adsWhere_ProCateHospDetails" />
 	</select>
 	<select id="selectByObject_ProCateHospDetails" resultType="java.util.HashMap">
 		select * from (select t7.realname,t1.id as proid,
@@ -52,8 +68,9 @@
 			left join tb_area city on t3.city = city.areaid
 			left join tb_area area on t3.area = area.areaid
 		) t
-		<include refid="adsWhere" />
+		<include refid="adsWhere_ProCateHospDetails" />
 		<include refid="adsOrder" />
+		limit #{offset},#{pagesize}
 	</select>
 	
 	<select id="selectByObjectcount_SalesHospitalReport" resultType="long">
@@ -73,7 +90,7 @@
 		left join tb_user_dealer tud on tud.dealer_id=t5.dealer_id
 	    left join tb_manager_user tmu on tmu.id = tud.user_id
 		) t
-		<include refid="adsWhere" />
+		<include refid="adsWhere_SalesHospitalReport" />
 	</select>
 	<select id="selectByObject_SalesHospitalReport" resultType="java.util.HashMap">
 		select * from (
@@ -92,7 +109,32 @@
 		    left join tb_user_dealer tud on tud.dealer_id=t5.dealer_id
 	        left join tb_manager_user tmu on tmu.id = tud.user_id
 		) t 
-		<include refid="adsWhere" />
+		<include refid="adsWhere_SalesHospitalReport" />
 		<include refid="adsOrder" />
+		limit #{offset},#{pagesize}
+	</select>
+	<select id="selectByObjectcount_StorageReport" resultType="long">
+		select COUNT(*) from (
+			SELECT 
+			t1.*,t2.models,t3.dealer_name,t3.dealer_code,t3.attribute,t2.valid_date
+			FROM tb_storage_pro_detail t1
+			inner JOIN tb_storage_detail t2 ON t1.fk_storage_id = t2.fk_storage_id 
+			and t1.fk_dealer_id = t2.fk_dealer_id and t1.product_item_number = t2.product_item_number and t1.batch_no = t2.batch_no
+			left join tb_dealer t3 on t1.fk_dealer_id = t3.dealer_id
+		) t
+		<include refid="adsWhere_StorageReport" />
+	</select>
+	<select id="selectByObject_StorageReport" resultType="java.util.HashMap">
+		select * from (
+			SELECT 
+			t1.*,t2.models,t3.dealer_name,t3.dealer_code,t3.attribute,t2.valid_date 
+			FROM tb_storage_pro_detail t1
+			inner JOIN tb_storage_detail t2 ON t1.fk_storage_id = t2.fk_storage_id 
+			and t1.fk_dealer_id = t2.fk_dealer_id and t1.product_item_number = t2.product_item_number and t1.batch_no = t2.batch_no
+			left join tb_dealer t3 on t1.fk_dealer_id = t3.dealer_id
+		) t 
+		<include refid="adsWhere_StorageReport" />
+		<include refid="adsOrder" />
+		limit #{offset},#{pagesize}
 	</select>
 </mapper>

@@ -43,5 +43,16 @@ public class RepostService {
 				pageRequest.getPageSize(), pageRequest.getOrderBy(),
 				pageRequest.getOrderDir());
 	}
+	
+	public JsonPage<Map<String,Object>> storageReportPaging(PageRequest pageRequest,List<PropertyFilter> filters) {
+		Map<String,String> parameters = new HashMap<String,String>();
+		for (PropertyFilter propertyFilter : filters) {
+			String propertyKey = propertyFilter.getPropertyNames()[0];
+			parameters.put(propertyKey, propertyFilter.getMatchValue());
+		}
+		return repostDao.getScrollData("StorageReport",parameters, pageRequest.getOffset(),
+				pageRequest.getPageSize(), pageRequest.getOrderBy(),
+				pageRequest.getOrderDir());
+	}
 
 }
