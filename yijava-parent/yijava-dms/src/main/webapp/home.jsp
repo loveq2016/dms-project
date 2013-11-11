@@ -54,7 +54,7 @@
 			<ul id="tochecktree" class="easyui-tree" data-options="url:'${basePath}api/flowrecord/tocheck',method:'get',animate:true"></ul>
 	</div>	
 	<div id="mainPanle11" class="easyui-panel" data-options="iconCls:'icon-info',region:'center',title:'公告及通知',tools:'#tt'" style="background: #ddd;">		
-		<div title="公告及通知" data-options="iconCls:'icon-info',closable:false" style="padding:1px;background: #ddd;overflow:hidden;" id="home">
+		<div title="公告及通知sss" data-options="iconCls:'icon-info',closable:false" style="padding:1px;background: #ddd;overflow:hidden;" id="home">
 			<div >
 				<table id="dg"  title="" style="height: 610px"  method="get"
 					rownumbers="false" scrollbarSize="2" singleSelect="true" pagination="true" sortName="notice_id" sortOrder="desc" toolbar="#tb">
@@ -71,7 +71,7 @@
 					</thead>
 				</table>
 			</div>
-		   <div id="dlgInfo" class="easyui-dialog" style="width:703px;height:250px;padding: 5px 5px 5px 5px;"
+		   <div id="dlgInfo" class="easyui-dialog" style="width:703px;height:450px;padding: 5px 5px 5px 5px;"
 		            modal="true" closed="true">
 		         <form id="fmInfo" method="post" novalidate enctype="multipart/form-data">
 		         <div class="easyui-tabs" style="width:680px;height: auto;">
