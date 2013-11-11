@@ -70,8 +70,8 @@
 							<th field="product_item_number" width="80" align="left" sortable="true">产品编号</th>
 							<th field="models" width="80" align="left" sortable="true">型号</th>
 							<th field="batch_no" width="80" align="left" sortable="true">批号</th>
-							<th field="product_sn" width="80" align="left" sortable="true">有效期</th>
-							<th field="valid_date" width="200" align="left" sortable="true">序列号</th>
+							<th field="product_sn" width="80" align="left" sortable="true">序列号</th>
+							<th field="valid_date" width="200" align="left" sortable="true">有效期</th>
 						</tr>
 					</thead>
 				</table>
@@ -203,7 +203,6 @@
 			var input7=$("<input type=\"hidden\" name=\"filter_ANDS_product_sn\" value="+$('#product_sn').val()+">");
 			var input8=$("<input type=\"hidden\" name=\"filter_ANDS_valid_date\" value="+$('#valid_date').val()+">");
 			$("body").append(form);//将表单放置在web中
-			alert('aa')
 			form.append(input0);
 			form.append(input1);
 			form.append(input2);
