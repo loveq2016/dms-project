@@ -114,11 +114,15 @@ public class IbatisDaoSupport<T> extends SqlSessionDaoSupport implements
 		return new JsonPage<T>(datas,total);
 		//return null;
 	}
-	
-	
-
-
-
+	public JsonPage<T> getScrollData(String postfix_selectmap,Map parameters, int offset, int pagesize,String OrderBy,String OrderDir) {		
+		Long total = (Long) getSqlSession().selectOne(entityClass.getSimpleName() + POSTFIX_SELECTOBJECT_COUNT+"_"+postfix_selectmap,parameters);		
+		parameters.put("offset", offset);
+		parameters.put("pagesize", pagesize);
+		parameters.put("orderSql", OrderBy + " " + OrderDir);
+		List<T> datas = getSqlSession().selectList(entityClass.getSimpleName() + POSTFIX_SELECTOBJECT+"_"+postfix_selectmap, parameters);
+		return new JsonPage<T>(datas,total);
+		//return null;
+	}
 	@Override
 	public <T> List<T> find(String sql) {
 		return getSqlSession().selectList(sql);
