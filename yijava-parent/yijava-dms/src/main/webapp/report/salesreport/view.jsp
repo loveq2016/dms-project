@@ -42,16 +42,20 @@
 										<input class="easyui-validatebox" type="text" name="product_sn" id="product_sn" data-options="required:false"></input>
 									</td>
 									
-									<td>入库时间:</td>
+									<td>销售时间:</td>
 									<td>
-										<input name="last_time" id="last_time" class="easyui-datebox"></input>
+										<input name="sales_date" id="sales_date" class="easyui-datebox"></input>
+									</td>
+									<td>提交时间:</td>
+									<td>
+										<input name="create_date" id="create_date" class="easyui-datebox"></input>
 									</td>
 								</tr>						
 							</table>
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<restrict:function funId="226">
+						<restrict:function funId="227">
 							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>			
 						</restrict:function>   
 					</div>
@@ -60,23 +64,24 @@
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
 				<table id="dg" title="查询结果" style="height: 480px" method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="fk_dealer_id" sortOrder="desc" toolbar="#tb">
+					rownumbers="true" singleSelect="true" pagination="true" sortName="dealer_id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
-							<th field="dealer_name" width="80" align="left" sortable="true">经销商名称</th>
-							<th field="dealer_code" width="160" align="left" sortable="true">经销商代码</th>
-							<th field="attribute" width="180" align="left" sortable="true">区域</th>	
-							<th data-options="field:'last_time',width:150,align:'center'"  sortable="true">入库时间</th>
+							<th field="dealer_name" width="160" align="left" sortable="true">经销商名称</th>
+							<th field="dealer_code" width="80" align="left" sortable="true">经销商代码</th>
+							<th field="attribute" width="80" align="left" sortable="true">区域</th>	
+							<th field="sales_date" width="150" align="center" sortable="true">销售时间</th>
+							<th field="realname" width="150" align="center" sortable="true">销售人员</th>
 							<th field="product_item_number" width="80" align="left" sortable="true">产品编号</th>
 							<th field="models" width="80" align="left" sortable="true">型号</th>
 							<th field="batch_no" width="80" align="left" sortable="true">批号</th>
 							<th field="product_sn" width="80" align="left" sortable="true">序列号</th>
-							<th field="valid_date" width="200" align="left" sortable="true">有效期</th>
+							<th field="create_date" width="200" align="left" sortable="true">提交时间</th>
 						</tr>
 					</thead>
 				</table>
 				<div id="tb">    
-					<restrict:function funId="229">
+					<restrict:function funId="234">
 					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="repostExcel();">导出</a>   
 					</restrict:function> 
 				</div> 
@@ -172,7 +177,7 @@
 			}
 		}
 		$('#dg').datagrid({
-			 url : basePath + "api/storagereport/paging",
+			 url : basePath + "api/salesreport/paging",
 			 queryParams: {
 					name: 'pageSize',
 					subject: pagesize
@@ -184,9 +189,9 @@
 			 }
 		});
 		 function repostExcel(){
-    		var tabTitle = "库存报表导出";
+    		var tabTitle = "销售报表导出";
     		addTabByChild(tabTitle,"report/ok.jsp");
-			var url = "api/storagereport/down";			
+			var url = "api/salesreport/down";			
 			var form=$("<form>");//定义一个form表单
 			form.attr("style","display:none");
 			form.attr("target","");
@@ -196,12 +201,11 @@
 			var input0=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_name\" value="+$('#dealer_name').val()+">");
 			var input1=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_code\" value="+$('#dealer_code').val()+">");
 			var input2=$("<input type=\"hidden\" name=\"filter_ANDS_attribute\" value="+$('#attribute').val()+">");
-			var input3=$("<input type=\"hidden\" name=\"filter_ANDS_last_time\" value="+$('#last_time').val()+">");
-			var input4=$("<input type=\"hidden\" name=\"filter_ANDS_product_item_number\" value="+$('#product_item_number').val()+">");
+			var input3=$("<input type=\"hidden\" name=\"filter_ANDS_sales_date\" value="+$('#sales_date').val()+">");
+			var input4=$("<input type=\"hidden\" name=\"filter_ANDS_create_date\" value="+$('#create_date').val()+">");
 			var input5=$("<input type=\"hidden\" name=\"filter_ANDS_models\" value="+$('#models').val()+">");
 			var input6=$("<input type=\"hidden\" name=\"filter_ANDS_batch_no\" value="+$('#batch_no').val()+">");
 			var input7=$("<input type=\"hidden\" name=\"filter_ANDS_product_sn\" value="+$('#product_sn').val()+">");
-			var input8=$("<input type=\"hidden\" name=\"filter_ANDS_valid_date\" value="+$('#valid_date').val()+">");
 			$("body").append(form);//将表单放置在web中
 			form.append(input0);
 			form.append(input1);
@@ -211,18 +215,18 @@
 			form.append(input5);
 			form.append(input6);
 			form.append(input7);
-			form.append(input8);
 			form.submit();//表单提交
 		 }
 		function doSearch(){
 		    $('#dg').datagrid('load',{
-		    	filter_ANDS_realname: $('#realname').val(),
-		    	filter_ANDS_hospital_name: $('#hospital_name').val(),
-		    	filter_ANDS_level_id: $('#level_id').combobox('getValue'),
-		    	filter_ANDS_provinces: $('#quprovince').combobox('getValue'),
-		    	filter_ANDS_area: $('#quarea').combobox('getValue'),
-		    	filter_ANDS_city: $('#qucity').combobox('getValue'),
-		    	filter_ANDS_address: $('#address').val()
+		    	filter_ANDS_dealer_name: $('#dealer_name').val(),
+		    	filter_ANDS_dealer_code: $('#dealer_code').val(),
+		    	filter_ANDS_attribute: $('#attribute').val(),
+		    	filter_ANDS_sales_date: $('#sales_date').val(),
+		    	filter_ANDS_create_date: $('#create_date').val(),
+		    	filter_ANDS_models: $('#models').val(),
+		    	filter_ANDS_batch_no: $('#batch_no').val(),
+		    	filter_ANDS_product_sn: $('#product_sn').val()
 		    });
 		}
 	</script>
