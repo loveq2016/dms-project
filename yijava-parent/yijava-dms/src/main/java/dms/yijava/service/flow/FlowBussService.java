@@ -328,7 +328,8 @@ public class FlowBussService {
 		flowLog.setAction_name("提交"+":"+userName+"-"+"审核");
 		if(isSign)
 		{
-			flowLog.setSign(currentUser.getId()+"_qz.jpg");
+			flowLog.setSign(currentUser.getSign_img());
+			//flowLog.setSign(currentUser.getId()+"_qz.jpg");
 		}
 		
 		flowLogService.saveEntity(flowLog);
@@ -398,7 +399,8 @@ public class FlowBussService {
 		flowLog.setAction_name("提交"+"-"+step.getAction_name());
 		if(isSign)
 		{
-			flowLog.setSign(currentUser.getId()+"_qz.jpg");
+			flowLog.setSign(currentUser.getSign_img());
+			//flowLog.setSign(currentUser.getId()+"_qz.jpg");
 		}
 		//flowLog.setSign("0");
 		flowLogService.saveEntity(flowLog);
