@@ -43,8 +43,8 @@ import dms.yijava.service.dealer.DealerPlanService;
 import dms.yijava.service.repost.RepostService;
 
 @Controller
-@RequestMapping("/api/storagereport")
-public class RepostStorageReportController {
+@RequestMapping("/api/salesreport")
+public class RepostSalesReportController {
 	
 	@Autowired
 	private RepostService repostService;
@@ -62,7 +62,7 @@ public class RepostStorageReportController {
 				}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
 					filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
 				}
-				return repostService.storageReportPaging(pageRequest,filters);
+				return repostService.salesReportPaging(pageRequest,filters);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -73,7 +73,7 @@ public class RepostStorageReportController {
 	@RequestMapping("down")
 	public void down(PageRequest pageRequest, HttpServletRequest request,
 			final HttpServletResponse response) throws IOException {
-		   pageRequest.setOrderBy("fk_dealer_id");
+		   pageRequest.setOrderBy("dealer_id");
 		   pageRequest.setOrderDir("desc");
 		   pageRequest.setPageSize(1000000);
 		   List<PropertyFilter> filters = PropertyFilters.build(request);
@@ -87,13 +87,13 @@ public class RepostStorageReportController {
 					}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
 						filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
 					}
-					list = repostService.storageReportPaging(pageRequest,filters).getRows();
+					list = repostService.salesReportPaging(pageRequest,filters).getRows();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		   String classPath = new File(getClass().getResource("/excel").getFile()).getCanonicalPath(); 
-		   String excelPath = classPath + File.separator + "StorageReport.xls";
+		   String excelPath = classPath + File.separator + "SalesReport.xls";
 		   excel(excelPath, list, response);
 	}
 	private void excel(String excelPath,List<Map<String,Object>> list,HttpServletResponse response){
@@ -122,20 +122,21 @@ public class RepostStorageReportController {
 	        int row = 1 ;
 	        for (Map<String,Object> map : list) {
 	        	HSSFRow rowN = sheet.createRow(row);
-				for (int j = 0; j < 9; j++) {
+				for (int j = 0; j < 10; j++) {
 					HSSFCell cellN = rowN.createCell((short)j);  
                     cellN.setCellStyle(styleContent);  
                     switch (j) {
-                    	// 经销商名称	经销商代码	区域	入库日期	产品编号	型号	批号	序列号	有效效期
+                    	// 经销商名称	经销商代码	区域	销售日期	销售人员	产品编号	型号	批号	序列号 提交时间
 						case 0:cellN.setCellValue(valueOf(map.get("dealer_name")));break;
 						case 1:cellN.setCellValue(valueOf(map.get("dealer_code")));break;
 						case 2:cellN.setCellValue(valueOf(map.get("attribute")));break;
-						case 3:cellN.setCellValue(valueOf(map.get("last_time")));break;
-						case 4:cellN.setCellValue(valueOf(map.get("product_item_number")));break;
-						case 5:cellN.setCellValue(valueOf(map.get("models")));break;
-						case 6:cellN.setCellValue(valueOf(map.get("batch_no")));break;
-						case 7:cellN.setCellValue(valueOf(map.get("product_sn")));break;
-						case 8:cellN.setCellValue(valueOf(map.get("valid_date")));break;
+						case 3:cellN.setCellValue(valueOf(map.get("sales_date")));break;
+						case 4:cellN.setCellValue(valueOf(map.get("realname")));break;
+						case 5:cellN.setCellValue(valueOf(map.get("product_item_number")));break;
+						case 6:cellN.setCellValue(valueOf(map.get("models")));break;
+						case 7:cellN.setCellValue(valueOf(map.get("batch_no")));break;
+						case 8:cellN.setCellValue(valueOf(map.get("product_sn")));break;
+						case 9:cellN.setCellValue(valueOf(map.get("create_date")));break;
 						default:break;
 					}
 				}
