@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -34,12 +36,15 @@ import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
 
-import dms.yijava.entity.hospital.Hospital;
+import dms.yijava.entity.dealer.DealerPlan;
+import dms.yijava.entity.system.SysUser;
+import dms.yijava.entity.user.UserDealer;
+import dms.yijava.service.dealer.DealerPlanService;
 import dms.yijava.service.repost.RepostService;
 
 @Controller
-@RequestMapping("/api/saleshospitalreport")
-public class RepostSalesHospitalReportController {
+@RequestMapping("/api/salesreport")
+public class RepostSalesReportController {
 	
 	@Autowired
 	private RepostService repostService;
@@ -49,7 +54,16 @@ public class RepostSalesHospitalReportController {
 	public JsonPage<Map<String,Object>> paging(PageRequest pageRequest,HttpServletRequest request,Model model) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
 		try {
-			return repostService.salesHospitalReportPaging(pageRequest,filters);
+			SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+			if(null!=sysUser){
+				//经销商
+				if(!StringUtils.equals("0",sysUser.getFk_dealer_id())){
+					filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
+				}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
+					filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
+				}
+				return repostService.salesReportPaging(pageRequest,filters);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -59,13 +73,27 @@ public class RepostSalesHospitalReportController {
 	@RequestMapping("down")
 	public void down(PageRequest pageRequest, HttpServletRequest request,
 			final HttpServletResponse response) throws IOException {
-		   pageRequest.setOrderBy("realname");
+		   pageRequest.setOrderBy("dealer_id");
 		   pageRequest.setOrderDir("desc");
 		   pageRequest.setPageSize(1000000);
 		   List<PropertyFilter> filters = PropertyFilters.build(request);
-		   List<Map<String,Object>> list = repostService.salesHospitalReportPaging(pageRequest,filters).getRows();
+		   List<Map<String,Object>> list =new ArrayList<Map<String,Object>>();
+			try {
+				SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+				if(null!=sysUser){
+					//经销商
+					if(!StringUtils.equals("0",sysUser.getFk_dealer_id())){
+						filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
+					}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
+						filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
+					}
+					list = repostService.salesReportPaging(pageRequest,filters).getRows();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		   String classPath = new File(getClass().getResource("/excel").getFile()).getCanonicalPath(); 
-		   String excelPath = classPath + File.separator + "SalesHospitalReport.xls";
+		   String excelPath = classPath + File.separator + "SalesReport.xls";
 		   excel(excelPath, list, response);
 	}
 	private void excel(String excelPath,List<Map<String,Object>> list,HttpServletResponse response){
@@ -94,26 +122,21 @@ public class RepostSalesHospitalReportController {
 	        int row = 1 ;
 	        for (Map<String,Object> map : list) {
 	        	HSSFRow rowN = sheet.createRow(row);
-				for (int j = 0; j < 16; j++) {
+				for (int j = 0; j < 10; j++) {
 					HSSFCell cellN = rowN.createCell((short)j);  
                     cellN.setCellStyle(styleContent);  
                     switch (j) {
-						case 0:cellN.setCellValue(valueOf(map.get("realname")));break;
-						case 1:cellN.setCellValue(valueOf(map.get("category_name")));break;
-						case 2:cellN.setCellValue(valueOf(map.get("")));break;
-						case 3:cellN.setCellValue(valueOf(map.get("hospital_name")));break;
-						case 4:cellN.setCellValue(valueOf(map.get("")));break;
-						case 5:cellN.setCellValue(valueOf(map.get("")));break;
-						case 6:cellN.setCellValue(valueOf(map.get("")));break;
-						case 7:cellN.setCellValue(valueOf(map.get("")));break;
-						case 8:cellN.setCellValue(valueOf(map.get("")));break;
-						case 9:cellN.setCellValue(valueOf(map.get("level_name")));break;
-						case 10:cellN.setCellValue(valueOf(map.get("provinces_name")));break;
-						case 11:cellN.setCellValue(valueOf(map.get("area_name")));break;
-						case 12:cellN.setCellValue(valueOf(map.get("city_name")));break;
-						case 13:cellN.setCellValue(valueOf(map.get("postcode")));break;
-						case 14:cellN.setCellValue(valueOf(map.get("address")));break;
-						case 15:cellN.setCellValue(valueOf(map.get("phone")));break;
+                    	// 经销商名称	经销商代码	区域	销售日期	销售人员	产品编号	型号	批号	序列号 提交时间
+						case 0:cellN.setCellValue(valueOf(map.get("dealer_name")));break;
+						case 1:cellN.setCellValue(valueOf(map.get("dealer_code")));break;
+						case 2:cellN.setCellValue(valueOf(map.get("attribute")));break;
+						case 3:cellN.setCellValue(valueOf(map.get("sales_date")));break;
+						case 4:cellN.setCellValue(valueOf(map.get("realname")));break;
+						case 5:cellN.setCellValue(valueOf(map.get("product_item_number")));break;
+						case 6:cellN.setCellValue(valueOf(map.get("models")));break;
+						case 7:cellN.setCellValue(valueOf(map.get("batch_no")));break;
+						case 8:cellN.setCellValue(valueOf(map.get("product_sn")));break;
+						case 9:cellN.setCellValue(valueOf(map.get("create_date")));break;
 						default:break;
 					}
 				}
@@ -157,5 +180,24 @@ public class RepostSalesHospitalReportController {
 	public static String valueOf(Object obj) {  
 	    return (obj == null) ? "" : obj.toString();  
 	}  
+	/**
+	 * 把一个list转换为String返回过去
+	 */
+	public String listString(List<UserDealer> list) {
+		String listString = "";
+		for (int i = 0; i < list.size(); i++) {
+			try {
+				if (i == list.size() - 1) {
+					UserDealer ud=list.get(i);
+					listString += ud.getDealer_id();
+				} else {
+					UserDealer ud=list.get(i);
+					listString += ud.getDealer_id() + ",";
+				}
+			} catch (Exception e) {
+			}
+		}
+		return listString;
+	}
 }
 

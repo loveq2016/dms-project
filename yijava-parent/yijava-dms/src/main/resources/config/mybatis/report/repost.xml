@@ -16,87 +16,7 @@
 			</otherwise>
 		</choose>
 	</sql>
-	<select id="selectByObjectcount_ProCateHospDetails" resultType="long">
-		select COUNT(*) from (select t7.realname,t1.id as proid,
-			t1.product_remark,t1.area_remark,
-			provinces.name as provinces_name,	city.name as city_name,area.name as area_name,
-			t4.level_name,t5.dealer_name,t5.dealer_code,t3.* 
-			from 
-			dms.tb_dealer_auth_product t1 
-			inner join dms.tb_dealer_auth_hospital t2 on t1.dealer_id = t2.dealer_id and t1.product_category_id = t2.category_id
-			left join dms.tb_hospital t3 on t2.hospital_id = t3.id
-			left join dms.tb_hospital_level t4 on t3.level_id = t4.id
-			left join dms.tb_dealer t5 on t1.dealer_id = t5.dealer_id
-			left join dms.tb_user_dealer t6 on t1.dealer_id = t6.dealer_id
-			left join dms.tb_manager_user t7 on t6.user_id = t7.id
-			left join tb_area provinces on t3.provinces = provinces.areaid
-			left join tb_area city on t3.city = city.areaid
-			left join tb_area area on t3.area = area.areaid
-		) t
-		<include refid="adsWhere" />
-	</select>
-	<select id="selectByObject_ProCateHospDetails" resultType="java.util.HashMap">
-		select * from (select t7.realname,t1.id as proid,
-			t1.product_remark,t1.area_remark,
-			provinces.name as provinces_name,	city.name as city_name,area.name as area_name,
-			t4.level_name,t5.dealer_name,t5.dealer_code,t3.* 
-			from 
-			dms.tb_dealer_auth_product t1 
-			inner join dms.tb_dealer_auth_hospital t2 on t1.dealer_id = t2.dealer_id and t1.product_category_id = t2.category_id
-			left join dms.tb_hospital t3 on t2.hospital_id = t3.id
-			left join dms.tb_hospital_level t4 on t3.level_id = t4.id
-			left join dms.tb_dealer t5 on t1.dealer_id = t5.dealer_id
-			left join dms.tb_user_dealer t6 on t1.dealer_id = t6.dealer_id
-			left join dms.tb_manager_user t7 on t6.user_id = t7.id
-			left join tb_area provinces on t3.provinces = provinces.areaid
-			left join tb_area city on t3.city = city.areaid
-			left join tb_area area on t3.area = area.areaid
-		) t
-		<include refid="adsWhere" />
-		<include refid="adsOrder" />
-	</select>
-	
-	<select id="selectByObjectcount_SalesHospitalReport" resultType="long">
-		select COUNT(*) from (
-		select tmu.realname,t1.*,t3.level_name,t4.category_name,t5.dealer_name,t5.dealer_id,
-		provinces.name as provinces_name,
-		city.name as city_name,
-		area.name as area_name 
-		from tb_hospital t1 
-		inner join tb_dealer_auth_hospital t2 on t1.id = t2.hospital_id
-		left join tb_hospital_level t3 on t1.level_id = t3.id
-		left join tb_product_category t4 on t2.category_id = t4.id
-		inner join tb_dealer t5 on t2.dealer_id = t5.dealer_id and t5.dealer_id in (select dealer_id from tb_user_dealer)
-		left join tb_area provinces on t1.provinces = provinces.areaid
-		left join tb_area city on t1.city = city.areaid
-		left join tb_area area on t1.area = area.areaid
-		left join tb_user_dealer tud on tud.dealer_id=t5.dealer_id
-	    left join tb_manager_user tmu on tmu.id = tud.user_id
-		) t
-		<include refid="adsWhere" />
-	</select>
-	<select id="selectByObject_SalesHospitalReport" resultType="java.util.HashMap">
-		select * from (
-			select tmu.realname,t1.*,t3.level_name,t4.category_name,t5.dealer_name,t5.dealer_id,
-			provinces.name as provinces_name,
-			city.name as city_name,
-			area.name as area_name 
-			from tb_hospital t1 
-			inner join tb_dealer_auth_hospital t2 on t1.id = t2.hospital_id
-			left join tb_hospital_level t3 on t1.level_id = t3.id
-			left join tb_product_category t4 on t2.category_id = t4.id
-			inner join tb_dealer t5 on t2.dealer_id = t5.dealer_id and t5.dealer_id in (select dealer_id from tb_user_dealer)
-			left join tb_area provinces on t1.provinces = provinces.areaid
-			left join tb_area city on t1.city = city.areaid
-			left join tb_area area on t1.area = area.areaid
-		    left join tb_user_dealer tud on tud.dealer_id=t5.dealer_id
-	        left join tb_manager_user tmu on tmu.id = tud.user_id
-		) t 
-		<include refid="adsWhere" />
-		<include refid="adsOrder" />
-	</select>
-	
-	
+
 	<sql id="adsWhereDealerReport">
 		<trim prefix="WHERE" prefixOverrides="AND|OR">		
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">and dealer_name like CONCAT('%','${dealer_name}','%' ) </if>
@@ -181,15 +101,17 @@
 	</select>
 	
 	<sql id="adsWhereExpressReport">
-		<trim prefix="WHERE" prefixOverrides="AND|OR">		
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_name)">and dealer_name like CONCAT('%','${dealer_name}','%' ) </if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_code)">and dealer_code like CONCAT('%','${dealer_code}','%' ) </if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">and dealer_id=#{dealer_id}</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)"> and dealer_id in (${dealer_ids})</if>
 		</trim>
 	</sql>
 		<select id="selectByObjectcount_ExpressReport" resultType="long">
 		select COUNT(*) from (
 			select t1.check_status,tfr.record_id,tfr.status as record_status,tfr.check_id as check_id,
-				t1.express_date,t1.deliver_code,t2.dealer_name,t2.dealer_code,t2.attribute,
+				t1.express_date,t1.deliver_code,t2.dealer_id,t2.dealer_name,t2.dealer_code,t2.attribute,
 				t3.models,t3.express_sn,t3.validity_date,t4.product_sn,t5.deliver_remark,
 				case t5.`type` when  0 then '普通订单' when 1 then '试用订单' when 2 then '退换货订单' end type
 				from dms.tb_deliver t1 
@@ -204,7 +126,7 @@
 	<select id="selectByObject_ExpressReport" resultType="java.util.HashMap">
 		select * from ( 
 		select t1.check_status,tfr.record_id,tfr.status as record_status,tfr.check_id as check_id,
-		t1.express_date,t1.deliver_code,t2.dealer_name,t2.dealer_code,t2.attribute,
+		t1.express_date,t1.deliver_code,t2.dealer_id,t2.dealer_name,t2.dealer_code,t2.attribute,
 		t3.models,t3.express_sn,t3.validity_date,t4.product_sn,t5.deliver_remark,
 		case t5.`type` when  0 then '普通订单' when 1 then '试用订单' when 2 then '退换货订单' end type
 		from dms.tb_deliver t1 
@@ -218,6 +140,165 @@
 		 limit #{offset},#{pagesize}
 	</select>
 	
+	<sql id="adsWhere_ProCateHospDetails">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">		
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(parentid)">and 1=1</if>
+		</trim>
+	</sql>
+	<sql id="adsWhere_SalesHospitalReport">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">		
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(parentid)">and 1=1</if>
+		</trim>
+	</sql>
+	<sql id="adsWhere_StorageReport">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
+				  and fk_dealer_id=#{dealer_id}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)">
+				  and fk_dealer_id in (${dealer_ids})
+			</if>
+			and status=1
+		</trim>
+	</sql>
+	<sql id="adsWhere_salesReport">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
+				  and dealer_id=#{dealer_id}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)">
+				  and dealer_id in (${dealer_ids})
+			</if>
+		</trim>
+	</sql>
+	<select id="selectByObjectcount_ProCateHospDetails" resultType="long">
+		select COUNT(*) from (select t7.realname,t1.id as proid,
+			t1.product_remark,t1.area_remark,
+			provinces.name as provinces_name,	city.name as city_name,area.name as area_name,
+			t4.level_name,t5.dealer_name,t5.dealer_code,t3.* 
+			from 
+			dms.tb_dealer_auth_product t1 
+			inner join dms.tb_dealer_auth_hospital t2 on t1.dealer_id = t2.dealer_id and t1.product_category_id = t2.category_id
+			left join dms.tb_hospital t3 on t2.hospital_id = t3.id
+			left join dms.tb_hospital_level t4 on t3.level_id = t4.id
+			left join dms.tb_dealer t5 on t1.dealer_id = t5.dealer_id
+			left join dms.tb_user_dealer t6 on t1.dealer_id = t6.dealer_id
+			left join dms.tb_manager_user t7 on t6.user_id = t7.id
+			left join tb_area provinces on t3.provinces = provinces.areaid
+			left join tb_area city on t3.city = city.areaid
+			left join tb_area area on t3.area = area.areaid
+		) t
+		<include refid="adsWhere_ProCateHospDetails" />
+	</select>
+	<select id="selectByObject_ProCateHospDetails" resultType="java.util.HashMap">
+		select * from (select t7.realname,t1.id as proid,
+			t1.product_remark,t1.area_remark,
+			provinces.name as provinces_name,	city.name as city_name,area.name as area_name,
+			t4.level_name,t5.dealer_name,t5.dealer_code,t3.* 
+			from 
+			dms.tb_dealer_auth_product t1 
+			inner join dms.tb_dealer_auth_hospital t2 on t1.dealer_id = t2.dealer_id and t1.product_category_id = t2.category_id
+			left join dms.tb_hospital t3 on t2.hospital_id = t3.id
+			left join dms.tb_hospital_level t4 on t3.level_id = t4.id
+			left join dms.tb_dealer t5 on t1.dealer_id = t5.dealer_id
+			left join dms.tb_user_dealer t6 on t1.dealer_id = t6.dealer_id
+			left join dms.tb_manager_user t7 on t6.user_id = t7.id
+			left join tb_area provinces on t3.provinces = provinces.areaid
+			left join tb_area city on t3.city = city.areaid
+			left join tb_area area on t3.area = area.areaid
+		) t
+		<include refid="adsWhere_ProCateHospDetails" />
+		<include refid="adsOrder" />
+		limit #{offset},#{pagesize}
+	</select>
 	
-	
+	<select id="selectByObjectcount_SalesHospitalReport" resultType="long">
+		select COUNT(*) from (
+		select tmu.realname,t1.*,t3.level_name,t4.category_name,t5.dealer_name,t5.dealer_id,
+		provinces.name as provinces_name,
+		city.name as city_name,
+		area.name as area_name 
+		from tb_hospital t1 
+		inner join tb_dealer_auth_hospital t2 on t1.id = t2.hospital_id
+		left join tb_hospital_level t3 on t1.level_id = t3.id
+		left join tb_product_category t4 on t2.category_id = t4.id
+		inner join tb_dealer t5 on t2.dealer_id = t5.dealer_id and t5.dealer_id in (select dealer_id from tb_user_dealer)
+		left join tb_area provinces on t1.provinces = provinces.areaid
+		left join tb_area city on t1.city = city.areaid
+		left join tb_area area on t1.area = area.areaid
+		left join tb_user_dealer tud on tud.dealer_id=t5.dealer_id
+	    left join tb_manager_user tmu on tmu.id = tud.user_id
+		) t
+		<include refid="adsWhere_SalesHospitalReport" />
+	</select>
+	<select id="selectByObject_SalesHospitalReport" resultType="java.util.HashMap">
+		select * from (
+			select tmu.realname,t1.*,t3.level_name,t4.category_name,t5.dealer_name,t5.dealer_id,
+			provinces.name as provinces_name,
+			city.name as city_name,
+			area.name as area_name 
+			from tb_hospital t1 
+			inner join tb_dealer_auth_hospital t2 on t1.id = t2.hospital_id
+			left join tb_hospital_level t3 on t1.level_id = t3.id
+			left join tb_product_category t4 on t2.category_id = t4.id
+			inner join tb_dealer t5 on t2.dealer_id = t5.dealer_id and t5.dealer_id in (select dealer_id from tb_user_dealer)
+			left join tb_area provinces on t1.provinces = provinces.areaid
+			left join tb_area city on t1.city = city.areaid
+			left join tb_area area on t1.area = area.areaid
+		    left join tb_user_dealer tud on tud.dealer_id=t5.dealer_id
+	        left join tb_manager_user tmu on tmu.id = tud.user_id
+		) t 
+		<include refid="adsWhere_SalesHospitalReport" />
+		<include refid="adsOrder" />
+		limit #{offset},#{pagesize}
+	</select>
+	<select id="selectByObjectcount_StorageReport" resultType="long">
+		select COUNT(*) from (
+			SELECT 
+			t1.status,t1.fk_dealer_id,t1.batch_no,t1.product_sn,t1.last_time,t2.product_item_number,t2.models,t3.dealer_name,t3.dealer_code,t3.attribute,t2.valid_date
+			FROM tb_storage_pro_detail t1
+			inner JOIN tb_storage_detail t2 ON t1.fk_storage_id = t2.fk_storage_id 
+			and t1.fk_dealer_id = t2.fk_dealer_id and t1.product_item_number = t2.product_item_number and t1.batch_no = t2.batch_no
+			left join tb_dealer t3 on t1.fk_dealer_id = t3.dealer_id
+		) t
+		<include refid="adsWhere_StorageReport" />
+	</select>
+	<select id="selectByObject_StorageReport" resultType="java.util.HashMap">
+		select * from (
+			SELECT 
+			t1.status,t1.fk_dealer_id,t1.batch_no,t1.product_sn,date_format(t1.last_time,'%Y-%m-%d %H:%i:%s') as last_time,t2.product_item_number,t2.models,t3.dealer_name,t3.dealer_code,t3.attribute,t2.valid_date 
+			FROM tb_storage_pro_detail t1
+			inner JOIN tb_storage_detail t2 ON t1.fk_storage_id = t2.fk_storage_id 
+			and t1.fk_dealer_id = t2.fk_dealer_id and t1.product_item_number = t2.product_item_number and t1.batch_no = t2.batch_no
+			left join tb_dealer t3 on t1.fk_dealer_id = t3.dealer_id
+		) t 
+		<include refid="adsWhere_StorageReport" />
+		<include refid="adsOrder" />
+		limit #{offset},#{pagesize}
+	</select>
+	<select id="selectByObjectcount_SalesReport" resultType="long">
+		select COUNT(*) from (
+		  SELECT t4.dealer_id,t4.dealer_code,t4.dealer_name,t4.attribute,t5.user_id,t6.realname,t1.pull_storage_code,t1.sales_date,t1.create_date,t2.product_item_number,t2.models,t3.batch_no,t3.product_sn FROM tb_pull_storage t1 
+     	  inner JOIN tb_pull_storage_detail t2 ON t1.pull_storage_code = t2.pull_storage_code and t1.type=3
+		  inner JOIN tb_pull_storage_pro_detail t3 ON t2.pull_storage_code = t3.pull_storage_code 
+	      inner JOIN tb_dealer t4 on t1.fk_pull_storage_party_id= t4.dealer_id
+	      inner JOIN tb_user_dealer t5 ON t5.dealer_id = t4.dealer_id
+	      inner JOIN tb_manager_user t6 ON t6.id = t5.user_id
+		) t
+		<include refid="adsWhere_salesReport" />
+	</select>
+	<select id="selectByObject_SalesReport" resultType="java.util.HashMap">
+		select * from (
+		  SELECT t4.dealer_id,t4.dealer_code,t4.dealer_name,t4.attribute,t5.user_id,t6.realname,t1.pull_storage_code,date_format(t1.sales_date,'%Y-%m-%d %H:%i:%s') as sales_date,t2.product_item_number,
+		  date_format(t1.create_date,'%Y-%m-%d %H:%i:%s') as create_date,t2.models,t3.batch_no,t3.product_sn FROM tb_pull_storage t1 
+     	  inner JOIN tb_pull_storage_detail t2 ON t1.pull_storage_code = t2.pull_storage_code and t1.type=3
+		  inner JOIN tb_pull_storage_pro_detail t3 ON t2.pull_storage_code = t3.pull_storage_code 
+	      inner JOIN tb_dealer t4 on t1.fk_pull_storage_party_id= t4.dealer_id
+	      inner JOIN tb_user_dealer t5 ON t5.dealer_id = t4.dealer_id
+	      inner JOIN tb_manager_user t6 ON t6.id = t5.user_id
+		) t 
+		<include refid="adsWhere_salesReport" />
+		<include refid="adsOrder" />
+		limit #{offset},#{pagesize}
+	</select>
 </mapper>

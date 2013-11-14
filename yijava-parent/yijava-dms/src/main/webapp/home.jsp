@@ -54,7 +54,7 @@
 			<ul id="tochecktree" class="easyui-tree" data-options="url:'${basePath}api/flowrecord/tocheck',method:'get',animate:true"></ul>
 	</div>	
 	<div id="mainPanle11" class="easyui-panel" data-options="iconCls:'icon-info',region:'center',title:'公告及通知',tools:'#tt'" style="background: #ddd;">		
-		<div title="公告及通知" data-options="iconCls:'icon-info',closable:false" style="padding:1px;background: #ddd;overflow:hidden;" id="home">
+		<div title="公告及通知sss" data-options="iconCls:'icon-info',closable:false" style="padding:1px;background: #ddd;overflow:hidden;" id="home">
 			<div >
 				<table id="dg"  title="" style="height: 610px"  method="get"
 					rownumbers="false" scrollbarSize="2" singleSelect="true" pagination="true" sortName="notice_id" sortOrder="desc" toolbar="#tb">
@@ -100,6 +100,8 @@
 		 		</div>
 		 		</form>
 		   </div>
+		   
+		   
 		</div>
 	</div>	
 	<div id="treetool">

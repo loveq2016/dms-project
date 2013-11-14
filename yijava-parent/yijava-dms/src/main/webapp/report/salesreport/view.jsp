@@ -14,53 +14,48 @@
 						<form id="ffquery" method="post">
 							<table>
 								<tr>
-									<td>销售人员:</td>
+									<td>经销商名称:</td>
 									<td>
-										<input class="easyui-validatebox" type="text" name="realname" id="realname" data-options="required:false"></input>
+										<input class="easyui-validatebox" type="text" name="dealer_name" id="dealer_name" data-options="required:false"></input>
 									</td>
-									<td>医院名称:</td>
+									<td>经销商代码:</td>
 									<td>
-										<input class="easyui-validatebox" type="text" name="hospital_name" id="hospital_name" data-options="required:false"></input>
+										<input class="easyui-validatebox" type="text" name="dealer_code" id="dealer_code" data-options="required:false"></input>
 									</td>
-									<td>医院等级:</td>
+									<td>区域:</td>
 									<td>
-										<input class="easyui-combobox" name="level_id"  id="level_id"  style="width:150px" maxLength="100" 
-										class="easyui-validatebox" required="true"
-							             			data-options="
-								             			url:'${basePath}/api/hospitalLevel/list',
-									                    method:'get',
-									                    valueField:'id',
-									                    textField:'level_name',
-									                    required:false,
-									                    editable:false
-							            			">
+										<input class="easyui-validatebox" type="text" name="attribute" id="attribute" data-options="required:false"></input>
 									</td>
-									<td>省份:</td>
+									<td>型号:</td>
 									<td>
-										<input class="easyui-combobox" type="text" name="quprovince" id="quprovince" data-options="required:false"></input>
+										<input class="easyui-validatebox" type="text" name="models" id="models" data-options="required:false"></input>
 									</td>
 							</tr>
 							<tr>
-									<td>城市:</td>
+									<td>批号:</td>
 									<td>
-										<input class="easyui-combobox" type="text"  name="quarea" id="quarea" data-options="required:false"></input>
+										<input class="easyui-validatebox" type="text" name="batch_no" id="batch_no" data-options="required:false"></input>
 									</td>
 									
-									<td>区或乡:</td>
+									<td>序列号:</td>
 									<td>
-										<input class="easyui-combobox" type="text"  name="qucity" id="qucity"  data-options="required:false"></input>
+										<input class="easyui-validatebox" type="text" name="product_sn" id="product_sn" data-options="required:false"></input>
 									</td>
 									
-									<td>地址:</td>
+									<td>销售时间:</td>
 									<td>
-										<input class="easyui-validatebox" type="text" name="address" id="address" style="width:300px" data-options="required:false"></input>
+										<input name="sales_date" id="sales_date" class="easyui-datebox"></input>
+									</td>
+									<td>提交时间:</td>
+									<td>
+										<input name="create_date" id="create_date" class="easyui-datebox"></input>
 									</td>
 								</tr>						
 							</table>
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<restrict:function funId="218">
+						<restrict:function funId="227">
 							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>			
 						</restrict:function>   
 					</div>
@@ -69,24 +64,24 @@
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
 				<table id="dg" title="查询结果" style="height: 480px" method="get"
-					rownumbers="true" singleSelect="true" pagination="true" sortName="realname" sortOrder="desc" toolbar="#tb">
+					rownumbers="true" singleSelect="true" pagination="true" sortName="dealer_id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
-							<th field="realname" width="80" align="left" sortable="true">销售人员</th>
-							<th field="category_name" width="160" align="left" sortable="true">产品分类</th>
-							<th field="hospital_name" width="180" align="left" sortable="true">负责医院名称</th>	
-							<th field="level_name" width="50" align="left" sortable="true">医院等级</th>
-							<th field="provinces_name" width="80" align="left" sortable="true">医院省份</th>
-							<th field="area_name" width="80" align="left" sortable="true">医院地区</th>
-							<th field="city_name" width="80" align="left" sortable="true">医院县市(区)</th>
-							<th field="address" width="200" align="left" sortable="true">地址</th>
-							<th field="postcode" width="80" align="left" sortable="true">邮编</th>
-							<th field="phone" width="80" align="left" sortable="true">医院电话</th>
+							<th field="dealer_name" width="160" align="left" sortable="true">经销商名称</th>
+							<th field="dealer_code" width="80" align="left" sortable="true">经销商代码</th>
+							<th field="attribute" width="80" align="left" sortable="true">区域</th>	
+							<th field="sales_date" width="150" align="center" sortable="true">销售时间</th>
+							<th field="realname" width="150" align="center" sortable="true">销售人员</th>
+							<th field="product_item_number" width="80" align="left" sortable="true">产品编号</th>
+							<th field="models" width="80" align="left" sortable="true">型号</th>
+							<th field="batch_no" width="80" align="left" sortable="true">批号</th>
+							<th field="product_sn" width="80" align="left" sortable="true">序列号</th>
+							<th field="create_date" width="200" align="left" sortable="true">提交时间</th>
 						</tr>
 					</thead>
 				</table>
 				<div id="tb">    
-					<restrict:function funId="223">
+					<restrict:function funId="234">
 					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="repostExcel();">导出</a>   
 					</restrict:function> 
 				</div> 
@@ -182,7 +177,7 @@
 			}
 		}
 		$('#dg').datagrid({
-			 url : basePath + "api/saleshospitalreport/paging",
+			 url : basePath + "api/salesreport/paging",
 			 queryParams: {
 					name: 'pageSize',
 					subject: pagesize
@@ -194,22 +189,23 @@
 			 }
 		});
 		 function repostExcel(){
-    		var tabTitle = "销售人员负责医院报表导出";
+    		var tabTitle = "销售报表导出";
     		addTabByChild(tabTitle,"report/ok.jsp");
-			var url = "api/saleshospitalreport/down";			
+			var url = "api/salesreport/down";			
 			var form=$("<form>");//定义一个form表单
 			form.attr("style","display:none");
 			form.attr("target","");
 			form.attr("method","post");
 			form.attr("action",basePath+url);
 			form.attr("enctype","multipart/form-data");
-			var input0=$("<input type=\"hidden\" name=\"filter_ANDS_realname\" value="+$('#realname').val()+">");
-			var input1=$("<input type=\"hidden\" name=\"filter_ANDS_hospital_name\" value="+$('#hospital_name').val()+">");
-			var input2=$("<input type=\"hidden\" name=\"filter_ANDS_level_id\" value="+$('#level_id').combobox('getValue')+">");
-			var input3=$("<input type=\"hidden\" name=\"filter_ANDS_provinces\" value="+$('#quprovince').combobox('getValue')+">");
-			var input4=$("<input type=\"hidden\" name=\"filter_ANDS_area\" value="+$('#quarea').combobox('getValue')+">");
-			var input5=$("<input type=\"hidden\" name=\"filter_ANDS_city\" value="+$('#qucity').combobox('getValue')+">");
-			var input6=$("<input type=\"hidden\" name=\"filter_ANDS_address\" value="+$('#address').val()+">");
+			var input0=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_name\" value="+$('#dealer_name').val()+">");
+			var input1=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_code\" value="+$('#dealer_code').val()+">");
+			var input2=$("<input type=\"hidden\" name=\"filter_ANDS_attribute\" value="+$('#attribute').val()+">");
+			var input3=$("<input type=\"hidden\" name=\"filter_ANDS_sales_date\" value="+$('#sales_date').val()+">");
+			var input4=$("<input type=\"hidden\" name=\"filter_ANDS_create_date\" value="+$('#create_date').val()+">");
+			var input5=$("<input type=\"hidden\" name=\"filter_ANDS_models\" value="+$('#models').val()+">");
+			var input6=$("<input type=\"hidden\" name=\"filter_ANDS_batch_no\" value="+$('#batch_no').val()+">");
+			var input7=$("<input type=\"hidden\" name=\"filter_ANDS_product_sn\" value="+$('#product_sn').val()+">");
 			$("body").append(form);//将表单放置在web中
 			form.append(input0);
 			form.append(input1);
@@ -218,17 +214,19 @@
 			form.append(input4);
 			form.append(input5);
 			form.append(input6);
+			form.append(input7);
 			form.submit();//表单提交
 		 }
 		function doSearch(){
 		    $('#dg').datagrid('load',{
-		    	filter_ANDS_realname: $('#realname').val(),
-		    	filter_ANDS_hospital_name: $('#hospital_name').val(),
-		    	filter_ANDS_level_id: $('#level_id').combobox('getValue'),
-		    	filter_ANDS_provinces: $('#quprovince').combobox('getValue'),
-		    	filter_ANDS_area: $('#quarea').combobox('getValue'),
-		    	filter_ANDS_city: $('#qucity').combobox('getValue'),
-		    	filter_ANDS_address: $('#address').val()
+		    	filter_ANDS_dealer_name: $('#dealer_name').val(),
+		    	filter_ANDS_dealer_code: $('#dealer_code').val(),
+		    	filter_ANDS_attribute: $('#attribute').val(),
+		    	filter_ANDS_sales_date: $('#sales_date').val(),
+		    	filter_ANDS_create_date: $('#create_date').val(),
+		    	filter_ANDS_models: $('#models').val(),
+		    	filter_ANDS_batch_no: $('#batch_no').val(),
+		    	filter_ANDS_product_sn: $('#product_sn').val()
 		    });
 		}
 	</script>

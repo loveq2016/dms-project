@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ShareFile">
+	<sql id="adsWhere">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(filename)">and filename like CONCAT('%','${filename}','%' ) </if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(filedesc)">and filedesc like CONCAT('%','${filedesc}','%' ) </if>
+		</trim>
+	</sql>
+
+	<sql id="adsOrder">
+		order by id desc
+	</sql>
+
+	<select id="selectByObjectcount" resultType="long">
+		select count(*) from tb_share_file
+		<include refid="adsWhere" />
+	</select>
+
+
+	<select id="selectByObject" resultType="dms.yijava.entity.share.ShareFile">
+			select * from tb_share_file
+			<include refid="adsWhere" />
+			<include refid="adsOrder" />
+			limit #{offset},#{pagesize}
+		</select>
+		
+	<select id="select" parameterType="int" resultType="dms.yijava.entity.share.ShareFile">
+		select * from tb_share_file where id = #{id}
+	</select>
+
+	
+
+	<insert id="insert" parameterType="dms.yijava.entity.share.ShareFile" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tb_share_file(filename,filedesc,filepath,filesize,create_date,last_date)
+		values(#{filename},#{filedesc},#{filepath},#{filesize},NOW(),NOW())
+	</insert>
+
+	
+	<update id="update" parameterType="dms.yijava.entity.share.ShareFile">
+		update tb_share_file
+		<set>
+			<if test="filename != null and filename != ''">filename=#{filename},</if>
+			<if test="filedesc != null ">filedesc=#{filedesc},</if>
+			<if test="filepath != null ">filepath=#{filepath},</if>
+			<if test="filesize != null">filesize=#{filesize},</if>			
+			 last_date=NOW()			
+		</set>
+		where id=#{id}
+	</update>
+	<delete id="delete">
+		delete from tb_share_file where id = #{id}
+	</delete>
+	
+	
+</mapper>

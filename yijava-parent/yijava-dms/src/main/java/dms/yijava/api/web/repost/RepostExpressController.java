@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -34,6 +36,8 @@ import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 import com.yijava.orm.core.PropertyFilters;
 
+import dms.yijava.entity.system.SysUser;
+import dms.yijava.entity.user.UserDealer;
 import dms.yijava.service.repost.RepostService;
 
 @Controller
@@ -48,8 +52,17 @@ public class RepostExpressController {
 	public JsonPage<Map<String,Object>> paging(PageRequest pageRequest,HttpServletRequest request,Model model) {
 		List<PropertyFilter> filters = PropertyFilters.build(request);
 		try {
-			filters.add(PropertyFilters.build("ANDS_check_status", "3"));
-			return repostService.expressPaging(pageRequest,filters);
+			SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+			if(null!=sysUser){
+				//经销商
+				if(!StringUtils.equals("0",sysUser.getFk_dealer_id())){
+					filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
+				}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
+					filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
+				}
+				filters.add(PropertyFilters.build("ANDS_check_status", "3"));
+				return repostService.expressPaging(pageRequest,filters);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -64,8 +77,22 @@ public class RepostExpressController {
 		   pageRequest.setOrderDir("asc");
 		   pageRequest.setPageSize(1000000);
 		   List<PropertyFilter> filters = PropertyFilters.build(request);
+		   List<Map<String,Object>> list =new ArrayList<Map<String,Object>>();
 		   filters.add(PropertyFilters.build("ANDS_check_status", "3"));
-		   List<Map<String,Object>> list = repostService.expressPaging(pageRequest,filters).getRows();
+			try {
+				SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
+				if(null!=sysUser){
+					//经销商
+					if(!StringUtils.equals("0",sysUser.getFk_dealer_id())){
+						filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
+					}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
+						filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
+					}
+					list = repostService.expressPaging(pageRequest,filters).getRows();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		   String classPath = new File(getClass().getResource("/excel").getFile()).getCanonicalPath(); 
 		   String excelPath = classPath + File.separator + "ExpressReport.xls";
 		   excel(excelPath, list, response);
@@ -201,7 +228,26 @@ public class RepostExpressController {
 	    return (obj == null) ? "" : obj.toString();  
 	} 
 	
-	
+	/**
+	 * 把一个list转换为String返回过去
+	 */
+	public String listString(List<UserDealer> list) {
+		String listString = "";
+		for (int i = 0; i < list.size(); i++) {
+			try {
+				if (i == list.size() - 1) {
+					UserDealer ud=list.get(i);
+					listString += ud.getDealer_id();
+				} else {
+					UserDealer ud=list.get(i);
+					listString += ud.getDealer_id() + ",";
+				}
+			} catch (Exception e) {
+			}
+		}
+		return listString;
+	}
+
 	
 	
 }
