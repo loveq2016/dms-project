@@ -446,6 +446,7 @@
 							<form id="fffdetail" method="post">
 								<input type="hidden" name="batch_no" id="batch_no" value=""></input>
 								<input type="hidden" name="fk_storage_id" id="fk_storage_id" value=""></input>
+								<input type="hidden" name="models" id="models" value=""></input>
 								<table>
 									<tr>
 <%-- 										<input type="hidden" name="fk_dealer_id" id="fk_dealer_id" value="${user.fk_dealer_id}"></input>
@@ -820,6 +821,7 @@
 		    	filter_ANDS_fk_storage_id: $("#fffdetail input[name=fk_storage_id]").val(),
 		    	filter_ANDS_batch_no: $("#fffdetail input[name=batch_no]").val(),
 		    	filter_ANDS_product_sn: $("#fffdetail input[name=product_sn]").val(),
+		    	filter_ANDS_models: $("#fffdetail input[name=models]").val(),
 				filter_ANDS_status : 1
 		    });
 		}
@@ -829,6 +831,7 @@
 		var sn_num;
 		var batch_no;
 		var fk_storage_id;
+		var models;
 		function openProductSn(index){
 			$('#dgDetail').datagrid('selectRow',index);
 			var row = $('#dgDetail').datagrid('getSelected');
@@ -838,6 +841,7 @@
 			sn_num = Math.abs(row.exchanged_number);
 			batch_no = row.batch_no;
 			fk_storage_id = row.fk_storage_id;
+			models = row.models;
 			if($('#status').combobox('getValue')==0 || $('#status').combobox('getValue')==2){
 				$("#selectProductSn").linkbutton('enable');
 				$("#deleteExchangedSn").linkbutton('enable');
@@ -858,7 +862,8 @@
 				queryParams: {
 					filter_ANDS_exchanged_code: exchanged_code,
 					filter_ANDS_fk_storage_id : fk_storage_id	,
-					filter_ANDS_batch_no : batch_no
+					filter_ANDS_batch_no : batch_no,
+					filter_ANDS_exchanged_detail_id : exchanged_detail_id
 				},
 				onLoadSuccess:function(data){ 
 					if(type==2){
@@ -876,12 +881,14 @@
 			$('#dlgProductSn').dialog('open');
 			$("#fffdetail input[name=batch_no]").val(batch_no);
 			$("#fffdetail input[name=fk_storage_id]").val(fk_storage_id);
+			$("#fffdetail input[name=models]").val(models);
 			$('#dgProductSn').datagrid('loadData', {total: 0, rows: []});
 			$('#dgProductSn').datagrid({
 				url : basePath + "api/storageProDetail/api_paging",
 				queryParams: {
 					filter_ANDS_fk_storage_id : fk_storage_id	,
 					filter_ANDS_batch_no : batch_no,
+					filter_ANDS_models : models,
 					filter_ANDS_status : 1
 				}
 			});

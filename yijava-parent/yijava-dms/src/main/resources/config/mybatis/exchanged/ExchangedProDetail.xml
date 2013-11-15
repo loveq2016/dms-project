@@ -9,6 +9,7 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(exchanged_code)">and exchanged_code = #{exchanged_code} </if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_storage_id)">and fk_storage_id = #{fk_storage_id} </if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(batch_no)">and batch_no = #{batch_no} </if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(exchanged_detail_id)">and exchanged_detail_id = #{exchanged_detail_id} </if>
 		</trim>
 	</sql>
 	<sql id="adsOrder">

@@ -22,6 +22,7 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">and fk_dealer_id = #{dealer_id}</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)">and fk_dealer_id in(#{dealer_ids})</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(batch_no)">and batch_no =#{batch_no}</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(models)">and models =#{models}</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">and status = #{status}</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(product_sn)">and product_sn like CONCAT('%','${product_sn}','%' ) </if>
 		</trim>
@@ -35,13 +36,17 @@
 	</sql>
     <select id="selectByObjectcount" resultType="long">
 		select count(1) from (
-			select t1.*,t2.storage_name from dms.tb_storage_pro_detail t1 left join dms.tb_storage t2 on t1.fk_storage_id = t2.id
+			select t1.*,t2.storage_name,t3.models from dms.tb_storage_pro_detail t1 
+			left join dms.tb_storage t2 on t1.fk_storage_id = t2.id
+			left join dms.tb_product t3 on t1.product_item_number = t3.item_number
 		)t
 		<include refid="adsWhere"/>
 	</select>
  	<select id="selectByObject" resultType="dms.yijava.entity.storage.StorageProDetail">
 		select * from (
-		select t1.*,t2.storage_name from dms.tb_storage_pro_detail t1 left join dms.tb_storage t2 on t1.fk_storage_id = t2.id
+		select t1.*,t2.storage_name,t3.models from dms.tb_storage_pro_detail t1 
+		left join dms.tb_storage t2 on t1.fk_storage_id = t2.id
+		left join dms.tb_product t3 on t1.product_item_number = t3.item_number
 		)t
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
