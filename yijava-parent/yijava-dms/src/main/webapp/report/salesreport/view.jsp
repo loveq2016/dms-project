@@ -16,7 +16,22 @@
 								<tr>
 									<td>经销商名称:</td>
 									<td>
-										<input class="easyui-validatebox" type="text" name="dealer_name" id="dealer_name" data-options="required:false"></input>
+										<c:choose>
+										       <c:when test="${user.fk_dealer_id!='0'}">
+													<input class="easyui-validatebox" disabled="disabled" id="dealer_name" value="${user.dealer_name}" style="width:200px" maxLength="100">
+													<input class="easyui-validatebox" type="hidden" name="dealer_id" id="dealer_id" value="${user.fk_dealer_id}" style="width:200px" maxLength="100">					       	
+										       </c:when>
+										       <c:otherwise>
+										       		<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:200px" maxLength="100" class="easyui-validatebox"
+							             			data-options="
+								             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
+									                    method:'get',
+									                    valueField:'dealer_id',
+									                    textField:'dealer_name',
+									                    panelHeight:'auto'
+							            			"/>
+										       </c:otherwise>
+										</c:choose>
 									</td>
 									<td>经销商代码:</td>
 									<td>
@@ -69,9 +84,9 @@
 						<tr>
 							<th field="dealer_name" width="160" align="left" sortable="true">经销商名称</th>
 							<th field="dealer_code" width="80" align="left" sortable="true">经销商代码</th>
-							<th field="attribute" width="80" align="left" sortable="true">区域</th>	
-							<th field="sales_date" width="150" align="center" sortable="true">销售时间</th>
-							<th field="realname" width="150" align="center" sortable="true">销售人员</th>
+							<th field="attribute" width="50" align="left" sortable="true">区域</th>	
+							<th field="sales_date" width="150" align="left" sortable="true">销售时间</th>
+							<th field="realname" width="100" align="left" sortable="true">销售人员</th>
 							<th field="product_item_number" width="80" align="left" sortable="true">产品编号</th>
 							<th field="models" width="80" align="left" sortable="true">型号</th>
 							<th field="batch_no" width="80" align="left" sortable="true">批号</th>

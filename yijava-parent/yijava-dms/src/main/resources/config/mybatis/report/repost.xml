@@ -158,6 +158,24 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)">
 				  and fk_dealer_id in (${dealer_ids})
 			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_code)">
+				  and dealer_code=#{dealer_code}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(attribute)">
+				  and attribute=#{attribute}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(models)">
+				  and models=#{models}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(batch_no)">
+				  and batch_no=#{batch_no}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(product_sn)">
+				  and product_sn=#{product_sn}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(last_time)">
+				  and last_time=#{last_time}
+			</if>
 			and status=1
 		</trim>
 	</sql>
@@ -168,6 +186,27 @@
 			</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)">
 				  and dealer_id in (${dealer_ids})
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_code)">
+				  and dealer_code=#{dealer_code}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(attribute)">
+				  and attribute=#{attribute}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(models)">
+				  and models=#{models}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(batch_no)">
+				  and batch_no=#{batch_no}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(product_sn)">
+				  and product_sn=#{product_sn}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(sales_date)">
+				  and sales_date=#{sales_date}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(create_date)">
+				  and create_date=#{create_date}
 			</if>
 		</trim>
 	</sql>
