@@ -232,6 +232,7 @@ public class DeliverApplyController {
 
 			List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
 			int id = 0 ;
+			int sums = 0;
 			for (DeliverDetail deliverDetail2 : deliverDetail) {
 				Map<String,Object> dd = new HashMap<String, Object>();
 				dd.put("id", ++id);
@@ -241,12 +242,16 @@ public class DeliverApplyController {
 				dd.put("arrival_date", deliverDetail2.getArrival_date());
 				dd.put("deliver_remark", deliverDetail2.getDeliver_remark());
 				list.add(dd);
+				try {
+					sums+=Integer.parseInt(deliverDetail2.getDeliver_number_sum());
+				} catch (Exception e) {
+				}
 			}
+			dataMap.put("sums", sums);
 			dataMap.put("address", dealerAddress.getAddress());
 			dataMap.put("man",dealerAddress.getLinkman());
 			dataMap.put("phone", dealerAddress.getLinkphone());
 			dataMap.put("postcode", dealerAddress.getPostcode());
-			
 			dataMap.put("create_date",format2.format(format2.parse(entity.getCreate_date())));
 			dataMap.put("remark", entity.getRemark());
 			
