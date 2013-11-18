@@ -1,6 +1,7 @@
 package dms.yijava.service.deliver;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -174,4 +175,19 @@ public class DeliverService {
 		deliverDao.updateObject(".updateDeliverStatus", entity);
 	}
 		
+	
+	
+	public List<Map<String,Object>> viewdocument(String deliver_id){
+		List<Map<String,Object>> List = new ArrayList<Map<String,Object>>();
+		List = deliverDao.findObject(".viewdocument",deliver_id);
+		return List;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

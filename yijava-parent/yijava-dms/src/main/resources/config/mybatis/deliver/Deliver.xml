@@ -83,6 +83,23 @@
     	update dms.tb_deliver set check_status = #{check_status} where deliver_id=#{deliver_id}
     </update>
 
+	
+	<select id="viewdocument" resultType="java.util.HashMap">
+		select * from ( 
+			select t1.express_date,t1.consignee_date,
+			t1.deliver_id,t1.deliver_code,t2.dealer_id,t2.dealer_name,t2.dealer_code,t2.attribute,
+			t6.cname,t3.models,t3.express_sn,t3.validity_date,t4.product_sn,t5.deliver_remark,
+			case t5.`type` when  0 then '普通订单' when 1 then '试用订单' when 2 then '退换货订单' end type
+			from dms.tb_deliver t1 
+			left join dms.tb_dealer t2 on t1.dealer_id = t2.dealer_id 
+			inner join dms.tb_deliver_express_detail t3 on t1.deliver_code = t3.deliver_code  
+			inner join dms.tb_deliver_express_detail_sn t4 on t1.deliver_code = t4.deliver_code
+			inner join dms.tb_delivery_detail t5 on t1.deliver_code = t5.deliver_code  and t3.delivery_detail_id = t5.delivery_detail_id
+			left join dms.tb_product t6 on t3.product_item_number = t6.item_number
+		)t where deliver_id = #{deliver_id}
+	</select>
+
+
     
     
 </mapper>
