@@ -347,7 +347,7 @@ public class DeliverExpressController {
 		        cellN.setCellStyle(styleContent);  
 	        	 switch (j) {
              		case 0:cellN.setCellValue(valueOf("发货方：深圳市金瑞凯利生物科技有限公司"));break;
-					case 4:cellN.setCellValue(valueOf("收货方：" + list.get(0).get("dealer_name")));break;
+					case 4:cellN.setCellValue("收货方：" + valueOf(list.get(0).get("dealer_name")));break;
 	        	 }
 	        }
 	        
@@ -380,8 +380,8 @@ public class DeliverExpressController {
 		        cellN = row3.createCell((short)j);  
 		        cellN.setCellStyle(styleContent);  
 	        	 switch (j) {
-          			case 0:cellN.setCellValue(valueOf("发货日期：")+ list.get(0).get("express_date"));break;//express_date
-					case 4:cellN.setCellValue(valueOf("收货日期：")+ list.get(0).get("consignee_date"));break;//consignee_date
+          			case 0:cellN.setCellValue("发货日期："+ valueOf(list.get(0).get("express_date")));break;//express_date
+					case 4:cellN.setCellValue("收货日期：" + valueOf(list.get(0).get("consignee_date")));break;//consignee_date
 	        	 }
 	        }
 	        
