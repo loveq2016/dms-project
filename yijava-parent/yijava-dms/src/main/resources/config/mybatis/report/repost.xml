@@ -317,24 +317,27 @@
 	</select>
 	<select id="selectByObjectcount_SalesReport" resultType="long">
 		select COUNT(*) from (
-		  SELECT t4.dealer_id,t4.dealer_code,t4.dealer_name,t4.attribute,t5.user_id,t6.realname,t1.pull_storage_code,t1.sales_date,t1.create_date,t2.product_item_number,t2.models,t3.batch_no,t3.product_sn FROM tb_pull_storage t1 
-     	  inner JOIN tb_pull_storage_detail t2 ON t1.pull_storage_code = t2.pull_storage_code and t1.type=3
-		  inner JOIN tb_pull_storage_pro_detail t3 ON t2.pull_storage_code = t3.pull_storage_code 
-	      inner JOIN tb_dealer t4 on t1.fk_pull_storage_party_id= t4.dealer_id
-	      inner JOIN tb_user_dealer t5 ON t5.dealer_id = t4.dealer_id
-	      inner JOIN tb_manager_user t6 ON t6.id = t5.user_id
-		) t
-		<include refid="adsWhere_salesReport" />
-	</select>
-	<select id="selectByObject_SalesReport" resultType="java.util.HashMap">
-		select * from (
-		  SELECT t4.dealer_id,t4.dealer_code,t4.dealer_name,t4.attribute,t5.user_id,t6.realname,t1.pull_storage_code,date_format(t1.sales_date,'%Y-%m-%d %H:%i:%s') as sales_date,t2.product_item_number,
+		  SELECT 1 as sales_number,t7.hospital_name,t4.dealer_id,t4.dealer_code,t4.dealer_name,t4.attribute,t5.user_id,t6.realname,t1.pull_storage_code,date_format(t1.sales_date,'%Y-%m-%d %H:%i:%s') as sales_date,t2.product_item_number,
 		  date_format(t1.create_date,'%Y-%m-%d %H:%i:%s') as create_date,t2.models,t3.batch_no,t3.product_sn FROM tb_pull_storage t1 
      	  inner JOIN tb_pull_storage_detail t2 ON t1.pull_storage_code = t2.pull_storage_code and t1.type=3
 		  inner JOIN tb_pull_storage_pro_detail t3 ON t2.pull_storage_code = t3.pull_storage_code 
 	      inner JOIN tb_dealer t4 on t1.fk_pull_storage_party_id= t4.dealer_id
 	      inner JOIN tb_user_dealer t5 ON t5.dealer_id = t4.dealer_id
 	      inner JOIN tb_manager_user t6 ON t6.id = t5.user_id
+		  inner JOIN tb_hospital t7 ON t7.id=t1.fk_put_storage_party_id
+		) t
+		<include refid="adsWhere_salesReport" />
+	</select>
+	<select id="selectByObject_SalesReport" resultType="java.util.HashMap">
+		select * from (
+		  SELECT 1 as sales_number,t7.hospital_name,t4.dealer_id,t4.dealer_code,t4.dealer_name,t4.attribute,t5.user_id,t6.realname,t1.pull_storage_code,date_format(t1.sales_date,'%Y-%m-%d %H:%i:%s') as sales_date,t2.product_item_number,
+		  date_format(t1.create_date,'%Y-%m-%d %H:%i:%s') as create_date,t2.models,t3.batch_no,t3.product_sn FROM tb_pull_storage t1 
+     	  inner JOIN tb_pull_storage_detail t2 ON t1.pull_storage_code = t2.pull_storage_code and t1.type=3
+		  inner JOIN tb_pull_storage_pro_detail t3 ON t2.pull_storage_code = t3.pull_storage_code 
+	      inner JOIN tb_dealer t4 on t1.fk_pull_storage_party_id= t4.dealer_id
+	      inner JOIN tb_user_dealer t5 ON t5.dealer_id = t4.dealer_id
+	      inner JOIN tb_manager_user t6 ON t6.id = t5.user_id
+		  inner JOIN tb_hospital t7 ON t7.id=t1.fk_put_storage_party_id
 		) t 
 		<include refid="adsWhere_salesReport" />
 		<include refid="adsOrder" />

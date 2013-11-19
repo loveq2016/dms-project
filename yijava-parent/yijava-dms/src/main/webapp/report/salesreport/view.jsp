@@ -87,6 +87,8 @@
 							<th field="attribute" width="50" align="left" sortable="true">区域</th>	
 							<th field="sales_date" width="150" align="left" sortable="true">销售时间</th>
 							<th field="realname" width="100" align="left" sortable="true">销售人员</th>
+							<th field="sales_number" width="100" align="left" sortable="true">销售数量</th>
+							<th field="hospital_name" width="100" align="left" sortable="true">销售医院</th>
 							<th field="product_item_number" width="80" align="left" sortable="true">产品编号</th>
 							<th field="models" width="80" align="left" sortable="true">型号</th>
 							<th field="batch_no" width="80" align="left" sortable="true">批号</th>
