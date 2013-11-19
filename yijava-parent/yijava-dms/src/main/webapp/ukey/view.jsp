@@ -20,12 +20,20 @@
 								<tr>
 									<td>经销商:</td>
 									<td>
-										<input class="easyui-combobox" name="qqdealer_id" id="qqdealer_id" style="width:260px" maxLength="100" class="easyui-validatebox"
+										<%-- <input class="easyui-combobox" name="qqdealer_id" id="qqdealer_id" style="width:260px" maxLength="100" class="easyui-validatebox"
 							             			data-options="
 								             			url:'${basePath}/api/dealer/list',
 									                    method:'get',
 									                    valueField:'dealer_id',
 									                    textField:'dealer_name',
+									                    panelHeight:'auto'
+							            			"/> --%>
+							            <input class="easyui-combobox" name="qqdealer_id" id="qqdealer_id" style="width:260px" maxLength="100" class="easyui-validatebox"
+							             			data-options="
+								             			url:'${basePath}api/sysuser/list',
+									                    method:'get',
+									                    valueField:'id',
+									                    textField:'account',
 									                    panelHeight:'auto'
 							            			"/>
 									</td>

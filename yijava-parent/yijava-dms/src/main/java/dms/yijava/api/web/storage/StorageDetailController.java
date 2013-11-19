@@ -37,7 +37,8 @@ public class StorageDetailController {
 		//zhjt20131013日修改开始
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
 		
-		boolean isDealerId=false;
+	/*高勇修改，2013-11-18 
+	 * 	boolean isDealerId=false;
 		for (PropertyFilter propertyFilter : filters) {
 			String propertyKey = propertyFilter.getPropertyNames()[0];
 			if(propertyKey.equals("dealer_id") || 
@@ -45,7 +46,8 @@ public class StorageDetailController {
 				isDealerId=true;
 			}
 		}
-		if (null != sysUser && !isDealerId) {
+		if (null != sysUser && !isDealerId) { */
+		if (null != sysUser) {
 			//经销商
 			if (!StringUtils.equals("0", sysUser.getFk_dealer_id())) {
 				filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
