@@ -25,6 +25,13 @@
 										<input class="easyui-validatebox" type="text" style="width:300px" name="dealer_code" id="dealer_code" data-options="required:false"></input>
 									</td>
 								</tr>
+								<tr>
+									<td>发货开始时间:</td>
+									<td><input name="start_date" id="start_date" class="easyui-datebox"></input></td>
+									<td></td>
+									<td>发货结束时间:</td>
+									<td> <input name="end_date" id="end_date" class="easyui-datebox"></input></td>
+								</tr>
 							</table>
 						</form>
 					</div>
@@ -85,7 +92,8 @@
 		    $('#dg').datagrid('load',{
 		    	filter_ANDS_dealer_name: $('#dealer_name').val(),
 		    	filter_ANDS_dealer_code: $('#dealer_code').val(),
-		    	
+		    	filter_ANDS_start_date: $('input[name=start_date]').val(),
+		    	filter_ANDS_end_date: $('input[name=end_date]').val()
 		    });
 		}
 		
@@ -101,6 +109,8 @@
 				form.attr("enctype","multipart/form-data");
 				var input1=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_name\" value="+$('#dealer_name').val()+">");
 				var input2=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_code\" value="+$('#dealer_code').val()+">");
+				var input3=$("<input type=\"hidden\" name=\"filter_ANDS_start_date\" value="+$('#start_date').val()+">");
+				var input4=$("<input type=\"hidden\" name=\"filter_ANDS_end_date\" value="+$('#end_date').val()+">");
 				$("body").append(form);//将表单放置在web中
 				form.append(input1);
 				form.append(input2);
