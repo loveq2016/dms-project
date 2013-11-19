@@ -41,10 +41,7 @@
 									<td>
 										<input class="easyui-validatebox" type="text" name="attribute" id="attribute" data-options="required:false"></input>
 									</td>
-									<td>型号:</td>
-									<td>
-										<input class="easyui-validatebox" type="text" name="models" id="models" data-options="required:false"></input>
-									</td>
+									
 							</tr>
 							<tr>
 									<td>批号:</td>
@@ -56,10 +53,19 @@
 									<td>
 										<input class="easyui-validatebox" type="text" name="product_sn" id="product_sn" data-options="required:false"></input>
 									</td>
-									
-									<td>入库时间:</td>
+									<td>型号:</td>
 									<td>
-										<input name="last_time" id="last_time" class="easyui-datebox"></input>
+										<input class="easyui-validatebox" type="text" name="models" id="models" data-options="required:false"></input>
+									</td>
+								</tr>
+								<tr>
+									<td width="100">开始入库时间:</td>
+									<td width="270">
+										<input name="start_last_time" id="start_last_time" class="easyui-datebox"></input>
+									</td>
+									<td width="100">结束入库时间:</td>
+									<td width="270">
+										 <input name="end_last_time" id="end_last_time" class="easyui-datebox"></input>
 									</td>
 								</tr>						
 							</table>
@@ -78,15 +84,16 @@
 					rownumbers="true" singleSelect="true" pagination="true" sortName="fk_dealer_id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
+							<th field="storage_name" width="180" align="left" sortable="true">仓库名称</th>
 							<th field="dealer_name" width="180" align="left" sortable="true">经销商名称</th>
-							<th field="dealer_code" width="150" align="left" sortable="true">经销商代码</th>
+							<th field="dealer_code" width="80" align="left" sortable="true">经销商代码</th>
 							<th field="attribute" width="50" align="left" sortable="true">区域</th>	
 							<th data-options="field:'last_time',width:150,align:'center'"  sortable="true">入库时间</th>
 							<th field="product_item_number" width="80" align="left" sortable="true">产品编号</th>
 							<th field="models" width="80" align="left" sortable="true">型号</th>
 							<th field="batch_no" width="80" align="left" sortable="true">批号</th>
 							<th field="product_sn" width="80" align="left" sortable="true">序列号</th>
-							<th field="valid_date" width="200" align="left" sortable="true">有效期</th>
+							<th field="valid_date" width="100" align="left" sortable="true">有效期</th>
 						</tr>
 					</thead>
 				</table>
@@ -211,8 +218,8 @@
 			var input0=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_id\" value="+$('#dealer_id').val()+">");
 			var input1=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_code\" value="+$('#dealer_code').val()+">");
 			var input2=$("<input type=\"hidden\" name=\"filter_ANDS_attribute\" value="+$('#attribute').val()+">");
-			var input3=$("<input type=\"hidden\" name=\"filter_ANDS_last_time\" value="+$('#last_time').val()+">");
-			var input4=$("<input type=\"hidden\" name=\"filter_ANDS_product_item_number\" value="+$('#product_item_number').val()+">");
+			var input3=$("<input type=\"hidden\" name=\"filter_ANDS_start_last_time\" value="+$('#start_last_time').val()+">");
+			var input4=$("<input type=\"hidden\" name=\"filter_ANDS_end_last_time\" value="+$('#end_last_time').val()+">");
 			var input5=$("<input type=\"hidden\" name=\"filter_ANDS_models\" value="+$('#models').val()+">");
 			var input6=$("<input type=\"hidden\" name=\"filter_ANDS_batch_no\" value="+$('#batch_no').val()+">");
 			var input7=$("<input type=\"hidden\" name=\"filter_ANDS_product_sn\" value="+$('#product_sn').val()+">");
@@ -231,10 +238,11 @@
 		 }
 		function doSearch(){
 		    $('#dg').datagrid('load',{
-		    	filter_ANDS_dealer_id: $('#dealer_id').val(),
+		    	filter_ANDS_dealer_id: $('#ffquery input[name=dealer_id]').val(),
 		    	filter_ANDS_dealer_code: $('#dealer_code').val(),
 		    	filter_ANDS_attribute: $('#attribute').val(),
-		    	filter_ANDS_last_time: $('#last_time').val(),
+		    	filter_ANDS_start_last_time: $('#ffquery input[name=start_last_time]').val(),
+		    	filter_ANDS_end_last_time: $('#ffquery input[name=end_last_time]').val(),
 		    	filter_ANDS_models: $('#models').val(),
 		    	filter_ANDS_batch_no: $('#batch_no').val(),
 		    	filter_ANDS_product_sn: $('#product_sn').val()
