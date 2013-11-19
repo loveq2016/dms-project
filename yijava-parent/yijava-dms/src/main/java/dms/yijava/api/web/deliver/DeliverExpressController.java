@@ -191,10 +191,10 @@ public class DeliverExpressController {
 		
 		Deliver entity =  deliverService.getEntity(deliver_id);
 		
-		if (entity.getConsignee_status() == null) {
-			result.setError(new ErrorCode("单据不正确，无法生成文档"));
-			return result;
-		}
+//		if (entity.getConsignee_status() == null) {
+//			result.setError(new ErrorCode("单据不正确，无法生成文档"));
+//			return result;
+//		}
 		try {
 			DateFormat format2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String generatePath = request.getSession().getServletContext().getRealPath("generate");
@@ -327,11 +327,16 @@ public class DeliverExpressController {
 				row++;
 			}
 	        //空行
-	        sheet.addMergedRegion(new Region(row,  (short)0,row, (short) 7));  
+	        sheet.addMergedRegion(new Region(row,  (short)0,row, (short) 1));  
+	        sheet.addMergedRegion(new Region(row,  (short)2,row, (short) 7));  
 	        HSSFRow rowN = sheet.createRow(row);
 			for (int j = 0; j <= 7; j++) {
 				cellN = rowN.createCell((short)j);  
                 cellN.setCellStyle(styleContent);  
+	        	 switch (j) {
+          			case 0:cellN.setCellValue(valueOf("合计："));break;
+					case 2:cellN.setCellValue(valueOf(list.size()));break;
+	        	 }
 			}
 			
 			//发货
@@ -380,8 +385,8 @@ public class DeliverExpressController {
 		        cellN = row3.createCell((short)j);  
 		        cellN.setCellStyle(styleContent);  
 	        	 switch (j) {
-          			case 0:cellN.setCellValue("发货日期："+ valueOf(list.get(0).get("express_date")));break;//express_date
-					case 4:cellN.setCellValue("收货日期：" + valueOf(list.get(0).get("consignee_date")));break;//consignee_date
+          			case 0:cellN.setCellValue("发货日期：");break;//express_date valueOf(list.get(0).get("express_date"))
+					case 4:cellN.setCellValue("收货日期：");break;//consignee_date+ valueOf(list.get(0).get("consignee_date"))
 	        	 }
 	        }
 	        
