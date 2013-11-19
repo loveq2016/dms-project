@@ -208,7 +208,7 @@
 			form.attr("method","post");
 			form.attr("action",basePath+url);
 			form.attr("enctype","multipart/form-data");
-			var input0=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_name\" value="+$('#dealer_name').val()+">");
+			var input0=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_id\" value="+$('#dealer_id').val()+">");
 			var input1=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_code\" value="+$('#dealer_code').val()+">");
 			var input2=$("<input type=\"hidden\" name=\"filter_ANDS_attribute\" value="+$('#attribute').val()+">");
 			var input3=$("<input type=\"hidden\" name=\"filter_ANDS_last_time\" value="+$('#last_time').val()+">");
@@ -231,13 +231,13 @@
 		 }
 		function doSearch(){
 		    $('#dg').datagrid('load',{
-		    	filter_ANDS_realname: $('#realname').val(),
-		    	filter_ANDS_hospital_name: $('#hospital_name').val(),
-		    	filter_ANDS_level_id: $('#level_id').combobox('getValue'),
-		    	filter_ANDS_provinces: $('#quprovince').combobox('getValue'),
-		    	filter_ANDS_area: $('#quarea').combobox('getValue'),
-		    	filter_ANDS_city: $('#qucity').combobox('getValue'),
-		    	filter_ANDS_address: $('#address').val()
+		    	filter_ANDS_dealer_id: $('#dealer_id').val(),
+		    	filter_ANDS_dealer_code: $('#dealer_code').val(),
+		    	filter_ANDS_attribute: $('#attribute').val(),
+		    	filter_ANDS_last_time: $('#last_time').val(),
+		    	filter_ANDS_models: $('#models').val(),
+		    	filter_ANDS_batch_no: $('#batch_no').val(),
+		    	filter_ANDS_product_sn: $('#product_sn').val()
 		    });
 		}
 	</script>

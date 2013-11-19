@@ -213,7 +213,7 @@
 			form.attr("method","post");
 			form.attr("action",basePath+url);
 			form.attr("enctype","multipart/form-data");
-			var input0=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_name\" value="+$('#dealer_name').val()+">");
+			var input0=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_id\" value="+$('#dealer_id').val()+">");
 			var input1=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_code\" value="+$('#dealer_code').val()+">");
 			var input2=$("<input type=\"hidden\" name=\"filter_ANDS_attribute\" value="+$('#attribute').val()+">");
 			var input3=$("<input type=\"hidden\" name=\"filter_ANDS_sales_date\" value="+$('#sales_date').val()+">");
@@ -234,7 +234,7 @@
 		 }
 		function doSearch(){
 		    $('#dg').datagrid('load',{
-		    	filter_ANDS_dealer_name: $('#dealer_name').val(),
+		    	filter_ANDS_dealer_id: $('#dealer_id').val(),
 		    	filter_ANDS_dealer_code: $('#dealer_code').val(),
 		    	filter_ANDS_attribute: $('#attribute').val(),
 		    	filter_ANDS_sales_date: $('#sales_date').val(),
