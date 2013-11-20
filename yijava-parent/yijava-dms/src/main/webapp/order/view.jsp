@@ -416,8 +416,8 @@
 							<form id="ffdetail" method="post">
 								<table>
 									<tr>
-										<td>产品编号:</td>	
-										<td width="150px"><input class="easyui-validatebox" type="text" name="item_number" id="item_number" ></input></td>
+										<td>产品型号:</td>	
+										<td width="150px"><input class="easyui-validatebox" type="text" name="models" id="models" ></input></td>
 										<td>选择分类:</td>
 										<td>
 							            	<input class="easyui-combobox" name="category_id" id="category_id" style="width:150px" maxLength="100" class="easyui-validatebox"
@@ -442,7 +442,7 @@
 					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="desc" toolbar="#tbProduct">
 						<thead>
 							<tr>
-								<th data-options="field:'item_number',width:100,align:'center'" sortable="true">产品编号</th>
+<!-- 								<th data-options="field:'item_number',width:100,align:'center'" sortable="true">产品编号</th> -->
 								<th data-options="field:'cname',width:150,align:'center'" sortable="true">中文名称</th>
 								<th data-options="field:'ename',width:120,align:'center'" sortable="true">英文名称</th>
 								<th data-options="field:'models',width:100,align:'center'" sortable="true">规格型号</th>
@@ -846,7 +846,7 @@
 		}
 		function doSearchProduct(){
 		    $('#dgProduct').datagrid('load',{
-		    	filter_ANDS_item_number: $("#ffdetail input[name=item_number]").val(),
+		    	filter_ANDS_models: $("#ffdetail input[name=models]").val(),
 		    	filter_ANDS_dealer_id: dealer_id,
 		    	filter_ANDS_category_id: $("#ffdetail input[name=category_id]").val()
 		    });
