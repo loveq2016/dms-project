@@ -126,12 +126,12 @@ public class RepostStorageReportController {
 					HSSFCell cellN = rowN.createCell((short)j);  
                     cellN.setCellStyle(styleContent);  
                     switch (j) {
-                    	// 经销商名称	经销商代码	区域	入库日期	产品编号	型号	批号	序列号	有效效期
-						case 0:cellN.setCellValue(valueOf(map.get("dealer_name")));break;
-						case 1:cellN.setCellValue(valueOf(map.get("dealer_code")));break;
-						case 2:cellN.setCellValue(valueOf(map.get("attribute")));break;
-						case 3:cellN.setCellValue(valueOf(map.get("last_time")));break;
-						case 4:cellN.setCellValue(valueOf(map.get("product_item_number")));break;
+                    	// 仓库名称  经销商  经销商代码	区域	入库日期	产品编号	型号	批号	序列号	有效效期
+						case 0:cellN.setCellValue(valueOf(map.get("storage_name")));break;
+						case 1:cellN.setCellValue(valueOf(map.get("dealer_name")));break;
+						case 2:cellN.setCellValue(valueOf(map.get("dealer_code")));break;
+						case 3:cellN.setCellValue(valueOf(map.get("attribute")));break;
+						case 4:cellN.setCellValue(valueOf(map.get("last_time")));break;
 						case 5:cellN.setCellValue(valueOf(map.get("models")));break;
 						case 6:cellN.setCellValue(valueOf(map.get("batch_no")));break;
 						case 7:cellN.setCellValue(valueOf(map.get("product_sn")));break;

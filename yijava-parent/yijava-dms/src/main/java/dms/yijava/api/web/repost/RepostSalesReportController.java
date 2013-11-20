@@ -122,21 +122,22 @@ public class RepostSalesReportController {
 	        int row = 1 ;
 	        for (Map<String,Object> map : list) {
 	        	HSSFRow rowN = sheet.createRow(row);
-				for (int j = 0; j < 10; j++) {
+				for (int j = 0; j < 11; j++) {
 					HSSFCell cellN = rowN.createCell((short)j);  
                     cellN.setCellStyle(styleContent);  
                     switch (j) {
-                    	// 经销商名称	经销商代码	区域	销售日期	销售人员	产品编号	型号	批号	序列号 提交时间
+                    	// 经销商名称	经销商代码	区域	销售日期	销售人员	销售医院	销售数量	型号	批号	序列号	提交时间
 						case 0:cellN.setCellValue(valueOf(map.get("dealer_name")));break;
 						case 1:cellN.setCellValue(valueOf(map.get("dealer_code")));break;
 						case 2:cellN.setCellValue(valueOf(map.get("attribute")));break;
 						case 3:cellN.setCellValue(valueOf(map.get("sales_date")));break;
 						case 4:cellN.setCellValue(valueOf(map.get("realname")));break;
-						case 5:cellN.setCellValue(valueOf(map.get("product_item_number")));break;
-						case 6:cellN.setCellValue(valueOf(map.get("models")));break;
-						case 7:cellN.setCellValue(valueOf(map.get("batch_no")));break;
-						case 8:cellN.setCellValue(valueOf(map.get("product_sn")));break;
-						case 9:cellN.setCellValue(valueOf(map.get("create_date")));break;
+						case 5:cellN.setCellValue(valueOf(map.get("hospital_name")));break;
+						case 6:cellN.setCellValue(valueOf(map.get("sales_number")));break;
+						case 7:cellN.setCellValue(valueOf(map.get("models")));break;
+						case 8:cellN.setCellValue(valueOf(map.get("batch_no")));break;
+						case 9:cellN.setCellValue(valueOf(map.get("product_sn")));break;
+						case 10:cellN.setCellValue(valueOf(map.get("create_date")));break;
 						default:break;
 					}
 				}

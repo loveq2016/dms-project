@@ -85,7 +85,16 @@ public class RepostService {
 		Map<String,String> parameters = new HashMap<String,String>();
 		for (PropertyFilter propertyFilter : filters) {
 			String propertyKey = propertyFilter.getPropertyNames()[0];
-			parameters.put(propertyKey, propertyFilter.getMatchValue());
+			String propertyValue = propertyFilter.getMatchValue();
+			String hhmmss="";
+			if(propertyKey.equals("start_last_time") || propertyKey.equals("end_last_time")){
+				if(propertyKey.equals("start_last_time")&&!"".equals(propertyValue))
+					hhmmss=" 00:00:00";
+				if(propertyKey.equals("end_last_time")&&!"".equals(propertyValue))
+					hhmmss=" 23:59:59";
+				propertyValue=propertyValue + hhmmss;
+			}
+			parameters.put(propertyKey, propertyValue);
 		}
 		return repostDao.getScrollData("StorageReport",parameters, pageRequest.getOffset(),
 				pageRequest.getPageSize(), pageRequest.getOrderBy(),
@@ -94,10 +103,26 @@ public class RepostService {
 	
 	public JsonPage<Map<String,Object>> salesReportPaging(PageRequest pageRequest,List<PropertyFilter> filters) {
 		Map<String,String> parameters = new HashMap<String,String>();
-		for (PropertyFilter propertyFilter : filters) {
-			String propertyKey = propertyFilter.getPropertyNames()[0];
-			parameters.put(propertyKey, propertyFilter.getMatchValue());
-		}
+		try{
+			for (PropertyFilter propertyFilter : filters) {
+				String propertyKey = propertyFilter.getPropertyNames()[0];
+				String propertyValue = propertyFilter.getMatchValue();
+				String hhmmss="";
+				if(propertyKey.equals("start_sales_date") || propertyKey.equals("end_sales_date") || 
+						propertyKey.equals("start_create_date") || propertyKey.equals("end_create_date")){
+					if(propertyKey.equals("start_sales_date")&&!"".equals(propertyValue))
+						hhmmss=" 00:00:00";
+					if(propertyKey.equals("end_sales_date")&&!"".equals(propertyValue))
+						hhmmss=" 23:59:59";
+					if(propertyKey.equals("start_create_date")&&!"".equals(propertyValue))
+						hhmmss=" 00:00:00";
+					if(propertyKey.equals("end_create_date")&&!"".equals(propertyValue))
+						hhmmss=" 23:59:59";
+					propertyValue=propertyValue + hhmmss;
+				}
+				parameters.put(propertyKey, propertyValue);
+			}
+		}catch(Exception ex){}
 		return repostDao.getScrollData("SalesReport",parameters, pageRequest.getOffset(),
 				pageRequest.getPageSize(), pageRequest.getOrderBy(),
 				pageRequest.getOrderDir());
