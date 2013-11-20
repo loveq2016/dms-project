@@ -225,13 +225,13 @@
 			form.attr("method","post");
 			form.attr("action",basePath+url);
 			form.attr("enctype","multipart/form-data");
-			var input0=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_id\" value="+$('#dealer_id').val()+">");
+			var input0=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_id\" value="+$('#ffquery input[name=dealer_id]').val()+">");
 			var input1=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_code\" value="+$('#dealer_code').val()+">");
 			var input2=$("<input type=\"hidden\" name=\"filter_ANDS_attribute\" value="+$('#attribute').val()+">");
-			var input3=$("<input type=\"hidden\" name=\"filter_ANDS_start_sales_date\" value="+$('#start_sales_date').val()+">");
-			var input8=$("<input type=\"hidden\" name=\"filter_ANDS_end_sales_date\" value="+$('#end_sales_date').val()+">");
-			var input4=$("<input type=\"hidden\" name=\"filter_ANDS_start_create_date\" value="+$('#start_create_date').val()+">");
-			var input9=$("<input type=\"hidden\" name=\"filter_ANDS_end_create_date\" value="+$('#end_create_date').val()+">");
+			var input3=$("<input type=\"hidden\" name=\"filter_ANDS_start_sales_date\" value="+$('#ffquery input[name=start_sales_date]').val()+">");
+			var input8=$("<input type=\"hidden\" name=\"filter_ANDS_end_sales_date\" value="+$('#ffquery input[name=end_sales_date]').val()+">");
+			var input4=$("<input type=\"hidden\" name=\"filter_ANDS_start_create_date\" value="+$('#ffquery input[name=start_create_date]').val()+">");
+			var input9=$("<input type=\"hidden\" name=\"filter_ANDS_end_create_date\" value="+$('#ffquery input[name=#end_create_date]').val()+">");
 			var input5=$("<input type=\"hidden\" name=\"filter_ANDS_models\" value="+$('#models').val()+">");
 			var input6=$("<input type=\"hidden\" name=\"filter_ANDS_batch_no\" value="+$('#batch_no').val()+">");
 			var input7=$("<input type=\"hidden\" name=\"filter_ANDS_product_sn\" value="+$('#product_sn').val()+">");

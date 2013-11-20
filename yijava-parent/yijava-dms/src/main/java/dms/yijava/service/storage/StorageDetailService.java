@@ -16,6 +16,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -25,6 +27,7 @@ import com.yijava.orm.core.JsonPage;
 import com.yijava.orm.core.PageRequest;
 import com.yijava.orm.core.PropertyFilter;
 
+import dms.yijava.api.web.pullstorage.SalesStorageController;
 import dms.yijava.dao.storage.StorageDetailDao;
 import dms.yijava.dao.storage.StorageProDetailDao;
 import dms.yijava.entity.dealer.DealerStorage;
@@ -37,6 +40,7 @@ import dms.yijava.service.dealer.DealerStorageService;
 @Service
 @Transactional
 public class StorageDetailService {
+	private static final Logger logger = LoggerFactory.getLogger(StorageDetailService.class);
 
 	@Autowired
 	private StorageDetailDao  storageDetailDao ;
@@ -145,9 +149,11 @@ public class StorageDetailService {
 			StorageProDetailList = deepCopy(StorageProDetailListTemp);
 		} catch (ClassNotFoundException e) {
 			isError = true ;
+			logger.error("对象未序列化!");
 			throw new RuntimeException("对象未序列化");
 		} catch (IOException e) {
 			isError = true ;
+			logger.error("对象未序列化!");
 			throw new RuntimeException("对象未序列化");
 		}
 		
@@ -161,6 +167,7 @@ public class StorageDetailService {
 					 (Math.abs(Integer.parseInt(storageDetail.getInventory_number())) > Integer.parseInt(tempStorageDetail.getInventory_number()))){
 				//库存量不够修改的
 				isError = true ;
+				logger.error("更新库存错误！库存量不足");
 				throw new RuntimeException("更新库存错误！库存量不足");
 			}else{
 				storageDetail.setInventory_number("-"+storageDetail.getInventory_number());
@@ -172,6 +179,7 @@ public class StorageDetailService {
 			StorageProDetail  tempStorageProDetail = storageProDetailDao.getObject(".selectStorageProDetailBySn",storageProDetail);
 			if(tempStorageProDetail ==null ){
 				isError = true;
+				logger.error("更新库存错误！库存量Sn记录已经被锁定");
 				throw new RuntimeException("更新库存错误！库存量Sn记录已经被锁定");
 			}else{
 				int lockIdex = storageProDetailDao.updateObject(".lockSn", tempStorageProDetail);
@@ -234,8 +242,10 @@ public class StorageDetailService {
 			StorageDetailList = deepCopy(StorageDetailListTemp);
 			StorageProDetailList = deepCopy(StorageProDetailListTemp);
 		} catch (ClassNotFoundException e) {
+			logger.error("对象未序列化!");
 			throw new RuntimeException("对象未序列化");
 		} catch (IOException e) {
+			logger.error("对象未序列化!");
 			throw new RuntimeException("对象未序列化");
 		}
 		//库存回滚
@@ -266,8 +276,10 @@ public class StorageDetailService {
 			StorageDetailList = deepCopy(StorageDetailListTemp);
 			StorageProDetailList = deepCopy(StorageProDetailListTemp);
 		} catch (ClassNotFoundException e) {
+			logger.error("对象未序列化!");
 			throw new RuntimeException("对象未序列化");
 		} catch (IOException e) {
+			logger.error("对象未序列化!");
 			throw new RuntimeException("对象未序列化");
 		}
 		
@@ -276,6 +288,7 @@ public class StorageDetailService {
 			//查询默认仓库
 			dealerStorage = dealerStorageService.getDefaultStorage(dealer_id);
 			if (dealerStorage == null) {
+				logger.error("经销商没默认仓库!");
 				return false;
 			}
 		}
