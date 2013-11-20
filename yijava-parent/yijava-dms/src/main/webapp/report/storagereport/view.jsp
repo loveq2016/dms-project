@@ -80,7 +80,7 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" title="查询结果" style="height: 480px" method="get"
+				<table id="dg" title="查询结果" style="height: 370px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="fk_dealer_id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
@@ -88,8 +88,7 @@
 							<th field="dealer_name" width="180" align="left" sortable="true">经销商名称</th>
 							<th field="dealer_code" width="80" align="left" sortable="true">经销商代码</th>
 							<th field="attribute" width="50" align="left" sortable="true">区域</th>	
-							<th data-options="field:'last_time',width:150,align:'center'"  sortable="true">入库时间</th>
-							<th field="product_item_number" width="80" align="left" sortable="true">产品编号</th>
+							<th data-options="field:'last_time',width:150,align:'center'" sortable="true">入库时间</th>
 							<th field="models" width="80" align="left" sortable="true">型号</th>
 							<th field="batch_no" width="80" align="left" sortable="true">批号</th>
 							<th field="product_sn" width="80" align="left" sortable="true">序列号</th>
