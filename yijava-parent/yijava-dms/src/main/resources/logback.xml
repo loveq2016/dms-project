@@ -40,5 +40,5 @@
 	<logger name="org.mybatis" level="DEBUG"/>
 	<logger name="com.sql" level="DEBUG"/>
 	<logger name="org.apache" level="ERROR"/>	
-	<logger name="com.yijava" level="DEBUG"/>
+	<logger name="dms.yijava" level="DEBUG"/>
 </configuration>

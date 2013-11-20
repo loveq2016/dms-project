@@ -17,7 +17,22 @@
 								<tr>
 									<td>经销商:</td>
 									<td>
-										<input class="easyui-validatebox" type="text" style="width:300px" name="dealer_name" id="dealer_name" data-options="required:false"></input>
+										<c:choose>
+										       <c:when test="${user.fk_dealer_id!='0'}">
+													<input class="easyui-validatebox" disabled="disabled" id="dealer_name" value="${user.dealer_name}" style="width:200px" maxLength="100">
+													<input class="easyui-validatebox" type="hidden" name="dealer_id" id="dealer_id" value="${user.fk_dealer_id}" style="width:200px" maxLength="100">					       	
+										       </c:when>
+										       <c:otherwise>
+										       		<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:200px" maxLength="100" class="easyui-validatebox"
+							             			data-options="
+								             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
+									                    method:'get',
+									                    valueField:'dealer_id',
+									                    textField:'dealer_name',
+									                    panelHeight:'auto'
+							            			"/>
+										       </c:otherwise>
+										</c:choose>
 									</td>
 									<td></td>
 									<td>经销商代码:</td>
@@ -55,6 +70,7 @@
 						<tr>
 							<th field="type" width="80" align="left" sortable="true">订单类型</th>
 							<th field="express_date" width="100" align="left" sortable="true">发货日期</th>
+							<th field="deliver_sum" width="100" align="left" sortable="true">发货数量</th>
 							<th field="deliver_code" width="150" align="left" sortable="true">代码</th>
 							<th field="deliver_remark" width="80" align="left" sortable="true">备注</th>
 							<th field="dealer_name" width="150" align="left" sortable="true">代理商名称</th>
@@ -90,7 +106,7 @@
 		
 		function doSearch(){
 		    $('#dg').datagrid('load',{
-		    	filter_ANDS_dealer_name: $('#dealer_name').val(),
+		    	filter_ANDS_dealer_id: $('input[name=dealer_id]').val(),
 		    	filter_ANDS_dealer_code: $('#dealer_code').val(),
 		    	filter_ANDS_start_date: $('input[name=start_date]').val(),
 		    	filter_ANDS_end_date: $('input[name=end_date]').val()
@@ -107,10 +123,10 @@
 				form.attr("method","post");
 				form.attr("action",basePath+url);
 				form.attr("enctype","multipart/form-data");
-				var input1=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_name\" value="+$('#dealer_name').val()+">");
+				var input1=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_id\" value="+$('input[name=dealer_id]').val()+">");
 				var input2=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_code\" value="+$('#dealer_code').val()+">");
-				var input3=$("<input type=\"hidden\" name=\"filter_ANDS_start_date\" value="+$('#start_date').val()+">");
-				var input4=$("<input type=\"hidden\" name=\"filter_ANDS_end_date\" value="+$('#end_date').val()+">");
+				var input3=$("<input type=\"hidden\" name=\"filter_ANDS_start_date\" value="+$('input[name=start_date]').val()+">");
+				var input4=$("<input type=\"hidden\" name=\"filter_ANDS_end_date\" value="+$('input[name=end_date]').val()+">");
 				$("body").append(form);//将表单放置在web中
 				form.append(input1);
 				form.append(input2);

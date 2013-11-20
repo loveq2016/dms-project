@@ -80,6 +80,7 @@ public class RepostExpressController {
 		   List<Map<String,Object>> list =new ArrayList<Map<String,Object>>();
 		   filters.add(PropertyFilters.build("ANDS_check_status", "3"));
 			try {
+				
 				SysUser sysUser=(SysUser)request.getSession().getAttribute("user");
 				if(null!=sysUser){
 					//经销商
@@ -165,21 +166,22 @@ public class RepostExpressController {
 	        int row = 1 ;
 	        for (Map<String,Object> map : list) {
 	        	HSSFRow rowN = sheet.createRow(row);
-				for (int j = 0; j <= 10; j++) {
+				for (int j = 0; j <= 11; j++) {
 					HSSFCell cellN = rowN.createCell((short)j);  
                     cellN.setCellStyle(styleContent);  
                     switch (j) {
                     	case 0:cellN.setCellValue(valueOf( map.get("type")));break;
 						case 1:cellN.setCellValue(valueOf( map.get("express_date")));break;
-						case 2:cellN.setCellValue(valueOf( map.get("deliver_code")));break;
-						case 3:cellN.setCellValue(valueOf( map.get("deliver_remark")));break;
-						case 4:cellN.setCellValue(valueOf( map.get("dealer_name")));break;
-						case 5:cellN.setCellValue(valueOf( map.get("dealer_code")));break;
-						case 6:cellN.setCellValue(valueOf( map.get("attribute")));break;
-						case 7:cellN.setCellValue(valueOf( map.get("models")));break;
-						case 8:cellN.setCellValue(valueOf( map.get("express_sn")));break;
-						case 9:cellN.setCellValue(valueOf( map.get("validity_date")));break;
-						case 10:cellN.setCellValue(valueOf( map.get("product_sn")));break;
+						case 2:cellN.setCellValue(valueOf( map.get("deliver_sum")));break;
+						case 3:cellN.setCellValue(valueOf( map.get("deliver_code")));break;
+						case 4:cellN.setCellValue(valueOf( map.get("deliver_remark")));break;
+						case 5:cellN.setCellValue(valueOf( map.get("dealer_name")));break;
+						case 6:cellN.setCellValue(valueOf( map.get("dealer_code")));break;
+						case 7:cellN.setCellValue(valueOf( map.get("attribute")));break;
+						case 8:cellN.setCellValue(valueOf( map.get("models")));break;
+						case 9:cellN.setCellValue(valueOf( map.get("express_sn")));break;
+						case 10:cellN.setCellValue(valueOf( map.get("validity_date")));break;
+						case 11:cellN.setCellValue(valueOf( map.get("product_sn")));break;
 						default:break;
 					}
 				}

@@ -112,7 +112,7 @@
 	</sql>
 		<select id="selectByObjectcount_ExpressReport" resultType="long">
 		select COUNT(*) from (
-			select t1.express_date,t1.consignee_date,t1.deliver_id,t1.deliver_code,
+			select t1.express_date,t1.consignee_date,t1.deliver_id,t1.deliver_code,'1' as deliver_sum,
 			t2.dealer_id,t2.dealer_name,t2.dealer_code,t2.attribute,
 			t6.cname,t3.models,t3.express_sn,t3.validity_date,t4.product_sn,t5.deliver_remark,
 			case t5.`type` when  0 then '普通订单' when 1 then '试用订单' when 2 then '退换货订单' end type
@@ -122,12 +122,13 @@
 			left join dms.tb_deliver_express_detail_sn t4 on t4.deliver_express_detail_id = t3.id
 			left join dms.tb_delivery_detail t5 on t3.delivery_detail_id = t5.delivery_detail_id
 			left join dms.tb_product t6 on t3.product_item_number = t6.item_number
+			where t1.express_date is not null
 		) t
 		<include refid="adsWhereExpressReport" />
 	</select>
 	<select id="selectByObject_ExpressReport" resultType="java.util.HashMap">
 		select * from ( 
-			select t1.express_date,t1.consignee_date,t1.deliver_id,t1.deliver_code,
+			select t1.express_date,t1.consignee_date,t1.deliver_id,t1.deliver_code,'1' as deliver_sum,
 			t2.dealer_id,t2.dealer_name,t2.dealer_code,t2.attribute,
 			t6.cname,t3.models,t3.express_sn,t3.validity_date,t4.product_sn,t5.deliver_remark,
 			case t5.`type` when  0 then '普通订单' when 1 then '试用订单' when 2 then '退换货订单' end type
@@ -137,6 +138,7 @@
 			left join dms.tb_deliver_express_detail_sn t4 on t4.deliver_express_detail_id = t3.id
 			left join dms.tb_delivery_detail t5 on t3.delivery_detail_id = t5.delivery_detail_id
 			left join dms.tb_product t6 on t3.product_item_number = t6.item_number
+			where t1.express_date is not null
 		)t
 		<include refid="adsWhereExpressReport" />
 		<include refid="adsOrder" />
