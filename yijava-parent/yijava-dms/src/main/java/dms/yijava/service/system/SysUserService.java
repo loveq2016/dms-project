@@ -15,6 +15,8 @@ import com.yijava.orm.core.PropertyFilter;
 import dms.yijava.dao.system.SysUserDao;
 import dms.yijava.entity.system.SysUser;
 import dms.yijava.entity.system.SysUserRole;
+import dms.yijava.service.teamlayou.UserLayouService;
+import dms.yijava.service.user.UserDealerFunService;
 
 @Service
 @Transactional
@@ -23,6 +25,12 @@ public class SysUserService {
 	public SysUserDao sysUserDao;
 	@Autowired
 	public SysUserRoleService sysUserRoleService;
+	
+	@Autowired
+	public UserDealerFunService userDealerFunService;
+	
+	@Autowired
+	private UserLayouService userLayouService;
 	/**
 	 * 查询用户分页
 	 * @param pageRequest
@@ -82,6 +90,11 @@ public class SysUserService {
 	public void deleteEntity(String id) {
 		sysUserRoleService.delEntity(id);
 		sysUserDao.removeById(id);
+		
+		//20131120 修改，删除用户关系，高勇
+		userDealerFunService.deleteEntityByUserId(id);
+		userLayouService.deleteByUserId(id);
+		//20131120 修改，
 	}
 	
 	/**

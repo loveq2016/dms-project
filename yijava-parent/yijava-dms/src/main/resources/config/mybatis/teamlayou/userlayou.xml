@@ -49,4 +49,7 @@
     <delete id="deleteByTeamId" parameterType="String">
    		 delete from dms.tb_user_layou where fk_team_id = #{value}
     </delete>
+     <delete id="deleteByUserId" parameterType="String">
+   		 delete from dms.tb_user_layou where fk_user_id = #{value}
+    </delete>
 </mapper>
