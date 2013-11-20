@@ -354,10 +354,13 @@ public class FlowBussService {
 		String check_id =null;
 		
 		StepDepartment stepDepartment=step.getStepDepartments().get(0);
+		
+		logger.debug("startFlow : stepDepartment= " +stepDepartment.getDepartment_name());
 		//这里找到了这个部门下的几个用户，应该查找哪个是他的上级
 		List<SysUser> sysUsers= stepDepartment.getUsers();
 		for(SysUser sysUser: sysUsers)
 		{
+			logger.debug("startFlow : sysUser= " +sysUser.getAccount()+"dddddddddd"+stepDepartment.getExt_logic());
 			//如果是经销商,直接找到他所属的销售,否则才找他的上级 //同时改部门处理不需要销售关系
 			if(!StringUtils.equals("0",currentUser.getFk_dealer_id()) && stepDepartment.getExt_logic().equals("1") ){
 				//是经销商
@@ -368,6 +371,7 @@ public class FlowBussService {
 				break;
 			}else
 			{
+				logger.debug("不是代理商 "+currentUser.getParentIds() + "dddd"+sysUser.getId());
 				if(currentUser.getParentIds()!=null && !currentUser.getParentIds().equals(""))
 				{
 					if(currentUser.getParentIds().indexOf(sysUser.getId())>-1)
@@ -380,6 +384,8 @@ public class FlowBussService {
 			
 			
 		}
+		
+		logger.debug("startFlow : check_id= " +check_id);
 		
 		if(check_id==null)
 		{

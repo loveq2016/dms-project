@@ -115,7 +115,38 @@ public class TrialController {
 				e.printStackTrace();
 			}
 		}
-		if( deparments==null || deparments.size()<=0)
+		
+		if(sysUser.getChildIds().length==1 && sysUser.getChildIds()[0].equals(currentUserId))
+		{
+			//销售 
+			//是销售
+			filters.add(PropertyFilters.build("ANDS_sales_user_ids", currentUserId));
+			
+			//filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
+			//filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
+			try {
+				trialPages=trialService.paging(pageRequest, filters);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else
+		{
+			//不是销售，需要找到他对应的所有销售
+			filters.add(PropertyFilters.build("ANDS_sales_user_ids", this.listString(sysUser.getChildIds())));
+			
+			filters.add(PropertyFilters.build("ANDS_statuses","1,2,3,4"));
+			filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
+			filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
+			try {
+				trialPages=trialService.paging(pageRequest, filters);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		/*if( deparments==null || deparments.size()<=0)
 		{
 			//是销售
 			filters.add(PropertyFilters.build("ANDS_sales_user_ids", currentUserId));
@@ -145,7 +176,7 @@ public class TrialController {
 			
 			
 			
-		}
+		}*/
 		
 		
 		
