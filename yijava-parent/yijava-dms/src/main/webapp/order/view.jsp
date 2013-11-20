@@ -319,7 +319,7 @@
 						 rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tbOrderDetail">
 						<thead>
 							<tr>
-								<th data-options="field:'product_item_number',width:80,align:'center'" sortable="true">产品编码</th>
+								<th data-options="field:'product_item_number',width:80,align:'center'" sortable="true" hidden="true">产品编码</th>
 								<th data-options="field:'product_name',width:100,align:'left'" sortable="true">产品名称</th>
 								<th data-options="field:'models',width:90,align:'center'" sortable="true">规格型号</th>
 								<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">数量</th>
