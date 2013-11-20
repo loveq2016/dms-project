@@ -49,17 +49,17 @@
 
 			<div style="padding-left: 10px; padding-right: 10px">
 
-				<table id="dg" title="查询结果" style="height: 500px"  method="get"
+				<table id="dg" title="查询结果" style="height: 370px"  method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="deliver_code" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
-							<th field="type" width="150" align="left" sortable="true">订单类型</th>
-							<th field="express_date" width="150" align="left" sortable="true">发货日期</th>
+							<th field="type" width="80" align="left" sortable="true">订单类型</th>
+							<th field="express_date" width="100" align="left" sortable="true">发货日期</th>
 							<th field="deliver_code" width="150" align="left" sortable="true">代码</th>
-							<th field="deliver_remark" width="150" align="left" sortable="true">备注</th>
+							<th field="deliver_remark" width="80" align="left" sortable="true">备注</th>
 							<th field="dealer_name" width="150" align="left" sortable="true">代理商名称</th>
-							<th field="dealer_code" width="150" align="left" sortable="true">代理商代码</th>
-							<th field="attribute" width="180" align="left" sortable="true">区域</th>
+							<th field="dealer_code" width="80" align="left" sortable="true">代理商代码</th>
+							<th field="attribute" width="80" align="left" sortable="true">区域</th>
 							<th field="models" width="80" align="left" sortable="true">型号</th>
 							<th field="express_sn" width="80" align="left" sortable="true">批号</th>
 							<th field="validity_date" width="80" align="left" sortable="true">效期</th>
@@ -114,6 +114,8 @@
 				$("body").append(form);//将表单放置在web中
 				form.append(input1);
 				form.append(input2);
+				form.append(input3);
+				form.append(input4);
 				form.submit();//表单提交
 			 }
 		

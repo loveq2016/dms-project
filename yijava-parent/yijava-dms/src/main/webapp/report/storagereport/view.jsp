@@ -80,7 +80,7 @@
 			</div>
 			<div style="margin: 10px 0;"></div>
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg" title="查询结果" style="height: 480px" method="get"
+				<table id="dg" title="查询结果" style="height: 370px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="fk_dealer_id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
@@ -88,8 +88,7 @@
 							<th field="dealer_name" width="180" align="left" sortable="true">经销商名称</th>
 							<th field="dealer_code" width="80" align="left" sortable="true">经销商代码</th>
 							<th field="attribute" width="50" align="left" sortable="true">区域</th>	
-							<th data-options="field:'last_time',width:150,align:'center'"  sortable="true">入库时间</th>
-							<th field="product_item_number" width="80" align="left" sortable="true">产品编号</th>
+							<th data-options="field:'last_time',width:150,align:'center'" sortable="true">入库时间</th>
 							<th field="models" width="80" align="left" sortable="true">型号</th>
 							<th field="batch_no" width="80" align="left" sortable="true">批号</th>
 							<th field="product_sn" width="80" align="left" sortable="true">序列号</th>
@@ -215,11 +214,11 @@
 			form.attr("method","post");
 			form.attr("action",basePath+url);
 			form.attr("enctype","multipart/form-data");
-			var input0=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_id\" value="+$('#dealer_id').val()+">");
+			var input0=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_id\" value="+$('#ffquery input[name=dealer_id]').val()+">");
 			var input1=$("<input type=\"hidden\" name=\"filter_ANDS_dealer_code\" value="+$('#dealer_code').val()+">");
 			var input2=$("<input type=\"hidden\" name=\"filter_ANDS_attribute\" value="+$('#attribute').val()+">");
-			var input3=$("<input type=\"hidden\" name=\"filter_ANDS_start_last_time\" value="+$('#start_last_time').val()+">");
-			var input4=$("<input type=\"hidden\" name=\"filter_ANDS_end_last_time\" value="+$('#end_last_time').val()+">");
+			var input3=$("<input type=\"hidden\" name=\"filter_ANDS_start_last_time\" value="+$('#ffquery input[name=start_last_time]').val()+">");
+			var input4=$("<input type=\"hidden\" name=\"filter_ANDS_end_last_time\" value="+$('#ffquery input[name=end_last_time]').val()+">");
 			var input5=$("<input type=\"hidden\" name=\"filter_ANDS_models\" value="+$('#models').val()+">");
 			var input6=$("<input type=\"hidden\" name=\"filter_ANDS_batch_no\" value="+$('#batch_no').val()+">");
 			var input7=$("<input type=\"hidden\" name=\"filter_ANDS_product_sn\" value="+$('#product_sn').val()+">");

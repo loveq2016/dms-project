@@ -112,16 +112,16 @@
 	</sql>
 		<select id="selectByObjectcount_ExpressReport" resultType="long">
 		select COUNT(*) from (
-			select t1.check_status,tfr.record_id,tfr.status as record_status,tfr.check_id as check_id,
-				t1.express_date,t1.deliver_code,t2.dealer_id,t2.dealer_name,t2.dealer_code,t2.attribute,
-				t3.models,t3.express_sn,t3.validity_date,t4.product_sn,t5.deliver_remark,
-				case t5.`type` when  0 then '普通订单' when 1 then '试用订单' when 2 then '退换货订单' end type
-				from dms.tb_deliver t1 
-				left join dms.tb_dealer t2 on t1.dealer_id = t2.dealer_id 
-				inner join dms.tb_deliver_express_detail t3 on t1.deliver_code = t3.deliver_code  
-				inner join dms.tb_deliver_express_detail_sn t4 on t1.deliver_code = t4.deliver_code
-				inner join dms.tb_delivery_detail t5 on t1.deliver_code = t5.deliver_code  and t3.delivery_detail_id = t5.delivery_detail_id
-				LEFT JOIN tb_flow_record tfr ON t1.deliver_id=tfr.bussiness_id AND check_id= null AND flow_id=null 
+			select t1.express_date,t1.consignee_date,t1.deliver_id,t1.deliver_code,
+			t2.dealer_id,t2.dealer_name,t2.dealer_code,t2.attribute,
+			t6.cname,t3.models,t3.express_sn,t3.validity_date,t4.product_sn,t5.deliver_remark,
+			case t5.`type` when  0 then '普通订单' when 1 then '试用订单' when 2 then '退换货订单' end type
+			from dms.tb_deliver t1 
+			left join dms.tb_dealer t2 on t1.dealer_id = t2.dealer_id
+			left join dms.tb_deliver_express_detail t3 on t1.deliver_id = t3.deliver_id
+			left join dms.tb_deliver_express_detail_sn t4 on t4.deliver_express_detail_id = t3.id
+			left join dms.tb_delivery_detail t5 on t3.delivery_detail_id = t5.delivery_detail_id
+			left join dms.tb_product t6 on t3.product_item_number = t6.item_number
 		) t
 		<include refid="adsWhereExpressReport" />
 	</select>
@@ -337,7 +337,7 @@
 		  SELECT 1 as sales_number,t7.hospital_name,t4.dealer_id,t4.dealer_code,t4.dealer_name,t4.attribute,t5.user_id,t6.realname,t1.pull_storage_code,date_format(t1.sales_date,'%Y-%m-%d') as sales_date,t2.product_item_number,
 		  date_format(t1.create_date,'%Y-%m-%d') as create_date,t2.models,t3.batch_no,t3.product_sn FROM tb_pull_storage t1 
      	  inner JOIN tb_pull_storage_detail t2 ON t1.pull_storage_code = t2.pull_storage_code and t1.type=3
-		  inner JOIN tb_pull_storage_pro_detail t3 ON t2.pull_storage_code = t3.pull_storage_code 
+		  inner JOIN tb_pull_storage_pro_detail t3 ON t2.pull_storage_code = t3.pull_storage_code and t2.batch_no=t3.batch_no
 	      inner JOIN tb_dealer t4 on t1.fk_pull_storage_party_id= t4.dealer_id
 	      inner JOIN tb_user_dealer t5 ON t5.dealer_id = t4.dealer_id
 	      inner JOIN tb_manager_user t6 ON t6.id = t5.user_id
@@ -350,7 +350,7 @@
 		  SELECT 1 as sales_number,t7.hospital_name,t4.dealer_id,t4.dealer_code,t4.dealer_name,t4.attribute,t5.user_id,t6.realname,t1.pull_storage_code,date_format(t1.sales_date,'%Y-%m-%d') as sales_date,t2.product_item_number,
 		  date_format(t1.create_date,'%Y-%m-%d') as create_date,t2.models,t3.batch_no,t3.product_sn FROM tb_pull_storage t1 
      	  inner JOIN tb_pull_storage_detail t2 ON t1.pull_storage_code = t2.pull_storage_code and t1.type=3
-		  inner JOIN tb_pull_storage_pro_detail t3 ON t2.pull_storage_code = t3.pull_storage_code 
+		  inner JOIN tb_pull_storage_pro_detail t3 ON t2.pull_storage_code = t3.pull_storage_code and t2.batch_no=t3.batch_no
 	      inner JOIN tb_dealer t4 on t1.fk_pull_storage_party_id= t4.dealer_id
 	      inner JOIN tb_user_dealer t5 ON t5.dealer_id = t4.dealer_id
 	      inner JOIN tb_manager_user t6 ON t6.id = t5.user_id
