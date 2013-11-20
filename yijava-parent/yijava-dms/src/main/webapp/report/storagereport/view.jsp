@@ -89,6 +89,7 @@
 							<th field="dealer_code" width="80" align="left" sortable="true">经销商代码</th>
 							<th field="attribute" width="50" align="left" sortable="true">区域</th>	
 							<th data-options="field:'last_time',width:150,align:'center'" sortable="true">入库时间</th>
+							<th field="storage_sum" width="50" align="left" sortable="true">库存数量</th>
 							<th field="models" width="80" align="left" sortable="true">型号</th>
 							<th field="batch_no" width="80" align="left" sortable="true">批号</th>
 							<th field="product_sn" width="80" align="left" sortable="true">序列号</th>
