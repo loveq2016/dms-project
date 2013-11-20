@@ -122,20 +122,21 @@ public class RepostStorageReportController {
 	        int row = 1 ;
 	        for (Map<String,Object> map : list) {
 	        	HSSFRow rowN = sheet.createRow(row);
-				for (int j = 0; j < 9; j++) {
+				for (int j = 0; j < 10; j++) {
 					HSSFCell cellN = rowN.createCell((short)j);  
                     cellN.setCellStyle(styleContent);  
                     switch (j) {
-                    	// 仓库名称  经销商  经销商代码	区域	入库日期	产品编号	型号	批号	序列号	有效效期
+                    	// 仓库名称  经销商  经销商代码	区域	入库日期  库存数量	产品编号	型号	批号	序列号	有效效期
 						case 0:cellN.setCellValue(valueOf(map.get("storage_name")));break;
 						case 1:cellN.setCellValue(valueOf(map.get("dealer_name")));break;
 						case 2:cellN.setCellValue(valueOf(map.get("dealer_code")));break;
 						case 3:cellN.setCellValue(valueOf(map.get("attribute")));break;
 						case 4:cellN.setCellValue(valueOf(map.get("last_time")));break;
-						case 5:cellN.setCellValue(valueOf(map.get("models")));break;
-						case 6:cellN.setCellValue(valueOf(map.get("batch_no")));break;
-						case 7:cellN.setCellValue(valueOf(map.get("product_sn")));break;
-						case 8:cellN.setCellValue(valueOf(map.get("valid_date")));break;
+						case 5:cellN.setCellValue(valueOf(map.get("storage_sum")));break;
+						case 6:cellN.setCellValue(valueOf(map.get("models")));break;
+						case 7:cellN.setCellValue(valueOf(map.get("batch_no")));break;
+						case 8:cellN.setCellValue(valueOf(map.get("product_sn")));break;
+						case 9:cellN.setCellValue(valueOf(map.get("valid_date")));break;
 						default:break;
 					}
 				}
