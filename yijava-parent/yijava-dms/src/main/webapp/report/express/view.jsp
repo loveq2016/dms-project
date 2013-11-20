@@ -114,6 +114,8 @@
 				$("body").append(form);//将表单放置在web中
 				form.append(input1);
 				form.append(input2);
+				form.append(input3);
+				form.append(input4);
 				form.submit();//表单提交
 			 }
 		
