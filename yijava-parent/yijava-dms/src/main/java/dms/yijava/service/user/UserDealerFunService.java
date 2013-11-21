@@ -66,12 +66,10 @@ public class UserDealerFunService {
 	public void saveEntity(UserDealer entity) {
 		userDealerFunDao.insert(entity);
 	}
-	
-
-	
 	public void deleteEntity(String id) {
 		userDealerFunDao.remove(id);
 	}
-	
-	
+	public void deleteEntityByUserId(String userid) {
+		userDealerFunDao.removeObject(".deleteByUserId",userid);
+	}
 }

@@ -310,7 +310,7 @@
 	</select>
 	<select id="selectByObjectcount_StorageReport" resultType="long">
 		select COUNT(*) from (
-			SELECT t4.storage_name,
+			SELECT t4.storage_name,'1' as storage_sum,
 			t1.status,t1.fk_dealer_id,t1.batch_no,t1.product_sn,date_format(t1.last_time,'%Y-%m-%d %H:%i:%s') as last_time,t2.product_item_number,t2.models,t3.dealer_name,t3.dealer_code,t3.attribute,t2.valid_date 
 			FROM tb_storage_pro_detail t1
 			inner JOIN tb_storage t4 ON t4.id=t1.fk_storage_id
@@ -322,7 +322,7 @@
 	</select>
 	<select id="selectByObject_StorageReport" resultType="java.util.HashMap">
 		select * from (
-			SELECT t4.storage_name,
+			SELECT t4.storage_name,'1' as storage_sum,
 			t1.status,t1.fk_dealer_id,t1.batch_no,t1.product_sn,date_format(t1.last_time,'%Y-%m-%d') as last_time,t2.product_item_number,t2.models,t3.dealer_name,t3.dealer_code,t3.attribute,t2.valid_date 
 			FROM tb_storage_pro_detail t1
 			inner JOIN tb_storage t4 ON t4.id=t1.fk_storage_id

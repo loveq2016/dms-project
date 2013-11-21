@@ -63,5 +63,7 @@
 <delete id="delete">
 	delete from tb_user_dealer where id = #{id}
 </delete>
-    
+<delete id="deleteByUserId">
+	delete from tb_user_dealer where user_id = #{id}
+</delete>    
 </mapper>

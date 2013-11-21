@@ -6,12 +6,9 @@
 
 <sql id="adsWhere">
 <trim prefix="WHERE" prefixOverrides="AND|OR">
-	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(item_number)">
-		  and item_number=#{item_number}
-	</if>
-	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(category_id)">
-		  and category_id=#{category_id}
-	</if>
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(item_number)">and item_number=#{item_number}</if>
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(category_id)"> and category_id=#{category_id}</if>
+	<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(models)"> and models like CONCAT('%','${models}','%' )</if>
 </trim>
 </sql>
 

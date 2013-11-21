@@ -231,7 +231,7 @@
 			var input3=$("<input type=\"hidden\" name=\"filter_ANDS_start_sales_date\" value="+$('#ffquery input[name=start_sales_date]').val()+">");
 			var input8=$("<input type=\"hidden\" name=\"filter_ANDS_end_sales_date\" value="+$('#ffquery input[name=end_sales_date]').val()+">");
 			var input4=$("<input type=\"hidden\" name=\"filter_ANDS_start_create_date\" value="+$('#ffquery input[name=start_create_date]').val()+">");
-			var input9=$("<input type=\"hidden\" name=\"filter_ANDS_end_create_date\" value="+$('#ffquery input[name=#end_create_date]').val()+">");
+			var input9=$("<input type=\"hidden\" name=\"filter_ANDS_end_create_date\" value="+$('#ffquery input[name=end_create_date]').val()+">");
 			var input5=$("<input type=\"hidden\" name=\"filter_ANDS_models\" value="+$('#models').val()+">");
 			var input6=$("<input type=\"hidden\" name=\"filter_ANDS_batch_no\" value="+$('#batch_no').val()+">");
 			var input7=$("<input type=\"hidden\" name=\"filter_ANDS_product_sn\" value="+$('#product_sn').val()+">");
@@ -256,7 +256,7 @@
 		    	filter_ANDS_start_sales_date: $('#ffquery input[name=start_sales_date]').val(),
 		    	filter_ANDS_end_sales_date: $('#ffquery input[name=end_sales_date]').val(),
 		    	filter_ANDS_start_create_date: $('#ffquery input[name=start_create_date]').val(),
-		    	filter_ANDS_end_create_date: $('#ffquery input[name=#end_create_date]').val(),
+		    	filter_ANDS_end_create_date: $('#ffquery input[name=end_create_date]').val(),
 		    	filter_ANDS_models: $('#models').val(),
 		    	filter_ANDS_batch_no: $('#batch_no').val(),
 		    	filter_ANDS_product_sn: $('#product_sn').val()

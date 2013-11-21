@@ -49,6 +49,10 @@ public class UserLayouService {
 		userLayouDao.removeObject(".deleteByTeamId",id);
 	}
 	
+	public void deleteByUserId(String id) {
+		userLayouDao.removeObject(".deleteByUserId",id);
+	}
+	
 	/**
 	 * 根据用户所在的节点，找到用户的所有上级用户id
 	 * 
