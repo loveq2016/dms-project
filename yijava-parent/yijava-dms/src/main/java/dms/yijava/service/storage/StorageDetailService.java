@@ -108,12 +108,13 @@ public class StorageDetailService {
 			storageDetail.setBatch_no(deliverExpressDetail.getExpress_sn());
 			storageDetail.setModels(deliverExpressDetail.getModels());
 			storageDetail.setValid_date(deliverExpressDetail.getValidity_date());
-			StorageDetail  tempStorageDetail = storageDetailDao.getObject(".queryStorageDetail",storageDetail);
-			if (tempStorageDetail == null) {
-				storageDetailDao.insertObject(".saveStorageDetail",storageDetail);
-			}else{
-				storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
-			}
+//20131123 mx 注释掉 库存改为一个表 不用更新库存总表
+//			StorageDetail  tempStorageDetail = storageDetailDao.getObject(".queryStorageDetail",storageDetail);
+//			if (tempStorageDetail == null) {
+//				storageDetailDao.insertObject(".saveStorageDetail",storageDetail);
+//			}else{
+//				storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
+//			}
 			for (DeliverExpressSn deliverExpressSn : deliverExpressSns) {
 				if(deliverExpressDetail.getId().equals(deliverExpressSn.getDeliver_express_detail_id())){
 					StorageProDetail storageProDetail = new StorageProDetail();
@@ -125,6 +126,7 @@ public class StorageDetailService {
 					storageProDetail.setBatch_no(deliverExpressDetail.getExpress_sn());
 					storageProDetail.setProduct_sn(deliverExpressSn.getProduct_sn());
 					storageProDetail.setProduct_item_number(deliverExpressDetail.getProduct_item_number());
+					storageProDetail.setValid_date(deliverExpressDetail.getValidity_date());
 					storageProDetailDao.insertObject(".saveSnSub", storageProDetail);
 				}
 			}
@@ -170,8 +172,9 @@ public class StorageDetailService {
 				logger.error("更新库存错误！库存量不足");
 				throw new RuntimeException("更新库存错误！库存量不足");
 			}else{
-				storageDetail.setInventory_number("-"+storageDetail.getInventory_number());
-				int upIdex = storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
+				//20131123 mx 注释掉 库存改为一个表 不用更新库存总表
+				//storageDetail.setInventory_number("-"+storageDetail.getInventory_number());
+				//int upIdex = storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
 			}
 		}
 		//锁定Sn记录
@@ -249,14 +252,14 @@ public class StorageDetailService {
 			throw new RuntimeException("对象未序列化");
 		}
 		//库存回滚
+/*20131123 mx 注释掉 库存改为一个表 不用更新库存总表
 		for (StorageDetail storageDetail : StorageDetailList) {
 			int upIdex = storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
-			//System.out.println(upIdex);
 		}
+*/
 		for (StorageProDetail storageProDetail : StorageProDetailList) {
 			//取消锁定Sn记录
 			int lockIdex = storageProDetailDao.updateObject(".unlockSn", storageProDetail);
-			//System.out.println(lockIdex);
 		}	
 		return true;
 	}
@@ -292,7 +295,7 @@ public class StorageDetailService {
 				return false;
 			}
 		}
-
+/*20131123 mx 注释掉 库存改为一个表 不用更新库存总表
 		for (StorageDetail storageDetail : StorageDetailList) {
 			if(dealerStorage!=null)storageDetail.setFk_storage_id(dealerStorage.getStorage_id());
 			StorageDetail  tempStorageDetail = storageDetailDao.getObject(".queryStorageDetail",storageDetail);
@@ -302,6 +305,7 @@ public class StorageDetailService {
 				storageDetailDao.updateObject(".updateStorageDetail", storageDetail);
 			}
 		}
+*/
 		for (StorageProDetail storageProDetail : StorageProDetailList) {
 			if(dealerStorage!=null)storageProDetail.setFk_storage_id(dealerStorage.getStorage_id());
 			//更新Sn记录

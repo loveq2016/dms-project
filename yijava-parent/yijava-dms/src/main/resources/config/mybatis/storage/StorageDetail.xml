@@ -23,21 +23,41 @@
 	    </choose>
 	</sql>
     <select id="selectByObjectcount" resultType="long">
-		select count(1) from (
-			select t1.*,t2.cname AS product_cname,t3.storage_name,t4.dealer_name from dms.tb_storage_detail t1 
-			inner join dms.tb_product t2 on t1.product_item_number = t2.item_number
-			inner join dms.tb_storage t3 on t1.fk_storage_id = t3.id
-			inner join dms.tb_dealer t4 on t1.fk_dealer_id = t4.dealer_id
-		)t
+<!-- 		select count(1) from ( -->
+<!-- 			select t1.*,t2.cname AS product_cname,t3.storage_name,t4.dealer_name from dms.tb_storage_detail t1  -->
+<!-- 			inner join dms.tb_product t2 on t1.product_item_number = t2.item_number -->
+<!-- 			inner join dms.tb_storage t3 on t1.fk_storage_id = t3.id -->
+<!-- 			inner join dms.tb_dealer t4 on t1.fk_dealer_id = t4.dealer_id -->
+<!-- 		)t -->
+			select count(1)  from ( 
+			select t1.id,t1.fk_storage_id,t1.fk_dealer_id,t1.product_item_number,t2.models,t1.batch_no,
+			count(1) as inventory_number ,t1.valid_date,t1.last_time,
+			t2.cname AS product_cname,t3.storage_name,t4.dealer_name 
+			from dms.tb_storage_pro_detail t1
+			inner join dms.tb_product t2 on t1.product_item_number = t2.item_number 
+			inner join dms.tb_storage t3 on t1.fk_storage_id = t3.id 
+			inner join dms.tb_dealer t4 on t1.fk_dealer_id = t4.dealer_id 
+			group by t1.fk_storage_id,t1.fk_dealer_id,t1.product_item_number,t1.batch_no,t1.valid_date
+			)t
 		<include refid="adsWhere"/>
 	</select>
  	<select id="selectByObject" resultType="dms.yijava.entity.storage.StorageDetail">
-		select * from (
-			select t1.*,t2.cname AS product_cname,t3.storage_name,t4.dealer_name from dms.tb_storage_detail t1 
-			inner join dms.tb_product t2 on t1.product_item_number = t2.item_number
-			inner join dms.tb_storage t3 on t1.fk_storage_id = t3.id
-			inner join dms.tb_dealer t4 on t1.fk_dealer_id = t4.dealer_id
-		)t
+<!-- 		select * from ( -->
+<!-- 			select t1.*,t2.cname AS product_cname,t3.storage_name,t4.dealer_name from dms.tb_storage_detail t1  -->
+<!-- 			inner join dms.tb_product t2 on t1.product_item_number = t2.item_number -->
+<!-- 			inner join dms.tb_storage t3 on t1.fk_storage_id = t3.id -->
+<!-- 			inner join dms.tb_dealer t4 on t1.fk_dealer_id = t4.dealer_id -->
+<!-- 		)t -->
+			select * from ( 
+			select t1.id,t1.fk_storage_id,t1.fk_dealer_id,t1.product_item_number,t2.models,t1.batch_no,
+			count(1) as inventory_number ,t1.valid_date,t1.last_time,
+			t2.cname AS product_cname,t3.storage_name,t4.dealer_name 
+			from dms.tb_storage_pro_detail t1
+			inner join dms.tb_product t2 on t1.product_item_number = t2.item_number 
+			inner join dms.tb_storage t3 on t1.fk_storage_id = t3.id 
+			inner join dms.tb_dealer t4 on t1.fk_dealer_id = t4.dealer_id 
+			group by t1.fk_storage_id,t1.fk_dealer_id,t1.product_item_number,t1.batch_no,t1.valid_date
+			)t
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
 	    limit #{offset},#{pagesize}
@@ -45,9 +65,13 @@
 	
 	
 	<select id="queryStorageDetail" resultType="dms.yijava.entity.storage.StorageDetail">
-			select * from dms.tb_storage_detail 
+<!-- 			select * from dms.tb_storage_detail  -->
+<!-- 			where fk_storage_id=#{fk_storage_id} and fk_dealer_id=#{fk_dealer_id}  -->
+<!--     		and product_item_number=#{product_item_number} and batch_no =#{batch_no} -->
+			select count(1) as inventory_number from dms.tb_storage_pro_detail 
 			where fk_storage_id=#{fk_storage_id} and fk_dealer_id=#{fk_dealer_id} 
     		and product_item_number=#{product_item_number} and batch_no =#{batch_no}
+
 	</select>
 	
 	

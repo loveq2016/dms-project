@@ -20,6 +20,7 @@ public class StorageProDetail  implements Serializable {
 	private String batch_no;
 	private String models;
 	private String product_sn;
+	private String valid_date;
 	
 	private String storage_name;
 	

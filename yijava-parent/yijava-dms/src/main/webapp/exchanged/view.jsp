@@ -822,6 +822,7 @@
 		    	filter_ANDS_batch_no: $("#fffdetail input[name=batch_no]").val(),
 		    	filter_ANDS_product_sn: $("#fffdetail input[name=product_sn]").val(),
 		    	filter_ANDS_models: $("#fffdetail input[name=models]").val(),
+		    	filter_ANDS_dealer_id : dealer_id,
 				filter_ANDS_status : 1
 		    });
 		}
@@ -889,6 +890,7 @@
 					filter_ANDS_fk_storage_id : fk_storage_id	,
 					filter_ANDS_batch_no : batch_no,
 					filter_ANDS_models : models,
+					filter_ANDS_dealer_id : dealer_id,
 					filter_ANDS_status : 1
 				}
 			});
