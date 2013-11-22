@@ -1026,7 +1026,7 @@
 					 //dgflow.pagination(); 
 					 //加载流程记录
 					 //LoadCheckFlowRecord(row.deliver_id);
-					 openExchangedDetail($('#dg').datagrid('getRowIndex'));
+					 openExchangedDetail(index);
 					 $('#tabs').tabs('enableTab', '审核'); 
 					 $('#tabs').tabs('select', '审核');
 					 //$('#dlgDeliverDetail').dialog('open').dialog('setTitle', '审核');
