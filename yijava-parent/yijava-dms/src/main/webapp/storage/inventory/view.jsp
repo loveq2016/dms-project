@@ -136,6 +136,7 @@
 		var fk_storage_id;
 		var batch_no;
 		var models;
+		var valid_date;
 		function openProductSn(index){
 			$('#dg').datagrid('selectRow',index);
 			var row = $('#dg').datagrid('getSelected');
@@ -145,6 +146,7 @@
 			fk_storage_id = row.fk_storage_id;
 			fk_dealer_id = row.fk_dealer_id;
 			models  = row.models;
+			valid_date = row.valid_date;
 			$('#dgProductSn').datagrid('loadData', {total: 0, rows: []});
 			$('#dgProductSn').datagrid({
 				url : basePath + "api/storageProDetail/paging",
@@ -153,6 +155,7 @@
 					filter_ANDS_fk_storage_id : fk_storage_id	,
 					filter_ANDS_batch_no : batch_no,
 					filter_ANDS_models : models,
+					filter_ANDS_valid_date : valid_date,
 					filter_ANDS_status : 1,
 				}
 			});
@@ -163,6 +166,7 @@
 				filter_ANDS_fk_dealer_id : fk_dealer_id,
 				filter_ANDS_fk_storage_id : fk_storage_id	,
 				filter_ANDS_batch_no : batch_no,
+				filter_ANDS_valid_date : valid_date,
 				filter_ANDS_status : 1
 		    });
 		}

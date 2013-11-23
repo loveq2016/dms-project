@@ -787,7 +787,8 @@
 				queryParams: {
 					filter_ANDS_adjust_storage_code: adjust_storage_code,
 					filter_ANDS_fk_storage_id : fk_storage_id	,
-					filter_ANDS_batch_no : batch_no
+					filter_ANDS_batch_no : batch_no,
+					filter_ANDS_adjust_storage_detail_id : adjust_detail_id
 				}
 			});
 		}

@@ -5,6 +5,9 @@
 <mapper namespace="PullStorageProDetail">
 	<sql id="adsWhere">
 	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_pull_storage_detail_id)">
+			  and fk_pull_storage_detail_id=#{fk_pull_storage_detail_id}
+		</if>
 		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(pull_storage_code)">
 			  and pull_storage_code=#{pull_storage_code}
 		</if>

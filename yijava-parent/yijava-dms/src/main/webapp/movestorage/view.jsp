@@ -707,7 +707,8 @@
 				queryParams: {
 					filter_ANDS_move_storage_code: move_storage_code,
 					filter_ANDS_fk_storage_id : fk_move_storage_id,
-					filter_ANDS_batch_no : batch_no
+					filter_ANDS_batch_no : batch_no,
+					filter_ANDS_fk_move_storage_detail_id :  fk_move_storage_detail_id
 				}
 			});
 		}

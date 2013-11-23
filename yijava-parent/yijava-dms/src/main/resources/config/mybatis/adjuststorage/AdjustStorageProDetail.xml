@@ -6,9 +6,10 @@
 
 	<sql id="adsWhere">
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(adjust_storage_detail_id)">and adjust_storage_detail_id = #{adjust_storage_detail_id} </if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(adjust_storage_code)">and adjust_storage_code = #{adjust_storage_code} </if>
-			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(adjust_storage_code)">and fk_storage_id = #{fk_storage_id} </if>
-			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(adjust_storage_code)">and batch_no = #{batch_no} </if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_storage_id)">and fk_storage_id = #{fk_storage_id} </if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(batch_no)">and batch_no = #{batch_no} </if>
 		</trim>
 	</sql>
 	<sql id="adsOrder">
