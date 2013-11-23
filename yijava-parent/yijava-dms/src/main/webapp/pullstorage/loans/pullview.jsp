@@ -265,7 +265,7 @@
 							<th data-options="field:'product_item_number',width:120,align:'center'" sortable="true">产品编码</th>
 							<th data-options="field:'models',width:100,align:'center'" sortable="true">规格型号</th>
 							<th data-options="field:'batch_no',width:100,align:'center'" sortable="true">产品批次</th>
-							<th data-options="field:'valid_date',width:120,align:'center'" formatter="formatterdate" sortable="true">有效日期</th>
+							<th data-options="field:'valid_date',width:120,align:'center'" sortable="true">有效日期</th>
 							<th data-options="field:'inventory_number',width:80,align:'center'" sortable="true">库存量</th>
 							<th data-options="field:'sales_number',width:100,align:'center'" sortable="true">借出数量(EA)</th>
 							<th data-options="field:'product_sn',width:100,align:'center',editor:'datebox'" formatter="formatterProductSn">序列号</th>
@@ -392,7 +392,7 @@
 								<th field="models" width="120" align="center" sortable="true">规格型号</th>
 								<th field="product_cname" width="120" align="center" sortable="true">产品中文名称</th>
 								<th field="batch_no" width="100" align="center" sortable="true">批号/序列号</th>
-								<th field="valid_date" width="100" align="center" formatter="formatterdate" sortable="true">有效期</th>
+								<th field="valid_date" width="100" align="center" sortable="true">有效期</th>
 								<th field="inventory_number" width="100" align="center" sortable="true">产品数量（EA）</th>
 							</tr>
 						</thead>
@@ -479,6 +479,8 @@
 								<input type="hidden" name="batch_no" id="batch_no" value=""></input>
 								<input type="hidden" name="fk_storage_id" id="fk_storage_id" value=""></input>
 								<input type="hidden" name="status" id="status" value="1"></input>
+								<input type="hidden" name="valid_date" id="valid_date" value=""></input>
+								<input type="hidden" name="models" id="models" value=""></input>
 								<table>
 									<tr>
 										<td>序列号:</td>	
@@ -517,6 +519,8 @@
 		var fk_pull_storage_detail_id;
 		var batch_no;
 		var fk_storage_id;
+		var models;
+		var valid_date;
 		$(function() {
 			$('#dg').datagrid({
 				 url : basePath +"api/pullstorage/paging",
@@ -798,7 +802,9 @@
 		    	filter_ANDS_batch_no: $("#fffdetail input[name=batch_no]").val(),
 		    	filter_ANDS_product_sn: $("#fffdetail input[name=product_sn]").val(),
 		    	filter_ANDS_pull_storage_code: $("#fffdetail input[name=pull_storage_code]").val(),
-		    	filter_ANDS_status: $("#fffdetail input[name=status]").val()
+		    	filter_ANDS_models: $("#fffdetail input[name=models]").val(),
+		    	filter_ANDS_valid_date: $("#fffdetail input[name=valid_date]").val(),
+		    	filter_ANDS_status: 1
 		    });
 		}
 		
@@ -810,6 +816,8 @@
 			fk_pull_storage_detail_id = row.id;
 			batch_no = row.batch_no;
 			fk_storage_id = row.fk_storage_id;
+			models = row.models;
+			valid_date = row.valid_date;
 			$('#dgProductSn').datagrid('loadData', {total: 0, rows: []});
 			$('#dgProductSn').datagrid({
 				url : basePath + "api/pullstorageprodetail/paging",
@@ -824,12 +832,16 @@
 			$('#dlgStorageProductSn').dialog('open');
 			$("#fffdetail input[name=batch_no]").val(batch_no);
 			$("#fffdetail input[name=fk_storage_id]").val(fk_storage_id);
+			$("#fffdetail input[name=models]").val(models);
+			$("#fffdetail input[name=valid_date]").val(valid_date);
 			$('#dgStorageProductSn').datagrid('loadData', {total: 0, rows: []});
 			$('#dgStorageProductSn').datagrid({
 				url : basePath + "api/storageProDetail/api_paging",
 				queryParams: {
 					filter_ANDS_fk_storage_id: fk_storage_id,
 					filter_ANDS_batch_no : batch_no,
+					filter_ANDS_models : models,
+					filter_ANDS_valid_date : valid_date,
 					filter_ANDS_status : 1
 				}
 			});

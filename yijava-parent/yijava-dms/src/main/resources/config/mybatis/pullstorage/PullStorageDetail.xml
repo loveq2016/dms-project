@@ -30,34 +30,68 @@
 	   </choose>
 	</sql>
     <select id="selectByObjectcount" resultType="long"> 
-		SELECT COUNT(*) FROM(
-			SELECT tpsd.*,ts.storage_name,tsd.inventory_number FROM dms.tb_pull_storage_detail tpsd
+<!-- 		SELECT COUNT(*) FROM( -->
+<!-- 			SELECT tpsd.*,ts.storage_name,tsd.inventory_number FROM dms.tb_pull_storage_detail tpsd -->
+<!-- 			LEFT JOIN dms.tb_storage ts ON ts.id=tpsd.fk_storage_id -->
+<!-- 			LEFT JOIN dms.tb_storage_detail tsd ON ts.id=tsd.fk_storage_id -->
+<!-- 			WHERE tpsd.batch_no=tsd.batch_no AND tpsd.product_item_number=tsd.product_item_number -->
+<!-- 		) t -->
+		SELECT COUNT(1) FROM(
+			SELECT tpsd.*,ts.storage_name,
+			(
+				select count(1) from dms.tb_storage_pro_detail t4 where t4.fk_storage_id = tpsd.fk_storage_id
+				and t4.fk_dealer_id = t1.fk_pull_storage_party_id and t4.product_item_number = tpsd.product_item_number
+				and t4.batch_no = tpsd.batch_no and t4.valid_date = tpsd.valid_date and t4.status  = 1 
+			) as inventory_number
+			 FROM dms.tb_pull_storage_detail tpsd
+			 left join dms.tb_pull_storage t1 on tpsd.pull_storage_code = t1.pull_storage_code
 			LEFT JOIN dms.tb_storage ts ON ts.id=tpsd.fk_storage_id
-			LEFT JOIN dms.tb_storage_detail tsd ON ts.id=tsd.fk_storage_id
-			WHERE tpsd.batch_no=tsd.batch_no AND tpsd.product_item_number=tsd.product_item_number
 		) t
 		<include refid="adsWhere"/>
 	</select>
  	<select id="selectByObject" resultType="dms.yijava.entity.pullstorage.PullStorageDetail">
+<!-- 		SELECT * FROM( -->
+<!-- 			SELECT tpsd.*,ts.storage_name,tsd.inventory_number FROM dms.tb_pull_storage_detail tpsd -->
+<!-- 			LEFT JOIN dms.tb_storage ts ON ts.id=tpsd.fk_storage_id -->
+<!-- 			LEFT JOIN dms.tb_storage_detail tsd ON ts.id=tsd.fk_storage_id -->
+<!-- 			WHERE tpsd.batch_no=tsd.batch_no AND tpsd.product_item_number=tsd.product_item_number -->
+<!-- 		) t -->
 		SELECT * FROM(
-			SELECT tpsd.*,ts.storage_name,tsd.inventory_number FROM dms.tb_pull_storage_detail tpsd
+			SELECT tpsd.*,ts.storage_name,
+			(
+				select count(1) from dms.tb_storage_pro_detail t4 where t4.fk_storage_id = tpsd.fk_storage_id
+				and t4.fk_dealer_id = t1.fk_pull_storage_party_id and t4.product_item_number = tpsd.product_item_number
+				and t4.batch_no = tpsd.batch_no and t4.valid_date = tpsd.valid_date and t4.status  = 1 
+			) as inventory_number
+			 FROM dms.tb_pull_storage_detail tpsd
+			 left join dms.tb_pull_storage t1 on tpsd.pull_storage_code = t1.pull_storage_code
 			LEFT JOIN dms.tb_storage ts ON ts.id=tpsd.fk_storage_id
-			LEFT JOIN dms.tb_storage_detail tsd ON ts.id=tsd.fk_storage_id
-			WHERE tpsd.batch_no=tsd.batch_no AND tpsd.product_item_number=tsd.product_item_number
 		) t
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
 	    limit #{offset},#{pagesize}
 	</select>
 	<select id="selectByMap" resultType="dms.yijava.entity.pullstorage.PullStorageDetail">
-		SELECT * FROM(
-			SELECT tpsd.*,ts.storage_name,tsd.inventory_number FROM dms.tb_pull_storage_detail tpsd
+<!-- 		SELECT * FROM( -->
+<!-- 			SELECT tpsd.*,ts.storage_name,tsd.inventory_number FROM dms.tb_pull_storage_detail tpsd -->
+<!-- 			LEFT JOIN dms.tb_storage ts ON ts.id=tpsd.fk_storage_id -->
+<!-- 			LEFT JOIN dms.tb_storage_detail tsd ON ts.id=tsd.fk_storage_id -->
+<!-- 			WHERE tpsd.batch_no=tsd.batch_no AND tpsd.product_item_number=tsd.product_item_number -->
+<!-- 		) t -->
+			SELECT * FROM(
+			SELECT tpsd.*,ts.storage_name,
+			(
+				select count(1) from dms.tb_storage_pro_detail t4 where t4.fk_storage_id = tpsd.fk_storage_id
+				and t4.fk_dealer_id = t1.fk_pull_storage_party_id and t4.product_item_number = tpsd.product_item_number
+				and t4.batch_no = tpsd.batch_no and t4.valid_date = tpsd.valid_date and t4.status  = 1 
+			) as inventory_number
+			 FROM dms.tb_pull_storage_detail tpsd
+			 left join dms.tb_pull_storage t1 on tpsd.pull_storage_code = t1.pull_storage_code
 			LEFT JOIN dms.tb_storage ts ON ts.id=tpsd.fk_storage_id
-			LEFT JOIN dms.tb_storage_detail tsd ON ts.id=tsd.fk_storage_id
-			WHERE tpsd.batch_no=tsd.batch_no AND tpsd.product_item_number=tsd.product_item_number
 		) t
 		<include refid="adsWhere" />
 	</select>
+
 	<select id="selectPullStorageDetail" resultType="dms.yijava.entity.pullstorage.PullStorageDetail">
 		select * from dms.tb_pull_storage_detail 
 		<include refid="adsWhere"/>
