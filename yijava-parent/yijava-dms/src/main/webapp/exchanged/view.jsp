@@ -447,6 +447,7 @@
 								<input type="hidden" name="batch_no" id="batch_no" value=""></input>
 								<input type="hidden" name="fk_storage_id" id="fk_storage_id" value=""></input>
 								<input type="hidden" name="models" id="models" value=""></input>
+								<input type="hidden" name="valid_date" id="valid_date" value=""></input>
 								<table>
 									<tr>
 <%-- 										<input type="hidden" name="fk_dealer_id" id="fk_dealer_id" value="${user.fk_dealer_id}"></input>
@@ -822,6 +823,8 @@
 		    	filter_ANDS_batch_no: $("#fffdetail input[name=batch_no]").val(),
 		    	filter_ANDS_product_sn: $("#fffdetail input[name=product_sn]").val(),
 		    	filter_ANDS_models: $("#fffdetail input[name=models]").val(),
+		    	filter_ANDS_valid_date: $("#fffdetail input[name=valid_date]").val(),
+		    	filter_ANDS_dealer_id : dealer_id,
 				filter_ANDS_status : 1
 		    });
 		}
@@ -832,6 +835,7 @@
 		var batch_no;
 		var fk_storage_id;
 		var models;
+		var valid_date;
 		function openProductSn(index){
 			$('#dgDetail').datagrid('selectRow',index);
 			var row = $('#dgDetail').datagrid('getSelected');
@@ -842,6 +846,7 @@
 			batch_no = row.batch_no;
 			fk_storage_id = row.fk_storage_id;
 			models = row.models;
+			valid_date = row.valid_date;
 			if($('#status').combobox('getValue')==0 || $('#status').combobox('getValue')==2){
 				$("#selectProductSn").linkbutton('enable');
 				$("#deleteExchangedSn").linkbutton('enable');
@@ -882,6 +887,7 @@
 			$("#fffdetail input[name=batch_no]").val(batch_no);
 			$("#fffdetail input[name=fk_storage_id]").val(fk_storage_id);
 			$("#fffdetail input[name=models]").val(models);
+			$("#fffdetail input[name=valid_date]").val(valid_date);
 			$('#dgProductSn').datagrid('loadData', {total: 0, rows: []});
 			$('#dgProductSn').datagrid({
 				url : basePath + "api/storageProDetail/api_paging",
@@ -889,6 +895,8 @@
 					filter_ANDS_fk_storage_id : fk_storage_id	,
 					filter_ANDS_batch_no : batch_no,
 					filter_ANDS_models : models,
+					filter_ANDS_dealer_id : dealer_id,
+					filter_ANDS_valid_date : valid_date,
 					filter_ANDS_status : 1
 				}
 			});

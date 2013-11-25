@@ -19,20 +19,38 @@
 	   </choose>
 	</sql>
     <select id="selectByObjectcount" resultType="long"> 
-		SELECT COUNT(*) FROM(
-			select t1.*,t2.storage_name,t3.inventory_number from dms.tb_exchanged_detail t1 
-			left join dms.tb_storage t2 ON t2.id = t1.fk_storage_id
-			LEFT JOIN dms.tb_storage_detail t3 ON t2.id = t3.fk_storage_id
-			WHERE t1.batch_no = t3.batch_no AND t1.product_item_number=t3.product_item_number
+<!-- 		SELECT COUNT(*) FROM( -->
+<!-- 			select t1.*,t2.storage_name,t3.inventory_number from dms.tb_exchanged_detail t1  -->
+<!-- 			left join dms.tb_storage t2 ON t2.id = t1.fk_storage_id -->
+<!-- 			LEFT JOIN dms.tb_storage_detail t3 ON t2.id = t3.fk_storage_id -->
+<!-- 			WHERE t1.batch_no = t3.batch_no AND t1.product_item_number=t3.product_item_number -->
+<!-- 		) t -->
+		SELECT COUNT(1) FROM(
+			select t1.*,t3.storage_name,(
+				select count(1) from dms.tb_storage_pro_detail t4 where t4.fk_storage_id = t1.fk_storage_id
+				and t4.fk_dealer_id = t2.dealer_id and t4.product_item_number = t1.product_item_number
+				and t4.batch_no = t4.batch_no and t4.valid_date = t1.valid_date and t4.status = 1 
+			) as inventory_number from dms.tb_exchanged_detail t1 
+			left join dms.tb_exchanged t2 on t1.exchanged_code = t2.exchanged_code 
+			left join dms.tb_storage t3 ON t3.id = t1.fk_storage_id
 		) t
 		<include refid="adsWhere"/>
 	</select>
  	<select id="selectByObject" resultType="dms.yijava.entity.exchanged.ExchangedDetail">
+<!-- 		SELECT * FROM( -->
+<!-- 			select t1.*,t2.storage_name,t3.inventory_number from dms.tb_exchanged_detail t1  -->
+<!-- 			left join dms.tb_storage t2 ON t2.id = t1.fk_storage_id -->
+<!-- 			LEFT JOIN dms.tb_storage_detail t3 ON t2.id = t3.fk_storage_id -->
+<!-- 			WHERE t1.batch_no = t3.batch_no AND t1.product_item_number=t3.product_item_number -->
+<!-- 		) t -->
 		SELECT * FROM(
-			select t1.*,t2.storage_name,t3.inventory_number from dms.tb_exchanged_detail t1 
-			left join dms.tb_storage t2 ON t2.id = t1.fk_storage_id
-			LEFT JOIN dms.tb_storage_detail t3 ON t2.id = t3.fk_storage_id
-			WHERE t1.batch_no = t3.batch_no AND t1.product_item_number=t3.product_item_number
+			select t1.*,t3.storage_name,(
+				select count(1) from dms.tb_storage_pro_detail t4 where t4.fk_storage_id = t1.fk_storage_id
+				and t4.fk_dealer_id = t2.dealer_id and t4.product_item_number = t1.product_item_number
+				and t4.batch_no = t4.batch_no and t4.valid_date = t1.valid_date and t4.status = 1 
+			) as inventory_number from dms.tb_exchanged_detail t1 
+			left join dms.tb_exchanged t2 on t1.exchanged_code = t2.exchanged_code 
+			left join dms.tb_storage t3 ON t3.id = t1.fk_storage_id
 		) t
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>

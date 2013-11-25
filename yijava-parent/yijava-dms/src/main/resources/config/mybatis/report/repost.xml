@@ -309,25 +309,43 @@
 		limit #{offset},#{pagesize}
 	</select>
 	<select id="selectByObjectcount_StorageReport" resultType="long">
+<!-- 		select COUNT(*) from ( -->
+<!-- 			SELECT t4.storage_name,'1' as storage_sum, -->
+<!-- 			t1.status,t1.fk_dealer_id,t1.batch_no,t1.product_sn,date_format(t1.last_time,'%Y-%m-%d %H:%i:%s') as last_time,t2.product_item_number,t2.models,t3.dealer_name,t3.dealer_code,t3.attribute,t2.valid_date  -->
+<!-- 			FROM tb_storage_pro_detail t1 -->
+<!-- 			inner JOIN tb_storage t4 ON t4.id=t1.fk_storage_id -->
+<!-- 			inner JOIN tb_storage_detail t2 ON t1.fk_storage_id = t2.fk_storage_id  -->
+<!-- 			and t1.fk_dealer_id = t2.fk_dealer_id and t1.product_item_number = t2.product_item_number and t1.batch_no = t2.batch_no -->
+<!-- 			left join tb_dealer t3 on t1.fk_dealer_id = t3.dealer_id -->
+<!-- 		) t -->
 		select COUNT(*) from (
 			SELECT t4.storage_name,'1' as storage_sum,
-			t1.status,t1.fk_dealer_id,t1.batch_no,t1.product_sn,date_format(t1.last_time,'%Y-%m-%d %H:%i:%s') as last_time,t2.product_item_number,t2.models,t3.dealer_name,t3.dealer_code,t3.attribute,t2.valid_date 
+			t1.status,t1.fk_dealer_id,t1.batch_no,t1.product_sn,date_format(t1.last_time,'%Y-%m-%d') as last_time,
+			t1.product_item_number,t2.models,t3.dealer_name,t3.dealer_code,t3.attribute,t1.valid_date 
 			FROM tb_storage_pro_detail t1
+			inner join tb_product t2 on t1.product_item_number = t2.item_number and t1.status  =1 
 			inner JOIN tb_storage t4 ON t4.id=t1.fk_storage_id
-			inner JOIN tb_storage_detail t2 ON t1.fk_storage_id = t2.fk_storage_id 
-			and t1.fk_dealer_id = t2.fk_dealer_id and t1.product_item_number = t2.product_item_number and t1.batch_no = t2.batch_no
 			left join tb_dealer t3 on t1.fk_dealer_id = t3.dealer_id
 		) t
 		<include refid="adsWhere_StorageReport" />
 	</select>
 	<select id="selectByObject_StorageReport" resultType="java.util.HashMap">
+<!-- 		select * from ( -->
+<!-- 			SELECT t4.storage_name,'1' as storage_sum, -->
+<!-- 			t1.status,t1.fk_dealer_id,t1.batch_no,t1.product_sn,date_format(t1.last_time,'%Y-%m-%d') as last_time,t2.product_item_number,t2.models,t3.dealer_name,t3.dealer_code,t3.attribute,t2.valid_date  -->
+<!-- 			FROM tb_storage_pro_detail t1 -->
+<!-- 			inner JOIN tb_storage t4 ON t4.id=t1.fk_storage_id -->
+<!-- 			inner JOIN tb_storage_detail t2 ON t1.fk_storage_id = t2.fk_storage_id  -->
+<!-- 			and t1.fk_dealer_id = t2.fk_dealer_id and t1.product_item_number = t2.product_item_number and t1.batch_no = t2.batch_no -->
+<!-- 			left join tb_dealer t3 on t1.fk_dealer_id = t3.dealer_id -->
+<!-- 		) t -->
 		select * from (
 			SELECT t4.storage_name,'1' as storage_sum,
-			t1.status,t1.fk_dealer_id,t1.batch_no,t1.product_sn,date_format(t1.last_time,'%Y-%m-%d') as last_time,t2.product_item_number,t2.models,t3.dealer_name,t3.dealer_code,t3.attribute,t2.valid_date 
+			t1.status,t1.fk_dealer_id,t1.batch_no,t1.product_sn,date_format(t1.last_time,'%Y-%m-%d') as last_time,
+			t1.product_item_number,t2.models,t3.dealer_name,t3.dealer_code,t3.attribute,t1.valid_date 
 			FROM tb_storage_pro_detail t1
+			inner join tb_product t2 on t1.product_item_number = t2.item_number and t1.status  =1 
 			inner JOIN tb_storage t4 ON t4.id=t1.fk_storage_id
-			inner JOIN tb_storage_detail t2 ON t1.fk_storage_id = t2.fk_storage_id 
-			and t1.fk_dealer_id = t2.fk_dealer_id and t1.product_item_number = t2.product_item_number and t1.batch_no = t2.batch_no
 			left join tb_dealer t3 on t1.fk_dealer_id = t3.dealer_id
 		) t
 		<include refid="adsWhere_StorageReport" />

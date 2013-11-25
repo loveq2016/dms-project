@@ -30,34 +30,70 @@
 	   </choose>
 	</sql>
     <select id="selectByObjectcount" resultType="long"> 
-		SELECT COUNT(*) FROM(
-			SELECT tmsd.*,ts.storage_name as  move_storage_name,ts1.storage_name as move_to_storage_name,tsd.inventory_number FROM dms.tb_move_storage_detail tmsd
+<!-- 		SELECT COUNT(*) FROM( -->
+<!-- 			SELECT tmsd.*,ts.storage_name as  move_storage_name,ts1.storage_name as move_to_storage_name,tsd.inventory_number FROM dms.tb_move_storage_detail tmsd -->
+<!-- 			LEFT JOIN dms.tb_storage ts ON ts.id=tmsd.fk_move_storage_id -->
+<!-- 			LEFT JOIN dms.tb_storage ts1 ON ts1.id=tmsd.fk_move_to_storage_id -->
+<!-- 			LEFT JOIN dms.tb_storage_detail tsd ON ts.id=tsd.fk_storage_id -->
+<!-- 			WHERE tmsd.batch_no=tsd.batch_no AND tmsd.product_item_number=tsd.product_item_number -->
+<!-- 		) t -->
+		SELECT COUNT(1) FROM(
+			SELECT tmsd.*,ts.storage_name as  move_storage_name,ts1.storage_name as move_to_storage_name,
+			(
+				select count(1) from dms.tb_storage_pro_detail t4 where t4.fk_storage_id = tmsd.fk_move_to_storage_id
+				and t4.fk_dealer_id = t1.fk_move_storage_party_id and t4.product_item_number = tmsd.product_item_number
+				and t4.batch_no = tmsd.batch_no and t4.valid_date = tmsd.valid_date and t4.status  = 1 
+			) as inventory_number
+			FROM dms.tb_move_storage_detail tmsd
+			left join dms.tb_move_storage t1 on tmsd.move_storage_code = t1.move_storage_code
 			LEFT JOIN dms.tb_storage ts ON ts.id=tmsd.fk_move_storage_id
 			LEFT JOIN dms.tb_storage ts1 ON ts1.id=tmsd.fk_move_to_storage_id
-			LEFT JOIN dms.tb_storage_detail tsd ON ts.id=tsd.fk_storage_id
-			WHERE tmsd.batch_no=tsd.batch_no AND tmsd.product_item_number=tsd.product_item_number
 		) t
 		<include refid="adsWhere"/>
 	</select>
  	<select id="selectByObject" resultType="dms.yijava.entity.movestorage.MoveStorageDetail">
+<!-- 		SELECT * FROM( -->
+<!-- 			SELECT tmsd.*,ts.storage_name as  move_storage_name,ts1.storage_name as move_to_storage_name,tsd.inventory_number FROM dms.tb_move_storage_detail tmsd -->
+<!-- 			LEFT JOIN dms.tb_storage ts ON ts.id=tmsd.fk_move_storage_id -->
+<!-- 			LEFT JOIN dms.tb_storage ts1 ON ts1.id=tmsd.fk_move_to_storage_id -->
+<!-- 			LEFT JOIN dms.tb_storage_detail tsd ON ts.id=tsd.fk_storage_id -->
+<!-- 			WHERE tmsd.batch_no=tsd.batch_no AND tmsd.product_item_number=tsd.product_item_number -->
+<!-- 		) t -->
 		SELECT * FROM(
-			SELECT tmsd.*,ts.storage_name as  move_storage_name,ts1.storage_name as move_to_storage_name,tsd.inventory_number FROM dms.tb_move_storage_detail tmsd
+			SELECT tmsd.*,ts.storage_name as  move_storage_name,ts1.storage_name as move_to_storage_name,
+			(
+				select count(1) from dms.tb_storage_pro_detail t4 where t4.fk_storage_id = tmsd.fk_move_to_storage_id
+				and t4.fk_dealer_id = t1.fk_move_storage_party_id and t4.product_item_number = tmsd.product_item_number
+				and t4.batch_no = tmsd.batch_no and t4.valid_date = tmsd.valid_date and t4.status  = 1 
+			) as inventory_number
+			FROM dms.tb_move_storage_detail tmsd
+			left join dms.tb_move_storage t1 on tmsd.move_storage_code = t1.move_storage_code
 			LEFT JOIN dms.tb_storage ts ON ts.id=tmsd.fk_move_storage_id
 			LEFT JOIN dms.tb_storage ts1 ON ts1.id=tmsd.fk_move_to_storage_id
-			LEFT JOIN dms.tb_storage_detail tsd ON ts.id=tsd.fk_storage_id
-			WHERE tmsd.batch_no=tsd.batch_no AND tmsd.product_item_number=tsd.product_item_number
 		) t
 		<include refid="adsWhere"/>
 		<include refid="adsOrder"/>
 	    limit #{offset},#{pagesize}
 	</select>
 	<select id="selectByMap" resultType="dms.yijava.entity.movestorage.MoveStorageDetail">
+<!-- 		SELECT * FROM( -->
+<!-- 			SELECT tmsd.*,ts.storage_name as move_storage_name,ts1.storage_name as move_to_storage_name,tsd.inventory_number FROM dms.tb_move_storage_detail tmsd -->
+<!-- 			LEFT JOIN dms.tb_storage ts ON ts.id=tmsd.fk_move_storage_id -->
+<!-- 			LEFT JOIN dms.tb_storage ts1 ON ts1.id=tmsd.fk_move_to_storage_id -->
+<!-- 			LEFT JOIN dms.tb_storage_detail tsd ON ts.id=tsd.fk_storage_id -->
+<!-- 			WHERE tmsd.batch_no=tsd.batch_no AND tmsd.product_item_number=tsd.product_item_number -->
+<!-- 		) t -->
 		SELECT * FROM(
-			SELECT tmsd.*,ts.storage_name as move_storage_name,ts1.storage_name as move_to_storage_name,tsd.inventory_number FROM dms.tb_move_storage_detail tmsd
+			SELECT tmsd.*,ts.storage_name as  move_storage_name,ts1.storage_name as move_to_storage_name,
+			(
+				select count(1) from dms.tb_storage_pro_detail t4 where t4.fk_storage_id = tmsd.fk_move_to_storage_id
+				and t4.fk_dealer_id = t1.fk_move_storage_party_id and t4.product_item_number = tmsd.product_item_number
+				and t4.batch_no = tmsd.batch_no and t4.valid_date = tmsd.valid_date and t4.status  = 1 
+			) as inventory_number
+			FROM dms.tb_move_storage_detail tmsd
+			left join dms.tb_move_storage t1 on tmsd.move_storage_code = t1.move_storage_code
 			LEFT JOIN dms.tb_storage ts ON ts.id=tmsd.fk_move_storage_id
 			LEFT JOIN dms.tb_storage ts1 ON ts1.id=tmsd.fk_move_to_storage_id
-			LEFT JOIN dms.tb_storage_detail tsd ON ts.id=tsd.fk_storage_id
-			WHERE tmsd.batch_no=tsd.batch_no AND tmsd.product_item_number=tsd.product_item_number
 		) t
 		<include refid="adsWhere" />
 	</select>

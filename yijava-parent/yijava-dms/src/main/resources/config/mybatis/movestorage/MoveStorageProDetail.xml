@@ -5,6 +5,10 @@
 <mapper namespace="MoveStorageProDetail">
 	<sql id="adsWhere">
 	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(fk_move_storage_detail_id)">
+			  and fk_move_storage_detail_id=#{fk_move_storage_detail_id}
+		</if>
+	
 		<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(move_storage_code)">
 			  and move_storage_code=#{move_storage_code}
 		</if>

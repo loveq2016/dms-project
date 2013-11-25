@@ -25,6 +25,7 @@
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(models)">and models =#{models}</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(status)">and status = #{status}</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(product_sn)">and product_sn like CONCAT('%','${product_sn}','%' ) </if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(valid_date)">and valid_date = #{valid_date}</if>
 		</trim>
 	</sql>
 	<sql id="adsOrder">
@@ -69,8 +70,8 @@
     
     
     <insert id="saveSnSub" parameterType="dms.yijava.entity.storage.StorageProDetail">
-    	insert into dms.tb_storage_pro_detail (fk_storage_id,fk_dealer_id,product_item_number,fk_order_code,status,batch_no,product_sn)
-    	values(#{fk_storage_id},#{fk_dealer_id},#{product_item_number},#{fk_order_code},1,#{batch_no},#{product_sn})
+    	insert into dms.tb_storage_pro_detail (fk_storage_id,fk_dealer_id,product_item_number,fk_order_code,status,batch_no,product_sn,valid_date)
+    	values(#{fk_storage_id},#{fk_dealer_id},#{product_item_number},#{fk_order_code},1,#{batch_no},#{product_sn},#{valid_date})
     </insert>
     
     

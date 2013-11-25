@@ -191,7 +191,7 @@
 							<th data-options="field:'product_item_number',width:100,align:'center'" sortable="true">产品编码</th>
 							<th data-options="field:'models',width:60,align:'center'" sortable="true">规格型号</th>
 							<th data-options="field:'batch_no',width:200,align:'center'" sortable="true">产品批次</th>
-							<th data-options="field:'valid_date',width:130,align:'center'" formatter="formatterdate" sortable="true">有效日期</th>
+							<th data-options="field:'valid_date',width:130,align:'center'" sortable="true">有效日期</th>
 							<th data-options="field:'inventory_number',width:80,align:'center'" sortable="true">库存量</th>
 							<th data-options="field:'sales_number',width:80,align:'center'" sortable="true">销售数量(EA)</th>
 							<th data-options="field:'product_sn',width:100,align:'center',editor:'datebox'" formatter="formatterProductSn">序列号</th>
@@ -224,6 +224,7 @@
 		var status;
 		var pull_storage_code;
 		var put_storage_code;
+		var fk_pull_storage_detail_id;
 		$(function() {
 			$('#dg').datagrid({
 				 url : basePath +"api/putstorage/paging",
@@ -326,6 +327,7 @@
 			$('#dgDetail').datagrid('selectRow',index);
 			var row = $('#dgDetail').datagrid('getSelected');
 			$('#dlgProductSn').dialog('open').dialog('setTitle','产品下序列号');
+			fk_pull_storage_detail_id  = row.id;
 			batch_no = row.batch_no;
 			fk_storage_id = row.fk_storage_id;
 			$('#dgProductSn').datagrid('loadData', {total: 0, rows: []});
@@ -334,7 +336,8 @@
 				queryParams: {
 					filter_ANDS_pull_storage_code: pull_storage_code,
 					filter_ANDS_fk_storage_id : fk_storage_id,
-					filter_ANDS_batch_no : batch_no
+					filter_ANDS_batch_no : batch_no,
+					filter_ANDS_fk_pull_storage_detail_id : fk_pull_storage_detail_id
 				}
 			});
 		}
