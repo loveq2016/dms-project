@@ -264,7 +264,7 @@ public class DeliverApplyController {
 			for (FlowLog flowLog : flowlogs) {
 				
 				if (flowLog.getSign() != null && !"".equals(flowLog.getSign())) {
-					if(flowLog.action_name.indexOf("提交-财务审核")>-1)
+					if(flowLog.action_name.indexOf("提交-物流审核")>-1)
 					{
 						regionsign= sign_Path+File.separator+flowLog.getSign();
 					}
