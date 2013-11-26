@@ -92,7 +92,7 @@
 
 			<div style="padding-left: 10px; padding-right: 10px">
 
-				<table id="dg" title="查询结果" style="height: 440px" url="${basePath}api/protrial/paging" method="get"
+				<table id="dg" title="查询结果" style="height: 340px" url="${basePath}api/protrial/paging" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="item_number" sortOrder="asc" toolbar="#tbOrder">
 					<thead>
 						<tr>

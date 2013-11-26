@@ -56,17 +56,17 @@
 	<div id="mainPanle11" class="easyui-panel" data-options="iconCls:'icon-info',region:'center',title:'公告及通知',tools:'#tt'" style="background: #ddd;">		
 		<div title="公告及通知sss" data-options="iconCls:'icon-info',closable:false" style="padding:1px;background: #ddd;overflow:hidden;" id="home">
 			<div >
-				<table id="dg"  title="" style="height: 610px"  method="get"
+				<table id="dg"  title="" style="height: 350px"  method="get"
 					rownumbers="false" scrollbarSize="2" singleSelect="true" pagination="true" sortName="notice_id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
-							<th field="title" width="130" align="left" sortable="true">标题</th>
-							<th field="realname" width="130" align="left" sortable="true">发布人</th>
-							<th field="status_name" width="100" align="left"  sortable="true">发布状态</th>
-							<th field="publish_date" width="130" align="left" formatter="formatterdate" sortable="true">发布时间</th>
+							<th field="title" width="80" align="left" sortable="true">标题</th>
+							<th field="realname" width="50" align="left" sortable="true">发布人</th>
+							<th field="status_name" width="60" align="left"  sortable="true">发布状态</th>
+							<th field="publish_date" width="120" align="left" formatter="formatterdate" sortable="true">发布时间</th>
 							<th field="validity_date" width="120" align="left" formatter="formatterdate" sortable="true">有效期</th>
-							<th field="level_name" width="100" align="left"  sortable="true">紧急程度</th>
-							<th field="dealer_id" width="80" align="left"  sortable="true" formatter="formatterInfo">详细</th>							
+							<th field="level_name" width="50" align="left"  sortable="true">紧急程度</th>
+							<th field="dealer_id" width="50" align="left"  sortable="true" formatter="formatterInfo">详细</th>							
 						</tr>
 					</thead>
 				</table>
