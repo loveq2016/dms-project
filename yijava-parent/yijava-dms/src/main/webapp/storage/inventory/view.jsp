@@ -57,7 +57,7 @@
 			<div style="margin: 10px 0;"></div>
 
 			<div style="padding-left: 10px; padding-right: 10px">
-				<table id="dg"  title="查询结果" style="height: 450px" method="get"
+				<table id="dg"  title="查询结果" style="height: 340px" method="get"
 					rownumbers="true" singleSelect="true" pagination="true" sortName="id" sortOrder="desc" toolbar="#tb">
 					<thead>
 						<tr>
