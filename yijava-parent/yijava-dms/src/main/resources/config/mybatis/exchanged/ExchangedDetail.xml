@@ -100,6 +100,7 @@
 			left join dms.tb_exchanged_pro_detail t2 on t1.id = t2.exchanged_detail_id
 			inner join dms.tb_product t3 on t1.product_item_number = t3.item_number
 			where t1.exchanged_code= #{exchanged_code}
+			group by order_code,product_item_number,batch_no,valid_date
 	</select>
 
 </mapper>
