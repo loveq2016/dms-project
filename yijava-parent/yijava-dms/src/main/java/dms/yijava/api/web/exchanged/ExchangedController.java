@@ -200,7 +200,7 @@ public class ExchangedController {
 			return result;
 		}
 		try {
-			DateFormat format2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			DateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
 			String generatePath = request.getSession().getServletContext().getRealPath("generate");
 			String fileName="exchanged/exchanged-"+exchanged_id+".doc";
 			File outFile = new File(generatePath + File.separator + fileName);		
