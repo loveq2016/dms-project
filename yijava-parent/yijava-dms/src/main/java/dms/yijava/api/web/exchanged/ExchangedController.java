@@ -89,7 +89,7 @@ public class ExchangedController {
 				filters.add(PropertyFilters.build("ANDS_dealer_id",sysUser.getFk_dealer_id()));
 			}else if(StringUtils.isNotEmpty(sysUser.getTeams())){
 				filters.add(PropertyFilters.build("ANDS_statuses","1,2,3,4"));
-				filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
+				//filters.add(PropertyFilters.build("ANDS_dealer_ids", this.listString(sysUser.getUserDealerList())));
 			}
 			filters.add(PropertyFilters.build("ANDS_check_id",currentUserId));
 			filters.add(PropertyFilters.build("ANDS_flow_id",flowIdentifierNumber));
@@ -200,7 +200,7 @@ public class ExchangedController {
 			return result;
 		}
 		try {
-			DateFormat format2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			DateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
 			String generatePath = request.getSession().getServletContext().getRealPath("generate");
 			String fileName="exchanged/exchanged-"+exchanged_id+".doc";
 			File outFile = new File(generatePath + File.separator + fileName);		
@@ -224,55 +224,40 @@ public class ExchangedController {
 			String sign_Path = request.getSession().getServletContext().getRealPath("resource");
 			sign_Path+=File.separator+ "signimg";
 			for (FlowLog flowLog : flowlogs) {
-				
-				System.out.println("flowLog==" + flowLog);
-				
 				if (flowLog.getSign() != null && !"".equals(flowLog.getSign())) {
 					
 					String userId = flowLog.getUser_id();
 					SysUser sysUser = sysUserService.getEntity(userId);
 					if (sysUser.getDepartment_name().indexOf("销售")>-1)
 					{
-						jinglidate = flowLog.getCreate_date();// format2.format(format2.parse(flowLog.getCreate_date()));
-						jingli= sign_Path+File.separator+flowLog.getSign();
+						jinglidate =  format2.format(format2.parse(flowLog.getCreate_date()));
+						//xiaoshou= sign_Path+File.separator+flowLog.getSign();
 					}
 					if (sysUser.getDepartment_name().indexOf("大区")>-1)
 					{
-						xiaoshoudate = flowLog.getCreate_date();// format2.format(format2.parse(flowLog.getCreate_date()));
-						xiaoshou= sign_Path+File.separator+flowLog.getSign();
+						xiaoshoudate = format2.format(format2.parse(flowLog.getCreate_date()));
+						jingli= sign_Path+File.separator+flowLog.getSign();
 
 					}
-					if (sysUser.getDepartment_name().indexOf("分管 负责人")>-1)
+					else if (sysUser.getDepartment_name().indexOf("分管 负责人")>-1)
 					{
-						lingdaodate = flowLog.getCreate_date();// format2.format(format2.parse(flowLog.getCreate_date()));
-						lingdao= sign_Path+File.separator+flowLog.getSign();
-					}
-					
-					
-					/*
-					if(flowLog.action_name.indexOf("销售代表审核")>-1)
-					{
-						xiaoshoudate = format2.format(format2.parse(flowLog.getCreate_date()));
-						xiaoshou= sign_Path+File.separator+flowLog.getSign();
-					}
-					if (flowLog.action_name.indexOf("区域经理审核") > -1) {
-						jinglidate = format2.format(format2.parse(flowLog.getCreate_date()));
-						jingli= sign_Path+File.separator+flowLog.getSign();
-						
-					}
-					if (flowLog.action_name.indexOf("分管领导审核") > -1) {
 						lingdaodate = format2.format(format2.parse(flowLog.getCreate_date()));
 						lingdao= sign_Path+File.separator+flowLog.getSign();
 					}
-					*/
+					//System.out.println("xiaoshoudate==="+xiaoshoudate);
+					//System.out.println("jinglidate==="+jinglidate);
+					//System.out.println("lingdaodate==="+lingdaodate);
 				}
 			}
+			
+
+			
 			dataMap.put("xiaoshou", getImageStr(xiaoshou));
 			dataMap.put("jingli", getImageStr(jingli));
 			dataMap.put("lingdao", getImageStr(lingdao));
-			dataMap.put("xiaoshoudate", StringUtils.substring(xiaoshoudate,0,10));
-			dataMap.put("jinglidate",StringUtils.substring(jinglidate,0,10) );
-			dataMap.put("lingdaodate", StringUtils.substring(lingdaodate,0,10));
+			dataMap.put("xiaoshoudate", xiaoshoudate);
+			dataMap.put("jinglidate",jinglidate);
+			dataMap.put("lingdaodate",lingdaodate);
 			dataMap.put("table", list);
 			freemarker.createExchangedWord(new FileOutputStream(outFile),dataMap);	
 
