@@ -200,7 +200,7 @@ public class ExchangedController {
 			return result;
 		}
 		try {
-			DateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
+			DateFormat format2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String generatePath = request.getSession().getServletContext().getRealPath("generate");
 			String fileName="exchanged/exchanged-"+exchanged_id+".doc";
 			File outFile = new File(generatePath + File.separator + fileName);		
@@ -214,7 +214,8 @@ public class ExchangedController {
 			dataMap.put("dealer_name", dealer.getDealer_name());
 			dataMap.put("remark", entity.getRemark()==null?"":entity.getRemark());
 			dataMap.put("create_date",entity.getExchanged_date());
-			dataMap.put("total","");
+			dataMap.put("total",list.size());//总计
+			dataMap.put("method",entity.getMethod());//解决办法
 			
 			//查找该流程的处理记录,找到签名文件
 			List<FlowLog> flowlogs= flowLogService.getLogByFlowAndBusIdSq(flowIdentifierNumber, exchanged_id);
@@ -224,24 +225,26 @@ public class ExchangedController {
 			sign_Path+=File.separator+ "signimg";
 			for (FlowLog flowLog : flowlogs) {
 				
+				System.out.println("flowLog==" + flowLog);
+				
 				if (flowLog.getSign() != null && !"".equals(flowLog.getSign())) {
 					
 					String userId = flowLog.getUser_id();
 					SysUser sysUser = sysUserService.getEntity(userId);
 					if (sysUser.getDepartment_name().indexOf("销售")>-1)
 					{
-						jinglidate = format2.format(format2.parse(flowLog.getCreate_date()));
+						jinglidate = flowLog.getCreate_date();// format2.format(format2.parse(flowLog.getCreate_date()));
 						jingli= sign_Path+File.separator+flowLog.getSign();
 					}
 					if (sysUser.getDepartment_name().indexOf("大区")>-1)
 					{
-						xiaoshoudate = format2.format(format2.parse(flowLog.getCreate_date()));
+						xiaoshoudate = flowLog.getCreate_date();// format2.format(format2.parse(flowLog.getCreate_date()));
 						xiaoshou= sign_Path+File.separator+flowLog.getSign();
 
 					}
 					if (sysUser.getDepartment_name().indexOf("分管 负责人")>-1)
 					{
-						lingdaodate = format2.format(format2.parse(flowLog.getCreate_date()));
+						lingdaodate = flowLog.getCreate_date();// format2.format(format2.parse(flowLog.getCreate_date()));
 						lingdao= sign_Path+File.separator+flowLog.getSign();
 					}
 					
@@ -267,9 +270,9 @@ public class ExchangedController {
 			dataMap.put("xiaoshou", getImageStr(xiaoshou));
 			dataMap.put("jingli", getImageStr(jingli));
 			dataMap.put("lingdao", getImageStr(lingdao));
-			dataMap.put("xiaoshoudate", xiaoshoudate);
-			dataMap.put("jinglidate", jinglidate);
-			dataMap.put("lingdaodate", lingdaodate);
+			dataMap.put("xiaoshoudate", StringUtils.substring(xiaoshoudate,0,10));
+			dataMap.put("jinglidate",StringUtils.substring(jinglidate,0,10) );
+			dataMap.put("lingdaodate", StringUtils.substring(lingdaodate,0,10));
 			dataMap.put("table", list);
 			freemarker.createExchangedWord(new FileOutputStream(outFile),dataMap);	
 

@@ -94,13 +94,18 @@
     
     	
 	<select id="selectExchangedDetailWordMap" resultType="dms.yijava.entity.exchanged.ExchangedDetail">
-			select t2.order_code,t3.cname,t1.product_item_number,
-			t1.models,t2.newModels,t1.batch_no,t1.exchanged_number,t1.valid_date from 
-			dms.tb_exchanged_detail t1 
-			left join dms.tb_exchanged_pro_detail t2 on t1.id = t2.exchanged_detail_id
-			inner join dms.tb_product t3 on t1.product_item_number = t3.item_number
-			where t1.exchanged_code= #{exchanged_code}
-			group by order_code,product_item_number,batch_no,valid_date
+<!-- 			select t2.order_code,t3.cname,t1.product_item_number, -->
+<!-- 			t1.models,t2.newModels,t1.batch_no,t1.exchanged_number,t1.valid_date from  -->
+<!-- 			dms.tb_exchanged_detail t1  -->
+<!-- 			left join dms.tb_exchanged_pro_detail t2 on t1.id = t2.exchanged_detail_id -->
+<!-- 			inner join dms.tb_product t3 on t1.product_item_number = t3.item_number -->
+<!-- 			where t1.exchanged_code= #{exchanged_code} -->
+<!-- 			group by order_code,product_item_number,batch_no,valid_date -->
+				select t2.order_code,t3.cname,t3.models,t2.newModels,t2.batch_no,1 as exchanged_number ,t1.valid_date,t2.product_sn from 
+				dms.tb_exchanged_detail t1 
+				left join dms.tb_exchanged_pro_detail t2 on t1.id = t2.exchanged_detail_id
+				inner join dms.tb_product t3 on t1.product_item_number = t3.item_number
+				where t1.exchanged_code= #{exchanged_code}
 	</select>
 
 </mapper>

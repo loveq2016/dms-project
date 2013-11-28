@@ -21,6 +21,7 @@ public class ExchangedDetail {
 	private String order_code;
 	private String cname;
 	private String newModels="";
+	private String product_sn;
 	
 	
 

@@ -202,7 +202,9 @@
 								</tr>
 								<tr>
 									<td>退换原因:</td>	
-									<td colspan="4"><textarea name="remark" cols="65" style="height:30px;"></textarea></td>
+									<td colspan="5"><textarea name="remark" cols="45" style="height:30px;"></textarea></td>
+									<td>解决办法:</td>	
+									<td colspan="4"><textarea name="method" cols="45" style="height:30px;"></textarea></td>
 								</tr>
 								
 							</table>

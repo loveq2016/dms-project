@@ -65,7 +65,7 @@
 	</insert>
 	
 	<update id="submitExchanged" parameterType="dms.yijava.entity.exchanged.Exchanged">
-		update dms.tb_exchanged set remark=#{remark} WHERE exchanged_code = #{exchanged_code}
+		update dms.tb_exchanged set remark=#{remark},method=#{method} WHERE exchanged_code = #{exchanged_code}
 	</update>
 	
 	<update id="updateTotalNumber" parameterType="dms.yijava.entity.exchanged.Exchanged">
