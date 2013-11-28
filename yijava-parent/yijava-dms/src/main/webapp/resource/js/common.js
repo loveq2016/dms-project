@@ -193,7 +193,7 @@ function login_onclick() {
 		if( s_simnew31.LastError!= 0 )
 		{
 			window.alert ( "Not Find Key ,Pls insert Key.");
-			window.location.href="err.html";
+			window.location.href="error/500.jsp";
 			return ;
 		}
 		//'读取锁的ID
