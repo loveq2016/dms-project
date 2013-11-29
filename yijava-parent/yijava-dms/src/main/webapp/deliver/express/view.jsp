@@ -21,7 +21,19 @@
 									<td><input class="easyui-validatebox" type="text" name="order_code"></input></td>
 									<td>出货单号:</td>	
 									<td><input class="easyui-validatebox" type="text" name="deliver_code"></input></td>
-								</tr>
+								
+								<td width="100">经销商:</td>
+									<td width="270">
+									<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:160px" maxLength="100" class="easyui-validatebox"
+							             			data-options="
+								             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
+									                    method:'get',
+									                    valueField:'dealer_id',
+									                    textField:'dealer_name',
+									                    panelHeight:'auto'
+							            			"/>
+							         </td>
+							         </tr>
 								<tr>
 									<td width="100">订单开始时间:</td>
 									<td width="270">
@@ -30,6 +42,21 @@
 									<td width="100">订单结束时间:</td>
 									<td width="270">
 										 <input name="end_date_order" id="end_date_order" class="easyui-datebox"></input>
+									</td>
+									<td width="50">类型:</td>
+									<td width="270">										
+										<input name="deliver_status" class="easyui-combobox" id="deliver_status_s"
+											data-options="
+												valueField: 'id',
+												textField: 'value',
+												panelHeight:'auto',
+												data: [{
+													id: '4',
+													value: '全部发货'
+												},{
+													id: '5',
+													value: '部分发货'
+												}]" />
 									</td>
 								</tr>
 								<tr>
@@ -322,6 +349,8 @@
 		
 		function doSearch(){
 		    $('#dg').datagrid('load',{
+		    	filter_ANDS_deliver_status: $('input[name=deliver_status]').val(),
+		    	filter_ANDS_dealer_id: $('input[name=dealer_id]').val(),
 		    	filter_ANDS_order_code: $('input[name=order_code]').val(),
 		    	filter_ANDS_deliver_code: $('input[name=deliver_code]').val(),
 		    	filter_ANDS_start_date: $('input[name=start_date]').val(),
