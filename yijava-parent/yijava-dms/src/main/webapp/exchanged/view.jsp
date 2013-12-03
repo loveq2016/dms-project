@@ -321,8 +321,8 @@
 								                    panelHeight:'auto'
 						            			"/>
 										</td>
-										<td>产品编号:</td>	
-										<td width="100px"><input class="easyui-validatebox" type="text" name="product_item_number" id="product_item_number" ></input></td>
+										<td>规格:</td>	
+										<td width="100px"><input class="easyui-validatebox" type="text" name="models" id="models" ></input></td>
 										<td>产品批次:</td>	
 										<td width="100px"><input class="easyui-validatebox" type="text" name="batch_no" id="batch_no" ></input></td>
 									</tr>
@@ -341,7 +341,7 @@
 								<th field="dealer_name" width="100" align="center" hidden="true">经销商</th>
 								<th field="fk_storage_id" width="120" align="center" hidden="true"></th>
 								<th field="storage_name" width="120" align="center" sortable="true">仓库</th>
-								<th field="product_item_number" width="80" align="center" sortable="true">产品编号</th>
+<!-- 								<th field="product_item_number" width="80" align="center" sortable="true">产品编号</th> -->
 								<th field="models" width="120" align="center" sortable="true">规格</th>
 								<th field="product_cname" width="120" align="center" sortable="true">产品中文名称</th>
 								<th field="batch_no" width="100" align="center" sortable="true">产品批次</th>
@@ -814,7 +814,7 @@
 		    $('#dgProduct').datagrid('load',{
 		    	filter_ANDS_fk_storage_id: $("#ffdetail input[name=fk_storage_id]").val(),
 				filter_ANDS_fk_dealer_id : $('#ffdetail input[name=fk_dealer_id]').val(),
-		    	filter_ANDS_product_item_number:$("#ffdetail input[name=product_item_number]").val(),
+		    	filter_ANDS_models:$("#ffdetail input[name=models]").val(),
 		    	filter_ANDS_batch_no: $("#ffdetail input[name=batch_no]").val()
 		    });
 		}
