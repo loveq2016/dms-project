@@ -48,7 +48,7 @@
 									</td>
 									<td width="100">经销商:</td>
 									<td width="270">
-									<input class="easyui-combobox" name="dealer_id" id="dealer_id" style="width:160px" maxLength="100" class="easyui-validatebox"
+									<input class="easyui-combobox" name="qqdealer_id" id="qqdealer_id" style="width:160px" maxLength="100" class="easyui-validatebox"
 							             			data-options="
 								             			url:'${basePath}api/userDealerFun/list?t_id=${user.teams}&u_id=${user.id}',
 									                    method:'get',
@@ -398,7 +398,7 @@
 		
 		function doSearch(){
 		    $('#dg').datagrid('load',{
-		    	filter_ANDS_dealer_id: $('input[name=dealer_id]').val(),
+		    	filter_ANDS_dealer_id: $('input[name=qqdealer_id]').val(),
 		    	filter_ANDS_order_code: $('input[name=order_code]').val(),
 		    	filter_ANDS_deliver_code: $('input[name=deliver_code]').val(),
 		    	filter_ANDS_deliver_status: $('input[name=deliver_status]').val(),
