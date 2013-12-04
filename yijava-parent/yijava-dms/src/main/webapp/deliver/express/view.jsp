@@ -97,7 +97,7 @@
 							<th data-options="field:'check_status',width:80,align:'center'"  formatter="formatterCheckStatus">单据状态</th>
 <!-- 							<th data-options="field:'express_code',width:180,align:'center'"  formatter="formatterExpressStatus" sortable="true">物流状态</th> -->
 							<th data-options="field:'express_code',width:180,align:'center'">快递号</th>
-<!-- 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th> -->
+<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
 						</tr>
 					</thead>
 				</table>
@@ -243,7 +243,7 @@
 		</div>
 		<div id="dlg-buttons">
 			<restrict:function funId="155">
-	        	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="submitExpress();">提交</a>
+	        	<a href="javascript:void(0)" class="easyui-linkbutton" id="btnSubmitExpress" iconCls="icon-ok" onclick="submitExpress();">提交</a>
 	        </restrict:function>
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgDeliverDetail').dialog('close')">取消</a>
 	    </div>
@@ -343,6 +343,9 @@
 				  url : basePath +"api/deliverApply/pagingtodelver" ,
 					queryParams: {
 						filter_ANDS_check_status : 3
+					},
+					onLoadSuccess:function(data){ 
+						  $(".questionBtn").linkbutton({ plain:true, iconCls:'icon-manage' });
 					}
 			});
 		});
@@ -386,8 +389,10 @@
 		}
 
 		function formatterDetail(value, row, index) {
-			return '<span style="color:red;cursor:pointer" onclick="openDeliverDetail(\''
-					+ index + '\')">明细</span>';
+			/* return '<span style="color:red;cursor:pointer" onclick="openDeliverDetail(\''
+					+ index + '\')">明细</span>'; */
+					$('#btnSubmitExpress').linkbutton('disable');		
+			return '<a class="questionBtn" href="javascript:void(0)"  onclick="openDeliverDetail('+index+')" ></a>';
 		}
 
 		function formatterExpressStatus(value, row, index) {
@@ -422,6 +427,7 @@
 		var deliver_code;
 		var isExpress;
 		function newEntity() {
+			$('#btnSubmitExpress').linkbutton('enable');		
 			var row = $('#dg').datagrid('getSelected');
 			if (row) {
 				//alert(row.express_code)
@@ -597,6 +603,23 @@
 				url : basePath + "api/deliverApply/detailPaging",
 				queryParams : {
 					filter_ANDS_deliver_code : deliver_code
+				}
+			});
+			
+			$('#dgExpress').datagrid('loadData', {
+				total : 0,
+				rows : []
+			});
+			$('#dgExpress').datagrid({
+				url : basePath + "api/deliverExpress/paging",
+				queryParams : {
+					filter_ANDS_deliver_code : deliver_code
+				},
+				onLoadSuccess : function(data) {
+					$(".productSnBtn").linkbutton({
+						plain : true,
+						iconCls : 'icon-manage'
+					});
 				}
 			});
 		}
