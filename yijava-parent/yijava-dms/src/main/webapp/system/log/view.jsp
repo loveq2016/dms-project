@@ -43,10 +43,8 @@
 						<tr>
 							<th data-options="field:'formatted_message',width:180,align:'center'" sortable="true">操作名</th>
 							<th data-options="field:'account',width:150,align:'center'" sortable="true">账户</th>
-							<th data-options="field:'level_string',width:100,align:'center'" sortable="true">日志级别</th>
-							<th data-options="field:'hostname',width:150,align:'center'" sortable="true">主机名</th>
 							<th data-options="field:'operatorip',width:150,align:'center'" sortable="true">操作IP</th>
-							<th data-options="field:'timestmp',width:180,align:'center'" formatter="formatterdate" sortable="true">时间</th>
+							<th data-options="field:'timestmp',width:180,align:'center'" formatter="formatterDate" sortable="true">时间</th>
 						</tr>
 					</thead>
 				</table>

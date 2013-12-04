@@ -38,8 +38,9 @@ public class Interseptor extends HandlerInterceptorAdapter {
 		{
 			return true;
 		}
-		if(url.indexOf("tologin")>-1 || url.indexOf("logout")>-1 || url.indexOf("login")>-1)
-        	return true;
+		if(url.indexOf("tologin")>-1 || url.indexOf("logout")>-1 || url.indexOf("login")>-1){
+			return true;
+		}
         try{
         	// 权限认证机制细节
         	// 1，需要认证的权限URL，必须和功能按钮的URL对应(sysmenufun表有记录)，否则权限无效。
@@ -58,6 +59,8 @@ public class Interseptor extends HandlerInterceptorAdapter {
 							SysLogin sysLogin=(SysLogin)obj2;
 							if(url.indexOf(sysLogin.getFun_url())>-1 &&
 									!sysLogin.getFun_url().equals("")){
+								MDC.put("ACCOUNT", sysUser.getAccount());
+								MDC.put("OPERATORIP", getIpAddr(request));
 								return true;
 							}
 						}
