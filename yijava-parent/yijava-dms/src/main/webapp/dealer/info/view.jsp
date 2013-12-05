@@ -96,7 +96,7 @@
 	             	</tr>             	
 	              	<tr>
 	             		<td>商务联系人电话:</td>
-	             		<td><input name="business_phone" style="width:250px" maxLength="20"  class="easyui-numberbox" required="true"></td>
+	             		<td><input name="business_phone" style="width:250px" maxLength="20"  class="" required="true"></td>
 	             	</tr>
 	             	<tr>
 	             		<td>财务联系人:</td>

@@ -317,26 +317,32 @@ public class FlowBussService {
 	 */
 	public boolean processAllocateFlow(Integer bussiness_id,SysUser currentUser,String check_id,String userName,String flowIdentifierNumber,boolean isSign)
 	{
-		//先记录处理日志
-		//写处理日志
-		FlowLog flowLog=new FlowLog();
-		flowLog.setFlow_id(flowIdentifierNumber);
-		flowLog.setUser_id(currentUser.getId());
-		flowLog.setUser_name(currentUser.getRealname());
-		flowLog.setBussiness_id(bussiness_id.toString());
-		flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-		flowLog.setAction_name("提交"+":"+userName+"-"+"审核");
-		if(isSign)
-		{
-			flowLog.setSign(currentUser.getSign_img());
-			//flowLog.setSign(currentUser.getId()+"_qz.jpg");
+		logger.debug("processAllocateFlowprocessAllocateFlowprocessAllocateFlow");
+		try {
+			//先记录处理日志
+			//写处理日志
+			FlowLog flowLog=new FlowLog();
+			flowLog.setFlow_id(flowIdentifierNumber);
+			flowLog.setUser_id(currentUser.getId());
+			flowLog.setUser_name(currentUser.getRealname());
+			flowLog.setBussiness_id(bussiness_id.toString());
+			flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+			flowLog.setAction_name("提交"+":"+userName+"-"+"审核");
+			if(isSign)
+			{
+				flowLog.setSign(currentUser.getSign_img());
+				//flowLog.setSign(currentUser.getId()+"_qz.jpg");
+			}
+			
+			flowLogService.saveEntity(flowLog);
+			
+			//记录流程
+			this.insertStep(flowIdentifierNumber, currentUser.getId(),  
+					"提交", bussiness_id.toString(), check_id, "提交"+":"+userName+"-"+"审核","0","1");
+		} catch (Exception e) {
+			logger.error(e.toString());
+			return false;
 		}
-		
-		flowLogService.saveEntity(flowLog);
-		
-		//记录流程
-		this.insertStep(flowIdentifierNumber, currentUser.getId(),  
-				"提交", bussiness_id.toString(), check_id, "提交"+":"+userName+"-"+"审核","0","1");
 		return true;
 	}
 	/**

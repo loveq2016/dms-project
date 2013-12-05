@@ -156,7 +156,7 @@ public class ExchangedController {
 	
 	@ResponseBody
 	@RequestMapping("updatetocheck")
-	public Result<Integer> updatetocheck(Integer exchanged_id,HttpServletRequest request) {
+	public Result<Integer> updatetocheck(Integer exchanged_id,String check_id,String check_name,HttpServletRequest request) {
 		Result<Integer> result = new Result<Integer>(0, 0);
 		try {				
 				List<Object> list = exchangedService.processExchanged(String.valueOf(exchanged_id));
@@ -165,7 +165,9 @@ public class ExchangedController {
 						&& pullStorageOpt.getList().size() > 0){//库存减少、锁定sn 返回状态
 					//以下开始走流程处理
 					SysUser sysUser = (SysUser) request.getSession().getAttribute("user");
-					if(flowBussService.processFlow(exchanged_id,sysUser,flowIdentifierNumber)){//提交流程
+					//20131203zhjt修改为用户指定提交人
+					if(flowBussService.processAllocateFlow(exchanged_id,sysUser,check_id,check_name,flowIdentifierNumber,false)){
+					//if(flowBussService.processFlow(exchanged_id,sysUser,flowIdentifierNumber)){//提交流程
 					/*20131025zhjt修改，为自定义指定流程处理人*/
 					//if(flowBussService.processAllocateFlow(exchanged_id,sysUser,flowIdentifierNumber)){//提交流程
 					//更新状态

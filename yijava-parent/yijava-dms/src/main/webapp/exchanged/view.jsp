@@ -357,6 +357,57 @@
 	        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgProduct').dialog('close')">取消</a>
 	    </div>
 	    
+	    
+	    <!--tocheck 提交审核 start -->	
+	<div id="dlgtocheck" class="easyui-dialog" title="提交审核" data-options="modal:true,closed:true,iconCls:'icon-manage'" 
+	style="width:720px;height:500px;padding:10px;">
+	
+	
+	<div class="easyui-tabs" style="width:680px;height:380px">	
+		<div title="基本信息" >
+				<form id="fftocheckadd" action="" method="post" enctype="multipart/form-data">
+								<table>
+									<tr>
+										<td height="50">请选择用户:</td>
+										<td>
+										<input class="easyui-combobox" name="check_id" id="check_id" 
+										style="width:250px" maxLength="100" class="easyui-validatebox"
+						             			/>
+										
+						            	</td>							
+								
+										<td>
+											
+											
+											
+										</td>
+										<td>										
+											
+											
+										</td>		
+										
+										
+														
+									</tr>
+									
+									
+								</table>
+								<input type="hidden" name="exchanged_id" id="exchanged_id" value="">
+								<input type="hidden" name="check_name" id="check_name" value="">
+								
+				</form>			
+				<div style="text-align: right; padding: 5px">
+						<a href="javascript:void(0)" id="saveToCheckEntity" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveToCheckEntity()">确定</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="javascript:$('#dlgtocheck').dialog('close')">取消</a>					   
+				</div>
+			</div>
+			
+			
+		</div>
+	</div>
+	
+	<!--tocheck 提交审核 end -->	
+	    
 		<div id="dlgProductAdd" class="easyui-dialog" style="width:400px;height:460px;padding:5px 5px 5px 5px;"
 	            modal="true" closed="true" buttons="#dlgProductAdd-buttons">
 		        <form id="fm3" action="" method="post" enctype="multipart/form-data">
@@ -1051,10 +1102,22 @@
 		*/
 		function ToCheckEntity(){
 			var row = $('#dg').datagrid('getSelected');
+			
+			 $('#check_id').combobox({
+				 
+				 url:'${basePath}api/sysuser/companylist',
+                 method:'get',
+                 valueField:'id',
+                 textField:'realname',
+                 panelHeight:'auto',
+                 onSelect: function (rec) {
+                	 $("#fftocheckadd input[name=check_name]").val(rec.realname);
+                 }
+			 });
 			if (row && (row.status ==0 || row.status ==2) ){			
 				 $.messager.confirm('提示','提交后将不能修改 ,确定要要提交审核吗  ?',function(r){
 					 if (r){
-	                        $.post(basePath+'api/exchanged/updatetocheck',{exchanged_id:row.id},function(result){
+	                        /* $.post(basePath+'api/exchanged/updatetocheck',{exchanged_id:row.id},function(result){
 	        			    	if(result.state==1){
 	        			    		$('#dg').datagrid('reload');
 	                            } else {
@@ -1063,13 +1126,51 @@
 	                                    msg: '提交审核失败,请检查单据'
 	                                });
 	                            } 
-	                        },'json');
+	                        },'json'); */
+						 $("#fftocheckadd input[name=exchanged_id]").val(row.id);
+						 $('#dlgtocheck').dialog('open').dialog('setTitle', '提交审核');
 	                    }
 				 });
 			}else
 			{
 				$.messager.alert('提示---数据已经提交不能修改','请选中数据!','warning');
 			}
+		}
+		
+		
+		function saveToCheckEntity()
+		{
+			$('#saveToCheckEntity').linkbutton('disable');
+			$('#fftocheckadd').form('submit', {
+			    url:basePath+'api/exchanged/updatetocheck',
+			    method:"post",
+			   
+			    onSubmit: function(){
+			        // do some check
+			        // return false to prevent submit;
+			    	return $(this).form('validate');;
+			    },
+			    success:function(msg){
+			    	//$('#saveCheckbtn').linkbutton('enable');
+			    	$('#saveToCheckEntity').linkbutton('enable');
+			    	var jsonobj= eval('('+msg+')');  
+			    	if(jsonobj.state==1)
+			    		{
+			    			$('#fftocheckadd').form('clear');  			
+			    			$('#dlgtocheck').dialog('close');
+			    			var pager = $('#dg').datagrid().datagrid('getPager');
+			    			pager.pagination('select');	
+				   			
+			    		}else{
+			    			 $.messager.show({    // show error message
+		                            title: 'Error',
+		                            msg: jsonobj.error.msg
+		                        });
+			    	
+			    			
+			    		}
+			    }		
+			});		
 		}
 		
 		function  LoadCheckFlowRecord(bussinessId){

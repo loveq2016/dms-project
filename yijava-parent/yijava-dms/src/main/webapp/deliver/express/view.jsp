@@ -200,7 +200,7 @@
 						<thead>
 							<tr>
 							<th data-options="field:'product_name',width:100,align:'center'" sortable="true">产品名称</th>
-							<th data-options="field:'models',width:65,align:'center'" sortable="true">产品规格</th>
+							<th data-options="field:'models',width:100,align:'center'" sortable="true">产品规格</th>
 							<th data-options="field:'type',width:80,align:'center'" sortable="true" formatter="formattertype">类型</th>
 							<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">订单数量</th>
 							<th data-options="field:'deliver_number_sum',width:80,align:'center',editor:'numberbox'">发货数量</th>
@@ -212,7 +212,7 @@
 					</table>
 					<div id="tb1">
 						<restrict:function funId="149">
-							<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newExpress()">物流添加</a>
+							<a href="javascript:void(0)" id="btnnewExpress" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newExpress()">物流添加</a>
 						</restrict:function>
 					</div>
 				</div>
@@ -222,7 +222,7 @@
 						<thead>
 							<tr>
 							<th data-options="field:'product_name',width:100,align:'center'" sortable="true">产品名称</th>
-							<th data-options="field:'models',width:65,align:'center'" sortable="true">产品规格</th>
+							<th data-options="field:'models',width:100,align:'center'" sortable="true">产品规格</th>
 							<th data-options="field:'express_num',width:80,align:'center'">出货数量</th>
 							<th data-options="field:'express_sn',width:100,align:'center'">批号</th>
 							<th data-options="field:'validity_date',width:100,align:'center'">有效期</th>
@@ -235,7 +235,7 @@
 					</table>
 					<div id="tb2">
 						<restrict:function funId="150">
-							<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteExpress()">删除</a>
+							<a href="javascript:void(0)" id="btndeleteExpress" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteExpress()">删除</a>
 						</restrict:function>
 					</div>
 				</div>
@@ -308,13 +308,13 @@
 				</table>
 				<div id="tb3">
 					<restrict:function funId="152">
-						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addExpressSn()">添加</a>
+						<a href="javascript:void(0)" id="btnaddExpressSn" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addExpressSn()">添加</a>
 					</restrict:function>
 					<restrict:function funId="153">
-						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editExpressSn()">编辑</a>
+						<a href="javascript:void(0)" id="btneditExpressSn" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editExpressSn()">编辑</a>
 					</restrict:function>
 					<restrict:function funId="154">
-						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteExpressSn()">删除</a>
+						<a href="javascript:void(0)" id="btndeleteExpressSn"  class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteExpressSn()">删除</a>
 					</restrict:function>
 				</div>
     </div>
@@ -391,7 +391,7 @@
 		function formatterDetail(value, row, index) {
 			/* return '<span style="color:red;cursor:pointer" onclick="openDeliverDetail(\''
 					+ index + '\')">明细</span>'; */
-					$('#btnSubmitExpress').linkbutton('disable');		
+					
 			return '<a class="questionBtn" href="javascript:void(0)"  onclick="openDeliverDetail('+index+')" ></a>';
 		}
 
@@ -427,7 +427,15 @@
 		var deliver_code;
 		var isExpress;
 		function newEntity() {
-			$('#btnSubmitExpress').linkbutton('enable');		
+			$('#btnSubmitExpress').linkbutton('enable');
+			$('#btnnewExpress').linkbutton('enable');
+			$('#btndeleteExpress').linkbutton('enable');
+			
+			$('#btnaddExpressSn').linkbutton('enable');
+			$('#btneditExpressSn').linkbutton('enable');
+			$('#btndeleteExpressSn').linkbutton('enable');
+			
+			
 			var row = $('#dg').datagrid('getSelected');
 			if (row) {
 				//alert(row.express_code)
@@ -589,6 +597,16 @@
 		}
 
 		function openDeliverDetail(index) {
+			
+			$('#btnSubmitExpress').linkbutton('disable');
+			$('#btnnewExpress').linkbutton('disable');
+			$('#btndeleteExpress').linkbutton('disable');
+			
+			$('#btnaddExpressSn').linkbutton('disable');
+			$('#btneditExpressSn').linkbutton('disable');
+			$('#btndeleteExpressSn').linkbutton('disable');
+			
+			
 			$('#dg').datagrid('selectRow', index);
 			var row = $('#dg').datagrid('getSelected');
 			$('#ffDeliverDetail').form('load', row);
