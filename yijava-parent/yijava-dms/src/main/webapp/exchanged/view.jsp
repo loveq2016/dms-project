@@ -1146,7 +1146,14 @@
 			    method:"post",
 			   
 			    onSubmit: function(){
-			        // do some check
+			        // do some checkvar item = $('input[name=items][checked]').val();   
+			        //alert($("#fftocheckadd input[name=check_name]").val());
+			        if($("#fftocheckadd input[name=check_name]").val()=="")
+			        	{
+			        		alert("请选择审核人");
+			        		$('#saveToCheckEntity').linkbutton('enable');
+			        		return false;
+			        	}
 			        // return false to prevent submit;
 			    	return $(this).form('validate');;
 			    },
@@ -1164,7 +1171,7 @@
 			    		}else{
 			    			 $.messager.show({    // show error message
 		                            title: 'Error',
-		                            msg: jsonobj.error.msg
+		                            msg: "提交失败"
 		                        });
 			    	
 			    			
