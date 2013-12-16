@@ -1198,6 +1198,7 @@
 		 }
 		 
 		function saveFlowCheck(){
+			$('#saveCheckbtn').linkbutton('disable');
 				$('#base_form_check').form('submit', {
 					 url:basePath+'api/flowrecord/do_allocate_flow',
 				    method:"post",
@@ -1208,6 +1209,8 @@
 				    },
 				    success:function(msg){
 				    	var jsonobj= eval('('+msg+')');  
+				    	$('#base_form_check').form('clear');
+		    			$('#saveCheckbtn').linkbutton('enable');
 				    	if(jsonobj.state==1){
 				    			//clearForm();			    			
 				    		$('#dlgExchangedDetail').dialog('close');

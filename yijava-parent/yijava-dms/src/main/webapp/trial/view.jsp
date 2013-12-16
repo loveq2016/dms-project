@@ -1003,7 +1003,9 @@
 			    	var jsonobj= eval('('+msg+')');  
 			    	if(jsonobj.state==1)
 			    		{
-			    			clearForm();			    			
+			    			$('#base_form_check').form('clear');
+			    			$('#saveCheckbtn').linkbutton('enable');
+			    			//clearForm();$('#ffadd').form('clear');			    			
 			    			$('#dlgflowcheck').dialog('close');
 			    			var pager = $('#dg').datagrid().datagrid('getPager');
 			    			pager.pagination('select');	
