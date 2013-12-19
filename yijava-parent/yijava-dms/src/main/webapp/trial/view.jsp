@@ -901,7 +901,7 @@
                  }
 			 });
 			
-			if (row && row.status ==1){				
+			if (row && (row.status ==1 || row.status ==2)){				
 				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){
 					
 					 $('#bussiness_id').val(row.trial_id);
