@@ -368,8 +368,10 @@
 								                    panelHeight:'auto'
 						            			"/>
 										</td>
-										<td>产品编号:</td>	
-										<td width="150px"><input class="easyui-validatebox" type="text" name="product_item_number" id="product_item_number" ></input></td>
+										<td>规格:</td>	
+										<td width="100px"><input class="easyui-validatebox" type="text" name="models" id="models" ></input></td>
+										<!-- <td>产品编号:</td>	
+										<td width="150px"><input class="easyui-validatebox" type="text" name="product_item_number" id="product_item_number" ></input></td> -->
 										<td>产品批次:</td>	
 										<td width="150px"><input class="easyui-validatebox" type="text" name="batch_no" id="batch_no" ></input></td>
 									</tr>
@@ -782,7 +784,8 @@
 		    $('#dgProduct').datagrid('load',{
 		    	filter_ANDS_fk_storage_id: $("#ffdetail input[name=fk_storage_id]").val(),
 				filter_ANDS_fk_dealer_id : $('#ffdetail input[name=fk_dealer_id]').val(),
-		    	filter_ANDS_product_item_number:$("#ffdetail input[name=product_item_number]").val(),
+		    	//filter_ANDS_product_item_number:$("#ffdetail input[name=product_item_number]").val(),
+		    	filter_ANDS_models:$("#ffdetail input[name=models]").val(),
 		    	filter_ANDS_batch_no: $("#ffdetail input[name=batch_no]").val()
 		    });
 		}

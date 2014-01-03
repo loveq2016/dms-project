@@ -277,6 +277,7 @@
 				}else{
 					$("#saveEntityBtn").linkbutton("enable");
 				}
+				$("#saveEntityBtn").linkbutton("enable");//强制开启修改
 				
 				$('#dgDealerCategory').datagrid({
 					url : basePath + "api/dealerCategory/paging",
