@@ -19,7 +19,7 @@
 			                <td>
 			                    <div id="logon">
 			                        <ul>
-			                            <!--<li>巴德销售追踪系统</li>-->
+			                            
 			                        </ul>
 			                    </div>
 			                </td>
@@ -58,10 +58,29 @@
 		<a href="javascript:void(0)" class="easyui-linkbutton" plain="true"  iconCls="icon-reload" onclick="javascript:ReloadTab();"></a>		
 	</div>
 	
+	
+	 <div id="dd" class="easyui-dialog" title="My Dialog" style="width:700px;height:500px;"
+        data-options="iconCls:'icon-close',resizable:true,modal:true">
+    		
+    		<img alt="" src="resource/holiday/yuandan.jpg" width="486" height="364">
+	</div> 
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#mm1').menu(); 	
+	//showImg();
+	
+	
 });
+
+ $('#dd').dialog({
+    title: '节日快乐',
+    width: 500,
+    height: 400,
+    closed: false,
+    cache: false,
+    //href: 'resource/holiday/Christmas.gif',
+    modal: false
+}); 
 
 function toHome()
 {
@@ -98,6 +117,22 @@ function ReloadTab()
     	$('#tabs').tabs('update', { tab: currTab, options: { content: createFrame("home.jsp")} });
 	
 }
+
+function showImg()
+{
+	openUrl("resource/holiday/Christmas.gif");
+	//window.open ('resource/holiday/Christmas.jpg','newwindow','height=100,width=400,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no') 
+}
+
+
+function openUrl( url ){
+    var f=document.createElement("form");
+    f.setAttribute("action" , url );
+    f.setAttribute("method" , 'get' );
+    f.setAttribute("target" , '_black' );
+    document.body.appendChild(f)
+    f.submit();
+ }
 </script>
 </body>
 </html>
