@@ -344,7 +344,7 @@
 				</div>
 				<div title="修改记录" style="padding: 5px 5px 5px 5px;" >
 					<table id="dgUpdateLog" class="easyui-datagrid" title="修改记录" style="height:370px" method="get"
-						rownumbers="true" singleSelect="true" pagination="true" sortName="user_id" sortOrder="desc">
+						rownumbers="true"  nowrap="false" singleSelect="true" pagination="true" sortName="user_id" sortOrder="desc">
 						<thead>
 							<tr>
 								<th data-options="field:'user_id',width:80"  sortable="true" hidden="true">修改人id</th>	

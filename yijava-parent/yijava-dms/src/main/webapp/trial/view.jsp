@@ -300,7 +300,7 @@
 			</div>
 			
 			<div title="流程记录" >
-				<table id="dgdescflow_record" title="查询结果" style="width:790px;height: 380px">
+				<table id="dgdescflow_record"  nowrap="false" title="查询结果" style="width:790px;height: 380px">
 					<thead>
 						<tr>
 							
@@ -378,7 +378,7 @@
 			</div>
 			
 			<div title="流程记录" >
-				<table id="dgflow_record" title="查询结果" style="width:800px;height: 340px">
+				<table id="dgflow_record"  nowrap="false" title="查询结果" style="width:800px;height: 340px">
 					<thead>
 						<tr>
 							

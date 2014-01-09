@@ -238,7 +238,7 @@
 					</div> 
 				</div>
 				<div title="流程记录" style="padding: 5px 5px 5px 5px;" >
-					<table id="dgflow_record" class="easyui-datagrid" title="查询结果" style="height: 330px">
+					<table id="dgflow_record"  nowrap="false" class="easyui-datagrid" title="查询结果" style="height: 330px">
 						<thead>
 							<tr>
 								<th data-options="field:'user_id',width:80"  sortable="true" hidden="true">修改人id</th>	
