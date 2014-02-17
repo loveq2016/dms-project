@@ -229,9 +229,12 @@ public class FlowRecordController {
 	
 	public boolean backAllocateFlow(FlowRecord flowRecord,ProcFlowModel entity,SysUser sysUser) throws Exception
 	{
+		
+		
+		
 		try {
 			int currentStepNo = Integer.parseInt(flowRecord.getStep_order_no());
-			if(currentStepNo>1)
+			/*if(currentStepNo>1)
 			{
 				//删除本次的待处理事项
 				flowRecordService.removeEntity(new Integer(flowRecord.getRecord_id()));
@@ -268,7 +271,29 @@ public class FlowRecordController {
 				flowLogService.saveEntity(flowLog);
 				eventBus.post(new UserBackFlowEvent(sysUser.getId(),sysUser.getRealname(),flow_id,entity.getBussiness_id(),
 						entity.getCheck_reason(),entity.getStatus()));
-			}
+			}*/
+			
+			//删除本次的待处理事项
+			
+			FlowRecord removeEntity=new FlowRecord();
+			removeEntity.setBussiness_id(entity.getBussiness_id());
+			removeEntity.setFlow_id(entity.getFlow_id());
+			flowRecordService.removeByFlowAndBid(removeEntity);
+			//flowRecordService.removeEntity(new Integer(flowRecord.getRecord_id()));
+			//记录驳回日志
+			FlowLog flowLog=new FlowLog();
+			flowLog.setFlow_id(flow_id);
+			flowLog.setUser_id(sysUser.getId());
+			flowLog.setUser_name(sysUser.getRealname());
+			flowLog.setBussiness_id(entity.getBussiness_id());
+			flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+			flowLog.setAction_name("进行审核;" + "驳回");
+			flowLog.setCheck_reason(entity.getCheck_reason());
+			flowLog.setSign(sysUser.getSign_img());
+			flowLogService.saveEntity(flowLog);
+			eventBus.post(new UserBackFlowEvent(sysUser.getId(),sysUser.getRealname(),flow_id,entity.getBussiness_id(),
+					entity.getCheck_reason(),entity.getStatus()));
+			
 		} catch (Exception e) {
 			throw e;
 		}	
@@ -447,7 +472,31 @@ public class FlowRecordController {
 			flowRecord=flowRecords.get(0);			
 			if(flowRecord!=null)
 			{
+				//20140217zhjt修改,直接驳回到未提交状态开始
 				int currentStepNo= Integer.parseInt(flowRecord.getStep_order_no());
+				Step curentStep = flowBussService.getStep(new Integer(flow_id),currentStepNo);
+				String currentUserId=sysUser.getId();
+				FlowRecord removeEntity=new FlowRecord();
+				removeEntity.setBussiness_id(entity.getBussiness_id());
+				removeEntity.setFlow_id(entity.getFlow_id());
+				flowRecordService.removeByFlowAndBid(removeEntity);
+				//记录驳回日志
+				FlowLog flowLog=new FlowLog();
+				flowLog.setFlow_id(flow_id);
+				flowLog.setUser_id(currentUserId);
+				flowLog.setUser_name(sysUser.getRealname());
+				flowLog.setBussiness_id(entity.getBussiness_id());
+				flowLog.setCreate_date(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+				flowLog.setAction_name(curentStep.getAction_name() + "驳回");
+				flowLog.setCheck_reason(entity.getCheck_reason());
+				flowLog.setSign(sysUser.getSign_img());
+				flowLogService.saveEntity(flowLog);
+				eventBus.post(new UserBackFlowEvent(sysUser.getId(),sysUser.getRealname(),flow_id,entity.getBussiness_id(),
+						entity.getCheck_reason(),entity.getStatus()));
+				
+				//20140217zhjt修改,直接驳回到未提交状态结束
+				
+				/*int currentStepNo= Integer.parseInt(flowRecord.getStep_order_no());
 				//得到步骤名称，记录日志
 				Step curentStep = flowBussService.getStep(new Integer(flow_id),currentStepNo);
 				String currentUserId=sysUser.getId();
@@ -488,7 +537,7 @@ public class FlowRecordController {
 					flowLogService.saveEntity(flowLog);
 					eventBus.post(new UserBackFlowEvent(sysUser.getId(),sysUser.getRealname(),flow_id,entity.getBussiness_id(),
 							entity.getCheck_reason(),entity.getStatus()));
-				}				
+				}	*/			
 			}
 		}
 		return true;

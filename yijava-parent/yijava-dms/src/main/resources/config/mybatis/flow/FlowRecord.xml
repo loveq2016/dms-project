@@ -66,6 +66,12 @@
     	delete from dms.tb_flow_record where record_id=#{record_id}
    	 	<!-- update dms.tb_flow_record set is_delete=1 where flow_id=#{flow_id},bussiness_id=#{bussiness_id}  		 -->
 	</update>
+	
+	<update id="deleteByFlowAndBid" parameterType="dms.yijava.entity.flow.FlowRecord">
+    	delete from dms.tb_flow_record where flow_id=#{flow_id} and bussiness_id=#{bussiness_id}
+   	 	<!-- update dms.tb_flow_record set is_delete=1 where flow_id=#{flow_id},bussiness_id=#{bussiness_id}  		 -->
+	</update>
+	
 	<!-- 用户待处理事项 -->
 	<select id="selectToCheckByUser" resultType="dms.yijava.web.model.UserToCheck">
 	select flow_id,count(1) as item_number,check_id as user_id from dms.tb_flow_record where CHECK_ID=#{check_userId} and status='0' GROUP BY flow_id

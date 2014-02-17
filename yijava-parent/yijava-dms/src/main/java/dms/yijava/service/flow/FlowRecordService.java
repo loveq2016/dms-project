@@ -168,6 +168,10 @@ public class FlowRecordService {
 		flowRecordDao.remove( entity);
 	}
 	
+	public void removeByFlowAndBid(FlowRecord entity) {
+		flowRecordDao.removeObject(".deleteByFlowAndBid",entity);
+	}
+	
 	public void removeEntity(Integer record_id) {
 		flowRecordDao.remove(record_id);
 	}
