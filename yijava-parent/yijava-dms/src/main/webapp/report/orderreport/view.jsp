@@ -62,7 +62,7 @@
 						</form>
 					</div>
 					<div style="text-align: right; padding: 5px">
-						<restrict:function funId="227">
+						<restrict:function funId="237">
 							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="doSearch()">查询</a>			
 						</restrict:function>   
 					</div>
@@ -87,7 +87,7 @@
 					</thead>
 				</table>
 				<div id="tb">    
-					<restrict:function funId="234">
+					<restrict:function funId="238">
 					    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="repostExcel();">导出</a>   
 					</restrict:function> 
 				</div> 

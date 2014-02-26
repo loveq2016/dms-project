@@ -410,10 +410,11 @@
 	</select>
 	<select id="selectByObjectcount_OrderReport" resultType="long">
 		SELECT COUNT(*) FROM (
-			SELECT t.dealer_id,td.dealer_code,td.dealer_name,td.attribute,t.order_code,t.order_date,t.order_status,t.type,
+			SELECT t.dealer_id,td.dealer_code,td.dealer_name,td.attribute,t.order_code,date_format(t.order_date,'%Y-%m-%d') as order_date,t.order_status,
+			case t.type when  0 then '普通订单' when 1 then '试用订单' when 2 then '退换货订单' end type ,
 			tod.models,tod.order_money_sum,tod.order_number_sum,tod.remark FROM tb_order t inner JOIN tb_order_detail tod ON t.order_code= tod.order_code
 			inner JOIN tb_dealer td ON td.dealer_id = t.dealer_id WHERE t.order_status = 6
-			) a
+		) a
 		<include refid="adsWhere_orderReport" />
 	</select>
 	<select id="selectByObject_OrderReport" resultType="java.util.HashMap">
