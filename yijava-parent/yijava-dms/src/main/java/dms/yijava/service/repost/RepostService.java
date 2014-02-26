@@ -127,5 +127,27 @@ public class RepostService {
 				pageRequest.getPageSize(), pageRequest.getOrderBy(),
 				pageRequest.getOrderDir());
 	}
+	
+	public JsonPage<Map<String,Object>> orderReportPaging(PageRequest pageRequest,List<PropertyFilter> filters) {
+		Map<String,String> parameters = new HashMap<String,String>();
+		try{
+			for (PropertyFilter propertyFilter : filters) {
+				String propertyKey = propertyFilter.getPropertyNames()[0];
+				String propertyValue = propertyFilter.getMatchValue();
+				String hhmmss="";
+				if(propertyKey.equals("start_order_date") || propertyKey.equals("end_order_date")){
+					if(propertyKey.equals("start_order_date")&&!"".equals(propertyValue))
+						hhmmss=" 00:00:00";
+					if(propertyKey.equals("end_order_date")&&!"".equals(propertyValue))
+						hhmmss=" 23:59:59";
+					propertyValue=propertyValue + hhmmss;
+				}
+				parameters.put(propertyKey, propertyValue);
+			}
+		}catch(Exception ex){}
+		return repostDao.getScrollData("OrderReport",parameters, pageRequest.getOffset(),
+				pageRequest.getPageSize(), pageRequest.getOrderBy(),
+				pageRequest.getOrderDir());
+	}
 
 }

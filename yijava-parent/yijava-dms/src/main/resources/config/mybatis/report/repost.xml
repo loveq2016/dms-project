@@ -164,10 +164,10 @@
 				  and fk_dealer_id in (${dealer_ids})
 			</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_code)">
-				  and dealer_code=#{dealer_code}
+				  and dealer_code like CONCAT('%','${dealer_code}','%' )
 			</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(attribute)">
-				  and attribute=#{attribute}
+				  and attribute like CONCAT('%','${attribute}','%' )
 			</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(models)">
 				  and models=#{models}
@@ -196,10 +196,10 @@
 				  and dealer_id in (${dealer_ids})
 			</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_code)">
-				  and dealer_code=#{dealer_code}
+				  and dealer_code like CONCAT('%','${dealer_code}','%' )
 			</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(attribute)">
-				  and attribute=#{attribute}
+				  and attribute like CONCAT('%','${attribute}','%' )
 			</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(models)">
 				  and models=#{models}
@@ -224,6 +224,34 @@
 			</if>
 			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(end_create_date)">
 				  <![CDATA[ and create_date < #{end_create_date}]]>
+			</if>
+		</trim>
+	</sql>
+	<sql id="adsWhere_orderReport">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_id)">
+				  and dealer_id=#{dealer_id}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_ids)">
+				  and dealer_id in (${dealer_ids})
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(dealer_code)">
+				  and dealer_code like CONCAT('%','${dealer_code}','%' )
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(order_code)">
+				  and order_code like CONCAT('%','${order_code}','%' )
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(attribute)">
+				  and attribute like CONCAT('%','${attribute}','%' )
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(models)">
+				  and models=#{models}
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(start_order_date)">
+				 <![CDATA[ and order_date > #{start_order_date} ]]>
+			</if>
+			<if test="@com.yijava.orm.core.OgnlUtils@isNotEmpty(end_order_date)">
+				  <![CDATA[ and order_date < #{end_order_date}]]>
 			</if>
 		</trim>
 	</sql>
@@ -377,6 +405,25 @@
 		  inner JOIN tb_hospital t7 ON t7.id=t1.fk_put_storage_party_id
 		) t 
 		<include refid="adsWhere_salesReport" />
+		<include refid="adsOrder" />
+		limit #{offset},#{pagesize}
+	</select>
+	<select id="selectByObjectcount_OrderReport" resultType="long">
+		SELECT COUNT(*) FROM (
+			SELECT t.dealer_id,td.dealer_code,td.dealer_name,td.attribute,t.order_code,t.order_date,t.order_status,t.type,
+			tod.models,tod.order_money_sum,tod.order_number_sum,tod.remark FROM tb_order t inner JOIN tb_order_detail tod ON t.order_code= tod.order_code
+			inner JOIN tb_dealer td ON td.dealer_id = t.dealer_id WHERE t.order_status = 6
+			) a
+		<include refid="adsWhere_orderReport" />
+	</select>
+	<select id="selectByObject_OrderReport" resultType="java.util.HashMap">
+		SELECT * FROM (
+			SELECT t.dealer_id,td.dealer_code,td.dealer_name,td.attribute,t.order_code,date_format(t.order_date,'%Y-%m-%d') as order_date,t.order_status,
+			case t.type when  0 then '普通订单' when 1 then '试用订单' when 2 then '退换货订单' end type ,
+			tod.models,tod.order_money_sum,tod.order_number_sum,tod.remark FROM tb_order t inner JOIN tb_order_detail tod ON t.order_code= tod.order_code
+			inner JOIN tb_dealer td ON td.dealer_id = t.dealer_id WHERE t.order_status = 6
+		) a
+		<include refid="adsWhere_orderReport" />
 		<include refid="adsOrder" />
 		limit #{offset},#{pagesize}
 	</select>
