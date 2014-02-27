@@ -27,13 +27,11 @@
 	      </dataSource>
 	    </connectionSource>
 	 </appender>
-	 
 	<root level="DEBUG">
 		<appender-ref ref="DB" />
 		<appender-ref ref="console" />
 		<appender-ref ref="rollingFile" />
 	</root>
-	
 	<logger name="org.springframework.jdbc" level="ERROR"/>
 	<logger name="org.springframework" level="ERROR"/>
 	<logger name="org.hibernate" level="DEBUG"/>
