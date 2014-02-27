@@ -104,7 +104,8 @@
 							<th data-options="field:'put_storage_party_name',width:150,align:'left'" sortable="true">销售医院</th>
 							<th data-options="field:'total_number',width:80,align:'center'" sortable="true">总数量</th>
 							<th data-options="field:'sales_date',width:150,align:'center'" formatter="formatterdate" sortable="true">销售时间</th>
-							<th data-options="field:'pull_storage_date',width:150,align:'center'" formatter="formatterdate" sortable="true">提交时间</th>
+							<!-- <th data-options="field:'pull_storage_date',width:150,align:'center'" formatter="formatterdate" sortable="true">提交时间</th> -->
+							<th data-options="field:'last_time',width:150,align:'center'" formatter="formatterdate" sortable="true">提交时间</th>
 							<th data-options="field:'status',width:80,align:'center'" formatter="formatterStatus" sortable="true">单据状态</th>
 							<th data-options="field:'custom',width:80,align:'center'" formatter="formatterDetail">明细</th>
 							<th data-options="field:'record_id',width:80,align:'center'" hidden="true"></th>

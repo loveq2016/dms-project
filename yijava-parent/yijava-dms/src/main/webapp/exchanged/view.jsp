@@ -1198,7 +1198,22 @@
 		 }
 		 
 		function saveFlowCheck(){
-			$('#saveCheckbtn').linkbutton('disable');
+			
+			if ($("#base_form_check input[name=status]").val()==""){
+				alert("请选择处理选项  ");
+				return;
+			}
+			if ($("#base_form_check input[name=bussiness_id]").val()==""){
+				alert("请重新选择数据 ");
+				return;
+			}
+			
+			if ($("#base_form_check input[name=flow_id]").val()==""){
+				alert("请重新选择数据 ");
+				return;
+			}
+			
+			//$('#saveCheckbtn').linkbutton('disable');
 				$('#base_form_check').form('submit', {
 					 url:basePath+'api/flowrecord/do_allocate_flow',
 				    method:"post",
@@ -1210,14 +1225,17 @@
 				    success:function(msg){
 				    	var jsonobj= eval('('+msg+')');  
 				    	$('#base_form_check').form('clear');
-		    			$('#saveCheckbtn').linkbutton('enable');
+		    			//$('#saveCheckbtn').linkbutton('enable');
 				    	if(jsonobj.state==1){
 				    			//clearForm();			    			
 				    		$('#dlgExchangedDetail').dialog('close');
 				    		//var pager = $('#dg').datagrid().datagrid('getPager');
 				    		//pager.pagination('select');	
 				    		$('#dg').datagrid('reload');
-				    	}
+				    	}else
+				    		{
+				    			$.messager.alert('提示',jsonobj.error.msg,'Error!');	
+				    		}
 				    }		
 				});		
 			}
