@@ -738,6 +738,7 @@
 		function openExchangedDetail(index){
 			$('#dg').datagrid('selectRow',index);
 			var row = $('#dg').datagrid('getSelected');
+			$('#fm').form('clear');
 			$('#fm').form('load',row);
 			exchanged_code = row.exchanged_code;
 			dealer_id = row.dealer_id;
