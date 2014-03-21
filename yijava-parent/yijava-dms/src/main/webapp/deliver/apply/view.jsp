@@ -364,7 +364,7 @@
 								<input type="hidden" name="bussiness_id" id="bussiness_id">
 								<input type="hidden" name="flow_id" id="flow_id" value="">
 								<div style="text-align: right; padding: 5px">
-										<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveFlowCheck()">提交</a>
+										<a href="javascript:void(0)" class="easyui-linkbutton" id="submitSaveFlow" data-options="iconCls:'icon-save'" onclick="saveFlowCheck()">提交</a>
 <!-- 										<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="javascript:$('#dlgflowcheck').dialog('close')">取消</a>					    -->
 								</div>				
 								</td>
@@ -895,15 +895,22 @@
 		 
 		function saveFlowCheck(){
 
+			
+			 
 				$('#base_form_check').form('submit', {
 				    url:basePath+'/api/flowrecord/do_flow',
 				    method:"post",
 				    onSubmit: function(){
 				        // do some check
 				        // return false to prevent submit;
-				    	return $(this).form('validate');;
+				        
+				        $("#submitSaveFlow").linkbutton("disable");
+				    	return $(this).form('validate');
+				    	
+				    	
 				    },
 				    success:function(msg){
+				    	
 				    	var jsonobj= eval('('+msg+')');  
 				    	if(jsonobj.state==1){
 				    			//clearForm();			    			
@@ -913,6 +920,7 @@
 				    		$('#dg').datagrid('reload');
 					   			
 				    		}
+				    	$("#submitDeliver").linkbutton("enable");
 				    }		
 				});		
 			}

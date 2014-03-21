@@ -305,7 +305,7 @@ public class FlowRecordController {
 	 */
 	@ResponseBody
 	@RequestMapping("do_flow")
-	public Result<Integer> doFlow(@ModelAttribute("entity") ProcFlowModel entity,HttpServletRequest request){
+	public synchronized Result<Integer> doFlow(@ModelAttribute("entity") ProcFlowModel entity,HttpServletRequest request){
 		Result<Integer> result=new Result<Integer>(0, 0);
 		
 		if (entity!=null)
