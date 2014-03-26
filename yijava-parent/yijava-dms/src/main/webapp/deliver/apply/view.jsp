@@ -310,7 +310,7 @@
 			<div id="tabs" class="easyui-tabs" style="width:925px;height:auto;">
 				<div title="明细行" style="padding: 5px 5px 5px 5px;" >
 					<table id="dgDetail" class="easyui-datagrid" title="订单明细信息" style="height:330px" method="get"
-						 rownumbers="true" singleSelect="true" pagination="true" sortName="delivery_detail_id" sortOrder="desc">
+						 rownumbers="true" singleSelect="true" showFooter="true" pagination="true" sortName="delivery_detail_id" sortOrder="desc">
 						<thead>
 							<tr>
 							<th data-options="field:'product_name',width:100,align:'center'" sortable="true">产品名称</th>

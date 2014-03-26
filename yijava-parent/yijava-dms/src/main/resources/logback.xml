@@ -16,7 +16,7 @@
 			<pattern>%d [%t] %-5p [%c:%L] - %m%n</pattern>
 		</encoder>
 	</appender>
-	<appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
+	<!-- <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
 		<filter class="dms.yijava.api.web.filter.LogFilter"/>
 	    <connectionSource class="ch.qos.logback.core.db.DataSourceConnectionSource">
 	      <dataSource class="com.mchange.v2.c3p0.ComboPooledDataSource">
@@ -26,9 +26,9 @@
 	        <password>f341bac6</password>
 	      </dataSource>
 	    </connectionSource>
-	 </appender>
+	 </appender> -->
 	<root level="DEBUG">
-		<appender-ref ref="DB" />
+		<!-- <appender-ref ref="DB" /> -->
 		<appender-ref ref="console" />
 		<appender-ref ref="rollingFile" />
 	</root>

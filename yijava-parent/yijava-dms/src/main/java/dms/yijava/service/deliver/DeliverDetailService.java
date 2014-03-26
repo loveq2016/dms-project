@@ -1,5 +1,6 @@
 package dms.yijava.service.deliver;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,9 +31,30 @@ public class DeliverDetailService {
 			String propertyKey = propertyFilter.getPropertyNames()[0];
 			parameters.put(propertyKey, propertyFilter.getMatchValue());
 		}
-		return deliverDetailDao.getScrollData(parameters, pageRequest.getOffset(),
+		
+		JsonPage<DeliverDetail> detail = deliverDetailDao.getScrollData(parameters, pageRequest.getOffset(),
 				pageRequest.getPageSize(), pageRequest.getOrderBy(),
 				pageRequest.getOrderDir());
+		
+		/*以下开始计算合计数量 **/
+		int orderNumber=0,delverNumber=0;
+		List <DeliverDetail> details = detail.getRows();
+		
+		
+		
+		for(DeliverDetail det : details){
+			orderNumber+=Integer.parseInt(det.getOrder_number_sum());
+			delverNumber+=Integer.parseInt(det.getDeliver_number_sum());
+		}
+		
+		List<Map<String,String>> footer=new ArrayList<Map<String,String>>();
+		Map<String,String> footMap = new HashMap<String,String>();
+		footMap.put("product_name", "合计");
+		footMap.put("order_number_sum", Integer.toString(orderNumber));
+		footMap.put("deliver_number_sum", Integer.toString(delverNumber));
+		footer.add(footMap);
+		detail.setFooter(footer);
+		return detail;
 	}
 
 	public List<DeliverDetail> getList(List<PropertyFilter> filters){

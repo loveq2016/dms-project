@@ -2,13 +2,14 @@ package com.yijava.orm.core;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class JsonPage<T>  implements Serializable {
 
 	protected List<T> rows = null;
 	protected long total = -1;
 	protected long notice = 0;
-	
+	protected List<Map<String,String>> footer = null;
 	
 	public JsonPage() {
 		super();
@@ -42,6 +43,19 @@ public class JsonPage<T>  implements Serializable {
 	public void setNotice(long notice) {
 		this.notice = notice;
 	}
+
+
+	public List<Map<String, String>> getFooter() {
+		return footer;
+	}
+
+
+	public void setFooter(List<Map<String, String>> footer) {
+		this.footer = footer;
+	}
+
+
+	
 	
 	
 	

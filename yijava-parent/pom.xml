@@ -710,12 +710,12 @@
 
 	<modules>
 		<module>yijava-common</module>
-		<module>yijava-admin</module>
+		<!-- <module>yijava-admin</module> -->
 		<module>yijava-orm</module>
-		<module>yijava-stage</module>
-		<module>yijava-manage</module>
+		<!-- <module>yijava-stage</module>
+		<module>yijava-manage</module> -->
 		<module>yijava-dms</module>
-		<module>yijava-orm-mybatis</module>
+		<!-- <module>yijava-orm-mybatis</module> -->
     <module>audio-manage</module>
     <module>xhs-stage</module>
 	</modules>

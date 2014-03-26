@@ -36,13 +36,8 @@
                             <br>
                             <h1>客服人员</h1>
                             <br>
-                           北区负责人<br>
-		  杨绛红：010-59000321 <br>
-		  jianghong.yang@kinhely.com<br>
-<br><br><br>
-                          南区负责人<br>
-                          潘丽美: 021-64136730 <br>
-                          limei.pan@kinhely.com<br>
+                         联系人：张蕾<br>
+		  电话：13716652521<br>
                             <br>
                         </div>
 
