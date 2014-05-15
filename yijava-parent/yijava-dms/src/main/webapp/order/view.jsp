@@ -98,7 +98,7 @@
 							<th data-options="field:'order_code',width:200,align:'left'" sortable="true">订单号</th>
 							<th data-options="field:'dealer_name',width:240,align:'left'" sortable="true">经销商</th>
 							<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">总数量</th>
-							<th data-options="field:'order_money_sum',width:80,align:'center'" sortable="true">总金额</th>
+							<!-- th data-options="field:'order_money_sum',width:80,align:'center'" sortable="true">总金额</th-->
 							<th data-options="field:'type',width:80,align:'center'" formatter="formatterType" sortable="true">订单类型</th>
 							<th data-options="field:'order_status',width:80,align:'center'" formatter="formatterStatus" sortable="true">状态</th>
 							<th data-options="field:'order_date',width:150,align:'center'" formatter="formatterdate" sortable="true">订单时间</th>
@@ -260,8 +260,8 @@
 									<td></td>
 								</tr>
 			         			<tr>
-									<td>金额汇总:</td>	
-									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="order_money_sum"></input></td>
+									<!-- >td>金额汇总:</td>	
+									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="order_money_sum"></input></td-->
 									<td>联系人:</td>	
 									<td><input class="easyui-validatebox" readonly="readonly" type="text" name="business_contacts"></input></td>
 									<td>收货地址:</td>	
@@ -323,9 +323,9 @@
 								<th data-options="field:'product_name',width:100,align:'left'" sortable="true">产品名称</th>
 								<th data-options="field:'models',width:90,align:'center'" sortable="true">规格型号</th>
 								<th data-options="field:'order_number_sum',width:80,align:'center'" sortable="true">数量</th>
-								<th data-options="field:'order_price',width:60,align:'center'" sortable="true">订购价格</th>
+								<!-- >th data-options="field:'order_price',width:60,align:'center'" sortable="true">订购价格</th>
 								<th data-options="field:'order_money_sum',width:80,align:'center'" sortable="true">小计</th>
-								<th data-options="field:'discount',width:60,align:'center'" sortable="true">成交价格</th>
+								<!-- th data-options="field:'discount',width:60,align:'center'" sortable="true">成交价格</th-->
 								<th data-options="field:'type',width:60,align:'center'" sortable="true" formatter="formatterDetailType">类型</th>
 								<th data-options="field:'delivery_sum',width:80,align:'center'" sortable="true">发货数量</th>
 								<th data-options="field:'plan_send_date',width:100,align:'center'" sortable="true">预计发货日期</th>
@@ -911,7 +911,7 @@
 		/*保存审核*/
 		function saveFlowCheck()
 		{
-			$('#saveCheckbtn').linkbutton('disable');
+			//$('#saveCheckbtn').linkbutton('disable');
 			$('#base_form_check').form('submit', {
 				url:basePath+'/api/flowrecord/do_flow',
 				method:"post",	
@@ -930,7 +930,7 @@
                            title: 'Error',
                            msg: jsonobj.error.msg
                        });
-	    			   $('#saveCheckbtn').linkbutton('enable');
+	    			   //$('#saveCheckbtn').linkbutton('enable');
 				   }
 				}
 			});

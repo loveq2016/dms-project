@@ -59,11 +59,11 @@
 	</div>
 	
 	
-	 <div id="dd" class="easyui-dialog" title="My Dialog" style="width:700px;height:500px;"
+	 <!--  >div id="dd" class="easyui-dialog" title="My Dialog" style="width:700px;height:500px;"
         data-options="iconCls:'icon-close',resizable:true,modal:true">
     		
     		<img alt="" src="resource/holiday/yuandan.jpg" width="486" height="364">
-	</div> 
+	</div--> 
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#mm1').menu(); 	
@@ -72,7 +72,7 @@ $(document).ready(function(){
 	
 });
 
- $('#dd').dialog({
+/* $('#dd').dialog({
     title: '节日快乐',
     width: 500,
     height: 400,
@@ -80,7 +80,7 @@ $(document).ready(function(){
     cache: false,
     //href: 'resource/holiday/Christmas.gif',
     modal: false
-}); 
+}); */
 
 function toHome()
 {

@@ -830,6 +830,9 @@
 			var row = $('#dg').datagrid('getSelected');
 			if (row && row.check_status ==1){				
 				 $.messager.confirm('提示','确定要要审核吗  ?',function(r){
+					 
+					 
+					 $('#base_form_flowcheck').form('clear');
 					 $('#bussiness_id').val(row.deliver_id);
 					 $("#flow_id").val(deliverflow_identifier_num);
 					 //填充基本信息
@@ -904,7 +907,7 @@
 				        // do some check
 				        // return false to prevent submit;
 				        
-				        $("#submitSaveFlow").linkbutton("disable");
+				        //$("#submitSaveFlow").linkbutton("disable");
 				    	return $(this).form('validate');
 				    	
 				    	
@@ -920,7 +923,7 @@
 				    		$('#dg').datagrid('reload');
 					   			
 				    		}
-				    	$("#submitDeliver").linkbutton("enable");
+				    	//$("#submitDeliver").linkbutton("enable");
 				    }		
 				});		
 			}
